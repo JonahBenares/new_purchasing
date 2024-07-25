@@ -1,16 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 
+
 import loginForm from  '../components/login.vue'
 import dashboard from '../components/dashboard.vue'
 
+import itemsIndex from '../components/items/index.vue'
+import itemsNew from '../components/items/new.vue'
+import itemsEdit from '../components/items/edit.vue'
 
-// import supplierIndex from '../components/supplier/index.vue'
-// import supplierNew from '../components/supplier/new.vue'
-// import supplierEdit from '../components/supplier/edit.vue'
+import departmentIndex from '../components/department/index.vue'
+import departmentNew from '../components/department/new.vue'
+import departmentEdit from '../components/department/edit.vue'
 
-
-import notFound from '../components/notFound.vue'
 
 const routes = [
     {
@@ -20,41 +22,47 @@ const routes = [
     },
     {
         path:'/dashboard',
-        name: 'dashboard',
         component: dashboard,
     },
-   
     
+
     {
-        path:'/:pathMatch(.*)*',
-        name:'notFound',
-        component: notFound,
-    }
+        path:'/items',
+        component: itemsIndex,
+    },
+
+    {
+        path:'/items/new',
+        component: itemsNew,
+    },
+    {
+        path:'/items/edit',
+        component: itemsEdit,
+    },
+
+    {
+        path:'/department',
+        component: departmentIndex,
+    },
+
+    {
+        path:'/department/new',
+        component: departmentNew,
+    },
+    {
+        path:'/department/edit',
+        component: departmentEdit,
+    },
+    // {
+    //     path:'/:pathMatch(.*)*',
+    //     name:'notFound',
+    //     component: notFound,
+    // }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes
 })
-
-// router.beforeEach((to,from) => {
-//     if(to.meta.requiresAuth && !localStorage.getItem('token') ){
-//         return { name: 'login'}
-//     } 
-// })
-
-
-
-// router.beforeEach((to, from, next) => {
-//     const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
-  
-//     if (to.meta.requiresAuth && !localStorage.getItem('token')) {
-//         return { name: 'login'}
-//     } else if (to.meta.requiresAuth && localStorage.getItem('token')) {
-//       next();
-//     } else {
-//       next();
-//     }
-//   });
 
 export default router

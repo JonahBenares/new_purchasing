@@ -10,7 +10,7 @@
           @vite('resources/css/app.css')
     </head>
     
-    <body >
+    <body :class="{ 'sidebar-icon-only': sidebarIconOnly }">
         <div id="app"></div>
         @vite('resources/js/app.js')
     </body>

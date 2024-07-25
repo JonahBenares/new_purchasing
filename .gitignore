@@ -1,6 +1,4 @@
 /.phpunit.cache
-
-
 /storage/*.key
 .env.backup
 .env.production

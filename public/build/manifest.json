@@ -1,0 +1,20 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CoNHI3Q-.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/images/logo_cenpri.png": {
+    "file": "assets/logo_cenpri-BAdoHlsa.png",
+    "src": "resources/images/logo_cenpri.png"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DNzMqhlv.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "assets": [
+      "assets/logo_cenpri-BAdoHlsa.png"
+    ]
+  }
+}

@@ -1,8 +1,4 @@
-<script setup>
-    import { reactive, ref } from "vue"
-    import { useRouter } from "vue-router"
 
-</script>
 <template>
     <div class="adminx-container d-flex justify-content-center align-items-center">
       <div class="page-error">
