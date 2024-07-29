@@ -18,7 +18,7 @@
 							<div class="col-lg-12 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Department Name</label>
-									<textarea class="form-control" placeholder="Department Name"></textarea>	
+									<input type="text" class="form-control" placeholder="Department Name">
 								</div>
 							</div>
 						</div>

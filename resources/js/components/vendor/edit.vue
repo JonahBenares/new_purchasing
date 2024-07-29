@@ -11,39 +11,113 @@
 				<div class="card">
 				<div class="card-body">
 					<span class="pt-2">
-						<h3 class="card-title !text-lg m-0">Item List <small>Update</small></h3>
+						<h3 class="card-title !text-lg m-0">Vendor <small>Update</small></h3>
 					</span>
 					<div class="pt-3">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" >Item Name</label>
-									<textarea class="form-control" placeholder="Item Name"></textarea>	
+									<label class="text-gray-500 m-0" >Vendor Name</label>
+									<textarea class="form-control" placeholder="Vendor Name"></textarea>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" >Specification</label>
-									<textarea class="form-control" placeholder="Specification"></textarea>	
+									<label class="text-gray-500 m-0" >Products/Services</label>
+									<textarea class="form-control" placeholder="Products/Services"></textarea>
 								</div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Brand</label>
-									<input type="text" class="form-control" placeholder="Brand">
+									<label class="text-gray-500 m-0" >Address</label>
+									<textarea class="form-control" placeholder="Address"></textarea>
 								</div>
 							</div>
-
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Part Number</label>
-									<input type="text" class="form-control" placeholder="Part Number">
+									<label class="text-gray-500 m-0" >Terms</label>
+									<textarea class="form-control" placeholder="Terms"></textarea>
 								</div>
 							</div>
 						</div>
-						<!-- <hr class="border-dashed"> -->
+						<div class="row">
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Phone Number</label>
+									<input type="text" class="form-control" placeholder="Phone Number">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Fax Number</label>
+									<input type="text" class="form-control" placeholder="Fax Number">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Contact Person</label>
+									<input type="text" class="form-control" placeholder="Contact Person">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Email</label>
+									<input type="email" class="form-control" placeholder="Email">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >TIN</label>
+									<input type="text" class="form-control" placeholder="TIN">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Type</label>
+									<input type="text" class="form-control" placeholder="Type">
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >EWT%</label>
+									<input type="text" class="form-control" placeholder="EWT%">
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Status</label>
+									<select class="form-control">
+										<option value="">Inactive</option>
+										<option value="">Active</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-2 col-md-2">
+								<div class="flex !justify-center mt-4 space-x-4">
+									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+										<label class="text-gray-500 m-0" >VAT</label>
+										<input type="radio" class="form-control !w-5 !h-5" placeholder="VAT">
+									</div>
+									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+										<label class="text-gray-500 m-0" >Non-VAT</label>
+										<input type="radio" class="form-control !w-5 !h-5" placeholder="VAT">
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Notes</label>
+									<textarea class="form-control" placeholder="Notes"></textarea>
+								</div>
+							</div>
+						</div>
 						<div class="row my-2"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">

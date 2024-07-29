@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <div class="flex justify-between">
                             <span class="pt-2">
-                                <h3 class="card-title !text-lg m-0">Item List</h3>
+                                <h3 class="card-title !text-lg m-0">Employee <small>List</small></h3>
                                 <!-- <p class="card-description m-0">asd</p> -->
                             </span>
                             <span>
@@ -27,8 +27,8 @@
                                     <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
                                         <ArrowUpOnSquareIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ArrowUpOnSquareIcon>
                                     </button>
-                                    <a  href="/items/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
-                                        <span>Add New Item </span>
+                                    <a href="/employee/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                                        <span>Add New Employee</span>
                                     </a>
                                 </div>
                             </span>
@@ -37,10 +37,9 @@
                             <table class="table table-bordered table-hover !border ">
                                 <thead>
                                     <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase"> Item Name</th>
-                                        <th class="!text-xs bg-gray-100 uppercase"> Specification </th>
-                                        <th class="!text-xs bg-gray-100 uppercase"> Brand </th>
-                                        <th class="!text-xs bg-gray-100 uppercase"> Part No. </th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Employee Name</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Department</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Poisition</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -50,12 +49,11 @@
                                 </thead>
                                 <tbody>
                                     <tr class="">
-                                        <td class="!text-xs">  1 </td>
-                                        <td class="!text-xs">  Herman Beck </td>
-                                        <td class="!text-xs"> Photoshop </td>
-                                        <td class="!text-xs"> $ 77.99 </td>
+                                        <td class="!text-xs"> Someone </td>
+                                        <td class="!text-xs"> IT Department </td>
+                                        <td class="!text-xs"> Manager </td>
                                         <td class="!text-xs p-1" align="center">
-                                            <a class="btn btn-xs btn-info text-white p-1">
+                                            <a href="/employee/edit" class="btn btn-xs btn-info text-white p-1">
                                                 <PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PencilIcon>
                                             </a>
                                         </td>

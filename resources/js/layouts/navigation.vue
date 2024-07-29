@@ -1,8 +1,10 @@
 <script setup>
-    import{HomeIcon, KeyIcon, ArrowDownIcon} from '@heroicons/vue/24/solid'
+    import{HomeIcon, KeyIcon, UserIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
     const masterfileDrop = ref(false);
+    const userDrop = ref(false);
+    const notif = ref(false);
 </script>
 <template>
     <div class="container-scroller">
@@ -13,9 +15,9 @@
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
                 <!-- <a class="navbar-brand brand-logo" href="index.html">\PURCHASING</a>
                 <a class="navbar-brand brand-logo-mini" href="index.html"><img src="" alt="logo"/>P</a> -->
-                <span class="text-2xl uppercase font-bold text-orange-500 w-full text-center">
+                <div class="text-2xl uppercase font-bold text-orange-500 w-full text-center">
                     Purchasing
-                </span>
+                </div>
                 <button class="navbar-toggler navbar-toggler align-self-center"  @click="toggleSidebar" type="button" data-toggle="minimize">
                     <span class="mdi mdi-sort-variant"></span>
                 </button>
@@ -38,9 +40,9 @@
                 <li class="nav-item dropdown mr-1">
                     <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
                     <i class="mdi mdi-message-text mx-0"></i>
-                    <span class="count"></span>
+                    <!-- <span class="count"></span> -->
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+                    <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
                     <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                     <a class="dropdown-item">
                         <div class="item-thumbnail">
@@ -78,14 +80,14 @@
                         </p>
                         </div>
                     </a>
-                    </div>
+                    </div> -->
                 </li>
                 <li class="nav-item dropdown mr-4">
                     <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="#" data-toggle="dropdown">
                     <i class="mdi mdi-bell mx-0"></i>
-                    <span class="count"></span>
+                    <!-- <span class="count"></span> -->
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                    <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
                     <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                     <a class="dropdown-item">
                         <div class="item-thumbnail">
@@ -126,23 +128,35 @@
                         </p>
                         </div>
                     </a>
-                    </div>
+                    </div> -->
                 </li>
                 <li class="nav-item nav-profile dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                    <img  alt="profile"/>
-                    <span class="nav-profile-name">Louis Barnett</span>
+                    <a class="nav-link dropdown-toggle !flex" href="#" data-toggle="dropdown" id="profileDropdown" @click="userDrop = !userDrop">
+                      
+                            <span>
+                                <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
+                            </span>
+                            <span class="nav-profile-name">Louis Barnett</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item">
-                        <i class="mdi mdi-settings text-primary"></i>
-                        Settings
-                    </a>
-                    <a class="dropdown-item">
-                        <i class="mdi mdi-logout text-primary"></i>
-                        Logout
-                    </a>
+                    <Transition
+						enter-active-class="transition ease-out duration-200"
+						enter-from-class="opacity-0"
+						enter-to-class="opacity-100 "
+						leave-active-class="transition ease-in duration-200"
+						leave-from-class="opacity-100 "
+						leave-to-class="opacity-0"
+					>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown"  v-show="userDrop">
+                        <a class="dropdown-item">
+                            <i class="mdi mdi-settings text-primary"></i>
+                            Settings
+                        </a>
+                        <a class="dropdown-item">
+                            <i class="mdi mdi-logout text-primary"></i>
+                            Logout
+                        </a>
                     </div>
+                    </Transition>
                 </li>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -153,8 +167,8 @@
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
+            <nav class="sidebar sidebar-offcanvas " id="sidebar">
+                <ul class="nav ">
                 <li class="nav-item">
                     <a class="nav-link !text-gray-600" href="#">
                     <i class="mdi mdi-home menu-icon !text-gray-600">
@@ -183,11 +197,11 @@
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li>
                                 <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="">Company</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="">Vendors</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="">Employee</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="">Unit</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="">Project/Activity</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/unit">Unit</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/project">Project/Activity</a></li>
                             </ul>
                         </div>
                     </Transition>

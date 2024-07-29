@@ -11,7 +11,7 @@
 				<div class="card">
 				<div class="card-body">
 					<span class="pt-2">
-						<h3 class="card-title !text-lg m-0">Item<small class="px-1">Update</small></h3>
+						<h3 class="card-title !text-lg m-0">Item<small>Update</small></h3>
 					</span>
 					<div class="pt-3">
 						<div class="row">

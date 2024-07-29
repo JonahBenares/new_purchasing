@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <div class="flex justify-between">
                             <span class="pt-2">
-                                <h3 class="card-title !text-lg m-0">Item<small class="px-1">List</small></h3>
+                                <h3 class="card-title !text-lg m-0">Items<small>List</small></h3>
                                 <!-- <p class="card-description m-0">asd</p> -->
                             </span>
                             <span>

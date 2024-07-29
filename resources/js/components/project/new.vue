@@ -11,48 +11,81 @@
 				<div class="card">
 				<div class="card-body">
 					<span class="pt-2">
-						<h3 class="card-title !text-lg m-0">Item List <small>New</small></h3>
+						<h3 class="card-title !text-lg m-0">Project/Activity <small>New</small></h3>
 					</span>
 					<div class="pt-3">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" >Item Name</label>
-									<textarea class="form-control" placeholder="Item Name"></textarea>	
+									<label class="text-gray-500 m-0" >Project/Activity</label>
+									<textarea class="form-control" placeholder="Project/Activity"></textarea>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" >Specification</label>
-									<textarea class="form-control" placeholder="Specification"></textarea>	
+									<label class="text-gray-500 m-0" >Remarks</label>
+									<textarea class="form-control" placeholder="Remarks"></textarea>
 								</div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Brand</label>
-									<input type="text" class="form-control" placeholder="Brand">
+									<label class="text-gray-500 m-0" >Target Start Date</label>
+									<input type="text" class="form-control" placeholder="Target Start Date" onfocus="(this.type='date')">
 								</div>
 							</div>
-
-							<div class="col-lg-6">
+							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Part Number</label>
-									<input type="text" class="form-control" placeholder="Part Number">
+									<label class="text-gray-500 m-0" >Target Completion</label>
+									<input type="text" class="form-control" placeholder="Target Completion" onfocus="(this.type='date')">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Actual Start</label>
+									<input type="text" class="form-control" placeholder="Actual Start" onfocus="(this.type='date')">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Actual Completion</label>
+									<input type="text" class="form-control" placeholder="Actual Completion" onfocus="(this.type='date')">
 								</div>
 							</div>
 						</div>
-						<!-- <hr class="border-dashed"> -->
+
+						<div class="row">
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Estimated Total(Materials)</label>
+									<input type="text" class="form-control" placeholder="Estimated Total(Materials)">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Duration (# of days)</label>
+									<input type="text" class="form-control" placeholder="Duration (# of days)">
+								</div>
+							</div>
+
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Status</label>
+									<select type="text" class="form-control" >
+										<option value="">--Select Status--</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
 						<div class="row my-2"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<!-- <button class="btn btn-light">Cancel</button> -->
 									<button type="submit" class="btn btn-primary mr-2 w-44">Submit</button>
 								</div>
 							</div>
 						</div>
-						
 					</div>
 				</div>
 				</div>
