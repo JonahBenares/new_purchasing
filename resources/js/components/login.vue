@@ -50,7 +50,8 @@
 						</div>
 					</div>
 					<div class="col-lg-6 login-half-bg d-flex flex-row !bg-gray-300">
-						<a href="dashboard"> dashboard</a>
+						<!-- <img src="" alt="" class="bg-green-100 w-full "> -->
+						<!-- <a href="dashboard"> dashboard</a> -->
 						<!-- <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright &copy; 2020  All rights reserved.</p> -->
 					</div>
 				</div>
