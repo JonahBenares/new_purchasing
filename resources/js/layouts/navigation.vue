@@ -170,7 +170,7 @@
             <nav class="sidebar sidebar-offcanvas " id="sidebar">
                 <ul class="nav ">
                 <li class="nav-item">
-                    <a class="nav-link !text-gray-600" href="#">
+                    <a class="nav-link !text-gray-600" href="/dashboard">
                     <i class="mdi mdi-home menu-icon !text-gray-600">
                         <HomeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></HomeIcon>
                     </i>
