@@ -41,6 +41,7 @@
 								
 								<div class="my-3">
 									<a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">LOGIN</a>
+									<a href="dashboard"> dashboard</a>
 								</div>
 								
 								<div class="text-center mt-4 font-weight-light text-sm">
