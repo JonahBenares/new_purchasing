@@ -36,6 +36,9 @@ import projectEdit from '../components/project/edit.vue'
 import pur_reqIndex from '../components/pur_req/index.vue'
 import pur_reqNew from '../components/pur_req/new.vue'
 
+import pur_quoteIndex from '../components/pur_quote/index.vue'
+import pur_quoteNew from '../components/pur_quote/new.vue'
+
 const routes = [
     {
         path:'/',
@@ -154,6 +157,15 @@ const routes = [
     {
         path:'/pur_req/new',
         component: pur_reqNew,
+    },
+
+    {
+        path:'/pur_quote',
+        component: pur_quoteIndex,
+    },
+    {
+        path:'/pur_quote/new',
+        component: pur_quoteNew,
     },
     // {
     //     path:'/:pathMatch(.*)*',

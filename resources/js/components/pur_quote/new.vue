@@ -11,26 +11,59 @@
 				<div class="card">
 				<div class="card-body">
 					<span class="pt-2">
-						<h3 class="card-title !text-lg m-0">Purchase Request <small>New</small></h3>
+						<h3 class="card-title !text-lg m-0">Request for Quotation <small>New</small></h3>
 					</span>
 					<div class="pt-3">
 						<hr class="border-dashed mt-0">
 						<div class="row">							
 							<div class="col-lg-6 offset-lg-3 col-md-3">
 								<div class="form-group">
-								<label class="text-gray-500 m-0" for="">Import PR Excel File here or Manual encode below</label>
+								<label class="text-gray-500 m-0" for="">Choose PR Number</label>
 								<input type="file" name="img[]" class="file-upload-default">
 								<div class="input-group col-xs-12">
-									<input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+									<select class="form-control file-upload-info">
+                                        <option value="">PR-1982-19871</option>
+                                        <option value="">PR-1982-10019</option>
+                                        <option value="">PR-1982-10992</option>
+                                    </select>
 									<span class="input-group-append">
-										<button class="btn btn-primary" type="button">Upload</button>
+										<button class="btn btn-primary" type="button">Select</button>
 									</span>
 								</div>
 								</div>
 							</div>
 						</div>
 						<hr class="border-dashed">
+						
 						<div class="row">
+							<div class="col-lg-12">
+								<table class="w-full table-bordered !text-xs mb-3">
+									<tr class="bg-gray-50">
+										<td class="p-1 uppercase text-center" width="5%">
+                                            <input type="checkbox">
+                                        </td>
+										<td class="p-1 uppercase text-center" width="7%">Qty</td>
+										<td class="p-1 uppercase text-center" width="7%">UOM</td>
+										<td class="p-1 uppercase" width="20%">PN No.</td>
+										<td class="p-1 uppercase" width="">Item Description</td>
+										<td class="p-1 uppercase" width="10%">WH Stocks</td>
+										<td class="p-1 uppercase" width="15%">Date Needed</td>
+									</tr>
+									<tr>
+										<td class="p-1 text-center">
+                                            <input type="checkbox">
+                                        </td>
+										<td class="p-1 text-center">20</td>
+										<td class="p-1 text-center">Kg</td>
+										<td class="p-1">sample</td>
+										<td class="p-1">sample</td>
+										<td class="p-1">sample</td>
+										<td class="p-1">sample</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+                        <!-- <div class="row">
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Purchase Request</label>
@@ -89,53 +122,7 @@
 									<input type="text" class="form-control" placeholder="Purpose">
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<table class="w-full table-bordered !text-xs mt-3">
-									<tr class="bg-gray-50">
-										<td class="p-1 uppercase text-center" width="5%">#</td>
-										<td class="p-1 uppercase text-center" width="7%">Qty</td>
-										<td class="p-1 uppercase text-center" width="7%">UOM</td>
-										<td class="p-1 uppercase" width="20%">PN No.</td>
-										<td class="p-1 uppercase" width="">Item Description</td>
-										<td class="p-1 uppercase" width="10%">WH Stocks</td>
-										<td class="p-1 uppercase" width="15%">Date Needed</td>
-										<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
-											<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
-										</td>
-									</tr>
-									<tr>
-										<td class=""><input placeholder="#" type="text" class="w-full p-1 text-center"></td>
-										<td class=""><input placeholder="Qty" type="text" class="w-full p-1 text-center"></td>
-										<td class=""><input placeholder="UOM" type="text" class="w-full p-1 text-center"></td>
-										<td class=""><input placeholder="PN No." type="text" class="w-full p-1"></td>
-										<td class=""><input placeholder="Item Description" type="text" class="w-full p-1"></td>
-										<td class=""><input placeholder="WH Stock" type="text" class="w-full p-1"></td>
-										<td class=""><input placeholder="Date Needed" type="text" class="w-full p-1" onfocus="(this.type='date')"></td>
-										<td class="text-center">
-											<button class="btn btn-primary p-1">
-												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-											</button>
-										</td>
-									</tr>
-									<tr>
-										<td class="p-1 text-center">1</td>
-										<td class="p-1 text-center">20</td>
-										<td class="p-1 text-center">Kg</td>
-										<td class="p-1">sample</td>
-										<td class="p-1">sample</td>
-										<td class="p-1">sample</td>
-										<td class="p-1">sample</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
+						</div> -->
 						<br>
 						<!-- <hr class="border-dashed"> -->
 						<div class="row my-2"> 

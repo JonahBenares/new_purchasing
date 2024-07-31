@@ -170,111 +170,72 @@
         <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas " id="sidebar">
                 <ul class="nav ">
-                <li class="nav-item">
-                    <a class="nav-link !text-gray-600" href="/dashboard">
-                    <i class="mdi mdi-home menu-icon !text-gray-600">
-                        <HomeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></HomeIcon>
-                    </i>
-                    <span class="menu-title">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link !text-gray-600 cursor-pointer" @click="masterfileDrop = !masterfileDrop" >
-                        <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
-                            <KeyIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></KeyIcon>
+                    <li class="nav-item">
+                        <a class="nav-link !text-gray-600" href="/dashboard">
+                        <i class="mdi mdi-home menu-icon !text-gray-600">
+                            <HomeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></HomeIcon>
                         </i>
-                            <span class="menu-title">Masterfile</span>
-                        <!-- <i class="menu-arrow"></i> -->
-                    </a>
-                    <Transition
-						enter-active-class="transition ease-out duration-250"
-						enter-from-class="opacity-0 h-1/2"
-						enter-to-class="opacity-100 h-full"
-						leave-active-class="transition ease-in duration-100"
-						leave-from-class="opacity-100 h-full"
-						leave-to-class="opacity-0 h-1/2"
-					>
-                        <div class=""  v-show="masterfileDrop">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/unit">Unit</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/project">Project/Activity</a></li>
-                            </ul>
-                        </div>
-                    </Transition>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link !text-gray-600 cursor-pointer" @click="potransDrop = !potransDrop" >
-                        <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
-                            <DocumentDuplicateIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentDuplicateIcon>
-                        </i>
-                            <span class="menu-title">PO Transaction</span>
-                        <!-- <i class="menu-arrow"></i> -->
-                    </a>
-                    <Transition
-						enter-active-class="transition ease-out duration-250"
-						enter-from-class="opacity-0 h-1/2"
-						enter-to-class="opacity-100 h-full"
-						leave-active-class="transition ease-in duration-100"
-						leave-from-class="opacity-100 h-full"
-						leave-to-class="opacity-0 h-1/2"
-					>
-                        <div class=""  v-show="potransDrop">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item list-none"> <a class="nav-link" href="/pur_req">Purchase Request</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/department">Request For Quotation</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/company">Abstract Of Quotation</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Purchase Order</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/employee">Request For Disbursement</a></li>
-                                <li class="nav-item list-none"> <a class="nav-link" href="/unit">Delivery Receipt</a></li>
-                            </ul>
-                        </div>
-                    </Transition>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/charts/chartjs.html">
-                    <i class="mdi mdi-chart-pie menu-icon"></i>
-                    <span class="menu-title">Charts</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/tables/basic-table.html">
-                    <i class="mdi mdi-grid-large menu-icon"></i>
-                    <span class="menu-title">Tables</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/icons/mdi.html">
-                    <i class="mdi mdi-emoticon menu-icon"></i>
-                    <span class="menu-title">Icons</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="mdi mdi-account menu-icon"></i>
-                    <span class="menu-title">User Pages</span>
-                    <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="auth">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Login 2 </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/samples/register-2.html"> Register 2 </a></li>
-                        <li class="nav-item"> <a class="nav-link" href="pages/samples/lock-screen.html"> Lockscreen </a></li>
-                    </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="documentation/documentation.html">
-                    <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-                    <span class="menu-title">Documentation</span>
-                    </a>
-                </li>
+                        <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link !text-gray-600 cursor-pointer" @click="masterfileDrop = !masterfileDrop" >
+                            <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                <KeyIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></KeyIcon>
+                            </i>
+                                <span class="menu-title">Masterfile</span>
+                            <!-- <i class="menu-arrow"></i> -->
+                        </a>
+                        <Transition
+                            enter-active-class="transition ease-out duration-250"
+                            enter-from-class="opacity-0 h-1/2"
+                            enter-to-class="opacity-100 h-full"
+                            leave-active-class="transition ease-in duration-100"
+                            leave-from-class="opacity-100 h-full"
+                            leave-to-class="opacity-0 h-1/2"
+                        >
+                            <div class=""  v-show="masterfileDrop">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/unit">Unit</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/project">Project/Activity</a></li>
+                                </ul>
+                            </div>
+                        </Transition>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link !text-gray-600 cursor-pointer" @click="potransDrop = !potransDrop" >
+                            <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                <DocumentDuplicateIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentDuplicateIcon>
+                            </i>
+                                <span class="menu-title">PO Transactions</span>
+                            <!-- <i class="menu-arrow"></i> -->
+                        </a>
+                        <Transition
+                            enter-active-class="transition ease-out duration-250"
+                            enter-from-class="opacity-0 h-1/2"
+                            enter-to-class="opacity-100 h-full"
+                            leave-active-class="transition ease-in duration-100"
+                            leave-from-class="opacity-100 h-full"
+                            leave-to-class="opacity-0 h-1/2"
+                        >
+                            <div class=""  v-show="potransDrop">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_req">Purchase Request</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_quote">Request For Quotation</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/company">Abstract Of Quotation</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Purchase Order</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/employee">Request For Disbursement</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/unit">Delivery Receipt</a></li>
+                                </ul>
+                            </div>
+                        </Transition>
+                    </li>
+                    
                 </ul>
             </nav>
             <!-- partial -->
