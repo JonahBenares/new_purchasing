@@ -33,6 +33,9 @@ import projectIndex from '../components/project/index.vue'
 import projectNew from '../components/project/new.vue'
 import projectEdit from '../components/project/edit.vue'
 
+import pur_reqIndex from '../components/pur_req/index.vue'
+import pur_reqNew from '../components/pur_req/new.vue'
+
 const routes = [
     {
         path:'/',
@@ -141,6 +144,16 @@ const routes = [
     {
         path:'/project/edit',
         component: projectEdit,
+    },
+
+
+    {
+        path:'/pur_req',
+        component: pur_reqIndex,
+    },
+    {
+        path:'/pur_req/new',
+        component: pur_reqNew,
     },
     // {
     //     path:'/:pathMatch(.*)*',

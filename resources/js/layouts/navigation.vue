@@ -1,8 +1,9 @@
 <script setup>
-    import{HomeIcon, KeyIcon, UserIcon} from '@heroicons/vue/24/solid'
+    import{HomeIcon, KeyIcon, UserIcon, DocumentDuplicateIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
     const masterfileDrop = ref(false);
+    const potransDrop = ref(false);
     const userDrop = ref(false);
     const notif = ref(false);
 </script>
@@ -207,10 +208,32 @@
                     </Transition>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="pages/forms/basic_elements.html">
-                    <i class="mdi mdi-view-headline menu-icon"></i>
-                    <span class="menu-title">Form elements</span>
+                    <a class="nav-link !text-gray-600 cursor-pointer" @click="potransDrop = !potransDrop" >
+                        <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                            <DocumentDuplicateIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentDuplicateIcon>
+                        </i>
+                            <span class="menu-title">PO Transaction</span>
+                        <!-- <i class="menu-arrow"></i> -->
                     </a>
+                    <Transition
+						enter-active-class="transition ease-out duration-250"
+						enter-from-class="opacity-0 h-1/2"
+						enter-to-class="opacity-100 h-full"
+						leave-active-class="transition ease-in duration-100"
+						leave-from-class="opacity-100 h-full"
+						leave-to-class="opacity-0 h-1/2"
+					>
+                        <div class=""  v-show="potransDrop">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item list-none"> <a class="nav-link" href="/pur_req">Purchase Request</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/department">Request For Quotation</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/company">Abstract Of Quotation</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Purchase Order</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/employee">Request For Disbursement</a></li>
+                                <li class="nav-item list-none"> <a class="nav-link" href="/unit">Delivery Receipt</a></li>
+                            </ul>
+                        </div>
+                    </Transition>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="pages/charts/chartjs.html">

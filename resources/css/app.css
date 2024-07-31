@@ -20327,7 +20327,7 @@
   
   /* Forms */
   .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.7rem;
   }
   
   .input-group-append,
@@ -20989,7 +20989,7 @@
   /* === Landing screens === */
   /* Auth */
   .auth .login-half-bg {
-    background: url("../images/bg-orange_2.jpg");
+    background: url("../images/bg-orange_4.jpg");
     background-size: cover;
   }
   
@@ -21059,9 +21059,9 @@
     width: 150px;
   }
   
-  .auth form .form-group {
+  /* .auth form .form-group {
     margin-bottom: 1.5rem;
-  }
+  } */
   
   .auth form .form-group label {
     font-size: .8125rem;
@@ -21301,7 +21301,7 @@
     margin-bottom: 0;
     margin-top: 0;
     list-style: none;
-    padding: 0.25rem 0 0.6rem 2.55rem;
+    padding: 0.25rem 0 0.6rem 1.35rem;
   }
   
   .sidebar .nav.sub-menu .nav-item {
