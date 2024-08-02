@@ -20,7 +20,7 @@
 				<div class="card">
 				<div class="card-body">
 					<span class="pt-2">
-						<h3 class="card-title !text-lg m-0">Request for Quotation <small>View</small></h3>
+						<h3 class="card-title !text-lg m-0">Request for Quotation <small>Print</small></h3>
 					</span>
 					<div class="pt-3">
 						<hr class="border-dashed mt-2">
