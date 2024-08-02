@@ -226,7 +226,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button type="submit" @click="openModel()" class="btn btn-info mr-2 w-44">Create New RFQ</button>
-									<button type="submit" @click="openModel()" class="btn btn-primary mr-2 w-44">Save and Proceed</button>
+									<a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save and Proceed</a>
 								</div>
 							</div>
 						</div>
