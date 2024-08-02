@@ -144,7 +144,7 @@
 									<!-- <button class="btn btn-light">Cancel</button> -->
 									<button type="submit" class="btn btn-danger mr-2 w-36">Cancel</button>
 									<button type="submit" class="btn btn-warning text-white mr-2 w-36">Save as Draft</button>
-									<button type="submit" class="btn btn-primary mr-2 w-44">Save</button>
+									<a href="/pur_quote/new" type="submit" class="btn btn-primary mr-2 w-44">Save and Proceed</a>
 								</div>
 							</div>
 						</div>

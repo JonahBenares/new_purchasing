@@ -38,6 +38,7 @@ import pur_reqNew from '../components/pur_req/new.vue'
 
 import pur_quoteIndex from '../components/pur_quote/index.vue'
 import pur_quoteNew from '../components/pur_quote/new.vue'
+import pur_quoteView from '../components/pur_quote/view.vue'
 
 const routes = [
     {
@@ -166,6 +167,10 @@ const routes = [
     {
         path:'/pur_quote/new',
         component: pur_quoteNew,
+    },
+    {
+        path:'/pur_quote/view',
+        component: pur_quoteView,
     },
     // {
     //     path:'/:pathMatch(.*)*',
