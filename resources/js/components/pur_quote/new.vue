@@ -195,27 +195,27 @@
 										</td>
 									</tr>
 									<tr>
-										<td class=""><input placeholder="Vendor" type="text" class="w-full text-sm p-1 px-2"></td>
+										<td class=""></td>
 										<td class="text-center">
-											<button class="btn btn-primary p-1">
-												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+											<button class="btn btn-danger p-1">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
 									</tr>
 
 									<tr>
-										<td class=""><input placeholder="Vendor" type="text" class="w-full text-sm p-1 px-2"></td>
+										<td class=""></td>
 										<td class="text-center">
-											<button class="btn btn-primary p-1">
-												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+											<button class="btn btn-danger p-1">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
 									</tr>
 									<tr>
-										<td class=""><input placeholder="Vendor" type="text" class="w-full text-sm p-1 px-2"></td>
+										<td class=""></td>
 										<td class="text-center">
-											<button class="btn btn-primary p-1">
-												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+											<button class="btn btn-danger p-1">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
 									</tr>
