@@ -7,14 +7,26 @@
 </script>
 <template>
 	<navigation>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="flex justify-between mb-3 px-2">
+                    <span class="">
+                        <h3 class="card-title !text-lg m-0">Purchase Request <small>List</small></h3>
+                    </span>
+                    <div class="d-flex pt-1">
+                        <!-- <i class="mdi mdi-home text-muted hover-cursor"></i> -->
+                        <a class="text-sm text-muted !mb-0">/Dashboard</a>
+                        <p class="text-primary !mb-0">Analytics</p>
+                  </div>
+                </div>
+            </div>
+        </div>
 		<div class="row">
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between">
-                            <span class="pt-2">
-                                <h3 class="card-title !text-lg m-0">Purchase Request <small>List</small></h3>
-                            </span>
+                            
                             <span>
                                 <div class="d-flex justify-content-between align-items-end flex-wrap space-x-2">
                                     <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
@@ -45,12 +57,51 @@
                                 </thead>
                                 <tbody>
                                     <tr class="">
-                                        <td class="!text-xs"> ITB24-1322-CNPR </td>
+                                        <td class="!text-xs"> FLM22-2019-CNPR </td>
                                         <td class="!text-xs"> 2024-07-30 </td>
                                         <td class="!text-xs"> 2024-07-16 </td>
                                         <td class="!text-xs"> Fuel and Lube Management </td>
                                         <td class="!text-xs"> 0 </td>
                                         <td class="!text-xs"> Fleur de Liz Ambong / Rey D. Argawanon </td>
+                                        <td class="!text-xs p-1" align="center">
+                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="">
+                                        <td class="!text-xs"> HAS22-2034-CNPR </td>
+                                        <td class="!text-xs"> 2024-07-30 </td>
+                                        <td class="!text-xs"> 2024-07-16 </td>
+                                        <td class="!text-xs"> Fuel and Lube Management </td>
+                                        <td class="!text-xs"> 0 </td>
+                                        <td class="!text-xs"> Joselito Panes/Ricky Madeja </td>
+                                        <td class="!text-xs p-1" align="center">
+                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="">
+                                        <td class="!text-xs"> ADM22-2028-CNPR </td>
+                                        <td class="!text-xs"> 2024-07-30 </td>
+                                        <td class="!text-xs"> 2024-07-16 </td>
+                                        <td class="!text-xs"> Fuel and Lube Management </td>
+                                        <td class="!text-xs"> 0 </td>
+                                        <td class="!text-xs"> Joemarie Calibjo </td>
+                                        <td class="!text-xs p-1" align="center">
+                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="">
+                                        <td class="!text-xs"> SPE/Operation22-2032-CNPR </td>
+                                        <td class="!text-xs"> 2024-07-30 </td>
+                                        <td class="!text-xs"> 2024-07-16 </td>
+                                        <td class="!text-xs"> Fuel and Lube Management </td>
+                                        <td class="!text-xs"> 0 </td>
+                                        <td class="!text-xs"> Iris J. Sixto </td>
                                         <td class="!text-xs p-1" align="center">
                                             <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
                                                 <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
