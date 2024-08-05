@@ -7,14 +7,27 @@
 <template>
 	<navigation>
 		<div class="row">
+            <div class="col-lg-12">
+                <div class="flex justify-between mb-3 px-2">
+                    <span class="">
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Request <small>New</small></h3>
+                    </span>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active"><a href="/pur_req">Purchase Request</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">New</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
 				<div class="card-body">
-					<span class="pt-2">
-						<h3 class="card-title !text-lg m-0">Purchase Request <small>New</small></h3>
-					</span>
-					<div class="pt-3">
-						<hr class="border-dashed mt-0">
+					<hr class="border-dashed mt-0">
+					<div class="pt-1">
 						<div class="row">							
 							<div class="col-lg-6 offset-lg-3 col-md-3">
 								<div class="form-group">
@@ -34,25 +47,25 @@
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Purchase Request</label>
-									<input type="text" class="form-control" placeholder="Purchase Request">
+									<input type="text" class="form-control" placeholder="Purchase Request" value="Bacolod">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">PR No</label>
-									<input type="text" class="form-control" placeholder="PR No">
+									<input type="text" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">New PR No</label>
-									<input type="text" class="form-control" placeholder="New PR No">
+									<input type="text" class="form-control" placeholder="New PR No" value="PR-CENPRI24-1002">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Date Prepared</label>
-									<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared">
+									<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" value="01/16/24">
 								</div>
 							</div>
 						</div>
@@ -60,19 +73,19 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Department</label>
-									<input type="text" class="form-control" placeholder="Department">
+									<input type="text" class="form-control" placeholder="Department" value="IT Department">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Urgency</label>
-									<input type="text" class="form-control" placeholder="New PR No">
+									<input type="text" class="form-control" placeholder="">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Process Code</label>
-									<input type="text" class="form-control" placeholder="New PR No">
+									<input type="text" class="form-control" placeholder="">
 								</div>
 							</div>
 						</div>
@@ -80,13 +93,13 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">End-Use</label>
-									<input type="text" class="form-control" placeholder="End-Use">
+									<input type="text" class="form-control" placeholder="End-Use" value="IT Department">
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Purpose</label>
-									<input type="text" class="form-control" placeholder="Purpose">
+									<input type="text" class="form-control" placeholder="Purpose" value="Replace damage monitor, mouse and keyboard">
 								</div>
 							</div>
 						</div>
@@ -121,12 +134,40 @@
 									</tr>
 									<tr>
 										<td class="p-1 text-center">1</td>
-										<td class="p-1 text-center">20</td>
-										<td class="p-1 text-center">Kg</td>
-										<td class="p-1">sample</td>
-										<td class="p-1">sample</td>
-										<td class="p-1">sample</td>
-										<td class="p-1">sample</td>
+										<td class="p-1 text-center">5</td>
+										<td class="p-1 text-center">pc/s</td>
+										<td class="p-1">PN-0991-001</td>
+										<td class="p-1">Monitor</td>
+										<td class="p-1"></td>
+										<td class="p-1">08/25/24</td>
+										<td class="text-center">
+											<button class="btn btn-danger p-1">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 text-center">1</td>
+										<td class="p-1 text-center">5</td>
+										<td class="p-1 text-center">pc/s</td>
+										<td class="p-1">PN-0991-222</td>
+										<td class="p-1">Mouse</td>
+										<td class="p-1"></td>
+										<td class="p-1">08/25/24</td>
+										<td class="text-center">
+											<button class="btn btn-danger p-1">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 text-center">1</td>
+										<td class="p-1 text-center">5</td>
+										<td class="p-1 text-center">pc/s</td>
+										<td class="p-1">PN-0991-333</td>
+										<td class="p-1">Keyboard</td>
+										<td class="p-1"></td>
+										<td class="p-1">08/25/24</td>
 										<td class="text-center">
 											<button class="btn btn-danger p-1">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>

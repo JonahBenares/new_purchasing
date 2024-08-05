@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon} from '@heroicons/vue/24/solid'
-	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
+	import{ArrowUpOnSquareIcon, MagnifyingGlassIcon} from '@heroicons/vue/24/outline'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 </script>
@@ -11,13 +11,14 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0">Purchase Request <small>List</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Request <small>List</small></h3>
                     </span>
-                    <div class="d-flex pt-1">
-                        <!-- <i class="mdi mdi-home text-muted hover-cursor"></i> -->
-                        <a class="text-sm text-muted !mb-0">/Dashboard</a>
-                        <p class="text-primary !mb-0">Analytics</p>
-                  </div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Purchase Request</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -26,7 +27,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between">
-                            
+                            <div class="flex justify-left ">
+                                <div class="form-control !w-10 !border-r-0 px-2">
+                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 "></MagnifyingGlassIcon>
+                                </div>
+                                <input type="text" class="form-control !w-72" placeholder="Search">
+                            </div>
                             <span>
                                 <div class="d-flex justify-content-between align-items-end flex-wrap space-x-2">
                                     <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
