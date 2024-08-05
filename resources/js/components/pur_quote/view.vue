@@ -349,7 +349,7 @@
 						<div class="row my-2"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-primary mr-2 w-44">Print</button>
+									<button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button>
 									<!-- <button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button> -->
 								</div>
 							</div>
