@@ -54,7 +54,6 @@
 								<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
 								<span class="text-sm text-gray-700">rfq_it001</span>
 							</div>
-							
 						</div>
 						<br>
 						<div v-if="vendor === 'vendor_1'">
@@ -111,9 +110,24 @@
 													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -126,9 +140,24 @@
 													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -141,13 +170,66 @@
 													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 										</table>
-										<div class="border w-full text-center p-4 bg-green-100"> Conditions here</div>
+										<br>
+										<table class="table-bordesred w-full text-xs">
+											<tr>
+												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+											</tr>
+											<tr>
+												<td colspan="4">2. Please Fill - Up :</td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">a. Price Validity</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">b. Payment Terms</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">c. Delivery Time</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">d. Item's Warranty</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">e. In-land Freight</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+										</table>
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
 									</div>
 								</div>
@@ -207,9 +289,24 @@
 													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -222,9 +319,24 @@
 													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -237,13 +349,66 @@
 													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 										</table>
-										<div class="border w-full text-center p-4 bg-green-100"> Conditions here</div>
+										<br>
+										<table class="table-bordesred w-full text-xs">
+											<tr>
+												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+											</tr>
+											<tr>
+												<td colspan="4">2. Please Fill - Up :</td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">a. Price Validity</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">b. Payment Terms</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">c. Delivery Time</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">d. Item's Warranty</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">e. In-land Freight</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+										</table>
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
 									</div>
 								</div>
@@ -298,14 +463,29 @@
 												<td class="p-1 align-top text-center">5</td>
 												<td class="p-1 align-top">Monitor</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample1</textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample2</textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample3</textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="150">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="200">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="300">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -313,14 +493,29 @@
 												<td class="p-1 align-top text-center">5</td>
 												<td class="p-1 align-top">Mouse</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample1</textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample2</textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample3</textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="100">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="250">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="350">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -328,18 +523,71 @@
 												<td class="p-1 align-top text-center">5</td>
 												<td class="p-1 align-top">Keyboard</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample1</textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample2</textarea>
+													<textarea type="text" class="border-b p-1 w-full h-14 !align-top">sample3</textarea>
 												</td>
 												<td class="align-top">
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
-													<textarea type="text" class="border-b p-1 w-full h-14 !align-top text-center"></textarea>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="400">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="450">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" value="500">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 										</table>
-										<div class="border w-full text-center p-4 bg-green-100"> Conditions here</div>
+										<br>
+										<table class="table-bordesred w-full text-xs">
+											<tr>
+												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+											</tr>
+											<tr>
+												<td colspan="4">2. Please Fill - Up :</td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">a. Price Validity</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">b. Payment Terms</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">c. Delivery Time</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">d. Item's Warranty</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">e. In-land Freight</td>
+												<td width="40%" class="p-0 border-b"><input type="text" class="w-full"></td>
+												<td width="10%"></td>
+											</tr>
+										</table>
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
 									</div>
 								</div>
@@ -369,7 +617,7 @@
         >
 			<div class="modal pt-4 px-3" :class="{ show:showModal }">
 				<div @click="closeModal" class="w-full h-full fixed"></div>
-				<div class="modal__content w-6/12">
+				<div class="modal__content w-8/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Add Vendor</span>
@@ -379,7 +627,7 @@
 						</div>
 					</div>
 					<hr class="mt-0">
-					<div class="modal_s_items ">
+					<div class="modal_s_items">
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="form-group">
@@ -392,6 +640,105 @@
 										<option value="">A-1 Gas Corporation</option>
 									</select>
 								</div>
+								<table class="table-bordered w-full !text-xs">
+									<tr>
+										<td class="p-1 text-center" width="5%">No</td>
+										<td class="p-1 text-center" width="10%">Qty</td>
+										<td class="p-1" width="35%">Item Description</td>
+										<td class="p-1" width="35%">Brand/Offer</td>
+										<td class="p-1 text-center" width="15%">Unit Price</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center">1</td>
+										<td class="p-1 align-top text-center">5</td>
+										<td class="p-1 align-top">Monitor</td>
+										<td class="align-top">
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+										</td>
+										<td class="align-top">
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center">1</td>
+										<td class="p-1 align-top text-center">5</td>
+										<td class="p-1 align-top">Mouse</td>
+										<td class="align-top">
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+										</td>
+										<td class="align-top">
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center">1</td>
+										<td class="p-1 align-top text-center">5</td>
+										<td class="p-1 align-top">Keyboard</td>
+										<td class="align-top">
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
+										</td>
+										<td class="align-top">
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+								</table>
 							</div>
 						</div>
 						<div class="row mt-4"> 

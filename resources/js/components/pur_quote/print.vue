@@ -73,7 +73,7 @@
 										<table class="table-bsordered w-full !text-xs mb-2">
 											<tr>
 												<td class="" width="10%">Date: </td>
-												<td class="">December 28, 2023</td>
+												<td class="">June 28, 2024</td>
 												<td class="" width="8%">RFQ No.:</td>
 												<td class="" >RFQ-CENPRI-1001</td>
 												<td class="">Urg:</td>		    			
@@ -146,7 +146,45 @@
 												</td>
 											</tr>
 										</table>
-										<div class="border w-full text-center p-4 bg-green-100"> Conditions here</div>
+										<br>
+										<table class="table-bordesred w-full text-xs">
+											<tr>
+												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+											</tr>
+											<tr>
+												<td colspan="4">2. Please Fill - Up :</td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">a. Price Validity</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">b. Payment Terms</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">c. Delivery Time</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">d. Item's Warranty</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">e. In-land Freight</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+										</table>
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
 									</div>
 								</div>
@@ -169,7 +207,7 @@
 										<table class="table-bsordered w-full !text-xs mb-2">
 											<tr>
 												<td class="" width="10%">Date: </td>
-												<td class="">December 28, 2023</td>
+												<td class="">June 28, 2024</td>
 												<td class="" width="8%">RFQ No.:</td>
 												<td class="" >RFQ-CENPRI-1001</td>
 												<td class="">Urg:</td>		    			
@@ -242,7 +280,45 @@
 												</td>
 											</tr>
 										</table>
-										<div class="border w-full text-center p-4 bg-green-100"> Conditions here</div>
+										<br>
+										<table class="table-bordesred w-full text-xs">
+											<tr>
+												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+											</tr>
+											<tr>
+												<td colspan="4">2. Please Fill - Up :</td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">a. Price Validity</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">b. Payment Terms</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">c. Delivery Time</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">d. Item's Warranty</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">e. In-land Freight</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+										</table>
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
 									</div>
 								</div>
@@ -265,7 +341,7 @@
 										<table class="table-bsordered w-full !text-xs mb-2">
 											<tr>
 												<td class="" width="10%">Date: </td>
-												<td class="">December 28, 2023</td>
+												<td class="">June 28, 2024</td>
 												<td class="" width="8%">RFQ No.:</td>
 												<td class="" >RFQ-CENPRI-1001</td>
 												<td class="">Urg:</td>		    			
@@ -338,7 +414,45 @@
 												</td>
 											</tr>
 										</table>
-										<div class="border w-full text-center p-4 bg-green-100"> Conditions here</div>
+										<br>
+										<table class="table-bordesred w-full text-xs">
+											<tr>
+												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+											</tr>
+											<tr>
+												<td colspan="4">2. Please Fill - Up :</td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">a. Price Validity</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">b. Payment Terms</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">c. Delivery Time</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">d. Item's Warranty</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+											<tr>
+												<td width="10%"></td>
+												<td width="40%">e. In-land Freight</td>
+												<td width="40%" class="p-0 border-b"></td>
+												<td width="10%"></td>
+											</tr>
+										</table>
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
 									</div>
 								</div>

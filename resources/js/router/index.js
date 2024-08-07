@@ -41,6 +41,11 @@ import pur_quoteNew from '../components/pur_quote/new.vue'
 import pur_quoteView from '../components/pur_quote/view.vue'
 import pur_quotePrint from '../components/pur_quote/print.vue'
 
+import pur_aoqIndex from '../components/pur_aoq/index.vue'
+import pur_aoqNew from '../components/pur_aoq/new.vue'
+import pur_aoqNewSecond from '../components/pur_aoq/new_second.vue'
+import pur_aoqPrintTe from '../components/pur_aoq/print_te.vue'
+
 const routes = [
     {
         path:'/',
@@ -176,6 +181,25 @@ const routes = [
     {
         path:'/pur_quote/print',
         component: pur_quotePrint,
+    },
+
+    {
+        path:'/pur_aoq',
+        component: pur_aoqIndex,
+    },
+    {
+        path:'/pur_aoq/new',
+        component: pur_aoqNew,
+    },
+
+    {
+        path:'/pur_aoq/new_second',
+        component: pur_aoqNewSecond,
+    },
+
+    {
+        path:'/pur_aoq/print_te',
+        component: pur_aoqPrintTe,
     },
     // {
     //     path:'/:pathMatch(.*)*',
