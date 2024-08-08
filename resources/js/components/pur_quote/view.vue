@@ -20,7 +20,7 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Request for Quotation <small>Print</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Request for Quotation <small>View</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
@@ -595,13 +595,44 @@
 						</div>
 						<br>
 						<div class="row my-2"> 
-							<div class="col-lg-12 col-md-12">
-								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button>
-									<!-- <button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button> -->
+							<div class="col-lg-3 col-md-3">
+								<div class="">
+									<button type="submit" class="btn btn-primary">Canvass Complete</button>
 								</div>
 							</div>
+							<div class="col-lg-9 col-md-3">
+								<ol class="flex items-center w-full">
+									<li class="flex w-full items-center text-white after:w-full after:h-1 after:border-b after:border-green-500 after:border-4 after:inline-block-800">
+										<span class="flex items-center font-bold justify-center w-10 h-10 bg-green-500 rounded-full lg:h-10 lg:w-10 shrink-0">
+											V1
+										</span>
+									</li>
+									
+									<li class="flex w-full items-center text-gray-600 after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:inline-block-700">
+										<span class="flex items-center font-bold justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-10 lg:w-10 shrink-0">
+											V2
+										</span>
+									</li>
+									<li class="flex w-full items-center text-gray-600 after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:inline-block-700">
+										<span class="flex items-center font-bold justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-10 lg:w-10 shrink-0">
+											V3
+										</span>
+									</li>
+									<li class="!w-30">
+										<!-- <a href="" class="btn !bg-gray-200 !w-36">Print TE</a> -->
+										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36">Print TE</a>
+									</li>
+								</ol>
+							</div>
 						</div>
+						<!-- <hr class="border-dashed">	
+						<div class="row my-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-between space-x-2">
+									<button type="submit" class="btn btn-primary mr-2 w-">Canvass Complete</button>
+								</div>
+							</div>
+						</div> -->
 					</div>
 				</div>
 				</div>
