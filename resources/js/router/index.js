@@ -35,6 +35,7 @@ import projectEdit from '../components/project/edit.vue'
 
 import pur_reqIndex from '../components/pur_req/index.vue'
 import pur_reqNew from '../components/pur_req/new.vue'
+import pur_reqView from '../components/pur_req/view.vue'
 
 import pur_quoteIndex from '../components/pur_quote/index.vue'
 import pur_quoteNew from '../components/pur_quote/new.vue'
@@ -43,8 +44,14 @@ import pur_quotePrint from '../components/pur_quote/print.vue'
 
 import pur_aoqIndex from '../components/pur_aoq/index.vue'
 import pur_aoqNew from '../components/pur_aoq/new.vue'
-import pur_aoqNewSecond from '../components/pur_aoq/new_second.vue'
+import pur_aoqView from '../components/pur_aoq/view.vue'
 import pur_aoqPrintTe from '../components/pur_aoq/print_te.vue'
+
+import pur_poIndex from '../components/pur_po/index.vue'
+import pur_poNew from '../components/pur_po/new.vue'
+import pur_poView from '../components/pur_po/view.vue'
+import pur_poPrint from '../components/pur_po/print.vue'
+
 
 const routes = [
     {
@@ -165,6 +172,10 @@ const routes = [
         path:'/pur_req/new',
         component: pur_reqNew,
     },
+    {
+        path:'/pur_req/view',
+        component: pur_reqView,
+    },
 
     {
         path:'/pur_quote',
@@ -193,13 +204,30 @@ const routes = [
     },
 
     {
-        path:'/pur_aoq/new_second',
-        component: pur_aoqNewSecond,
+        path:'/pur_aoq/view',
+        component: pur_aoqView,
     },
 
     {
         path:'/pur_aoq/print_te',
         component: pur_aoqPrintTe,
+    },
+
+    {
+        path:'/pur_po',
+        component: pur_poIndex,
+    },
+    {
+        path:'/pur_po/new',
+        component: pur_poNew,
+    },
+    {
+        path:'/pur_po/view',
+        component: pur_poView,
+    },
+    {
+        path:'/pur_po/print',
+        component: pur_poPrint,
     },
     // {
     //     path:'/:pathMatch(.*)*',

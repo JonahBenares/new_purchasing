@@ -18317,6 +18317,25 @@
     outline: 0;
   }
   
+  .border-y-none{
+    border-bottom: 0px solid #000!important;
+    border-top: 0px solid #000!important;
+  }
+  .border-x-none{
+    border-left: 0px solid #000!important;
+    border-right: 0px solid #000!important;
+  }
+
+  .border-b-none{
+    border-bottom: 0px solid #000!important;
+    border-top: 0px solid #000!important;
+  }
+  .border-r-none{
+    border-right: 0px solid #000!important;
+  }
+  .border-l-none{
+    border-left: 0px solid #000!important;
+  }
   /* a:focus,
   input:focus {
     border-color: transparent;

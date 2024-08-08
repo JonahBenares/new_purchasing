@@ -85,7 +85,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<table class="w-full table-bordered !text-xs mb-3">
-										<tr class="bg-gray-50">
+										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">
 												<input type="checkbox">
 											</td>
@@ -189,9 +189,29 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<table class="table-bordered !w-full mt-3"  >
+							<div class="col-lg-12">
+								<table class="w-full table-bordered !text-xs mb-3">
+									<tr class="bg-gray-100">
+										<td class="p-1 uppercase text-center" width="7%">Qty</td>
+										<td class="p-1 uppercase text-center" width="7%">UOM</td>
+										<td class="p-1 uppercase" width="20%">PN No.</td>
+										<td class="p-1 uppercase" width="">Item Description</td>
+										<td class="p-1 uppercase" width="15%">Date Needed</td>
+									</tr>
 									<tr>
+										<td class="p-1 text-center">5</td>
+										<td class="p-1 text-center">pc/s</td>
+										<td class="p-1">PN-0991-001</td>
+										<td class="p-1">Monitor</td>
+										<td class="p-1">08/25/24</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<table class="table-bordered !w-full"  >
+									<tr class="bg-gray-100">
 										<td class="p-1 px-2 text-sm">Add Vendor</td>
 										<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
 											<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>

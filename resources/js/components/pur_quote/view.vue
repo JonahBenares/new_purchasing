@@ -93,7 +93,7 @@
 											</tr>
 										</table>
 										<table class="table-bordered w-full !text-xs">
-											<tr>
+											<tr class="bg-gray-100">
 												<td class="p-1 text-center" width="5%">No</td>
 												<td class="p-1 text-center" width="10%">Qty</td>
 												<td class="p-1" width="35%">Item Description</td>
@@ -272,7 +272,7 @@
 											</tr>
 										</table>
 										<table class="table-bordered w-full !text-xs">
-											<tr>
+											<tr class="bg-gray-100">
 												<td class="p-1 text-center" width="5%">No</td>
 												<td class="p-1 text-center" width="10%">Qty</td>
 												<td class="p-1" width="35%">Item Description</td>
@@ -451,7 +451,7 @@
 											</tr>
 										</table>
 										<table class="table-bordered w-full !text-xs">
-											<tr>
+											<tr class="bg-gray-100">
 												<td class="p-1 text-center" width="5%">No</td>
 												<td class="p-1 text-center" width="10%">Qty</td>
 												<td class="p-1" width="35%">Item Description</td>
@@ -672,7 +672,7 @@
 									</select>
 								</div>
 								<table class="table-bordered w-full !text-xs">
-									<tr>
+									<tr class="bg-gray-100">
 										<td class="p-1 text-center" width="5%">No</td>
 										<td class="p-1 text-center" width="10%">Qty</td>
 										<td class="p-1" width="35%">Item Description</td>

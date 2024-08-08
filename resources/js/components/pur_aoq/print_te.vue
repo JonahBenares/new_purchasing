@@ -20,7 +20,33 @@
 		<div class="bg-white p-3">
 			<div class="overflow-x-scroll">
 				<div class="">
-					<table class="table-bordered !text-xs" width="250%">
+					<table class="w-full !text-xs mb-3">
+						<tr>
+							<td class="font-bold pr-1" width="8%">PR No: </td>
+							<td class="">PR-CENPRI24-1002</td>
+							<td class=" font-bold pr-1" width="8%">AOQ No: </td>
+							<td class="">AOQ-1009-1001</td>
+							<td class=" font-bold pr-1" width="8%">Requested By: </td>
+							<td class="">Henne Tanan</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">Department: </td>
+							<td class="">IT Department</td>
+							<td class=" font-bold pr-1">Date: </td>
+							<td class="">05/16/24</td>
+							<td class=" font-bold pr-1">Date Needed: </td>
+							<td class="">05/16/24</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">End-Use:</td>
+							<td class="">IT Department</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">Purpose:</td>
+							<td class="">IT Department</td>
+						</tr>
+					</table>
+					<table class="table-bordered !text-xs mb-3" width="250%">
 						<tr>
 							<td class="bg-gray-50 " colspan="4"></td>
 							<!-- loop vendors here start -->
@@ -811,6 +837,14 @@
 							<td class="!border-0" colspan="4"><br></td>
 						</tr>
 					</table>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="flex justify-center">
+						<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Print TE</a>
+					</div>
 				</div>
 			</div>
 		</div>

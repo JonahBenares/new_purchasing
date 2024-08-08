@@ -70,7 +70,7 @@
                                         <td class="!text-xs"> 0 </td>
                                         <td class="!text-xs"> Fleur de Liz Ambong / Rey D. Argawanon </td>
                                         <td class="!text-xs p-1" align="center">
-                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                            <a href="/pur_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
                                                 <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                             </a>
                                         </td>
@@ -83,7 +83,7 @@
                                         <td class="!text-xs"> 0 </td>
                                         <td class="!text-xs"> Joselito Panes/Ricky Madeja </td>
                                         <td class="!text-xs p-1" align="center">
-                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                            <a href="/pur_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
                                                 <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                             </a>
                                         </td>
@@ -96,7 +96,7 @@
                                         <td class="!text-xs"> 0 </td>
                                         <td class="!text-xs"> Joemarie Calibjo </td>
                                         <td class="!text-xs p-1" align="center">
-                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                            <a href="/pur_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
                                                 <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                             </a>
                                         </td>
@@ -109,7 +109,7 @@
                                         <td class="!text-xs"> 0 </td>
                                         <td class="!text-xs"> Iris J. Sixto </td>
                                         <td class="!text-xs p-1" align="center">
-                                            <a href="/pur_req/new" class="btn btn-xs btn-warning text-white text-white p-1">
+                                            <a href="/pur_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
                                                 <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                             </a>
                                         </td>
