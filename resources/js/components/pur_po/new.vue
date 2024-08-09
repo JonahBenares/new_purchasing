@@ -330,7 +330,7 @@
 												<!-- kung wala pa na save -->
 												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
 												<button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button>
-												<button type="submit" class="btn btn-primary w-36">Save</button>
+												<a href="/pur_po/view" type="submit" class="btn btn-primary w-36">Save</a>
 											</div>
 											
 										</div>

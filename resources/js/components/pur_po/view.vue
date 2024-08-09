@@ -254,8 +254,8 @@
                                                     <button type="submit" class="btn btn-info w-26">Revise PO</button>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="submit" class="btn btn-warning !text-white w-26">Print DR</button>
                                                     <button type="submit" class="btn btn-warning !text-white w-26">Print RFD</button>
+                                                    <a href="/pur_dr/new" class="btn btn-warning !text-white w-26">Print DR</a>
                                                     <button type="submit" class="btn btn-primary w-36" >Print PO</button>
                                                 </div>
                                                 

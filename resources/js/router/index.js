@@ -52,6 +52,9 @@ import pur_poNew from '../components/pur_po/new.vue'
 import pur_poView from '../components/pur_po/view.vue'
 import pur_poPrint from '../components/pur_po/print.vue'
 
+import pur_drIndex from '../components/pur_dr/index.vue'
+import pur_drNew from '../components/pur_dr/new.vue'
+import pur_drView from '../components/pur_dr/view.vue'
 
 const routes = [
     {
@@ -228,6 +231,19 @@ const routes = [
     {
         path:'/pur_po/print',
         component: pur_poPrint,
+    },
+
+    {
+        path:'/pur_dr',
+        component: pur_drIndex,
+    },
+    {
+        path:'/pur_dr/new',
+        component: pur_drNew,
+    },
+    {
+        path:'/pur_dr/view',
+        component: pur_drView,
     },
     // {
     //     path:'/:pathMatch(.*)*',
