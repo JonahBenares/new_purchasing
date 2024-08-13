@@ -72,13 +72,11 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
 										<td class="p-1 uppercase text-center" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="5%">Delivered</td>
+										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
+										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase" width="5%">UOM</td>
-										<td class="p-1 uppercase" width="15%">Remarks</td>
-										<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
-											<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
-										</td>
+										<td class="p-1 uppercase" width="5%">Remarks</td>
 									</tr>
 									<tr>
 										<td class="p-1 text-center">1</td>
@@ -87,12 +85,8 @@
 										<td class="p-1 text-center"></td>
 										<td class="p-1 text-center"></td>
 										<td class="p-1"></td>
+										<td class="p-1"></td>
 										<td class="p-1">remarks</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
 									</tr>
 									<tr>
 										<td class="p-1 text-center">2</td>
@@ -101,12 +95,8 @@
 										<td class="p-1 text-center"></td>
 										<td class="p-1 text-center"></td>
 										<td class="p-1"></td>
+										<td class="p-1"></td>
 										<td class="p-1">remarks</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
 									</tr>
 									<tr>
 										<td class="p-1 text-center">3</td>
@@ -115,12 +105,8 @@
 										<td class="p-1 text-center"></td>
 										<td class="p-1 text-center"></td>
 										<td class="p-1"></td>
+										<td class="p-1"></td>
 										<td class="p-1">remarks</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
 									</tr>
 								</table>
 							</div>

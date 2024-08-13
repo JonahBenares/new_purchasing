@@ -89,10 +89,11 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
 										<td class="p-1 uppercase text-center" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="5%">Delivered</td>
+										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
+										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase" width="5%">UOM</td>
-										<td class="p-1 uppercase" width="15%">Remarks</td>
+										<td class="p-1 uppercase" width="5%">Remarks</td>
 										<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
 											<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 										</td>
@@ -101,8 +102,9 @@
 										<td class="p-1 text-center">1</td>
 										<td class="p-1 ">5</td>
 										<td class="p-1 ">pc/s</td>
-										<td class="p-0"><input type="text" class="w-full p-1 bg-orange-100 text-center"></td>
+										<td class="p-0"><input type="text" class="w-full p-1 bg-orange-100 text-center" placeholder="0"></td>
 										<td class="p-1 text-center"></td>
+										<td class="p-1"></td>
 										<td class="p-1"></td>
 										<td class="p-1">remarks</td>
 										<td class="text-center">
@@ -115,8 +117,9 @@
 										<td class="p-1 text-center">2</td>
 										<td class="p-1 ">5</td>
 										<td class="p-1 ">pc/s</td>
-										<td class="p-0"><input type="text" class="w-full p-1 bg-orange-100 text-center"></td>
+										<td class="p-0"><input type="text" class="w-full p-1 bg-orange-100 text-center" placeholder="0"></td>
 										<td class="p-1 text-center"></td>
+										<td class="p-1"></td>
 										<td class="p-1"></td>
 										<td class="p-1">remarks</td>
 										<td class="text-center">
@@ -129,8 +132,9 @@
 										<td class="p-1 text-center">3</td>
 										<td class="p-1 ">5</td>
 										<td class="p-1 ">pc/s</td>
-										<td class="p-0"><input type="text" class="w-full p-1 bg-orange-100 text-center"></td>
+										<td class="p-0"><input type="text" class="w-full p-1 bg-orange-100 text-center" placeholder="0"></td>
 										<td class="p-1 text-center"></td>
+										<td class="p-1"></td>
 										<td class="p-1"></td>
 										<td class="p-1">remarks</td>
 										<td class="text-center">
@@ -147,7 +151,7 @@
 						<div class="row my-2"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-primary mr-2 w-36">Print</button>
+									<button type="submit" class="btn btn-primary mr-2 w-36">Save & Print</button>
 								</div>
 							</div>
 						</div>
