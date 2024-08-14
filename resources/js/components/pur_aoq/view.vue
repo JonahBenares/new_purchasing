@@ -27,13 +27,13 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Abstract of Quotation <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Abstract of Quotation <small>Award</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item"><a href="/pur_aoq">Abstract of Quotation</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">New</li>
+                            <li class="breadcrumb-item active" aria-current="page">Award</li>
                         </ol>
                     </nav>
                 </div>
@@ -86,7 +86,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
-									<span class="text-sm text-gray-700">rfq_it001</span>
+									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
 								</div>
 							</div>
 

@@ -17,7 +17,7 @@
 </script>
 <template>
 	<navigation>
-		<div class="bg-white p-2">
+		<div class="bg-white p-4 ">
 			<div class="overflow-x-scroll">
 				<div class="">
 					<table class="w-full !text-xs mb-3 ">
@@ -35,7 +35,7 @@
 							<td class=" font-bold pr-1">Date: </td>
 							<td class="">05/16/24</td>
 							<td class=" font-bold pr-1">Date Needed: </td>
-							<td class="">05/16/24</td>
+							<td class="">01/16/24</td>
 						</tr>
 						<tr>
 							<td class="font-bold pr-1">End-Use:</td>
@@ -43,7 +43,7 @@
 						</tr>
 						<tr>
 							<td class="font-bold pr-1">Purpose:</td>
-							<td class="">IT Department</td>
+							<td class="">Replace damage monitor, mouse and keyboard</td>
 						</tr>
 					</table>
 					<table class="table-bordered !text-xs mb-3" width="250%">
