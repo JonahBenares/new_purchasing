@@ -237,7 +237,7 @@
                                                     <a href="/pur_po/edit" type="submit" class="btn btn-info w-26">Revise PO</a>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="submit" class="btn btn-warning !text-white w-26">Print RFD</button>
+                                                    <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26">Print RFD</a>
                                                     <a href="/pur_dr/new" class="btn btn-warning !text-white w-26">Print DR</a>
                                                     <button type="submit" class="btn btn-primary w-36" >Print PO</button>
                                                 </div>
