@@ -401,7 +401,7 @@
 									</div>
 									<div class="col-lg-1 col-md-1">
 										<span class="text-sm p-1"><br></span>
-										<button  class="btn btn-primary btn-sm" @click="awesome = !awesome">Approve</button>
+										<a href="/pur_po/view" class="btn btn-primary btn-sm" >Approve</a>
 									</div>
 								</div>
 								

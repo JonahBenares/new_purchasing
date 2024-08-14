@@ -220,6 +220,23 @@
                             </div>
                             
                             <hr	class="border-dashed">
+                            <div class="row my-2"> 
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="flex justify-center space-x-2">
+                                        <!-- <div class="flex justify-between space-x-1">
+                                            <button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
+                                            <button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
+                                        </div> -->
+                                        <div class="flex justify-between space-x-1">
+                                            <!-- kung wala pa na save -->
+                                            <!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
+                                            <!-- <button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button> -->
+                                            <a href="#" type="submit" class="btn btn-primary w-36">Print</a>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 					</div>
 				</div>
