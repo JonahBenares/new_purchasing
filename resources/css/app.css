@@ -18330,6 +18330,13 @@
     border-bottom: 0px solid #000!important;
     border-top: 0px solid #000!important;
   }
+
+  .border-t{
+    border-bottom: 0px solid #000!important;
+    border-top: 1px solid #e9e9e9!important;
+    border-right: 0px solid #000!important;
+    border-left: 0px solid #000!important;
+  }
   .border-r-none{
     border-right: 0px solid #000!important;
   }

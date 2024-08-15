@@ -63,6 +63,19 @@
                                 </thead>
                                 <tbody>
                                     <tr class="">
+                                        <td class="!text-xs"> PR-CENPRI24-1002 </td>
+                                        <td class="!text-xs"> 2024-01-16 </td>
+                                        <td class="!text-xs"> 2024-01-16 </td>
+                                        <td class="!text-xs"> IT Department </td>
+                                        <td class="!text-xs"> 0 </td>
+                                        <td class="!text-xs"> Henne Tanan </td>
+                                        <td class="!text-xs p-1" align="center">
+                                            <a href="/pur_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
+                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="">
                                         <td class="!text-xs"> FLM22-2019-CNPR </td>
                                         <td class="!text-xs"> 2024-07-30 </td>
                                         <td class="!text-xs"> 2024-07-16 </td>

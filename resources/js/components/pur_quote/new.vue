@@ -53,7 +53,7 @@
                                         <option value="">PR-CENPRI24-1002</option>
                                     </select>
 									<span class="input-group-append">
-										<button class="btn btn-primary" type="button" @click="pr_det = !pr_det">Select</button>
+										<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
 									</span>
 								</div>
 								</div>

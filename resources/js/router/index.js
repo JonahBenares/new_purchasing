@@ -49,12 +49,17 @@ import pur_aoqPrintTe from '../components/pur_aoq/print_te.vue'
 
 import pur_poIndex from '../components/pur_po/index.vue'
 import pur_poNew from '../components/pur_po/new.vue'
+import pur_poEdit from '../components/pur_po/edit.vue'
 import pur_poView from '../components/pur_po/view.vue'
 import pur_poPrint from '../components/pur_po/print.vue'
 
 import pur_drIndex from '../components/pur_dr/index.vue'
 import pur_drNew from '../components/pur_dr/new.vue'
 import pur_drView from '../components/pur_dr/view.vue'
+
+import pur_disburseIndex from '../components/pur_disburse/index.vue'
+import pur_disburseNew from '../components/pur_disburse/new.vue'
+import pur_disburseView from '../components/pur_disburse/view.vue'
 
 const routes = [
     {
@@ -229,6 +234,10 @@ const routes = [
         component: pur_poView,
     },
     {
+        path:'/pur_po/edit',
+        component: pur_poEdit,
+    },
+    {
         path:'/pur_po/print',
         component: pur_poPrint,
     },
@@ -244,6 +253,19 @@ const routes = [
     {
         path:'/pur_dr/view',
         component: pur_drView,
+    },
+
+    {
+        path:'/pur_disburse',
+        component: pur_disburseIndex,
+    },
+    {
+        path:'/pur_disburse/new',
+        component: pur_disburseNew,
+    },
+    {
+        path:'/pur_disburse/view',
+        component: pur_disburseView,
     },
     // {
     //     path:'/:pathMatch(.*)*',

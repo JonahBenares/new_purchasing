@@ -27,13 +27,13 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Abstract of Quotation <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Abstract of Quotation <small>Award</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item"><a href="/pur_aoq">Abstract of Quotation</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">New</li>
+                            <li class="breadcrumb-item active" aria-current="page">Award</li>
                         </ol>
                     </nav>
                 </div>
@@ -86,7 +86,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
-									<span class="text-sm text-gray-700">rfq_it001</span>
+									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
 								</div>
 							</div>
 
@@ -149,7 +149,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -172,7 +172,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -195,7 +195,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -231,7 +231,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -254,7 +254,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -277,7 +277,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -313,7 +313,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -336,7 +336,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -359,7 +359,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -495,7 +495,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3a">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -518,7 +518,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3a">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -541,7 +541,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3a">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -578,7 +578,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -601,7 +601,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -624,7 +624,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -660,7 +660,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -683,7 +683,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -706,7 +706,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_3c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -842,7 +842,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1a">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -865,7 +865,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1a">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -888,7 +888,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1a">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -924,7 +924,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -947,7 +947,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -970,7 +970,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1006,7 +1006,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1029,7 +1029,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1052,7 +1052,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="checkbox">
+																<input type="radio" name="offer_1c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1302,7 +1302,33 @@
 					<div class="modal_s_items">
 						<div class="overflow-x-scroll">
 							<div class="">
-								<table class="table-bordered !text-xs" width="250%">
+								<table class="w-full !text-xs mb-3 ">
+									<tr>
+										<td class="font-bold pr-1" width="8%">PR No: </td>
+										<td class="">PR-CENPRI24-1002</td>
+										<td class=" font-bold pr-1" width="8%">AOQ No: </td>
+										<td class="">AOQ-1009-1001</td>
+										<td class=" font-bold pr-1" width="8%">Requested By: </td>
+										<td class="">Henne Tanan</td>
+									</tr>
+									<tr>
+										<td class="font-bold pr-1">Department: </td>
+										<td class="">IT Department</td>
+										<td class=" font-bold pr-1">Date: </td>
+										<td class="">05/16/24</td>
+										<td class=" font-bold pr-1">Date Needed: </td>
+										<td class="">05/16/24</td>
+									</tr>
+									<tr>
+										<td class="font-bold pr-1">End-Use:</td>
+										<td class="">IT Department</td>
+									</tr>
+									<tr>
+										<td class="font-bold pr-1">Purpose:</td>
+										<td class="">IT Department</td>
+									</tr>
+								</table>
+								<table class="table-bordered !text-xs mb-3" width="250%">
 									<tr>
 										<td class="bg-gray-50 " colspan="4"></td>
 										<!-- loop vendors here start -->
@@ -1349,13 +1375,13 @@
 										<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
 										<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
 										<!-- loop offer header per vendor here end-->
-										 <!-- loop offer header per vendor here start -->
+											<!-- loop offer header per vendor here start -->
 										<td class="uppercase bg-gray-100 p-1 " width="10%">Offer</td>
 										<td class="uppercase bg-gray-100 p-1 text-center"  width="3%">Unit Price</td>
 										<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
 										<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
 										<!-- loop offer header per vendor here end-->
-										 <!-- loop offer header per vendor here start -->
+											<!-- loop offer header per vendor here start -->
 										<td class="uppercase bg-gray-100 p-1 " width="10%">Offer</td>
 										<td class="uppercase bg-gray-100 p-1 text-center"  width="3%">Unit Price</td>
 										<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
@@ -1381,18 +1407,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1403,18 +1425,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1425,18 +1443,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 											<tr>
@@ -1450,18 +1464,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1472,18 +1482,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1494,18 +1500,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 											<tr>
@@ -1519,18 +1521,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1541,18 +1539,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1563,18 +1557,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 										<!-- loop here if 3 and below offers here -->
@@ -1599,18 +1589,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1621,18 +1607,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1643,18 +1625,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 											<tr>
@@ -1668,18 +1646,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1690,18 +1664,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1712,18 +1682,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 											<tr>
@@ -1737,18 +1703,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1759,18 +1721,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 
 													<td class="p-1">
 														sample 1
@@ -1781,18 +1739,14 @@
 															<span>150.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>750.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 										<!-- loop here if 3 and below offers here -->
@@ -1817,18 +1771,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 													<td class="p-1">
 														sample 1
 													</td>
@@ -1838,18 +1788,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 													<td class="p-1">
 														sample 1
 													</td>
@@ -1859,18 +1805,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 											<tr>
@@ -1884,18 +1826,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 													<td class="p-1">
 														sample 1
 													</td>
@@ -1905,18 +1843,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 													<td class="p-1">
 														sample 1
 													</td>
@@ -1926,18 +1860,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 											<tr>
@@ -1951,18 +1881,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 													<td class="p-1">
 														sample 1
 													</td>
@@ -1972,18 +1898,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 													<td class="p-1">
 														sample 1
 													</td>
@@ -1993,18 +1915,14 @@
 															<span>100.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top">
+													<td class="p-1 align-top" colspan="2">
 														<div class="flex justify-between space-x-1">
 															<span>Php</span>
 															<span>500.00</span>
 														</div>
 													</td>
-													<td class="p-1 align-top text-center">
-														<input type="checkbox">
-													</td>
-													<td class="p-1 align-top">
-														<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-													</td>
+													
+													<td class="p-1 align-top"></td>
 												<!-- loop offers per vendor here -->
 											</tr>
 										<!-- loop here if 3 and below offers here -->
@@ -2014,7 +1932,7 @@
 										<td class="!border-0" colspan="4"><br></td>
 									</tr>
 									<tr class="!border-0">
-										<td class="!border-0 text-center">a.</td>
+									<td class="!border-0 text-center">a.</td>
 										<td class="!border-0 text-center" colspan="1">Price Validity</td>
 										<td class="!border-0" colspan="2"></td>	
 										<td class="!border-0 !border-b" colspan="1"></td>
@@ -2029,33 +1947,49 @@
 										<td class="!border-0 text-center" colspan="1">Payment Terms</td>
 										<td class="!border-0" colspan="2"></td>	
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0" colspan=""></td>
+										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
+										<td class="!border-0" colspan="2"></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0" colspan=""></td>
+										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
+										<td class="!border-0" colspan="2"></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0" colspan=""></td>
+										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
+										<td class="!border-0" colspan="2"></td>
 									</tr>
 									<tr class="!border-0">
 										<td class="!border-0 text-center">c.</td>
 										<td class="!border-0 text-center" colspan="1">Delivery Term</td>
 										<td class="!border-0" colspan="2"></td>	
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
+										<td class="!border-0 bg-lime-500" width="1%"></td>
+										<td class="!border-0" colspan=""></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
+										<td class="!border-0 bg-lime-500" width="1%"></td>
+										<td class="!border-0" colspan=""></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
+										<td class="!border-0 bg-lime-500" width="1%"></td>
 									</tr>
 									<tr class="!border-0">
 										<td class="!border-0 text-center">d.</td>
 										<td class="!border-0 text-center" colspan="1">Item's Warranty</td>
 										<td class="!border-0" colspan="2"></td>	
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
+										<td class="!border-0 bg-yellow-300" colspan="1"></td>
+										<td class="!border-0" colspan=""></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
+										<td class="!border-0 bg-yellow-300" colspan="1"></td>
+										<td class="!border-0" colspan=""></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
+										<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
+										<td class="!border-0 bg-yellow-300" colspan="1"></td>
 									</tr>
 									<tr class="!border-0">
 										<td class="!border-0 text-center">e.</td>
@@ -2067,6 +2001,10 @@
 										<td class="!border-0" colspan="4"></td>
 										<td class="!border-0 !border-b" colspan="1"></td>
 										<td class="!border-0" colspan="4"></td>
+									</tr>
+									<tr class="!border-0">
+										<td class="!border-0" colspan="4"><br></td>
+										<td class="!border-0" colspan="4"><br></td>
 									</tr>
 									<tr class="!border-0">
 										<td class="!border-0" colspan="4"><br></td>

@@ -232,7 +232,7 @@
                                     <li class="nav-item list-none"> <a class="nav-link" href="/pur_aoq">Abstract Of Quotation</a></li>
                                     <li class="nav-item list-none"> <a class="nav-link" href="/pur_po">Purchase Order</a></li>
                                     <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Delivery Receipt</a></li>
-                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_rfq">Request For Disbursement</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse">Request For Disbursement</a></li>
                                 </ul>
                             </div>
                         </Transition>

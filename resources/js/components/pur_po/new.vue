@@ -19,7 +19,33 @@
 		showAddVendor.value = !hideModal.value
 		showPreview.value = !hideModal.value
 	}
+	const pr_det = ref(false)
 
+	let terms_list=ref([]);
+	let terms_text=ref();
+	let other_list=ref([]);
+	let other_text=ref();
+	const addRowTerms= () => {
+		const terms = {
+			terms_condition:terms_text.value,
+		}
+		terms_list.value.push(terms)
+		terms_text.value='';
+	}
+	const removeTerms = (index) => {
+		terms_list.value.splice(index,1)
+	}
+
+	const addRowOther= () => {
+		const others = {
+			other_ins:other_text.value,
+		}
+		other_list.value.push(others)
+		other_text.value='';
+	}
+	const removeOthers = (index) => {
+		other_list.value.splice(index,1)
+	}
 </script>
 <template>
 	<navigation>
@@ -51,9 +77,11 @@
 								<div class="input-group col-xs-12">
 									<select class="form-control file-upload-info">
 										<option value="">Select Supplier</option>
+										<option value="">MF Computer Solutions, Inc. </option>
 									</select>
 									<select class="form-control file-upload-info">
 										<option value="">PR Number</option>
+										<option value="">PR-19772-8727</option>
 									</select>
 									<span class="input-group-append">
 										<button class="btn btn-primary" type="button" @click="pr_det = !pr_det">Select</button>
@@ -64,7 +92,7 @@
 					</div>
 					<hr class="border-dashed">
 					<div class="pt-1">
-						<div>
+						<div v-show="pr_det">
 							<div class="row">
 								<div class="col-lg-8">
 									<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
@@ -78,7 +106,7 @@
 							<div class="row">
 								<div class="col-lg-8">
 									<span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
-									<span class="text-sm text-gray-700">IT Department</span>
+									<span class="text-sm text-gray-700">MF Computer Solutions, Inc.</span>
 								</div>
 							</div>
 							<div class="row">
@@ -88,17 +116,17 @@
 								</div>
 								<div class="col-lg-4">
 									<span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
-									<span class="text-sm text-gray-700">(034) 9927 9272</span>
+									<span class="text-sm text-gray-700">(034) 9872-2772</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-8">
 									<span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
-									<span class="text-sm text-gray-700">rfq_it001</span>
+									<span class="text-sm text-gray-700">Mary Marie</span>
 								</div>
 								<div class="col-lg-4">
 									<span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
-									<span class="text-sm text-gray-700">(034 0882 97263)</span>
+									<span class="text-sm text-gray-700">(034) 9872-2772</span>
 								</div>
 							</div>
 							
@@ -107,23 +135,6 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="border-2">
-											<!-- <table class="table-bordered w-full !text-sm">
-												<tr>
-													<td colspan="4" class="py-2 bg-gray-100"></td>
-												</tr>
-												<tr>
-													<td class="px-2 " width="10%">PR Number:</td>
-													<td class="px-2" width="40%">PR-8626-2772</td>
-													<td class="px-2 " width="10%">Requestor:</td>
-													<td class="px-2" width="40%"></td>
-												</tr>
-												<tr>
-													<td class="px-2">Purpose:</td>
-													<td class="px-2"></td>
-													<td class="px-2">End-use:</td>
-													<td class="px-2"></td>
-												</tr>
-											</table> -->
 											<table class="table-bordered w-full !text-xs">
 												<tr class="bg-gray-100">
 													<td class="uppercase p-1 text-center" width="3%">#</td>
@@ -135,27 +146,27 @@
 												</tr>
 												<tr class="">
 													<td class="border-y-none p-1 text-center">1</td>
-													<td class="border-y-none p-1 text-center">3</td>
+													<td class="border-y-none p-1 text-center">5</td>
 													<td class="border-y-none p-1 text-center">pc</td>
 													<td class="border-y-none p-1" colspan="2">Monitor</td>
-													<td class="border-y-none p-1 text-right">200.00</td>
-													<td class="border-y-none p-1 text-right">200.00</td>
+													<td class="border-y-none p-1 text-right">100.00</td>
+													<td class="border-y-none p-1 text-right">500.00</td>
 												</tr>
 												<tr class="">
-													<td class="border-y-none p-1 text-center">1</td>
-													<td class="border-y-none p-1 text-center">3</td>
+													<td class="border-y-none p-1 text-center">2</td>
+													<td class="border-y-none p-1 text-center">5</td>
 													<td class="border-y-none p-1 text-center">pc</td>
 													<td class="border-y-none p-1" colspan="2">Mouse</td>
-													<td class="border-y-none p-1 text-right">200.00</td>
-													<td class="border-y-none p-1 text-right">200.00</td>
+													<td class="border-y-none p-1 text-right">100.00</td>
+													<td class="border-y-none p-1 text-right">500.00</td>
 												</tr>
 												<tr class="">
-													<td class="border-y-none p-1 text-center">1</td>
 													<td class="border-y-none p-1 text-center">3</td>
+													<td class="border-y-none p-1 text-center">5</td>
 													<td class="border-y-none p-1 text-center">pc</td>
 													<td class="border-y-none p-1" colspan="2">Keyboard</td>
-													<td class="border-y-none p-1 text-right">200.00</td>
-													<td class="border-y-none p-1 text-right">200.00</td>
+													<td class="border-y-none p-1 text-right">100.00</td>
+													<td class="border-y-none p-1 text-right">500.00</td>
 												</tr>
 												<tr class="">
 													<td class=""></td>
@@ -170,32 +181,32 @@
 													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
 														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
 														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>DG2 Injector Cooling Inlet Pipe Header Common Flange(Flexible Hose)</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Materials for Modification of Boiler Shell for Replacement of Smokestack Pedestal Shell and Dismantling and Installation of Horizontal Exhaust Main Header Spool</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
 													</td>
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1"></td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right"></td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 													<td class="p-0">
 														<div class="flex">
-															<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%">
-															<input type="text" class="w-full bg-yellow-50 p-1 text-right">
+															<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%" value="">
+															<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
 														</div>
 													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right"></td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-													<td class="p-1 text-right font-bold !text-sm">2000.00</td>
+													<td class="p-1 text-right font-bold !text-sm">1000.00</td>
 												</tr>
 											</table>
 										</div>
@@ -210,10 +221,10 @@
 											</tr>
 											<tr>
 												<td class="p-0" colspan="2">
-													<input type="text" class="p-1 w-full bg-yellow-50">
+													<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text">
 												</td>
 												<td class="p-0" width="1">
-													<button class="btn btn-primary p-1">
+													<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
 														<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 													</button>
 												</td>
@@ -274,11 +285,14 @@
 													</div>
 												</td>
 											</tr>
-											<tr>
-												<td class="px-1" colspan="2">sample terms and condition</td>
+											<tr v-for="(t,index) in terms_list">
+												<td class="align-top text-center" width="4%">{{ index + 8 }}.</td>
+												<td class="px-1" colspan="2">
+													<span class="w-32">{{ t.terms_condition }}</span>
+												</td>
 												<td class="p-0 align-top" width="1">
-													<button class="btn btn-danger p-1">
-														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+													<button type="button" class="btn btn-danger p-1">
+														<XMarkIcon fill="none" @click="removeTerms(index)" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 													</button>
 												</td>
 											</tr>
@@ -291,26 +305,18 @@
 											</tr>
 											<tr>
 												<td class="p-0" colspan="2">
-													<input type="text" class="p-1 w-full bg-yellow-50">
+													<input type="text" v-model="other_text" class="p-1 w-full bg-yellow-50">
 												</td>
 												<td class="p-0" width="1">
-													<button class="btn btn-primary p-1">
+													<button type="button" @click="addRowOther" class="btn btn-primary p-1">
 														<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 													</button>
 												</td>
 											</tr>
-											<tr>
-												<td class="px-1" colspan="2">sample instructions</td>
+											<tr v-for="(o, indexes) in other_list">
+												<td class="px-1" colspan="2">{{ o.other_ins }}</td>
 												<td class="p-0 align-top" width="1">
-													<button class="btn btn-danger p-1">
-														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-													</button>
-												</td>
-											</tr>
-											<tr>
-												<td class="px-1" colspan="2">sample instructions -Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
-												<td class="p-0 align-top" width="1">
-													<button class="btn btn-danger p-1">
+													<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 													</button>
 												</td>
