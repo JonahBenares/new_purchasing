@@ -62,25 +62,50 @@
 						<hr class="border-dashed">
 						<div v-show="pr_det">
 							<div class="row">
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
-									<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
-								</div>
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
-									<span class="text-sm text-gray-700">January 16, 2024</span>
-								</div>
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
+								<span class="text-sm text-gray-700">Bacolod</span>
 							</div>
-							<div class="row">
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">End Use:</span>
-									<span class="text-sm text-gray-700">IT Department</span>
-								</div>
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Purpose:</span>
-									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
-								</div>
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
+								<span class="text-sm text-gray-700">01/16/24</span>
 							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
+								<span class="text-sm text-gray-700">PR-BCD24-1209</span>
+							</div>
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
+								<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
+								<span class="text-sm text-gray-700">IT Department</span>
+							</div>
+							<div class="col-lg-4">
+								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+								<span class="text-sm text-gray-700">0912</span>
+							</div>
+							<div class="col-lg-2">
+								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
+								<span class="text-sm text-gray-700">X</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
+								<span class="text-sm text-gray-700">IT Department</span>
+							</div>
+							<div class="col-lg-12">
+								<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
+								<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+							</div>
+						</div>
 							<br>
 							<div class="row">
 								<div class="col-lg-12">

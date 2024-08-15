@@ -6,17 +6,14 @@
 	const vendor =  ref();
 	const preview =  ref();
 
-	const showAddVendor = ref(false)
+	const showModal = ref(false)
 	const showPreview = ref(false)
 	const hideModal = ref(true)
-	const openAddVendor = () => {
-		showAddVendor.value = !showAddVendor.value
-	}
-	const openPreview = () => {
-		showPreview.value = !showPreview.value
+	const openModal = () => {
+		showModal.value = !showModal.value
 	}
 	const closeModal = () => {
-		showAddVendor.value = !hideModal.value
+		showModal.value = !hideModal.value
 		showPreview.value = !hideModal.value
 	}
 
@@ -238,6 +235,7 @@
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
                                                     <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26">Print RFD</a>
+                                                    <button class="btn btn-warning !text-white w-26" @click="openModal()">RFD list</button>
                                                     <a href="/pur_dr/new" class="btn btn-warning !text-white w-26">Print DR</a>
                                                     <button type="submit" class="btn btn-primary w-36" >Print PO</button>
                                                 </div>
@@ -252,6 +250,49 @@
 				</div>
 			</div>
 		</div>
+        
+        <Transition
+            enter-active-class="transition ease-out duration-100"
+            enter-from-class="opacity-0 w-full"
+            enter-to-class="opacity-100 w-[20%]"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100  w-full"
+            leave-to-class="opacity-0 w-[20%]"
+        >
+			<div class="modal pt-0 px-0" :class="{ show:showModal }">
+				<div @click="closeModal" class="w-full h-screen fixed"></div>
+				<div class="modal__content w-3/12 float-right h-screen">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Add Vendor</span>
+							<a href="#" class="text-gray-600" @click="closeModal">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items">
+						
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 	</navigation>
-	
+    
+	<div class="flex  !z-20 absolute">
+        
+        <div class="fixed top-0 left-0 !z-50 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white shadow-lg peer-checked:translate-x-0">
+            <div class="px-6 py-4">
+                <h2 class="text-lg font-semibold">Drawer</h2>
+                <p class="text-gray-500">This is a drawer.</p>
+            </div>
+        </div>
+    </div>
 </template>

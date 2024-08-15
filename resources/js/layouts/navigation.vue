@@ -10,6 +10,7 @@
     const menu = ref(false);
 </script>
 <template>
+    
     <div class="container-scroller">
         
     <!-- partial:partials/_navbar.html -->
