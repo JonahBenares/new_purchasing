@@ -3,6 +3,63 @@
 	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
+
+	let item_list=ref([]);
+	let item_no=ref();
+	let qty=ref('');
+	let uom=ref('');
+	let pn_no=ref('');
+	let item_desc=ref('');
+	let wh_stocks=ref('');
+	let date_needed=ref('');
+
+	const addItem= () => {
+		if(qty.value == ''){
+			alert("Quantity must not be empty!")
+		}else if(uom.value == ''){
+			alert("Uom must not be empty!")
+		}else if(item_desc.value == ''){
+			alert("Item Description must not be empty!")
+		}else if(date_needed.value == ''){
+			alert("Date Needed must not be empty!")
+		}else{
+		const items = {
+			item_no:item_no.value,
+			qty:qty.value,
+			uom:uom.value,
+			pn_no:pn_no.value,
+			item_desc:item_desc.value,
+			wh_stocks:item_desc.value,
+			date_needed:date_needed.value,
+		}
+		item_list.value.push(items)
+		qty.value='';
+		uom.value='';
+		pn_no.value='';
+		item_desc.value='';
+		wh_stocks.value='';
+		date_needed.value='';
+		}
+	}
+
+	const removeItem = (index) => {
+		item_list.value.splice(index,1)
+	}
+
+	const removeItem1 = () => {
+		const item1 = document.getElementById("item1");
+		item1.remove();
+	}
+
+	const removeItem2 = () => {
+		const item1 = document.getElementById("item2");
+		item1.remove();
+	}
+
+	const removeItem3 = () => {
+		const item1 = document.getElementById("item3");
+		item1.remove();
+	}
 </script>
 <template>
 	<navigation>
@@ -119,20 +176,20 @@
 										</td>
 									</tr>
 									<tr>
-										<td class=""><input placeholder="#" type="text" class="w-full p-1 text-center"></td>
-										<td class=""><input placeholder="Qty" type="text" class="w-full p-1 text-center"></td>
-										<td class=""><input placeholder="UOM" type="text" class="w-full p-1 text-center"></td>
-										<td class=""><input placeholder="PN No." type="text" class="w-full p-1"></td>
-										<td class=""><input placeholder="Item Description" type="text" class="w-full p-1"></td>
-										<td class=""><input placeholder="WH Stock" type="text" class="w-full p-1"></td>
-										<td class=""><input placeholder="Date Needed" type="text" class="w-full p-1" onfocus="(this.type='date')"></td>
+										<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
+										<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center"></td>
+										<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center"></td>
+										<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
+										<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1"></td>
+										<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1"></td>
+										<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
 										<td class="text-center">
-											<button class="btn btn-primary p-1">
+											<button class="btn btn-primary p-1" @click="addItem">
 												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 											</button>
 										</td>
 									</tr>
-									<tr>
+									<tr id="item1">
 										<td class="p-1 text-center">1</td>
 										<td class="p-1 text-center">5</td>
 										<td class="p-1 text-center">pc/s</td>
@@ -141,13 +198,13 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="text-center">
-											<button class="btn btn-danger p-1">
+											<button class="btn btn-danger p-1" @click="removeItem1()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
 									</tr>
-									<tr>
-										<td class="p-1 text-center">1</td>
+									<tr id="item2">
+										<td class="p-1 text-center">2</td>
 										<td class="p-1 text-center">5</td>
 										<td class="p-1 text-center">pc/s</td>
 										<td class="p-1">PN-0991-222</td>
@@ -155,13 +212,13 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="text-center">
-											<button class="btn btn-danger p-1">
+											<button class="btn btn-danger p-1" @click="removeItem2(2)">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
 									</tr>
-									<tr>
-										<td class="p-1 text-center">1</td>
+									<tr id="item3">
+										<td class="p-1 text-center">3</td>
 										<td class="p-1 text-center">5</td>
 										<td class="p-1 text-center">pc/s</td>
 										<td class="p-1">PN-0991-333</td>
@@ -169,7 +226,21 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="text-center">
-											<button class="btn btn-danger p-1">
+											<button class="btn btn-danger p-1" @click="removeItem3(3)">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
+									</tr>
+									<tr v-for="(i,index) in item_list">
+										<td class="p-1 text-center">{{ index + 4 }}</td>
+										<td class="p-1 text-center">{{ i.qty }}</td>
+										<td class="p-1 text-center">{{ i.uom }}</td>
+										<td class="p-1">{{ i.pn_no }}</td>
+										<td class="p-1">{{ i.item_desc }}</td>
+										<td class="p-1">{{ i.wh_stocks }}</td>
+										<td class="p-1">{{ i.date_needed }}</td>
+										<td class="text-center">
+											<button class="btn btn-danger p-1" @click="removeItem(index)">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
