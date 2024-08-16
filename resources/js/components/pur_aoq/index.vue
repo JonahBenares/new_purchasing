@@ -4,6 +4,103 @@
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
+    import DataTable from 'datatables.net-vue3';
+    import DataTablesCore from 'datatables.net-bs5';
+	import 'datatables.net-responsive';
+	import 'datatables.net-select';
+	import 'datatables.net-buttons';
+	import 'datatables.net-buttons/js/buttons.html5';
+	import 'datatables.net-buttons/js/buttons.print.js';
+	import jszip from 'jszip';
+    import $ from 'jquery'
+
+    import moment from 'moment'
+	DataTablesCore.Buttons.jszip(jszip);
+	DataTable.use(DataTablesCore);
+    const data = [
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Visayan Construction Supply', 'Safety', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Visayan Construction Supply', 'Safety', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        
+    ];
+
+    const options = {
+		// dom: 'Bftip',
+		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
+		select: true,
+		lengthMenu: [
+			[10, 25, 50, -1],
+			['10 rows', '25 rows', '50 rows', 'Show all']
+		],
+		buttons: [
+			{
+				title:'Abstract of Quotation List',
+				extend: 'copy',
+				exportOptions: {
+					columns: [ 0, 1, 2, 3, 4, 5],
+					orthogonal: null,
+                    
+				}
+			},
+			{
+				title:'Abstract of Quotation List',
+				extend: 'excel',
+				exportOptions: {
+					columns: [ 0, 1, 2, 3, 4, 5], 
+					orthogonal: 'export',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 0){
+                               return moment.utc(data).format('MMMM DD, YYYY');
+                            }else if(column === 5){
+								data = data.replace(/&gt;/g, '>')
+                                   .replace(/&lt;/g, '<')
+                                   .replace(/&amp;/g, '&')
+                                   .replace(/&quot;/g, '"')
+                                   .replace(/&#163;/g, '£')
+                                   .replace(/&#39;/g, '\'')
+                                   .replace(/&#10;/g, '\n');
+								//replace html tags with one space
+								data = data.replace(/<[^>]*>/g, ' ');
+								//replace multiple spaces and tabs etc with one space
+								return data.replace(/\s\s+/g, ' ');
+							}else{
+                                return data;
+                            }
+                        }
+                    }
+				},
+				createEmptyCells: true,
+                customize: function(xlsx) {
+                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                    var clRow = $('row', sheet);
+                    clRow[0].children[0].remove(); // clear header cell
+                    $( 'row c', sheet ).attr( 's', '25' );
+                }
+			},
+			{
+				title:'Abstract of Quotation List',
+				extend: 'print',
+				exportOptions: {
+					columns: [ 0, 1, 2, 3, 4, 5],
+					orthogonal: null
+				}
+			},
+			{
+				extend: 'pageLength'
+			}
+		]
+		// buttons: ['copy','excel','csv','pageLength']
+	};
 </script>
 <template>
 	<navigation>
@@ -45,7 +142,8 @@
                             </span>
                         </div>
                         <div class="table-responsive pt-3">
-                            <table class="table table-bordered table-hover !border ">
+                            <!-- <table class="table table-bordered table-hover !border "> -->
+                                <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" width="8%"> AOQ Date</th>
@@ -62,7 +160,16 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <!-- <template #column-6="props">
+                                    <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>
+                                </template> -->
+                                <template #column-7="props">
+                                    <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                </template>
+                                </DataTable>
+                                <!-- <tbody>
                                     <tr class="">
                                         <td class="!align-top !text-xs"> 05/06/24 </td>
                                         <td class="!align-top !text-xs"> PR-CENPRI24-1005 </td>
@@ -118,7 +225,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> -->
                         </div>
                     </div>
                 </div>
@@ -126,3 +233,8 @@
         </div>
 	</navigation>
 </template>
+<style>
+@import 'datatables.net-dt';
+@import 'datatables.net-buttons-dt';
+@import 'datatables.net-select-dt';
+</style>
