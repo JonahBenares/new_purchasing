@@ -18,19 +18,11 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Visayan Construction Supply', 'Safety', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Visayan Construction Supply', 'Safety', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'EIC24-1005-CNPR', 'Ace Hardware Philippines, Inc. - Bacolod Branch', 'Admin', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        
+        ['2024-02-04', 'SPE/Operation24-2032-CNPR', 'Bacolod Triumph Hardware (Main Branch)</br>Bacolod Mindanao Lumber and Plywood Corp.</br>SGS Hardware Corporation', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
+        ['2024-02-04', 'Admin24-2033-CNPR', 'Javieros Hollow Blocks Factory', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
+        ['2024-02-04', 'HAS24-2034-CNPR', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Bacolod Paint Marketing</span></br>Sugarland Hardware Corp.</br>Bacolod Luis Paint Center Enterprises. Inc.', 'Safety', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-02-04', 'FLM24-2019-CNPR', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">New China Enterprise Inc.</span>', 'Fuel and Lube Management', 'Fire Hydrant System', 'JFleur de Liz Ambong / Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['2024-01-09', 'EIC24-1005-CNPR', 'Bearing Center & Machinery Inc.</br>CAR-V Industrial Sales</br><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1</span>">United Bearing Industrial Corp', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],    
     ];
 
     const options = {

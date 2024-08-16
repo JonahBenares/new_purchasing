@@ -18,17 +18,21 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['FLM24-2019-CNPR', 'RFQ-0002', 'RFQ EIC', '2024-02-04', 'Visayan Construction Supply', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ Electrical', '2024-01-02', 'Ace Hardware Philippines, Inc. - Bacolod Branch', ''],
+        ['SPE/Operation24-2032-CNPR', 'RFQ-0005', 'RFQ 5', '2024-07-01', 'Bacolod Triumph Hardware (Main Branch)</br>Bacolod Mindanao Lumber and Plywood Corp.</br>SGS Hardware Corporation', ''],
+        ['Admin24-2033-CNPR', 'RFQ-0004', 'RFQ 4', '2024-05-21', 'Javieros Hollow Blocks Factory', ''],
+        ['HAS24-2034-CNPR', 'RFQ-0003', 'RFQ 3', '2024-03-13', 'Bacolod Paint Marketing</br>Sugarland Hardware Corp.</br>Bacolod Luis Paint Center Enterprises. Inc.', ''],
+        ['FLM24-2019-CNPR', 'RFQ-0002', 'RFQ 2', '2024-02-08', 'New China Enterprise Inc.', ''],
+        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ 1', '2024-01-08', 'Bearing Center & Machinery Inc.</br>CAR-V Industrial Sales</br>United Bearing Industrial Corp', ''],
+
+
+
+
+
+
+
+
+
+
     ];
 
     const options = {
@@ -148,7 +152,7 @@
                                         <th class="!text-xs bg-gray-100 uppercase" width="12%"> PR</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ Name</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Date</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> Vendors</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
