@@ -198,7 +198,7 @@
                         >
                             <div class=""  v-show="masterfileDrop">
                                 <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li>
+                                    <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
                                     <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
                                     <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
                                     <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>

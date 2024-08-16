@@ -44,12 +44,13 @@
 				title:'Purchase Order',
 				extend: 'excel',
 				exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5],
 					orthogonal: null,
                     format: {
                         body: function (data, row, column, node) {
                             if (column === 0){
                                return moment.utc(data).format('MMMM DD, YYYY');
-                            }else if(column === 11){
+                            }else if(column === 6){
 								data = data.replace(/&gt;/g, '>')
                                    .replace(/&lt;/g, '<')
                                    .replace(/&amp;/g, '&')

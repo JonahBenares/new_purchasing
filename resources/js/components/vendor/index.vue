@@ -4,6 +4,70 @@
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
+    import DataTable from 'datatables.net-vue3';
+    import DataTablesCore from 'datatables.net-bs5';
+	import 'datatables.net-responsive';
+	import 'datatables.net-select';
+	import 'datatables.net-buttons';
+	import 'datatables.net-buttons/js/buttons.html5';
+	import 'datatables.net-buttons/js/buttons.print.js';
+	import jszip from 'jszip';
+	import $ from 'jquery'
+    import moment from 'moment'
+	DataTablesCore.Buttons.jszip(jszip);
+    DataTable.use(DataTablesCore);
+    const data = [
+        ['2GO Express, Inc.','Forwarder','BREDCO, Port 2, Reclamation Area, Brgy. 10, Bacolod City','(034) 435-4965 / 704-2039 / 704-2396/434-4595','2goexpress@gmail.com','Freight Collect / Prepaid','Forwarder','','2','1','Active',''],
+        ['7RJ Brothers Sand & Gravel & Gen. Mdse.','Aggregates','Circumferential Road, Brgy. Villamonte, Bacolod City','(034)458-0190/213-2249','7rjbrothers@gmail.com','COD-Actual Quantity (delivered to site)','Manufacturer/Supplier','','1','1','Active',''],
+        ['Republic Hardware','Hardware','Bonifacio St., Bacolod City','434-8317; 434-5125; 433-9941','republic_hardware@yahoo.com','COD','Distributor','','1','1','Active',''],
+        ['Bacolod Steel Center Corporation','Structural Steels / Pipes / Welding Electrodes (Rod) / Tool Steel','#22 LM Bldg., Gonzaga St., Bacolod City','435-2721-25','bscc.ph@gmail.com','COD','Wholesale / Retail','','1','1','Active',''],
+        ['Bacolod Sure Computer, Inc.','Computer Supplies and Accessories, Printers','Capitol Shopping Center, Hilado St, Villamonte, Bacolod City','(034) 435-1949','bacsure.sales1@gmail.com','COD','Distributor / Supplier','','1','1','Active',''],
+    ];
+    const options = {
+		// dom: 'Bftip',
+		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
+		select: true,	
+		lengthMenu: [
+			[10, 25, 50, -1],
+			['10 rows', '25 rows', '50 rows', 'Show all']
+		],
+		buttons: [
+			{
+				title:'Vendor',
+				extend: 'copy',
+				exportOptions: {
+					columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+					orthogonal: null
+				}
+			},
+			{
+				title:'Vendor',
+				extend: 'excel',
+				exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+					orthogonal: null,
+				},
+				createEmptyCells: true,
+                customize: function(xlsx) {
+                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                    var clRow = $('row', sheet);
+                    clRow[0].children[0].remove(); // clear header cell
+                    $( 'row c', sheet ).attr( 's', '25' );
+                }
+			},
+			{
+				title:'Vendor',
+				extend: 'print',
+				exportOptions: {
+					columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+					orthogonal: null
+				}
+			},
+			{
+				extend: 'pageLength'
+			}
+		]
+	};
 </script>
 <template>
 	<navigation>
@@ -28,10 +92,10 @@
                     <div class="card-body">
                         <div class="flex justify-between">
                             <div class="flex justify-left ">
-                                <div class="form-control !w-10 !border-r-0 px-2">
+                                <!-- <div class="form-control !w-10 !border-r-0 px-2">
                                     <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 "></MagnifyingGlassIcon>
                                 </div>
-                                <input type="text" class="form-control !w-72" placeholder="Search">
+                                <input type="text" class="form-control !w-72" placeholder="Search"> -->
                             </div>
                             <span>
                                 <div class="d-flex justify-content-between align-items-end flex-wrap space-x-2">
@@ -41,9 +105,9 @@
                                     <!-- <button type="button" class="btn btn-light !bg-gray-100 btn-icon mt-2 mt-xl-0">
                                     <i class="mdi mdi-clock-outline text-muted"></i>
                                     </button> -->
-                                    <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
+                                    <!-- <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
                                         <ArrowUpOnSquareIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ArrowUpOnSquareIcon>
-                                    </button>
+                                    </button> -->
                                     <a href="/vendor/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                         <span>Add New Vendor</span>
                                     </a>
@@ -51,7 +115,34 @@
                             </span>
                         </div>
                         <div class="overflow-x-scroll pt-3 relative">
-                            <table class="table table-bordered table-hover !border" width="200%">
+                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap"  width="200%">
+                                <thead>
+                                    <tr>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Vendor Name</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Products/Services</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Address</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Phone</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Email</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Terms</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="4%"> Type</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Notes</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="3%"> EWT</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="3%"> Vat</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Status</th>
+                                        <th class="!text-xs bg-gray-100 uppercase !sticky !right-0" width="1%" align="center"> 
+                                            <span class="text-center  px-auto">
+                                                <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <template #column-11="">
+                                    <a href="/vendor/edit" class="btn btn-xs btn-info text-white p-1">
+                                        <PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PencilIcon>
+                                    </a>
+                                </template>
+                            </DataTable>
+                            <!-- <table class="table table-bordered table-hover !border" width="200%">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase"> Vendor Name</th>
@@ -92,7 +183,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> -->
                         </div>
                     </div>
                 </div>
@@ -100,3 +191,8 @@
         </div>
 	</navigation>
 </template>
+<style>
+    @import 'datatables.net-dt';
+    @import 'datatables.net-buttons-dt';
+    @import 'datatables.net-select-dt';
+</style>
