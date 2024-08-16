@@ -5,7 +5,6 @@
     import { useRouter } from "vue-router"
 
 	let item_list=ref([]);
-	let uploaded_items=ref([]);
 	let item_no=ref();
 	let qty=ref('');
 	let uom=ref('');
