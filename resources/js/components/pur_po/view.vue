@@ -1,20 +1,28 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
 
-	const showModal = ref(false)
-	const showPreview = ref(false)
+	const drawer_dr = ref(false)
+	const drawer_rfd = ref(false)
+	const drawer_revise = ref(false)
 	const hideModal = ref(true)
-	const openModal = () => {
-		showModal.value = !showModal.value
+	const openDrawerDR = () => {
+		drawer_dr.value = !drawer_dr.value
+	}
+    const openDrawerRFD = () => {
+		drawer_rfd.value = !drawer_rfd.value
+	}
+    const openDrawerRevise = () => {
+		drawer_revise.value = !drawer_revise.value
 	}
 	const closeModal = () => {
-		showModal.value = !hideModal.value
-		showPreview.value = !hideModal.value
+		drawer_dr.value = !hideModal.value
+		drawer_rfd.value = !hideModal.value
+		drawer_revise.value = !hideModal.value
 	}
 
 </script>
@@ -230,13 +238,26 @@
                                     <div class="row my-2"> 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
-                                                <div class="flex justify-between space-x-1">
-                                                    <a href="/pur_po/edit" type="submit" class="btn btn-info w-26">Revise PO</a>
+                                                <div class="flex justify-between">
+                                                    <a href="/pur_po/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                    <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
+                                                        <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
+                                                    </button>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26">Print RFD</a>
-                                                    <button class="btn btn-warning !text-white w-26" @click="openModal()">RFD list</button>
-                                                    <a href="/pur_dr/new" class="btn btn-warning !text-white w-26">Print DR</a>
+                                                    <div class="flex justify-between">
+                                                        <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
+                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
+                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
+                                                        </button>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <a href="/pur_dr/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
+                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
+                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
+                                                        </button>
+                                                    </div>
+                                                    
                                                     <button type="submit" class="btn btn-primary w-36" >Print PO</button>
                                                 </div>
                                                 
@@ -250,49 +271,153 @@
 				</div>
 			</div>
 		</div>
-        
         <Transition
-            enter-active-class="transition ease-out duration-100"
-            enter-from-class="opacity-0 w-full"
-            enter-to-class="opacity-100 w-[20%]"
+            enter-active-class="transition ease-out duration-500"
+            enter-from-class="opacity-0 "
+            enter-to-class="opacity-100 "
             leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100  w-full"
-            leave-to-class="opacity-0 w-[20%]"
+            leave-from-class="opacity-100 "
+            leave-to-class="opacity-0 scale-95"
         >
-			<div class="modal pt-0 px-0" :class="{ show:showModal }">
-				<div @click="closeModal" class="w-full h-screen fixed"></div>
-				<div class="modal__content w-3/12 float-right h-screen">
-					<div class="row mb-3">
-						<div class="col-lg-12 flex justify-between">
-							<span class="font-bold ">Add Vendor</span>
-							<a href="#" class="text-gray-600" @click="closeModal">
-								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-							</a>
-						</div>
-					</div>
-					<hr class="mt-0">
-					<div class="modal_s_items">
-						
-						<div class="row mt-4"> 
-							<div class="col-lg-12 col-md-12">
-								<div class="flex justify-center space-x-2">
-									<a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
-								</div>
-							</div>
-						</div>
-					</div> 
-				</div>
-			</div>
-		</Transition>
+            <div class="modal pt-0 px-0 !bg-transparent" :class="{ show:drawer_revise }">
+                <div @click="closeModal" class="w-full h-screen fixed bg-transparent"></div>
+                <div class="modal__content w-3/12 float-right min-h-[690px]">
+                    <div class="row mb-3">
+                        <div class="col-lg-12 flex justify-between">
+                            <span class="font-bold ">DR List</span>
+                            <a href="#" class="text-gray-600" @click="closeModal">
+                                <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                            </a>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="modal_s_items ">
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
+                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
+                        </div>
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
+                    </div> 
+                </div>
+            </div>
+        </Transition>
+        <Transition
+            enter-active-class="transition ease-out duration-500"
+            enter-from-class="opacity-0 "
+            enter-to-class="opacity-100 "
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 "
+            leave-to-class="opacity-0 scale-95"
+        >
+            <div class="modal pt-0 px-0 !bg-transparent" :class="{ show:drawer_dr }">
+                <div @click="closeModal" class="w-full h-screen fixed bg-transparent"></div>
+                <div class="modal__content w-3/12 float-right min-h-[690px]">
+                    <div class="row mb-3">
+                        <div class="col-lg-12 flex justify-between">
+                            <span class="font-bold ">DR List</span>
+                            <a href="#" class="text-gray-600" @click="closeModal">
+                                <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                            </a>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="modal_s_items ">
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                        </div>
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
+                    </div> 
+                </div>
+            </div>
+        </Transition>
+        <Transition
+            enter-active-class="transition ease-out duration-500"
+            enter-from-class="opacity-0 "
+            enter-to-class="opacity-100 "
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 "
+            leave-to-class="opacity-0 scale-95"
+        >
+            <div class="modal pt-0 px-0 !bg-transparent !rounded-l-none" :class="{ show:drawer_rfd }">
+                <div @click="closeModal" class="w-full h-screen fixed bg-tranparent"></div>
+                <div class="modal__content w-3/12 float-right min-h-[690px]">
+                    <div class="row mb-3">
+                        <div class="col-lg-12 flex justify-between">
+                            <span class="font-bold ">RFD List</span>
+                            <a href="#" class="text-gray-600" @click="closeModal">
+                                <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                            </a>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="modal_s_items ">
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                        </div>
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
+                    </div> 
+                </div>
+            </div>
+        </Transition>
 	</navigation>
+    <!-- <input type="checkbox" data-menu id="menu-opener" hidden>
+    <aside class="DrawerMenu" role="menu" id="menu" aria-labelledby="openmenu">
+        <label for="menu-opener" class="MenuOverlay"></label>
+        <nav class="Menu">
+            <h4>RFD List</h4>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
+        </nav>
+    </aside> -->
+	<!-- <div class="flex  !z-20 ab">
+        <input type="checkbox" id="drawer-toggle" class="relative sr-only peer " >
+        <label for="drawer-toggle" class="absolute bottom-0 left-0 inline-block p-4 transition-all duration-500 bg-indigo-500 rounded-lg peer-checked:rotate-180 peer-checked:left-64">
+            <div class="w-6 h-1 mb-3 -rotate-45 bg-white rounded-lg"></div>
+            <div class="w-6 h-1 rotate-45 bg-white rounded-lg"></div>
     
-	<div class="flex  !z-20 absolute">
         
+        </label>
         <div class="fixed top-0 left-0 !z-50 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white shadow-lg peer-checked:translate-x-0">
             <div class="px-6 py-4">
                 <h2 class="text-lg font-semibold">Drawer</h2>
                 <p class="text-gray-500">This is a drawer.</p>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
