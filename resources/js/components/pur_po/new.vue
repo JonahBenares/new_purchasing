@@ -22,26 +22,41 @@
 	const pr_det = ref(false)
 
 	let terms_list=ref([]);
-	let terms_text=ref();
+	let terms_text=ref("");
 	let other_list=ref([]);
-	let other_text=ref();
+	let other_text=ref("");
+
 	const addRowTerms= () => {
-		const terms = {
-			terms_condition:terms_text.value,
+		if(terms_text.value!=''){
+			const terms = {
+				terms_condition:terms_text.value,
+			}
+			terms_list.value.push(terms)
+			terms_text.value='';
+			document.getElementById('check_terms').placeholder=""
+			document.getElementById('check_terms').style.backgroundColor = '#FFFFFF';
+		}else{
+			document.getElementById('check_terms').placeholder="Please fill in Terms and Condition."
+			document.getElementById('check_terms').style.backgroundColor = '#FAA0A0';
 		}
-		terms_list.value.push(terms)
-		terms_text.value='';
 	}
 	const removeTerms = (index) => {
 		terms_list.value.splice(index,1)
 	}
 
 	const addRowOther= () => {
-		const others = {
-			other_ins:other_text.value,
+		if(other_text.value!=''){
+			const others = {
+				other_ins:other_text.value,
+			}
+			other_list.value.push(others)
+			other_text.value='';
+			document.getElementById('check_others').placeholder=""
+			document.getElementById('check_others').style.backgroundColor = '#FFFFFF';
+		}else{
+			document.getElementById('check_others').placeholder="Please fill in Other instructions."
+			document.getElementById('check_others').style.backgroundColor = '#FAA0A0';
 		}
-		other_list.value.push(others)
-		other_text.value='';
 	}
 	const removeOthers = (index) => {
 		other_list.value.splice(index,1)
@@ -221,7 +236,7 @@
 											</tr>
 											<tr>
 												<td class="p-0" colspan="2">
-													<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text">
+													<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
 												</td>
 												<td class="p-0" width="1">
 													<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
@@ -305,7 +320,7 @@
 											</tr>
 											<tr>
 												<td class="p-0" colspan="2">
-													<input type="text" v-model="other_text" class="p-1 w-full bg-yellow-50">
+													<input type="text" v-model="other_text" class="p-1 w-full bg-yellow-50" id="check_others">
 												</td>
 												<td class="p-0" width="1">
 													<button type="button" @click="addRowOther" class="btn btn-primary p-1">
