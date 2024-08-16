@@ -20,6 +20,32 @@
 		showPreview.value = !hideModal.value
 	}
 	const pr_det = ref(false)
+
+	let terms_list=ref([]);
+	let terms_text=ref();
+	let other_list=ref([]);
+	let other_text=ref();
+	const addRowTerms= () => {
+		const terms = {
+			terms_condition:terms_text.value,
+		}
+		terms_list.value.push(terms)
+		terms_text.value='';
+	}
+	const removeTerms = (index) => {
+		terms_list.value.splice(index,1)
+	}
+
+	const addRowOther= () => {
+		const others = {
+			other_ins:other_text.value,
+		}
+		other_list.value.push(others)
+		other_text.value='';
+	}
+	const removeOthers = (index) => {
+		other_list.value.splice(index,1)
+	}
 </script>
 <template>
 	<navigation>
@@ -195,10 +221,10 @@
 											</tr>
 											<tr>
 												<td class="p-0" colspan="2">
-													<input type="text" class="p-1 w-full bg-yellow-50">
+													<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text">
 												</td>
 												<td class="p-0" width="1">
-													<button class="btn btn-primary p-1">
+													<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
 														<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 													</button>
 												</td>
@@ -259,11 +285,14 @@
 													</div>
 												</td>
 											</tr>
-											<tr>
-												<td class="px-1" colspan="2">sample terms and condition</td>
+											<tr v-for="(t,index) in terms_list">
+												<td class="align-top text-center" width="4%">{{ index + 8 }}.</td>
+												<td class="px-1" colspan="2">
+													<span class="w-32">{{ t.terms_condition }}</span>
+												</td>
 												<td class="p-0 align-top" width="1">
-													<button class="btn btn-danger p-1">
-														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+													<button type="button" class="btn btn-danger p-1">
+														<XMarkIcon fill="none" @click="removeTerms(index)" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 													</button>
 												</td>
 											</tr>
@@ -276,26 +305,18 @@
 											</tr>
 											<tr>
 												<td class="p-0" colspan="2">
-													<input type="text" class="p-1 w-full bg-yellow-50">
+													<input type="text" v-model="other_text" class="p-1 w-full bg-yellow-50">
 												</td>
 												<td class="p-0" width="1">
-													<button class="btn btn-primary p-1">
+													<button type="button" @click="addRowOther" class="btn btn-primary p-1">
 														<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 													</button>
 												</td>
 											</tr>
-											<tr>
-												<td class="px-1" colspan="2">sample instructions</td>
+											<tr v-for="(o, indexes) in other_list">
+												<td class="px-1" colspan="2">{{ o.other_ins }}</td>
 												<td class="p-0 align-top" width="1">
-													<button class="btn btn-danger p-1">
-														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-													</button>
-												</td>
-											</tr>
-											<tr>
-												<td class="px-1" colspan="2">sample instructions -Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
-												<td class="p-0 align-top" width="1">
-													<button class="btn btn-danger p-1">
+													<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 													</button>
 												</td>
