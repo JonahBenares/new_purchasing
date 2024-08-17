@@ -14,6 +14,42 @@
 	}
 
 	const pr_det = ref(false)
+
+	let vendor_list=ref([]);
+	let vendor_name=ref('');
+
+	const addVendor= () => {
+		for(var x=0; x<vendor_list.value.length; x++){
+			if(document.getElementById("v_name"+x).value == vendor_name.value){
+				var vendor_count = 1;
+			}
+		}
+
+			if(vendor_count != undefined){
+				alert("The vendor is already added!")
+			}else if(vendor_name.value == ''){
+				alert("You must select Vendor!")
+			}else{
+				const vendors = {
+					vendor_name:vendor_name.value,
+					vname:vendor_name.value,
+				}
+				vendor_list.value.push(vendors)
+				vendor_name.value='';
+
+				// vendor_list.value.forEach(function (val, index, theArray) {
+				// 	if(document.getElementById("v_name"+index).value == vendor_name.value){
+				// 		alert("This vendor is already added!")
+				// 		vendor_list.value.splice(index,1)
+				// 	}
+				// });
+				// vendor_name.value='';
+			}
+	}
+
+	const removeVendor = (index) => {
+		vendor_list.value.splice(index,1)
+	}
 </script>
 <template>
 	<navigation>
@@ -243,14 +279,33 @@
 										</td>
 									</tr>
 									<tr>
-										<td class=""><input placeholder="Vendor" type="text" class="w-full text-sm p-1 px-2"></td>
+										<!-- <td class=""><input placeholder="Vendor" type="text" v-model="vendor_name" class="w-full text-sm p-1 px-2"></td> -->
+										<select class="w-full text-sm p-1 px-2" v-model="vendor_name">
+											<option value="Bacolod Triumph Hardware (Main Branch)">Bacolod Triumph Hardware (Main Branch)</option>
+											<option value="Bacolod Mindanao Lumber and Plywood Corp.">Bacolod Mindanao Lumber and Plywood Corp.</option>
+											<option value="SGS Hardware Corporation">SGS Hardware Corporation</option>
+											<option value="Bacolod Paint Marketing">Bacolod Paint Marketing</option>
+											<option value="New China Enterprise Inc.">New China Enterprise Inc.</option>
+											<option value="United Bearing Industrial Corp">United Bearing Industrial Corp</option>
+										</select>
 										<td class="text-center">
-											<button class="btn btn-primary p-1">
+											<button type="button" class="btn btn-primary p-1" @click="addVendor">
 												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 											</button>
 										</td>
 									</tr>
-									<tr>
+									<tr v-for="(v,index) in vendor_list">
+										<td class="text-sm p-1 px-2">
+											{{ v.vendor_name }}
+											<input type="hidden" class="p-1 m-0 w-full leading-none vname" :id="'v_name'+index" v-model="v.vname"/>
+										</td>
+										<td class="text-center">
+											<button class="btn btn-danger p-1" @click="removeVendor(index)">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
+									</tr>
+									<!-- <tr>
 										<td class="text-sm p-1 px-2">Lectrix Solutions Electrical Supplies & Services Cebu</td>
 										<td class="text-center">
 											<button class="btn btn-danger p-1">
@@ -274,7 +329,7 @@
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
-									</tr>
+									</tr> -->
 								</table>
 							</div>
 						</div>
