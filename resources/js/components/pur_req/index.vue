@@ -18,17 +18,17 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['EIC24-1005-CNPR', '2024-01-01', '2024-01-10', 'Electrical/EIC', 1, 'Rey D. Argawanon', ''],
-        ['FLM24-2019-CNPR', '2024-02-03', '2024-02-20', 'Fuel and Lube Management', 1, 'Fleur de Liz Ambong / Rey D. Argawanon',''],
-        ['HAS24-2034-CNPR', '2024-03-04', '2024-03-15', 'Safety', 1, 'Joselito Panes/Ricky Madeja',''],
-        ['Admin24-2033-CNPR', '2024-05-03', '2024-05-23', 'Admin', 1, 'Iris J. Sixto',''],
-        ['SPE/Operation24-2032-CNPR', '2024-06-03', '2024-07-03', 'Admin', 1, 'Iris J. Sixto',''],
-        ['MAI22-2256-CNPR', '2024-07-05', '2024-08-11', 'Maintenance', 1, 'Ruel B. Beato',''],
-        ['ITB22-2102-CNPR', '2024-08-06', '2024-09-12', 'IT Department - BCD', 1, 'Jason Flor',''],
-        ['FLM22-2043-CNPR', '2024-09-07', '2024-10-13', 'Fuel and Lube Management', 1, 'Fleur de Liz Ambong / Rey D. Argawanon',''],
-        ['LAB22-2797-CNPR', '2024-10-08', '2024-11-15', 'Laboratory and Chemical', 1, 'Beverly Ampog',''],
-        ['MAI22-2257-CNPR', '2024-11-09', '2024-12-16', 'Maintenance', 1, 'Godfrey S. E. Samano',''],
-        ['HRB22-2067-CNPR', '2024-12-10', '2024-12-29', 'HR', 1, 'Joemar De Los Santos',''],
+        ['EIC24-1005-CNPR', '2024-01-01', '2024-01-10', 'Electrical/EIC', 1, 'Rey D. Argawanon', '' , ''],
+        ['FLM24-2019-CNPR', '2024-02-03', '2024-02-20', 'Fuel and Lube Management', 1, 'Fleur de Liz Ambong / Rey D. Argawanon', '' , ''],
+        ['HAS24-2034-CNPR', '2024-03-04', '2024-03-15', 'Safety', 1, 'Joselito Panes/Ricky Madeja', '' , ''],
+        ['Admin24-2033-CNPR', '2024-05-03', '2024-05-23', 'Admin', 1, 'Iris J. Sixto', '' , ''],
+        ['SPE/Operation24-2032-CNPR', '2024-06-03', '2024-07-03', 'Admin', 1, 'Iris J. Sixto', '' , ''],
+        ['MAI22-2256-CNPR', '2024-07-05', '2024-08-11', 'Maintenance', 1, 'Ruel B. Beato', '' , ''],
+        ['ITB22-2102-CNPR', '2024-08-06', '2024-09-12', 'IT Department - BCD', 1, 'Jason Flor', '' , ''],
+        ['FLM22-2043-CNPR', '2024-09-07', '2024-10-13', 'Fuel and Lube Management', 1, 'Fleur de Liz Ambong / Rey D. Argawanon', '' , ''],
+        ['LAB22-2797-CNPR', '2024-10-08', '2024-11-15', 'Laboratory and Chemical', 1, 'Beverly Ampog', '' , ''],
+        ['MAI22-2257-CNPR', '2024-11-09', '2024-12-16', 'Maintenance', 1, 'Godfrey S. E. Samano', '' , ''],
+        ['HRB22-2067-CNPR', '2024-12-10', '2024-12-29', 'HR', 1, 'Joemar De Los Santos', '' , ''],
     ];
 
     const options = {
@@ -138,6 +138,7 @@
                                         <th class="!text-xs bg-gray-100 uppercase"> Department</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="5%"> Urgency</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Requestor</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Status</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -145,7 +146,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-6="props">
+                                <template #column-7="props">
                                     <a href="/pur_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>

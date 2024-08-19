@@ -139,7 +139,7 @@
                                         <th class="!text-xs bg-gray-100 uppercase" width="12%"> PR</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ Name</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Date</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="10%"> Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> Vendors</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">

@@ -115,7 +115,7 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive pt-3">
+                        <div class=" pt-3">
                             <!-- <table class="table table-bordered table-hover !border "> -->
                                 <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>

@@ -22402,3 +22402,9 @@ div.dt-search > label{
   margin: 0px!important;
   
 }
+
+
+table tr td {
+  text-wrap: pretty!important;
+  vertical-align: text-top!important;
+}
