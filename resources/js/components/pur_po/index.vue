@@ -112,25 +112,12 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="flex justify-between">
-                            <div class="flex justify-left ">
-                                <!-- <div class="form-control !w-10 !border-r-0 px-2">
-                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 "></MagnifyingGlassIcon>
-                                </div>
-                                <input type="text" class="form-control !w-72" placeholder="Search"> -->
-                            </div>
-                            <span>
-                                <div class="d-flex justify-content-between align-items-end flex-wrap space-x-2">
-                                    <!-- <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
-                                        <ArrowUpOnSquareIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ArrowUpOnSquareIcon>
-                                    </button> -->
-                                    <a href="/pur_po/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
-                                        <span>Add New PO</span>
-                                    </a>
-                                </div>
-                            </span>
+                        <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
+                            <a href="/pur_po/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                                <span>Add New PO</span>
+                            </a>
                         </div>
-                        <div class="table-responsive pt-3">
+                        <div class="pt-3">
                             <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>

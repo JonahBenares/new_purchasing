@@ -115,37 +115,19 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="flex justify-between">
-                            <div class="flex justify-left ">
-                                <div class="form-control !w-10 !border-r-0 px-2">
-                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 "></MagnifyingGlassIcon>
-                                </div>
-                                <input type="text" class="form-control !w-72" placeholder="Search">
-                            </div>
-                            <span>
-                                <!-- <div class="d-flex justify-content-between align-items-end flex-wrap space-x-2">
-                                    <button type="button" class="btn btn-light !bg-gray-100 px-2 py-2 mt-2 mt-xl-0 !text-center !text-gray-500" title="export">
-                                        <ArrowUpOnSquareIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ArrowUpOnSquareIcon>
-                                    </button>
-                                    <a href="/pur_aoq/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
-                                        <span>Add New AOQ</span>
-                                    </a>
-                                </div> -->
-                            </span>
-                        </div>
                         <div class="table-responsive pt-3">
                             <!-- <table class="table table-bordered table-hover !border "> -->
                                 <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="8%"> AOQ Date</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> PR No</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Supplier</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Department</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Enduse</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Requestor</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Status</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
+                                        <th class="!text-xs bg-gray-100 uppercase" > AOQ Date</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > PR No</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > Supplier</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > Department</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > Enduse</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > Requestor</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > Status</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"  align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
                                             </span>
