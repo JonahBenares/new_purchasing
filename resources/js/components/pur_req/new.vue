@@ -36,8 +36,6 @@
 			alert("Uom must not be empty!")
 		}else if(item_desc.value == ''){
 			alert("Item Description must not be empty!")
-		}else if(date_needed.value == ''){
-			alert("Date Needed must not be empty!")
 		}else{
 		const items = {
 			item_no:item_no.value,
