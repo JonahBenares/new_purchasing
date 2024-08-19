@@ -18,13 +18,17 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['2024-02-04', 'SPE/Operation24-2032-CNPR', 'Bacolod Triumph Hardware (Main Branch)</br>Bacolod Mindanao Lumber and Plywood Corp.</br>SGS Hardware Corporation', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
-        ['2024-02-04', 'Admin24-2033-CNPR', 'Javieros Hollow Blocks Factory', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
-        ['2024-02-04', 'HAS24-2034-CNPR', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Bacolod Paint Marketing</span></br>Sugarland Hardware Corp.</br>Bacolod Luis Paint Center Enterprises. Inc.', 'Safety', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-02-04', 'FLM24-2019-CNPR', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">New China Enterprise Inc.</span>', 'Fuel and Lube Management', 'Fire Hydrant System', 'JFleur de Liz Ambong / Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
-        ['2024-01-09', 'EIC24-1005-CNPR', 'Bearing Center & Machinery Inc.</br>CAR-V Industrial Sales</br><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1</span>">United Bearing Industrial Corp', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],    
-    ];
+        ['<p class="m-0 text-center">2024-02-04</p>', 'SPE/Operation24-2032-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li> <li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li> <li class="leading-none">SGS Hardware Corporation</li> </ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
+        ['<p class="m-0 text-center">2024-02-04</p>', 'Admin24-2033-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>'],
 
+        ['<p class="m-0 text-center">2024-02-04</p>', 'HAS24-2034-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">Bacolod Paint Marketing</span></li> <li class="leading-none">Sugarland Hardware Corp.</li> <li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li> </ul>', 'Safety', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['<p class="m-0 text-center">2024-02-04</p>', 'FLM24-2019-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">New China Enterprise Inc.</span></li></ul>', 'Fuel and Lube Management', 'Fire Hydrant System', 'JFleur de Liz Ambong / Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],
+        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],    
+        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>'],   
+        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none p-1"><span>United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-blue-500 text-white !rounded-xl px-2 p-1">Done TE</span>'],   
+    ];
+    
+    // 
     const options = {
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
@@ -116,8 +120,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class=" pt-3">
-                            <!-- <table class="table table-bordered table-hover !border "> -->
-                                <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" > AOQ Date</th>
@@ -138,68 +141,13 @@
                                     <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>
                                 </template> -->
                                 <template #column-7="props">
-                                    <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
-                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                    </a>
+                                    <div class="align-center">
+                                        <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
+                                            <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                        </a>
+                                    </div>
                                 </template>
-                                </DataTable>
-                                <!-- <tbody>
-                                    <tr class="">
-                                        <td class="!align-top !text-xs"> 05/06/24 </td>
-                                        <td class="!align-top !text-xs"> PR-CENPRI24-1005 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> rfq_it001 </td>
-                                        <td class="!align-top !text-xs"> 
-                                           Henne Tanan
-                                        </td>
-                                        <td class="!align-top !text-xs !text-center">
-                                            <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>
-                                        </td>
-                                        <td class="!align-top !text-xs p-1" align="center">
-                                            <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
-                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="">
-                                        <td class="!align-top !text-xs"> 05/06/24 </td>
-                                        <td class="!align-top !text-xs"> PR-CENPRI24-1006 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> rfq_it001 </td>
-                                        <td class="!align-top !text-xs"> 
-                                           Henne Tanan
-                                        </td>
-                                        <td class="!align-top !text-xs !text-center">
-                                            <span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>
-                                        </td>
-                                        <td class="!align-top !text-xs p-1" align="center">
-                                            <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
-                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="">
-                                        <td class="!align-top !text-xs"> 05/06/24 </td>
-                                        <td class="!align-top !text-xs"> PR-CENPRI24-1007 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> rfq_it001 </td>
-                                        <td class="!align-top !text-xs"> 
-                                           Henne Tanan
-                                        </td>
-                                        <td class="!align-top !text-xs !text-center">
-                                            <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>
-                                        </td>
-                                        <td class="!align-top !text-xs p-1" align="center">
-                                            <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
-                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table> -->
+                            </DataTable>
                         </div>
                     </div>
                 </div>

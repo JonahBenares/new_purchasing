@@ -22407,4 +22407,10 @@ div.dt-search > label{
 table tr td {
   text-wrap: pretty!important;
   vertical-align: text-top!important;
+  color:#545454 !important;
+  
+}
+
+table tr.selected td{
+  color:white!important
 }
