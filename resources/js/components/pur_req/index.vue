@@ -18,17 +18,17 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['EIC24-1005-CNPR', '2024-01-01', '2024-01-10', 'Electrical/EIC', 1, 'Rey D. Argawanon', '' , ''],
-        ['FLM24-2019-CNPR', '2024-02-03', '2024-02-20', 'Fuel and Lube Management', 1, 'Fleur de Liz Ambong / Rey D. Argawanon', '' , ''],
-        ['HAS24-2034-CNPR', '2024-03-04', '2024-03-15', 'Safety', 1, 'Joselito Panes/Ricky Madeja', '' , ''],
-        ['Admin24-2033-CNPR', '2024-05-03', '2024-05-23', 'Admin', 1, 'Iris J. Sixto', '' , ''],
-        ['SPE/Operation24-2032-CNPR', '2024-06-03', '2024-07-03', 'Admin', 1, 'Iris J. Sixto', '' , ''],
-        ['MAI22-2256-CNPR', '2024-07-05', '2024-08-11', 'Maintenance', 1, 'Ruel B. Beato', '' , ''],
-        ['ITB22-2102-CNPR', '2024-08-06', '2024-09-12', 'IT Department - BCD', 1, 'Jason Flor', '' , ''],
-        ['FLM22-2043-CNPR', '2024-09-07', '2024-10-13', 'Fuel and Lube Management', 1, 'Fleur de Liz Ambong / Rey D. Argawanon', '' , ''],
-        ['LAB22-2797-CNPR', '2024-10-08', '2024-11-15', 'Laboratory and Chemical', 1, 'Beverly Ampog', '' , ''],
-        ['MAI22-2257-CNPR', '2024-11-09', '2024-12-16', 'Maintenance', 1, 'Godfrey S. E. Samano', '' , ''],
-        ['HRB22-2067-CNPR', '2024-12-10', '2024-12-29', 'HR', 1, 'Joemar De Los Santos', '' , ''],
+        ['EIC24-1005-CNPR', '<div class="text-center">2024-01-01</div>', '<div class="text-center">2024-01-10</div>', 'Electrical/EIC', '<div class="text-center">1</div>', 'Rey D. Argawanon', '' , ''],
+        ['FLM24-2019-CNPR', '<div class="text-center">2024-02-03</div>', '<div class="text-center">2024-02-20</div>', 'Fuel and Lube Management', '<div class="text-center">1</div>', 'Fleur de Liz Ambong / Rey D. Argawanon', '' , ''],
+        ['HAS24-2034-CNPR', '<div class="text-center">2024-03-04</div>', '<div class="text-center">2024-03-15</div>', 'Safety', '<div class="text-center">1</div>', 'Joselito Panes/Ricky Madeja', '' , ''],
+        ['Admin24-2033-CNPR', '<div class="text-center">2024-05-03</div>', '<div class="text-center">2024-05-23</div>', 'Admin', '<div class="text-center">1</div>', 'Iris J. Sixto', '' , ''],
+        ['SPE/Operation24-2032-CNPR', '<div class="text-center">2024-06-03</div>', '<div class="text-center">2024-07-03</div>', 'Admin', '<div class="text-center">1</div>', 'Iris J. Sixto', '' , ''],
+        ['MAI22-2256-CNPR', '<div class="text-center">2024-07-05</div>', '<div class="text-center">2024-08-11</div>', 'Maintenance', '<div class="text-center">1</div>', 'Ruel B. Beato', '' , ''],
+        ['ITB22-2102-CNPR', '<div class="text-center">2024-08-06</div>', '<div class="text-center">2024-09-12</div>', 'IT Department - BCD', '<div class="text-center">1</div>', 'Jason Flor', '' , ''],
+        ['FLM22-2043-CNPR', '<div class="text-center">2024-09-07</div>', '<div class="text-center">2024-10-13</div>', 'Fuel and Lube Management', '<div class="text-center">1</div>', 'Fleur de Liz Ambong / Rey D. Argawanon', '' , ''],
+        ['LAB22-2797-CNPR', '<div class="text-center">2024-10-08</div>', '<div class="text-center">2024-11-15</div>', 'Laboratory and Chemical', '<div class="text-center">1</div>', 'Beverly Ampog', '' , ''],
+        ['MAI22-2257-CNPR', '<div class="text-center">2024-11-09</div>', '<div class="text-center">2024-12-16</div>', 'Maintenance', '<div class="text-center">1</div>', 'Godfrey S. E. Samano', '' , ''],
+        ['HRB22-2067-CNPR', '<div class="text-center">2024-12-10</div>', '<div class="text-center">2024-12-29</div>', 'HR', '<div class="text-center">1</div>', 'Joemar De Los Santos', '' , ''],
     ];
 
     const options = {

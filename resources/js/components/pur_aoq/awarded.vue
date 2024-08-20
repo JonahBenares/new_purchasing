@@ -17,7 +17,7 @@
 </script>
 <template>
 	<navigation>
-		<div class="bg-yellow-400 text-white px-3 py-2 font-bold">For Technical Evaluation</div>
+        <div class="bg-lime-500 text-white px-3 py-2 font-bold">Awarded</div>
 		<div class="bg-white p-4 ">
 			<div class="overflow-x-scroll">
 				<div class="">
@@ -120,7 +120,64 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-yellow-300">
+										<td class="p-1 align-top ">
+											<div class="flex justify-between space-x-1">
+												<span>Php</span>
+												<span>100.00</span>
+											</div>
+										</td>
+										<td class="p-1 align-top" colspan="2">
+											<div class="flex justify-between space-x-1">
+												<span>Php</span>
+												<span>500.00</span>
+											</div>
+										</td>
+										
+										<td class="p-1 align-top"></td>
+
+										<td class="p-1">
+											sample 1
+										</td>
+										<td class="p-1 align-top bg-lime-500 text-white">
+											<div class="flex justify-between space-x-1">
+												<span>Php</span>
+												<span>100.00</span>
+											</div>
+										</td>
+										<td class="p-1 align-top" colspan="2">
+											<div class="flex justify-between space-x-1">
+												<span>Php</span>
+												<span>500.00</span>
+											</div>
+										</td>
+										
+										<td class="p-1 align-top"></td>
+
+										<td class="p-1">
+											sample 1
+										</td>
+										<td class="p-1 align-top">
+											<div class="flex justify-between space-x-1">
+												<span>Php</span>
+												<span>100.00</span>
+											</div>
+										</td>
+										<td class="p-1 align-top" colspan="2">
+											<div class="flex justify-between space-x-1">
+												<span>Php</span>
+												<span>500.00</span>
+											</div>
+										</td>
+										
+										<td class="p-1 align-top"></td>
+									<!-- loop offers per vendor here -->
+								</tr>
+								<tr>
+									<!-- loop offers per vendor here -->
+										<td class="p-1">
+											sample 1
+										</td>
+										<td class="p-1 align-top ">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
@@ -177,7 +234,7 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-yellow-300">
+										<td class="p-1 align-top bg-lime-500 text-white">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
@@ -213,64 +270,7 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-yellow-300">
-											<div class="flex justify-between space-x-1">
-												<span>Php</span>
-												<span>100.00</span>
-											</div>
-										</td>
-										<td class="p-1 align-top" colspan="2">
-											<div class="flex justify-between space-x-1">
-												<span>Php</span>
-												<span>500.00</span>
-											</div>
-										</td>
-										
-										<td class="p-1 align-top"></td>
-									<!-- loop offers per vendor here -->
-								</tr>
-								<tr>
-									<!-- loop offers per vendor here -->
-										<td class="p-1">
-											sample 1
-										</td>
-										<td class="p-1 align-top bg-yellow-300">
-											<div class="flex justify-between space-x-1">
-												<span>Php</span>
-												<span>100.00</span>
-											</div>
-										</td>
-										<td class="p-1 align-top" colspan="2">
-											<div class="flex justify-between space-x-1">
-												<span>Php</span>
-												<span>500.00</span>
-											</div>
-										</td>
-										
-										<td class="p-1 align-top"></td>
-
-										<td class="p-1">
-											sample 1
-										</td>
-										<td class="p-1 align-top bg-yellow-300">
-											<div class="flex justify-between space-x-1">
-												<span>Php</span>
-												<span>100.00</span>
-											</div>
-										</td>
-										<td class="p-1 align-top" colspan="2">
-											<div class="flex justify-between space-x-1">
-												<span>Php</span>
-												<span>500.00</span>
-											</div>
-										</td>
-										
-										<td class="p-1 align-top"></td>
-
-										<td class="p-1">
-											sample 1
-										</td>
-										<td class="p-1 align-top bg-yellow-300">
+										<td class="p-1 align-top bg-lime-500 text-white">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
@@ -736,7 +736,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="flex justify-center">
-						<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Print TE</a>
+						<button class="btn btn-primary mr-2 w-44">Print</button>
 					</div>
 				</div>
 			</div>

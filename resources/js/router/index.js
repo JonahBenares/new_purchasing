@@ -46,6 +46,7 @@ import pur_aoqIndex from '../components/pur_aoq/index.vue'
 import pur_aoqNew from '../components/pur_aoq/new.vue'
 import pur_aoqView from '../components/pur_aoq/view.vue'
 import pur_aoqPrintTe from '../components/pur_aoq/print_te.vue'
+import pur_aoqAwarded from '../components/pur_aoq/awarded.vue'
 
 import pur_poIndex from '../components/pur_po/index.vue'
 import pur_poNew from '../components/pur_po/new.vue'
@@ -219,6 +220,10 @@ const routes = [
     {
         path:'/pur_aoq/print_te',
         component: pur_aoqPrintTe,
+    },
+    {
+        path:'/pur_aoq/awarded',
+        component: pur_aoqAwarded,
     },
 
     {

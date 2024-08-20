@@ -18,22 +18,18 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['SPE/Operation24-2032-CNPR', 'RFQ-0005', 'RFQ 5', '2024-07-01', 'Bacolod Triumph Hardware (Main Branch)</br>Bacolod Mindanao Lumber and Plywood Corp.</br>SGS Hardware Corporation', ''],
-        ['Admin24-2033-CNPR', 'RFQ-0004', 'RFQ 4', '2024-05-21', 'Javieros Hollow Blocks Factory', ''],
-        ['HAS24-2034-CNPR', 'RFQ-0003', 'RFQ 3', '2024-03-13', 'Bacolod Paint Marketing</br>Sugarland Hardware Corp.</br>Bacolod Luis Paint Center Enterprises. Inc.', ''],
-        ['FLM24-2019-CNPR', 'RFQ-0002', 'RFQ 2', '2024-02-08', 'New China Enterprise Inc.', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ 1', '2024-01-08', 'Bearing Center & Machinery Inc.</br>CAR-V Industrial Sales</br>United Bearing Industrial Corp', ''],
-
-
-
-
-
-
-
-
-
+        ['SPE/Operation24-2032-CNPR', 'RFQ-0005', 'RFQ 5', '<div class="text-center">2024-07-01</div>', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li><li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li><li class="leading-none">SGS Hardware Corporation</li></ul>', ''],
+        ['Admin24-2033-CNPR', 'RFQ-0004', 'RFQ 4', '<div class="text-center">2024-05-21</div>', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', ''],
+        ['HAS24-2034-CNPR', 'RFQ-0003', 'RFQ 3', '<div class="text-center">2024-03-13</div>', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Paint Marketing</li><li class="leading-none">Sugarland Hardware Corp.</li><li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li></ul>', ''],
+        ['FLM24-2019-CNPR', 'RFQ-0002', 'RFQ 2', '<div class="text-center">2024-02-08</div>', '<ul class="list-disc m-0"><li class="leading-none">New China Enterprise Inc.</li> </ul>', ''],
+        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ 1', '<div class="text-center">2024-01-08</div>', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none">United Bearing Industrial Corp</li></ul>', ''],
 
     ];
+
+    
+    
+    
+    
 
     const options = {
 		// dom: 'Bftip',
@@ -136,7 +132,7 @@
                                 <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="12%"> PR</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> PR</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ Name</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="10%"> Date</th>
