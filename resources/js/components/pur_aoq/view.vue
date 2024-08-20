@@ -1,10 +1,34 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
+
+	const dangerAlert = ref(false)
+	const successAlert = ref(false)
+	const warningAlert = ref(false)
+    const infoAlert = ref(false)
+	const hideAlert = ref(true)
+	const openDangerAlert = () => {
+		dangerAlert.value = !dangerAlert.value
+	}
+    const openSuccessAlert = () => {
+		successAlert.value = !successAlert.value
+	}
+
+	const openWarningAlert = () => {
+		warningAlert.value = !warningAlert.value
+	}
+	const closeAlert = () => {
+		successAlert.value = !hideAlert.value
+		dangerAlert.value = !hideAlert.value
+		dangerAlert.value = !hideAlert.value
+		warningAlert.value = !hideAlert.value
+		infoAlert.value = !hideAlert.value
+	}
+
 
 	const showAddVendor = ref(false)
 	const showPreview = ref(false)
@@ -427,7 +451,7 @@
 												<button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
 											</div>
 											<div class="flex justify-between space-x-1">
-												<button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button>
+												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
 												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_1'">Back</button>
 												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_3'">Next</button>
 											</div>
@@ -774,9 +798,9 @@
 												<button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
 											</div>
 											<div class="flex justify-between space-x-1">
-												<button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button>
+												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
 												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_2'">Back</button>
-												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_3'">Save & Proceed</button>
+												<button type="submit" class="btn btn-primary w-26" @click="openSuccessAlert()">Save AOQ</button>
 											</div>
 											
 										</div>
@@ -1121,7 +1145,7 @@
 											</div>
 											<div class="flex justify-between space-x-1">
 												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
-												<button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button>
+												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
 												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_2'">Next</button>
 											</div>
 											
@@ -2011,6 +2035,89 @@
 										<td class="!border-0" colspan="4"><br></td>
 									</tr>
 								</table>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">You have successfully created an AOQ.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
+									<a href="/pur_po/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed to PO</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:warningAlert }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-yellow-400">Success!</h2>
+									<h5 class="leading-tight">You have successfully saved an AOQ as draft.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<a href="/pur_req/" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Show List</a>
+									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
+									<a href="/pur_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+								</div>
 							</div>
 						</div>
 					</div> 

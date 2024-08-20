@@ -136,7 +136,7 @@
 								</div>
 							</div>
 							<div class="col-lg-1">
-								<span class="text-center w-full block text-3xl mt-4 text-gray-400">OR</span>
+								<span class="text-center w-full block text-lg mt-4 text-gray-400">OR</span>
 							</div>
 							<div class="col-lg-4 col-md-3">
 								<div class="form-group m-0">
@@ -453,7 +453,7 @@
 					<div class="flex justify-center">
 						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
 							<div class="p-2 text-white">
-								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon fi>
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
 							</div>
 						</div>
 					</div>
@@ -494,7 +494,7 @@
 					<div class="flex justify-center">
 						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
 							<div class="p-2 text-white">
-								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon fi>
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
 							</div>
 						</div>
 					</div>
