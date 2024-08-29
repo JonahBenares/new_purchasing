@@ -1,5 +1,5 @@
 <script setup>
-    import{HomeIcon, KeyIcon, UserIcon, DocumentTextIcon, RectangleGroupIcon, Square3Stack3DIcon, DocumentDuplicateIcon} from '@heroicons/vue/24/solid'
+    import{HomeIcon, KeyIcon, UserIcon, DocumentTextIcon, RectangleGroupIcon, Square3Stack3DIcon, DocumentDuplicateIcon, TruckIcon, BanknotesIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
     
@@ -11,27 +11,53 @@
     const prDrop = ref(false);
     const rfqDrop = ref(false);
     const poDrop = ref(false);
+    const drDrop = ref(false);
+    const rfdDrop = ref(false);
 	const hideDrop = ref(true)
 	const openMaster = () => {
 		masterfileDrop.value = !masterfileDrop.value
 		prDrop.value = !hideDrop.value
         rfqDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
 	}
     const openPR = () => {
 		prDrop.value = !prDrop.value
         masterfileDrop.value = !hideDrop.value
         rfqDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
 	}
     const openRFQ = () => {
 		rfqDrop.value = !rfqDrop.value
         prDrop.value = !hideDrop.value
         masterfileDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
 	}
     const openPO = () => {
         poDrop.value = !poDrop.value
+		rfqDrop.value = !hideDrop.value
+        prDrop.value = !hideDrop.value
+        masterfileDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+	}
+    const openDR = () => {
+        drDrop.value = !drDrop.value
+        poDrop.value = !hideDrop.value
+		rfqDrop.value = !hideDrop.value
+        prDrop.value = !hideDrop.value
+        masterfileDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+	}
+    const openRFD = () => {
+        rfdDrop.value = !rfdDrop.value
+        drDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
 		rfqDrop.value = !hideDrop.value
         prDrop.value = !hideDrop.value
         masterfileDrop.value = !hideDrop.value
@@ -326,6 +352,56 @@
                                     <li class="nav-item list-none"> <a class="nav-link" href="/pur_po">Show List</a></li>
                                     <li class="nav-item list-none"> <a class="nav-link" href="/po_direct">Direct PO</a></li>
                                     <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li>
+                                </ul>
+                            </div>
+                        </Transition>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link !text-gray-600 cursor-pointer" @click="openDR()" >
+                            <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                <TruckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></TruckIcon>
+                            </i>
+                                <span class="menu-title">Delivery Receipt</span>
+                            <!-- <i class="menu-arrow"></i> -->
+                        </a>
+                        <Transition
+                            enter-active-class="transition ease-out duration-250"
+                            enter-from-class="opacity-0 h-1/2"
+                            enter-to-class="opacity-100 h-full"
+                            leave-active-class="transition ease-in duration-100"
+                            leave-from-class="opacity-100 h-full"
+                            leave-to-class="opacity-0 h-1/2"
+                        >
+                            <div class="!hidden"  :class="{ show:drDrop }">
+                                <ul class="nav flex-column sub-menu">
+                                    <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new">Add New</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Show List</a></li>
+                                </ul>
+                            </div>
+                        </Transition>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link !text-gray-600 cursor-pointer" @click="openRFD()" >
+                            <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                <BanknotesIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></BanknotesIcon>
+                            </i>
+                                <span class="menu-title">Request for DISBMT</span>
+                            <!-- <i class="menu-arrow"></i> -->
+                        </a>
+                        <Transition
+                            enter-active-class="transition ease-out duration-250"
+                            enter-from-class="opacity-0 h-1/2"
+                            enter-to-class="opacity-100 h-full"
+                            leave-active-class="transition ease-in duration-100"
+                            leave-from-class="opacity-100 h-full"
+                            leave-to-class="opacity-0 h-1/2"
+                        >
+                            <div class="!hidden"  :class="{ show:rfdDrop }">
+                                <ul class="nav flex-column sub-menu">
+                                    <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse/new">Add New</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse">Show List</a></li>
                                 </ul>
                             </div>
                         </Transition>
