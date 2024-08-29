@@ -1,15 +1,18 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationCircleIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
-	const awesome =  ref();
+	const buttons_set =  ref()
+	const approval_set =  ref(false)
 
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
+    const approveAlert = ref(false)
+	const hide_button = ref()
 	const hideAlert = ref(true)
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
@@ -17,7 +20,12 @@
     const openSuccessAlert = () => {
 		successAlert.value = !successAlert.value
 	}
-
+	const openInfoAlert = () => {
+		infoAlert.value = !infoAlert.value
+	}
+	const openApproveAlert = () => {
+		approveAlert.value = !approveAlert.value
+	}
 	const openWarningAlert = () => {
 		warningAlert.value = !warningAlert.value
 	}
@@ -27,8 +35,17 @@
 		dangerAlert.value = !hideAlert.value
 		warningAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
+		approveAlert.value = !hideAlert.value
 	}
 
+	const closeInfoAlert = () => {
+		infoAlert.value = !hideAlert.value
+	}
+	const closeInfoAlert2 = () => {
+		infoAlert.value = !hideAlert.value
+		approval_set.value = !approval_set.value
+		buttons_set.value = !hide_button.value
+	}
 
 	const showAddVendor = ref(false)
 	const showPreview = ref(false)
@@ -442,35 +459,38 @@
 								</div>
 								<hr	class="border-dashed mt-4">
 								<div class=""></div>
-								<div class="row my-2 bg-yellow-50 px-2 py-3" v-if="awesome"> 
-									<div class="col-lg-2 col-md-3 pl-0">
-										<span class="text-sm p-1">Approve Date</span>
-										<input type="date" class="form-control">
-									</div>
-									<div class="col-lg-3 col-md-3">
-										<span class="text-sm p-1">Approve By</span>
-										<select class="form-control">
-											<option value="">Beverly Espareal</option>
-										</select>
-									</div>
-									<div class="col-lg-6 col-md-6">
-										<span class="text-sm p-1">Reason</span>
-										<textarea name="" class="form-control" rows="1"></textarea>
-									</div>
-									<div class="col-lg-1 col-md-1">
-										<span class="text-sm p-1"><br></span>
-										<a href="/pur_po/view" class="btn btn-primary btn-sm" >Approve</a>
+								<div class=" !hidden" :class="{ show:approval_set }">
+									<div class="row my-2 bg-yellow-50 px-2 py-3"> 
+										<div class="col-lg-2 col-md-3 pl-0">
+											<span class="text-sm p-1">Approve Date</span>
+											<input type="date" class="form-control">
+										</div>
+										<div class="col-lg-3 col-md-3">
+											<span class="text-sm p-1">Approve By</span>
+											<select class="form-control">
+												<option value="">Beverly Espareal</option>
+											</select>
+										</div>
+										<div class="col-lg-6 col-md-6">
+											<span class="text-sm p-1">Reason</span>
+											<textarea name="" class="form-control" rows="1"></textarea>
+										</div>
+										<div class="col-lg-1 col-md-1">
+											<span class="text-sm p-1"><br></span>
+											<button @click="openApproveAlert()" class="btn btn-primary btn-sm" >Approve</button>
+										</div>
 									</div>
 								</div>
-								
-								<div class="row my-2" v-else> 
-									<div class="col-lg-12 col-md-12">
-										<div class="flex justify-center space-x-2">
-											<div class="flex justify-between space-x-1">
-												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
-												<button  class="btn btn-primary w-36"  @click="awesome = !awesome">Save</button>
+								<div class="" :class="{ hidden:buttons_set }">
+									<div class="row my-2" > 
+										<div class="col-lg-12 col-md-12">
+											<div class="flex justify-center space-x-2">
+												<div class="flex justify-between space-x-1">
+													<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
+													<button  class="btn btn-primary w-36"  @click="openInfoAlert()">Save</button>
+												</div>
+												
 											</div>
-											
 										</div>
 									</div>
 								</div>
@@ -496,7 +516,7 @@
 					<div class="flex justify-center">
 						<div class="!border-blue-500 border-8 bg-blue-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
 							<div class="p-2 text-white">
-								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+								<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></ExclamationTriangleIcon>
 							</div>
 						</div>
 					</div>
@@ -505,8 +525,8 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
-									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created an AOQ.</h5>
+									<h2 class="mb-2  font-bold text-blue-400">Confirm</h2>
+									<h5 class="leading-tight">Are you sure you want to revise this PO?</h5>
 								</div>
 							</div>
 						</div>
@@ -515,7 +535,50 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
-									<a href="/pur_po/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed to PO</a>
+									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
+									<button @click="closeInfoAlert2()" class="btn !bg-blue-500 !text-white btn-sm !rounded-full w-full">Save</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:approveAlert }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-blue-500 border-8 bg-blue-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></ExclamationTriangleIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-blue-400">Confirm</h2>
+									<h5 class="leading-tight">Are you sure you want to approve this revision?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
+									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">No</button>
+									<a href="/pur_po/view" class="btn !bg-blue-500 !text-white btn-sm !rounded-full w-full">Yes</a>
 								</div>
 							</div>
 						</div>
@@ -555,9 +618,9 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_req/" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Show List</a>
+									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/pur_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+									<!-- <a href="/pur_po/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a> -->
 								</div>
 							</div>
 						</div>
