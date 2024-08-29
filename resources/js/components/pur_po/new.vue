@@ -42,28 +42,7 @@
 		showPreview.value = !hideModal.value
 	}
 
-	const dangerAlert = ref(false)
-	const successAlert = ref(false)
-	const warningAlert = ref(false)
-    const infoAlert = ref(false)
-	const hideAlert = ref(true)
-	const openDangerAlert = () => {
-		dangerAlert.value = !dangerAlert.value
-	}
-    const openSuccessAlert = () => {
-		successAlert.value = !successAlert.value
-	}
-
-	const openWarningAlert = () => {
-		warningAlert.value = !warningAlert.value
-	}
-	const closeAlert = () => {
-		successAlert.value = !hideAlert.value
-		dangerAlert.value = !hideAlert.value
-		dangerAlert.value = !hideAlert.value
-		warningAlert.value = !hideAlert.value
-		infoAlert.value = !hideAlert.value
-	}
+	
 	const pr_det = ref(false)
 
 	let terms_list=ref([]);
@@ -416,19 +395,11 @@
             leave-from-class="opacity-100 scale-500"
             leave-to-class="opacity-0 scale-95"
         >
-<<<<<<< HEAD
 			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
 				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
-=======
-			<div class="modal p-0 !bg-transparent" :class="{ show:warningAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
-				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
-					<div class="flex justify-center">
-						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
->>>>>>> 111c1e6ae044f5a11dbfe8e280dc63d605da0843
 							<div class="p-2 text-white">
 								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
 							</div>
@@ -439,13 +410,8 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
-<<<<<<< HEAD
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
 									<h5 class="leading-tight">You have successfully created a new PO.</h5>
-=======
-									<h2 class="mb-2  font-bold text-yellow-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully saved a PO as draft.</h5>
->>>>>>> 111c1e6ae044f5a11dbfe8e280dc63d605da0843
 								</div>
 							</div>
 						</div>
@@ -453,18 +419,12 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-<<<<<<< HEAD
 									<a href="/pur_po/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
 									<a href="/pur_po/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
-=======
-									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
-									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<!-- <a href="/pur_po/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a> -->
->>>>>>> 111c1e6ae044f5a11dbfe8e280dc63d605da0843
 								</div>
 							</div>
 						</div>
-					</div> 
+					</div>
 				</div>
 			</div>
 		</Transition>
@@ -476,19 +436,11 @@
             leave-from-class="opacity-100 scale-500"
             leave-to-class="opacity-0 scale-95"
         >
-<<<<<<< HEAD
 			<div class="modal p-0 !bg-transparent" :class="{ show:warningAlert }">
 				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
-=======
-			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
-				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
-					<div class="flex justify-center">
-						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
->>>>>>> 111c1e6ae044f5a11dbfe8e280dc63d605da0843
 							<div class="p-2 text-white">
 								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
 							</div>
@@ -499,13 +451,8 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
-<<<<<<< HEAD
 									<h2 class="mb-2  font-bold text-yellow-400">Success!</h2>
 									<h5 class="leading-tight">You have successfully saved a PO as draft.</h5>
-=======
-									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created a new PO.</h5>
->>>>>>> 111c1e6ae044f5a11dbfe8e280dc63d605da0843
 								</div>
 							</div>
 						</div>
@@ -513,14 +460,9 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-<<<<<<< HEAD
 									<a href="/pur_po/" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Show List</a>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<a href="/pur_po/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
-=======
-									<a href="/pur_po/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a href="/pur_po/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
->>>>>>> 111c1e6ae044f5a11dbfe8e280dc63d605da0843
 								</div>
 							</div>
 						</div>

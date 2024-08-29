@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, XMarkIcon, PencilIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const modalNew = ref(false)
@@ -96,8 +96,8 @@
 											<td class="!text-sm p-1">5%</td>
 											<td class="!text-sm p-1">Notes</td>
 											<td class="!text-sm p-0" align="center">
-												<button class="btn-danger btn btn-xs text-white p-1">
-													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></XMarkIcon>
+												<button class="btn-info btn btn-xs text-white p-1" @click="openEdit()">
+													<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></PencilIcon>
 												</button>
 											</td>
 										</tr>
@@ -115,8 +115,8 @@
 											<td class="!text-sm p-1">5%</td>
 											<td class="!text-sm p-1">Notes</td>
 											<td class="!text-sm p-0" align="center">
-												<button class="btn-danger btn btn-xs text-white p-1">
-													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></XMarkIcon>
+												<button class="btn-info btn btn-xs text-white p-1" @click="openEdit()">
+													<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></PencilIcon>
 												</button>
 											</td>
 										</tr>
@@ -134,8 +134,8 @@
 											<td class="!text-sm p-1">5%</td>
 											<td class="!text-sm p-1">Notes</td>
 											<td class="!text-sm p-0" align="center">
-												<button class="btn-danger btn btn-xs text-white p-1">
-													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></XMarkIcon>
+												<button class="btn-info btn btn-xs text-white p-1" @click="openEdit()">
+													<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></PencilIcon>
 												</button>
 											</td>
 										</tr>
@@ -271,6 +271,128 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/" class="btn btn-primary mr-2 w-44">Save</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3 " :class="{ show:modalEdit }">
+				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div class="modal__content w-6/12 mb-5">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Update Branch</span>
+							<a href="#" class="text-gray-600" @click="closeModal">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Address</label>
+									<textarea class="form-control" placeholder="Address"></textarea>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Terms</label>
+									<textarea class="form-control" placeholder="Terms"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Phone Number</label>
+									<input type="text" class="form-control" placeholder="Phone Number">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Fax Number</label>
+									<input type="text" class="form-control" placeholder="Fax Number">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Contact Person</label>
+									<input type="text" class="form-control" placeholder="Contact Person">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Email</label>
+									<input type="email" class="form-control" placeholder="Email">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >TIN</label>
+									<input type="text" class="form-control" placeholder="TIN">
+								</div>
+							</div>
+							<div class="col-lg-6  col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Type</label>
+									<input type="text" class="form-control" placeholder="Type">
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >EWT%</label>
+									<input type="text" class="form-control" placeholder="EWT%">
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-2">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Status</label>
+									<select class="form-control">
+										<option value="">Inactive</option>
+										<option value="">Active</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-2">
+								<div class="flex !justify-center mt-4 space-x-4">
+									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+										<label class="text-gray-500 m-0" >VAT</label>
+										<input type="radio" class="form-control !w-5 !h-5" placeholder="VAT">
+									</div>
+									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+										<label class="text-gray-500 m-0" >Non-VAT</label>
+										<input type="radio" class="form-control !w-5 !h-5" placeholder="VAT">
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Notes</label>
+									<textarea class="form-control" placeholder="Notes"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<a href="/" class="btn btn-info mr-2 w-44">Update</a>
 								</div>
 							</div>
 						</div>
