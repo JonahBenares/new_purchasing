@@ -182,7 +182,10 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="">
-                                                    <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
+                                                    <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                        
+                                                        Less: Discount
+                                                    </td>
                                                     <td class="p-1 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>
@@ -200,7 +203,15 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="">
-                                                    <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: 0% EWT</td>
+                                                    <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                        <div class="flex justify-end space-x-3">
+                                                            <span class="flex space-x-1">
+                                                                <span class="pb-.5">Show</span>
+                                                                <input type="checkbox" class="" alt="show">
+                                                            </span>
+                                                            <span>Less: 0% EWT</span>
+                                                        </div>
+                                                    </td>
                                                     <td class="p-1 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>

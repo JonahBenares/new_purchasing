@@ -5,17 +5,22 @@
     import { useRouter } from "vue-router"
 
 	const dangerAlert = ref(false)
+	const dangerAlert_item = ref(false)
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
 	const opendangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
+	const opendangerAlert_item = () => {
+		dangerAlert_item.value = !dangerAlert_item.value
+	}
     const openDangerAlert = () => {
 		modalEdit.value = !modalEdit.value
 	}
 	const closeAlert = () => {
 		dangerAlert.value = !hideAlert.value
+		dangerAlert_item.value = !hideAlert.value
 	}
 </script>
 <template>
@@ -98,6 +103,11 @@
 										<td class="p-1 uppercase" width="">Item Description</td>
 										<td class="p-1 uppercase" width="10%">WH Stocks</td>
 										<td class="p-1 uppercase" width="15%">Date Needed</td>
+										<td class="p-1 uppercase" width="1%" align="center">
+											<span>
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></XMarkIcon>
+											</span>
+										</td>
 									</tr>
 									<tr>
 										<td class="p-1 text-center">1</td>
@@ -107,6 +117,11 @@
 										<td class="p-1">Monitor</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
+										<td class="text-center">
+											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
 									</tr>
 									<tr>
 										<td class="p-1 text-center">1</td>
@@ -116,6 +131,11 @@
 										<td class="p-1">Mouse</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
+										<td class="text-center">
+											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
 									</tr>
 									<tr>
 										<td class="p-1 text-center">1</td>
@@ -125,6 +145,11 @@
 										<td class="p-1">Keyboard</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
+										<td class="text-center">
+											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
 									</tr>
 								</table>
 							</div>
@@ -169,6 +194,47 @@
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
 									<h5 class="leading-tight">Are you sure you want to cancel this PR?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Are you sure you want to remove this item?</h5>
 								</div>
 							</div>
 						</div>
