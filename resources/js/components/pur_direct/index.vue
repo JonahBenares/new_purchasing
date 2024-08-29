@@ -39,6 +39,10 @@
 
 	let vendor_list=ref([]);
 	let vendor_name=ref('');
+	let terms_list=ref([]);
+	let terms_text=ref("");
+	let other_list=ref([]);
+	let other_text=ref("");
 
 	const addVendor= () => {
 		for(var x=0; x<vendor_list.value.length; x++){
@@ -71,6 +75,42 @@
 
 	const removeVendor = (index) => {
 		vendor_list.value.splice(index,1)
+	}
+
+	const addRowTerms= () => {
+		if(terms_text.value!=''){
+			const terms = {
+				terms_condition:terms_text.value,
+			}
+			terms_list.value.push(terms)
+			terms_text.value='';
+			document.getElementById('check_terms').placeholder=""
+			document.getElementById('check_terms').style.backgroundColor = '#FFFFFF';
+		}else{
+			document.getElementById('check_terms').placeholder="Please fill in Terms and Condition."
+			document.getElementById('check_terms').style.backgroundColor = '#FAA0A0';
+		}
+	}
+	const removeTerms = (index) => {
+		terms_list.value.splice(index,1)
+	}
+
+	const addRowOther= () => {
+		if(other_text.value!=''){
+			const others = {
+				other_ins:other_text.value,
+			}
+			other_list.value.push(others)
+			other_text.value='';
+			document.getElementById('check_others').placeholder=""
+			document.getElementById('check_others').style.backgroundColor = '#FFFFFF';
+		}else{
+			document.getElementById('check_others').placeholder="Please fill in Other instructions."
+			document.getElementById('check_others').style.backgroundColor = '#FAA0A0';
+		}
+	}
+	const removeOthers = (index) => {
+		other_list.value.splice(index,1)
 	}
 </script>
 <template>
