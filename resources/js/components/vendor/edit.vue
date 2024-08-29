@@ -288,7 +288,7 @@
         >
 			<div class="modal pt-4 px-3 " :class="{ show:modalEdit }">
 				<div @click="closeModal" class="w-full h-full fixed"></div>
-				<div class="modal__content w-6/12 mb-5">
+				<div class="modal__content w-4/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Update Branch</span>
@@ -300,92 +300,13 @@
 					<hr class="mt-0">
 					<div class="modal_s_items ">
 						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Address</label>
-									<textarea class="form-control" placeholder="Address"></textarea>
-								</div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Terms</label>
-									<textarea class="form-control" placeholder="Terms"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Phone Number</label>
-									<input type="text" class="form-control" placeholder="Phone Number">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Fax Number</label>
-									<input type="text" class="form-control" placeholder="Fax Number">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Contact Person</label>
-									<input type="text" class="form-control" placeholder="Contact Person">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Email</label>
-									<input type="email" class="form-control" placeholder="Email">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-2">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >TIN</label>
-									<input type="text" class="form-control" placeholder="TIN">
-								</div>
-							</div>
-							<div class="col-lg-6  col-md-2">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Type</label>
-									<input type="text" class="form-control" placeholder="Type">
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-2">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >EWT%</label>
-									<input type="text" class="form-control" placeholder="EWT%">
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-2">
+							<div class="col-lg-12 col-md-2">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Status</label>
 									<select class="form-control">
 										<option value="">Inactive</option>
 										<option value="">Active</option>
 									</select>
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-2">
-								<div class="flex !justify-center mt-4 space-x-4">
-									<div class="form-group text-center flex justify-center space-x-2 pt-2">
-										<label class="text-gray-500 m-0" >VAT</label>
-										<input type="radio" class="form-control !w-5 !h-5" placeholder="VAT">
-									</div>
-									<div class="form-group text-center flex justify-center space-x-2 pt-2">
-										<label class="text-gray-500 m-0" >Non-VAT</label>
-										<input type="radio" class="form-control !w-5 !h-5" placeholder="VAT">
-									</div>
-								</div>
-							</div>
-							
-						</div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Notes</label>
-									<textarea class="form-control" placeholder="Notes"></textarea>
 								</div>
 							</div>
 						</div>
