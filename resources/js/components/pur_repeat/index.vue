@@ -330,7 +330,14 @@
 									</div>
 								</div>
 							</div>
-							
+							<div class="row mt-2">
+								<div class="col-lg-12">
+									<div class="flex space-x-1">
+										<span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2">Item No. 1 is a repeat Order of PO No. PEIC24-1209-1498-CNPR</span>
+										<span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2">Item No. 1 is a repeat Order of PO No. PEIC24-1209-1498-CNPR</span>
+									</div> 
+								</div>
+							</div>
 							<div class="row mt-2">
 								<div class="col-lg-6">
 									<table class="table-bordered !text-xs w-full">
@@ -429,6 +436,16 @@
 												<button type="button" @click="addRowOther" class="btn btn-primary p-1">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 												</button>
+											</td>
+										</tr>
+										<tr>
+											<td class="p-1"  colspan="3">
+												Item No. 1 is a repeat Order of PO No. PEIC24-1209-1498-CNPR
+											</td>
+										</tr>
+										<tr>
+											<td class="p-1"  colspan="3">
+												Item No. 2 is a repeat Order of PO No. PEIC24-1209-1255-CNPR
 											</td>
 										</tr>
 										<tr v-for="(o, indexes) in other_list">
