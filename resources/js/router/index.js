@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 
-
+import notFound from '../components/notFound.vue'
 import loginForm from  '../components/login.vue'
 import dashboard from '../components/dashboard.vue'
 
@@ -66,6 +66,16 @@ import pur_drView from '../components/pur_dr/view.vue'
 import pur_disburseIndex from '../components/pur_disburse/index.vue'
 import pur_disburseNew from '../components/pur_disburse/new.vue'
 import pur_disburseView from '../components/pur_disburse/view.vue'
+
+import job_reqIndex from '../components/job_req/index.vue'
+import job_reqNew from '../components/job_req/new.vue'
+import job_reqView from '../components/job_req/view.vue'
+
+import job_quoteIndex from '../components/job_quote/index.vue'
+import job_quoteNew from '../components/job_quote/new.vue'
+import job_quoteView from '../components/job_quote/view.vue'
+import job_quotePrint from '../components/job_quote/print.vue'
+
 
 const routes = [
     {
@@ -293,11 +303,44 @@ const routes = [
         path:'/pur_disburse/view',
         component: pur_disburseView,
     },
-    // {
-    //     path:'/:pathMatch(.*)*',
-    //     name:'notFound',
-    //     component: notFound,
-    // }
+
+    {
+        path:'/job_req',
+        component: job_reqIndex,
+    },
+    {
+        path:'/job_req/new',
+        component: job_reqNew,
+    },
+    {
+        path:'/job_req/view',
+        component: job_reqView,
+    },
+
+    {
+        path:'/job_quote',
+        component: job_quoteIndex,
+    },
+    {
+        path:'/job_quote/new',
+        component: job_quoteNew,
+    },
+    {
+        path:'/job_quote/view',
+        component: job_quoteView,
+    },
+    {
+        path:'/job_quote/print',
+        component: job_quotePrint,
+    },
+
+
+
+    {
+        path:'/:pathMatch(.*)*',
+        name:'notFound',
+        component: notFound,
+    }
 ]
 
 const router = createRouter({

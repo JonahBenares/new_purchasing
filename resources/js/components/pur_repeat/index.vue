@@ -225,8 +225,17 @@
 											<td class="p-1 text-center">1</td>
 											<td class="p-1 ">Mouse</td>
 											<td class="p-1">
-                                                <p class="w-full text-xs m-0 font-bold ">MF Computer Solutions, Inc.</p>
-                                                <span class="">A4Tech, wireless bluetooth 5.0, with adapter </span>
+												<div class="flex justify-between space-x-1">
+													<div>
+														<p class="w-full text-xs m-0 font-bold ">MF Computer Solutions, Inc.</p>
+														<span class="">A4Tech, wireless bluetooth 5.0, with adapter </span>
+													</div>
+													<div>
+														<a href="" class="btn btn-link p-0 !text-red-500" >
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XMarkIcon>
+														</a>
+													</div>
+												</div>
                                             </td>
 											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
 											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
@@ -470,7 +479,7 @@
 					<hr class="mt-0">
 					<div class="modal_s_items ">
                         <div class="row">
-							<div class="col-lg-6 col-md-3">
+							<div class="col-lg-5 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Item Description</label>
                                     <select class="w-full text-sm p-1 px-2 border">
@@ -490,6 +499,10 @@
                                         <option value="United Bearing Industrial Corp">United Bearing Industrial Corp</option>
                                     </select>
 								</div>
+							</div>
+							<div class="col-lg-1">
+								<br>
+								<button class="btn btn-sm btn-primary">Search</button>
 							</div>
 						</div>
 						<div class="row">
