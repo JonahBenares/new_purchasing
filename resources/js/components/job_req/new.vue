@@ -708,7 +708,7 @@
 											</td>
 										</tr>
 										<tr v-for="(i,index) in item_list">
-											<td class="p-1 text-center">{{ index + 4 }}</td>
+											<td class="p-1 text-center">{{ index + 1 }}</td>
 											<td class="p-1 text-center">{{ i.qty }}</td>
 											<td class="p-1 text-center">{{ i.uom }}</td>
 											<td class="p-1">{{ i.pn_no }}</td>
@@ -716,7 +716,7 @@
 											<td class="p-1">{{ i.wh_stocks }}</td>
 											<td class="p-1">{{ i.date_needed }}</td>
 											<td class="text-center">
-												<button class="btn btn-danger p-1" @click="openDangerAlert_item()" >
+												<button class="btn btn-danger p-1" @click="removeItem(index)" >
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 												</button>
 											</td>
