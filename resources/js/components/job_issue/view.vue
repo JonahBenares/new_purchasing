@@ -32,12 +32,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Order <small>View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Job Order Issuance <small>View</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/pur_po">Purchase Order</a></li>
+                            <li class="breadcrumb-item"><a href="/job_issue">Job Order Issuance</a></li>
                             <li class="breadcrumb-item active" aria-current="page">View</li>
                         </ol>
                     </nav>
@@ -52,124 +52,169 @@
                         <div class="pt-1">
                             <div>
                                 <div class="row">
-                                    <div class="col-lg-8">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-                                        <span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
-                                        <span class="text-sm text-gray-700">05/16/24</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
-                                        <span class="text-sm text-gray-700">MF Computer Solutions, Inc.</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">Address:</span>
-                                        <span class="text-sm text-gray-700">February 16, 2024</span>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
-                                        <span class="text-sm text-gray-700">(034) 9872-2772</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
-                                        <span class="text-sm text-gray-700">Mary Marie</span>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
-                                        <span class="text-sm text-gray-700">(034) 9872-2772</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="" >
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="border-2">
-                                                <table class="table-bordered w-full !text-xs">
-                                                    <tr class="bg-gray-100">
-                                                        <td class="uppercase p-1 text-center" width="3%">#</td>
+									<div class="col-lg-1">
+										<span class="text-sm">TO:</span>
+									</div>
+									<div class="col-lg-11">
+										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
+										<p class="m-0">Beverly Marie Dy</p>
+										<p class="m-0">Taculing Road, Bacolod City 6100</p>
+										<p class="m-0">(034) 434 9823 / 704-2063</p>
+									</div>
+								</div>
+								<hr class="border-dashed">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
+											<input type="text" class="border-b bg-white w-full" disabled>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
+											<input type="text" class="border-b bg-white w-full" disabled>
+										</div>	
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
+											<input type="text" class="border-b bg-white w-full" disabled>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
+											<input type="text" class="border-b bg-white w-full" disabled>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
+											<input type="text" class="border-b bg-white w-full" disabled>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
+											<input type="text" class="border-b bg-white w-full" disabled>
+										</div>
+									</div>
+								</div>
+								<div class="" >
+									<br>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="border-2">
+												<table class="table-bordered w-full !text-xs">
+													<tr class="!border-b-3">
+														<td colspan="7" class="py-2">
+															<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
+															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
+														</td>
+													</tr>
+													<tr class="bg-gray-100">
+														<td class="uppercase p-1" colspan="3">Scope of Work</td>
+														<td class="uppercase p-1 text-center" width="7%">Qty</td>
+														<td class="uppercase p-1 text-center" width="7%">Unit</td>
+														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+														<td class="uppercase p-1 text-center" width="10%">Total</td>
+													</tr>
+													<tr class="">
+														<td class="border-y-none p-1" colspan="3">
+															<span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
+															technical expertise for the following:</span>
+															<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+															<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+															<br>3. Repair and replacement of parts as seen upon inspection.
+															<br>4. Setting of internal parts and mounting of the governor.
+															<br>5. Calibration and bench testing for:
+															<br>5.1. Speed Setting and Indicator
+															<br>5.2. Speed Droop Setting and Indicator
+															<br>5.3. Load Limit Setting and Indicator
+															<br>6. Functional test of shut-down solenoid valve
+															<br>7. Testing and Commissioning
+															<br>8. Submission of inspection, service, commissioning and bench testing reports.
+															<br>9. Other works necessary for job completion.
+														</td>
+														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">pc</td>
+														<td class="border-y-none p-1 text-right">100.00</td>
+														<td class="border-y-none p-1 text-right">500.00</td>
+													</tr>
+													<tr class="bg-gray-100">
+														<td class="p-1 text-center" width="3%">#</td>
+														<td class="p-1" colspan="2">Materials:</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Qty</td>
-                                                        <td class="uppercase p-1 text-center" width="7%">Unit</td>
-                                                        <td class="uppercase p-1" colspan="2">Description</td>
-                                                        <td class="uppercase p-1 text-center" width="12%">Unit Price</td>
-                                                        <td class="uppercase p-1 text-center" width="12%">Total</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-y-none p-1 text-center">1</td>
-                                                        <td class="border-y-none p-1 text-center">5</td>
-                                                        <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Monitor</td>
-                                                        <td class="border-y-none p-1 text-right">100.00</td>
-                                                        <td class="border-y-none p-1 text-right">500.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-y-none p-1 text-center">2</td>
-                                                        <td class="border-y-none p-1 text-center">5</td>
-                                                        <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Mouse</td>
-                                                        <td class="border-y-none p-1 text-right">100.00</td>
-                                                        <td class="border-y-none p-1 text-right">500.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-y-none p-1 text-center">3</td>
-                                                        <td class="border-y-none p-1 text-center">5</td>
-                                                        <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Keyboard</td>
-                                                        <td class="border-y-none p-1 text-right">100.00</td>
-                                                        <td class="border-y-none p-1 text-right">500.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class=""></td>
-                                                        <td class=""></td>
-                                                        <td class=""></td>
-                                                        <td class=""></td>
-                                                        <td class=""></td>
-                                                        <td class=""></td>
-                                                        <td class=""></td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-                                                        </td>
-                                                        <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-                                                        <td class="p-1 text-right ">200.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-                                                        <td class="p-1 text-right ">200.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-                                                        <td class="p-0">
-                                                            <div class="flex">
-                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="">
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="">
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">100.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-                                                        <td class="p-1 text-right font-bold !text-sm">1000.00</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+														<td class="uppercase p-1 text-center" width="7%">Unit</td>
+														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+														<td class="uppercase p-1 text-center" width="10%">Total</td>
+													</tr>
+													<tr class="">
+														<td class="border-y-none p-1 text-center">1</td>
+														<td class="border-y-none p-1" colspan="2">Monitor</td>
+														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">lot</td>
+														<td class="border-y-none p-1 text-right">100.00</td>
+														<td class="border-y-none p-1 text-right">500.00</td>
+													</tr>
+													<tr class="">
+														<td class="border-y-none p-1 text-center">2</td>
+														<td class="border-y-none p-1" colspan="2">Mouse</td>
+														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">pc</td>
+														<td class="border-y-none p-1 text-right">100.00</td>
+														<td class="border-y-none p-1 text-right">500.00</td>
+													</tr>
+													<tr class="">
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+													</tr>
+													<tr class="">
+														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+														</td>
+														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" value="200.00"></td>
+													</tr>
+													
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
+														<td class="p-0">
+															<div class="flex">
+																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
+																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
+															</div>
+														</td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
+														<td class="p-1 text-right font-bold !text-sm">1000.00</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
                                     
                                     <div class="row mt-2">
                                         <div class="col-lg-6">
@@ -231,6 +276,44 @@
                                                     <td class="align-top text-center" width="4%">2.</td>
                                                     <td class="px-1" colspan="2">sample instructions -Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
                                                 </tr>
+                                                <tr>
+													<td colspan="2" class="p-1">Sample Notes</td>
+													<td class="p-0 align-top" width="1">
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button>
+													</td>
+												</tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="w-full ">
+                                                <tr>
+                                                    <td></td>
+                                                    <td width="12%" class="font-bold text-sm text-gray-500"> Total Project Cost:</td>
+                                                    <td  width="20%" class="border-b border-gray-400 px-4 font-bold text-base text-gray-500"> 
+                                                        <div class="flex justify-between  text-lg">
+                                                            <span>PHP</span>
+                                                            <span>18,999.99</span>
+                                                        </div>
+                                                    </td>
+                                                    <td width="14%"></td>
+                                                    <td width="8%" class="font-bold text-sm text-gray-500">Conforme:</td>
+                                                    <td  width="30%" class="border-b border-gray-400 px-4"> </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-xs text-center">Contractor's Signature Over Printed Name</td>
+                                                    <td></td>
+                                                </tr>
                                             </table>
                                         </div>
                                     </div>
@@ -239,7 +322,7 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between">
-                                                    <a href="/pur_po/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                    <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
                                                     <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                         <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                     </button>
@@ -293,13 +376,13 @@
                     <hr class="m-0">
                     <div class="modal_s_items ">
                         <div class="">
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
-                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662 (Main)</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r1</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r2</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r3</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r4</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r5</a>
+                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r6 (Current)</a>
                         </div>
                         <!-- <div>
                             <p class="text-center text-sm">No Data</p>
@@ -341,7 +424,7 @@
                         <!-- <div>
                             <p class="text-center text-sm">No Data</p>
                         </div> -->
-                    </div> 
+                    </div> s
                 </div>
             </div>
         </Transition>
@@ -375,49 +458,9 @@
                             <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
                             <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
                         </div>
-                        <!-- <div>
-                            <p class="text-center text-sm">No Data</p>
-                        </div> -->
                     </div> 
                 </div>
             </div>
         </Transition>
 	</navigation>
-    <!-- <input type="checkbox" data-menu id="menu-opener" hidden>
-    <aside class="DrawerMenu" role="menu" id="menu" aria-labelledby="openmenu">
-        <label for="menu-opener" class="MenuOverlay"></label>
-        <nav class="Menu">
-            <h4>RFD List</h4>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-            <a role="menuitem" tabindex="-1" href="#">RFD-99277-8822</a>
-        </nav>
-    </aside> -->
-	<!-- <div class="flex  !z-20 ab">
-        <input type="checkbox" id="drawer-toggle" class="relative sr-only peer " >
-        <label for="drawer-toggle" class="absolute bottom-0 left-0 inline-block p-4 transition-all duration-500 bg-indigo-500 rounded-lg peer-checked:rotate-180 peer-checked:left-64">
-            <div class="w-6 h-1 mb-3 -rotate-45 bg-white rounded-lg"></div>
-            <div class="w-6 h-1 rotate-45 bg-white rounded-lg"></div>
-    
-        
-        </label>
-        <div class="fixed top-0 left-0 !z-50 w-64 h-full transition-all duration-500 transform -translate-x-full bg-white shadow-lg peer-checked:translate-x-0">
-            <div class="px-6 py-4">
-                <h2 class="text-lg font-semibold">Drawer</h2>
-                <p class="text-gray-500">This is a drawer.</p>
-            </div>
-        </div>
-    </div> -->
 </template>

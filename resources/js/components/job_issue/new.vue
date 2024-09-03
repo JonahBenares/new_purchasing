@@ -133,33 +133,57 @@
 						<div class="pt-1">
 							<div v-show="jor_det">
 								<div class="row">
+									<div class="col-lg-1">
+										<span class="text-sm">TO:</span>
+									</div>
+									<div class="col-lg-11">
+										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
+										<p class="m-0">Beverly Marie Dy</p>
+										<p class="m-0">Taculing Road, Bacolod City 6100</p>
+										<p class="m-0">(034) 434 9823 / 704-2063</p>
+									</div>
+								</div>
+								<hr class="border-dashed">
+								<div class="row">
 									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">Date Needed: </span>
-										<span class="text-sm text-gray-700">05/16/24</span>
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
+											<input type="text" class="border-b w-full">
+										</div>
 									</div>
 									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">Completion of Work: </span>
-										<span class="text-sm text-gray-700">05/16/24</span>
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
+											<input type="text" class="border-b w-full">
+										</div>	
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
-										<span class="text-sm text-gray-700">05/16/24</span>
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
+											<input type="text" class="border-b w-full">
+										</div>
 									</div>
 									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">CENPRI JOR No: </span>
-										<span class="text-sm text-gray-700">CENJO-288-1881</span>
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
+											<input type="text" class="border-b w-full">
+										</div>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">Start of Work: </span>
-										<span class="text-sm text-gray-700">05/16/24</span>
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
+											<input type="text" class="border-b w-full">
+										</div>
 									</div>
 									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">JO No: </span>
-										<span class="text-sm text-gray-700">CENJO-288-1881</span>
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
+											<input type="text" class="border-b w-full">
+										</div>
 									</div>
 								</div>
 								<div class="" >
@@ -168,35 +192,62 @@
 										<div class="col-lg-12">
 											<div class="border-2">
 												<table class="table-bordered w-full !text-xs">
+													<tr class="!border-b-3">
+														<td colspan="7" class="py-2">
+															<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
+															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
+														</td>
+													</tr>
 													<tr class="bg-gray-100">
-														<td class="uppercase p-1 text-center" width="3%">#</td>
+														<td class="uppercase p-1" colspan="3">Scope of Work</td>
 														<td class="uppercase p-1 text-center" width="7%">Qty</td>
 														<td class="uppercase p-1 text-center" width="7%">Unit</td>
-														<td class="uppercase p-1" colspan="2">Description</td>
-														<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
-														<td class="uppercase p-1 text-center" width="12%">Total</td>
+														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+														<td class="uppercase p-1 text-center" width="10%">Total</td>
+													</tr>
+													<tr class="">
+														<td class="border-y-none p-1" colspan="3">
+															<span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
+															technical expertise for the following:</span>
+															<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+															<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+															<br>3. Repair and replacement of parts as seen upon inspection.
+															<br>4. Setting of internal parts and mounting of the governor.
+															<br>5. Calibration and bench testing for:
+															<br>5.1. Speed Setting and Indicator
+															<br>5.2. Speed Droop Setting and Indicator
+															<br>5.3. Load Limit Setting and Indicator
+															<br>6. Functional test of shut-down solenoid valve
+															<br>7. Testing and Commissioning
+															<br>8. Submission of inspection, service, commissioning and bench testing reports.
+															<br>9. Other works necessary for job completion.
+														</td>
+														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">pc</td>
+														<td class="border-y-none p-1 text-right">100.00</td>
+														<td class="border-y-none p-1 text-right">500.00</td>
+													</tr>
+													<tr class="bg-gray-100">
+														<td class="p-1 text-center" width="3%">#</td>
+														<td class="p-1" colspan="2">Materials:</td>
+                                                        <td class="uppercase p-1 text-center" width="7%">Qty</td>
+														<td class="uppercase p-1 text-center" width="7%">Unit</td>
+														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+														<td class="uppercase p-1 text-center" width="10%">Total</td>
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">1</td>
-														<td class="border-y-none p-1 text-center">5</td>
-														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1" colspan="2">Monitor</td>
+														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">lot</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">2</td>
-														<td class="border-y-none p-1 text-center">5</td>
-														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1" colspan="2">Mouse</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">3</td>
 														<td class="border-y-none p-1 text-center">5</td>
 														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1" colspan="2">Keyboard</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
 													</tr>
@@ -211,18 +262,15 @@
 													</tr>
 													<tr class="">
 														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-															<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
-															<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-															<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-															<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
 														</td>
-														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
+														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
 														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
 													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
-													</tr>
+													
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 														<td class="p-0">
@@ -233,7 +281,11 @@
 														</td>
 													</tr>
 													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
+														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
 														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
 													</tr>
 													<tr class="">
@@ -263,7 +315,7 @@
 												</tr>
 												<tr>
 													<td class="align-top text-center" width="4%">1.</td>
-													<td class="align-top px-1" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
+													<td class="align-top px-1" colspan="2">JO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
 												</tr>
 												<tr>
 													<td class="align-top text-center" width="4%">2.</td>
@@ -353,8 +405,46 @@
 														</button>
 													</td>
 												</tr>
+												<tr>
+													<td colspan="2" class="p-1">Sample Notes</td>
+													<td class="p-0 align-top" width="1">
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button>
+													</td>
+												</tr>
 											</table>
 										</div>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-lg-12">
+										<table class="w-full ">
+											<tr>
+												<td></td>
+												<td width="12%" class="font-bold text-sm text-gray-500"> Total Project Cost:</td>
+												<td  width="20%" class="border-b border-gray-400 px-4 font-bold text-base text-gray-500"> 
+													<div class="flex justify-between  text-lg">
+														<span>PHP</span>
+														<span>18,999.99</span>
+													</div>
+												</td>
+												<td width="14%"></td>
+												<td width="8%" class="font-bold text-sm text-gray-500">Conforme:</td>
+												<td  width="30%" class="border-b border-gray-400 px-4"><input type="text" class="w-full text-center text-sm capitalize"></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td class="text-xs text-center">Contractor's Signature Over Printed Name</td>
+												<td></td>
+											</tr>
+										</table>
 									</div>
 								</div>
 								<hr	class="border-dashed">
@@ -405,7 +495,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created a new PO.</h5>
+									<h5 class="leading-tight">You have successfully created a new JOI.</h5>
 								</div>
 							</div>
 						</div>
@@ -413,8 +503,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_po/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a href="/pur_po/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
+									<a href="/job_issue/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/job_issue/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
 								</div>
 							</div>
 						</div>
@@ -446,7 +536,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-yellow-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully saved a PO as draft.</h5>
+									<h5 class="leading-tight">You have successfully saved a JOI as draft.</h5>
 								</div>
 							</div>
 						</div>
@@ -456,7 +546,7 @@
 								<div class="flex justify-center space-x-2">
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/pur_po/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/job_issue/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
 						</div>
