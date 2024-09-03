@@ -18,19 +18,19 @@
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
     const data = [
-        ['<p class="m-0 text-center">2024-02-04</p>', 'SPE/Operation24-2032-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li> <li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li> <li class="leading-none">SGS Hardware Corporation</li> </ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>' ,'<a href="/pur_aoq/print_te" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
+        ['<p class="m-0 text-center">2024-02-04</p>', 'SPE/Operation24-2032-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li> <li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li> <li class="leading-none">SGS Hardware Corporation</li> </ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>' ,'<a href="/job_aoq/print_te" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
 
-        ['<p class="m-0 text-center">2024-02-04</p>', 'Admin24-2033-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>','<a href="/pur_aoq/print_te" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
+        ['<p class="m-0 text-center">2024-02-04</p>', 'Admin24-2033-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>','<a href="/job_aoq/print_te" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
 
-        ['<p class="m-0 text-center">2024-02-04</p>', 'HAS24-2034-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">Bacolod Paint Marketing</span></li> <li class="leading-none">Sugarland Hardware Corp.</li> <li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li> </ul>', 'Safety', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
+        ['<p class="m-0 text-center">2024-02-04</p>', 'HAS24-2034-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">Bacolod Paint Marketing</span></li> <li class="leading-none">Sugarland Hardware Corp.</li> <li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li> </ul>', 'Safety', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/job_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
 
-        ['<p class="m-0 text-center">2024-02-04</p>', 'FLM24-2019-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">New China Enterprise Inc.</span></li></ul>', 'Fuel and Lube Management', 'Fire Hydrant System', 'JFleur de Liz Ambong / Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
+        ['<p class="m-0 text-center">2024-02-04</p>', 'FLM24-2019-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">New China Enterprise Inc.</span></li></ul>', 'Fuel and Lube Management', 'Fire Hydrant System', 'JFleur de Liz Ambong / Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/job_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
 
-        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],    
+        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/job_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],    
 
-        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],   
+        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/job_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],   
         
-        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none p-1"><span>United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-blue-500 text-white !rounded-xl px-2 p-1">Done TE</span>','<a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],   
+        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none p-1"><span>United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-blue-500 text-white !rounded-xl px-2 p-1">Done TE</span>','<a href="/job_aoq/view" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],   
     ];
     
     // 
@@ -109,12 +109,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Abstract of Quotation <small>List</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Abstract of Quotation <small>List</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Abstract of Quotation</li>
+                            <li class="breadcrumb-item active" aria-current="page">JO Abstract of Quotation</li>
                         </ol>
                     </nav>
                 </div>
@@ -129,7 +129,7 @@
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" > AOQ Date</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" > PR No</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" > JOR No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Supplier</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Department</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Enduse</th>
@@ -142,22 +142,6 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <!-- <template #column-6="props">
-                                    <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">For TE</span>
-                                </template> -->
-                                <!-- <template #column-7="props">
-                                    <div class="align-center">
-                                        <a href="/pur_aoq/view" class="btn btn-xs btn-success text-white p-1">
-                                            <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                        </a>
-                                        <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
-                                            <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                        </a>
-                                        <a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1">
-                                            <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                        </a>
-                                    </div>
-                                </template> -->
                             </DataTable>
                         </div>
                     </div>

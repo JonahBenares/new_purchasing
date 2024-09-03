@@ -632,7 +632,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_po/" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Show List</a>
+									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<a href="/po_repeat/" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>

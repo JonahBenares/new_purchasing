@@ -43,7 +43,7 @@
 	}
 
 	
-	const pr_det = ref(false)
+	const jor_det = ref(false)
 
 	let terms_list=ref([]);
 	let terms_text=ref("");
@@ -92,12 +92,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Order <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Job Order Issuance <small>New</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/pur_po">Purchase Order</a></li>
+                            <li class="breadcrumb-item"><a href="/job_issue">Job Order Issuance</a></li>
                             <li class="breadcrumb-item active" aria-current="page">New</li>
                         </ol>
                     </nav>
@@ -111,7 +111,7 @@
 						<div class="row">							
 							<div class="col-lg-8 offset-lg-2 col-md-3">
 								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Choose Supplier and PR No</label>
+									<label class="text-gray-500 m-0" for="">Choose Supplier and JOR No</label>
 									<input type="file" name="img[]" class="file-upload-default">
 									<div class="input-group col-xs-12">
 										<select class="form-control file-upload-info">
@@ -119,11 +119,11 @@
 											<option value="">MF Computer Solutions, Inc. </option>
 										</select>
 										<select class="form-control file-upload-info">
-											<option value="">PR Number</option>
-											<option value="">PR-19772-8727</option>
+											<option value="">JOR Number</option>
+											<option value="">JOR-19772-8727</option>
 										</select>
 										<span class="input-group-append">
-											<button class="btn btn-primary" type="button" @click="pr_det = !pr_det">Select</button>
+											<button class="btn btn-primary" type="button" @click="jor_det = !jor_det">Select</button>
 										</span>
 									</div>
 								</div>
@@ -131,41 +131,35 @@
 						</div>
 						<hr class="border-dashed">
 						<div class="pt-1">
-							<div v-show="pr_det">
+							<div v-show="jor_det">
 								<div class="row">
-									<div class="col-lg-8">
-										<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-										<span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
+									<div class="col-lg-6">
+										<span class="text-sm text-gray-700 font-bold pr-1">Date Needed: </span>
+										<span class="text-sm text-gray-700">05/16/24</span>
 									</div>
-									<div class="col-lg-4">
-										<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
+									<div class="col-lg-6">
+										<span class="text-sm text-gray-700 font-bold pr-1">Completion of Work: </span>
 										<span class="text-sm text-gray-700">05/16/24</span>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-8">
-										<span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
-										<span class="text-sm text-gray-700">MF Computer Solutions, Inc.</span>
+									<div class="col-lg-6">
+										<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
+										<span class="text-sm text-gray-700">05/16/24</span>
+									</div>
+									<div class="col-lg-6">
+										<span class="text-sm text-gray-700 font-bold pr-1">CENPRI JOR No: </span>
+										<span class="text-sm text-gray-700">CENJO-288-1881</span>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-8">
-										<span class="text-sm text-gray-700 font-bold pr-1">Address:</span>
-										<span class="text-sm text-gray-700">February 16, 2024</span>
+									<div class="col-lg-6">
+										<span class="text-sm text-gray-700 font-bold pr-1">Start of Work: </span>
+										<span class="text-sm text-gray-700">05/16/24</span>
 									</div>
-									<div class="col-lg-4">
-										<span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
-										<span class="text-sm text-gray-700">(034) 9872-2772</span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-8">
-										<span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
-										<span class="text-sm text-gray-700">Mary Marie</span>
-									</div>
-									<div class="col-lg-4">
-										<span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
-										<span class="text-sm text-gray-700">(034) 9872-2772</span>
+									<div class="col-lg-6">
+										<span class="text-sm text-gray-700 font-bold pr-1">JO No: </span>
+										<span class="text-sm text-gray-700">CENJO-288-1881</span>
 									</div>
 								</div>
 								<div class="" >

@@ -116,7 +116,8 @@
 										<table class="table-bordered w-full !text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
-												<td class="p-1" width="50%">Offer</td>
+												<td class="p-1" width="35%">Offer</td>
+												<td class="p-1">Price</td>
 											</tr>
 											<tr>
 												<td class="p-1 align-top">
@@ -136,6 +137,14 @@
 												</td>
 												<td class="align-top">
 													<textarea name="" id="" class="resize w-full  h-screen !max-h-[300px] !min-h-[100] p-1"></textarea>
+												</td>
+												<td class="align-top">
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 										</table>
@@ -286,7 +295,8 @@
 										<table class="table-bordered w-full !text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
-												<td class="p-1" width="50%">Offer</td>
+												<td class="p-1" width="35%">Offer</td>
+												<td class="p-1">Price</td>
 											</tr>
 											<tr>
 												<td class="p-1 align-top">
@@ -306,6 +316,14 @@
 												</td>
 												<td class="align-top">
 													<textarea name="" id="" class="resize w-full  h-screen !max-h-[300px] !min-h-[100] p-1"></textarea>
+												</td>
+												<td class="align-top">
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 										</table>
@@ -456,7 +474,8 @@
 										<table class="table-bordered w-full !text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
-												<td class="p-1" width="50%">Offer</td>
+												<td class="p-1" width="35%">Offer</td>
+												<td class="p-1">Price</td>
 											</tr>
 											<tr>
 												<td class="p-1 align-top">
@@ -476,6 +495,14 @@
 												</td>
 												<td class="align-top">
 													<textarea name="" id="" class="resize w-full  h-screen !max-h-[300px] !min-h-[100] p-1"></textarea>
+												</td>
+												<td class="align-top">
+													<div class="!h-14 border-b">
+														<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+														<select name="" id="" class=" p-1 w-full !align-top text-center">
+															<option value="">PHP</option>
+														</select>
+													</div>
 												</td>
 											</tr>
 										</table>
@@ -593,7 +620,7 @@
 									</li>
 									<li class="!w-30">
 										<!-- <a href="" class="btn !bg-gray-200 !w-36">Print TE</a> -->
-										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36">Print TE</a>
+										<a href="/job_aoq/print_te" class="btn !bg-green-500 text-white  !w-36">Print TE</a>
 									</li>
 								</ol>
 							</div>
@@ -647,7 +674,8 @@
 								<table class="table-bordered w-full !text-xs mb-2">
 									<tr class="bg-gray-100">
 										<td class="p-1" width="50%">Scope of Work</td>
-										<td class="p-1" width="50%">Offer</td>
+										<td class="p-1" width="35%">Offer</td>
+										<td class="p-1">Price</td>
 									</tr>
 									<tr>
 										<td class="p-1 align-top">
@@ -667,6 +695,14 @@
 										</td>
 										<td class="align-top">
 											<textarea name="" id="" class="resize w-full  h-screen !max-h-[300px] !min-h-[100] p-1"></textarea>
+										</td>
+										<td class="align-top">
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
 										</td>
 									</tr>
 								</table>

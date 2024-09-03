@@ -76,6 +76,18 @@ import job_quoteNew from '../components/job_quote/new.vue'
 import job_quoteView from '../components/job_quote/view.vue'
 import job_quotePrint from '../components/job_quote/print.vue'
 
+import job_aoqIndex from '../components/job_aoq/index.vue'
+import job_aoqNew from '../components/job_aoq/new.vue'
+import job_aoqView from '../components/job_aoq/view.vue'
+import job_aoqPrintTe from '../components/job_aoq/print_te.vue'
+import job_aoqAwarded from '../components/job_aoq/awarded.vue'
+
+
+import job_issueIndex from '../components/job_issue/index.vue'
+import job_issueNew from '../components/job_issue/new.vue'
+import job_issueEdit from '../components/job_issue/edit.vue'
+import job_issueView from '../components/job_issue/view.vue'
+import job_issuePrint from '../components/job_issue/print.vue'
 
 const routes = [
     {
@@ -334,7 +346,49 @@ const routes = [
         component: job_quotePrint,
     },
 
+    {
+        path:'/job_aoq',
+        component: job_aoqIndex,
+    },
+    {
+        path:'/job_aoq/new',
+        component: job_aoqNew,
+    },
 
+    {
+        path:'/job_aoq/view',
+        component: job_aoqView,
+    },
+
+    {
+        path:'/job_aoq/print_te',
+        component: job_aoqPrintTe,
+    },
+    {
+        path:'/job_aoq/awarded',
+        component: job_aoqAwarded,
+    },
+
+    {
+        path:'/job_issue',
+        component: job_issueIndex,
+    },
+    {
+        path:'/job_issue/new',
+        component: job_issueNew,
+    },
+    {
+        path:'/job_issue/view',
+        component: job_issueView,
+    },
+    {
+        path:'/job_issue/edit',
+        component: job_issueEdit,
+    },
+    {
+        path:'/job_issue/print',
+        component: job_issuePrint,
+    },
 
     {
         path:'/:pathMatch(.*)*',
