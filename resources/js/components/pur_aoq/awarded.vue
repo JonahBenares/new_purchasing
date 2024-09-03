@@ -138,7 +138,7 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-lime-500 text-white">
+										<td class="p-1 align-top ">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
@@ -234,13 +234,13 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-lime-500 text-white">
+										<td class="p-1 align-top ">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
 											</div>
 										</td>
-										<td class="p-1 align-top" colspan="2">
+										<td class="p-1 align-top bg-lime-500 text-white" colspan="2">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>500.00</span>
@@ -270,7 +270,7 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-lime-500 text-white">
+										<td class="p-1 align-top ">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
@@ -365,7 +365,7 @@
 												<span>150.00</span>
 											</div>
 										</td>
-										<td class="p-1 align-top" colspan="2">
+										<td class="p-1 align-top " colspan="2">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>750.00</span>
@@ -440,7 +440,7 @@
 												<span>150.00</span>
 											</div>
 										</td>
-										<td class="p-1 align-top" colspan="2">
+										<td class="p-1 align-top bg-lime-500 text-white" colspan="2">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>750.00</span>
@@ -484,13 +484,13 @@
 										<td class="p-1">
 											sample 1
 										</td>
-										<td class="p-1 align-top bg-yellow-300">
+										<td class="p-1 align-top">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>100.00</span>
 											</div>
 										</td>
-										<td class="p-1 align-top" colspan="2">
+										<td class="p-1 align-top bg-lime-500 text-white" colspan="2">
 											<div class="flex justify-between space-x-1">
 												<span>Php</span>
 												<span>500.00</span>

@@ -51,12 +51,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Abstract of Quotation <small>Award</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Abstract of Quotation <small>Award</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/pur_aoq">Abstract of Quotation</a></li>
+                            <li class="breadcrumb-item"><a href="/job_aoq">JO Abstract of Quotation</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Award</li>
                         </ol>
                     </nav>
@@ -78,8 +78,8 @@
 						<div>
 							<div class="row">
 								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
-									<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+									<span class="text-sm text-gray-700 font-bold pr-1">JOR No: </span>
+									<span class="text-sm text-gray-700">JOR-CENPRI24-1002</span>
 								</div>
 								<div class="col-lg-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
@@ -116,7 +116,12 @@
 									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
 								</div>
 							</div>
-
+							<div class="row">
+								<div class="col-lg-12">
+									<span class="text-sm text-gray-700 font-bold pr-1">Project Title: </span>
+									<span class="text-sm text-gray-700">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</span>
+								</div>
+							</div>
 
 							<div class="second_one" v-if="vendor === 'vendor_2'">
 								<br>
@@ -140,7 +145,7 @@
 											</tr>
 											<tr>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="3%">#</td>
-												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Item Description</td>
+												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Description</td>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">Qty</td>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">UOM</td>
 												<!-- loop offer header per vendor here start -->
@@ -151,9 +156,30 @@
 												<!-- loop offer header per vendor here end-->
 											</tr>
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+											<tr>
+												<td class="bg-gray-50 p-1 uppercase" colspan="19">
+													Supply of technical expertise for the following:
+												</td>
+												<!-- loop vendors here end-->
+											</tr>
+											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
 													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">Monitor</td>
+													<td class="p-1 align-top" rowspan="4">
+														Supply of manpower/labor, tools, equipment and technical expertise for the following:
+														<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+														<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+														<br>3. Repair and replacement of parts as seen upon inspection.
+														<br>4. Setting of internal parts and mounting of the governor.
+														<br>5. Calibration and bench testing for:
+														<br>5.1. Speed Setting and Indicator
+														<br>5.2. Speed Droop Setting and Indicator
+														<br>5.3. Load Limit Setting and Indicator
+														<br>6. Functional test of shut-down solenoid valve
+														<br>7. Testing and Commissioning
+														<br>8. Submission of inspection, service, commissioning and bench testing reports.
+														<br>9. Other works necessary for job completion.
+													</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
 												</tr>
@@ -163,7 +189,7 @@
 															<td class="p-1" width="30%">
 																sample 1
 															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
+															<td class="p-1 align-top " width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
 																	<span>100.00</span>
@@ -209,7 +235,7 @@
 													<tr>
 														<!-- loop offers per vendor here -->
 															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
+															<td class="p-1 align-top bg-yellow-300" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
 																	<span>350.00</span>
@@ -223,6 +249,92 @@
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
 																<input type="radio" name="offer_2a" >
+															</td>
+															<td class="p-1 align-top" width="10%">
+																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
+															</td>
+														<!-- loop offers per vendor here -->
+													</tr>
+												<!-- loop here if 3 and below offers here -->
+												<tr>
+													<td class="bg-gray-50 p-1 uppercase" colspan="19">
+														Materials
+													</td>
+												</tr>
+
+											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+												<tr>
+													<td class="p-1 align-top text-center" rowspan="4">1</td>
+													<td class="p-1 align-top" rowspan="4">Mouse</td>
+													<td class="p-1 align-top text-center" rowspan="4">5</td>
+													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
+												</tr>
+												<!-- loop here if 3 and below offers here -->
+													<tr>
+														<!-- loop offers per vendor here -->
+															<td class="p-1" width="30%">
+																sample 1
+															</td>
+															<td class="p-1 align-top" width="11%">
+																<div class="flex justify-between space-x-1">
+																	<span>Php</span>
+																	<span>100.00</span>
+																</div>
+															</td>
+															<td class="p-1 align-top" width="11%">
+																<div class="flex justify-between space-x-1">
+																	<span>Php</span>
+																	<span>500.00</span>
+																</div>
+															</td>
+															<td class="p-1 align-top text-center" width="3%">
+																<input type="radio" name="offer_2b">
+															</td>
+															<td class="p-1 align-top" width="10%">
+																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
+															</td>
+														<!-- loop offers per vendor here -->
+													</tr>
+													<tr>
+														<!-- loop offers per vendor here -->
+															<td class="p-1" width="30%">sample 2</td>
+															<td class="p-1 align-top  bg-yellow-300" width="11%">
+																<div class="flex justify-between space-x-1">
+																	<span>Php</span>
+																	<span>250.00</span>
+																</div>
+															</td>
+															<td class="p-1 align-top" width="11%">
+																<div class="flex justify-between space-x-1">
+																	<span>Php</span>
+																	<span>1250.00</span>
+																</div>
+															</td>
+															<td class="p-1 align-top text-center" width="3%">
+																<input type="radio" name="offer_2b">
+															</td>
+															<td class="p-1 align-top" width="10%">
+																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
+															</td>
+														<!-- loop offers per vendor here -->
+													</tr>
+													<tr>
+														<!-- loop offers per vendor here -->
+															<td class="p-1" width="30%">smaple 3</td>
+															<td class="p-1 align-top" width="11%">
+																<div class="flex justify-between space-x-1">
+																	<span>Php</span>
+																	<span>350.00</span>
+																</div>
+															</td>
+															<td class="p-1 align-top" width="11%">
+																<div class="flex justify-between space-x-1">
+																	<span>Php</span>
+																	<span>1750.00</span>
+																</div>
+															</td>
+															<td class="p-1 align-top text-center" width="3%">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -235,88 +347,6 @@
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
 													<td class="p-1 align-top text-center" rowspan="4">2</td>
-													<td class="p-1 align-top" rowspan="4">Mouse</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">3</td>
 													<td class="p-1 align-top" rowspan="4">Keyboard</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -417,7 +447,7 @@
 											</tr>
 											<tr class="!border-0">
 												<td class="!border-0 text-center">c.</td>
-												<td class="!border-0 text-center" colspan="1">Delivery Term</td>
+												<td class="!border-0 text-center" colspan="1">Work Duration</td>
 												<td class="!border-0" colspan="2"></td>	
 												<td class="!border-0 !border-b" colspan="1"></td>
 												<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
@@ -486,7 +516,7 @@
 											</tr>
 											<tr>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="3%">#</td>
-												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Item Description</td>
+												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Description</td>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">Qty</td>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">UOM</td>
 												<!-- loop offer header per vendor here start -->
@@ -497,9 +527,30 @@
 												<!-- loop offer header per vendor here end-->
 											</tr>
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+											<tr>
+												<td class="bg-gray-50 p-1 uppercase" colspan="19">
+													Supply of technical expertise for the following:
+												</td>
+												<!-- loop vendors here end-->
+											</tr>
+											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
 													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">Monitor</td>
+													<td class="p-1 align-top" rowspan="4">
+														Supply of manpower/labor, tools, equipment and technical expertise for the following:
+														<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+														<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+														<br>3. Repair and replacement of parts as seen upon inspection.
+														<br>4. Setting of internal parts and mounting of the governor.
+														<br>5. Calibration and bench testing for:
+														<br>5.1. Speed Setting and Indicator
+														<br>5.2. Speed Droop Setting and Indicator
+														<br>5.3. Load Limit Setting and Indicator
+														<br>6. Functional test of shut-down solenoid valve
+														<br>7. Testing and Commissioning
+														<br>8. Submission of inspection, service, commissioning and bench testing reports.
+														<br>9. Other works necessary for job completion.
+													</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
 												</tr>
@@ -522,7 +573,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3a">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -545,7 +596,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3a">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -568,20 +619,23 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3a">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
 															</td>
 														<!-- loop offers per vendor here -->
 													</tr>
-													
 												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+												<tr>
+													<td class="bg-gray-50 p-1 uppercase" colspan="19">
+														Materials
+													</td>
+												</tr>
 
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">2</td>
+													<td class="p-1 align-top text-center" rowspan="4">1</td>
 													<td class="p-1 align-top" rowspan="4">Mouse</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -592,20 +646,20 @@
 															<td class="p-1" width="30%">
 																sample 1
 															</td>
-															<td class="p-1 align-top" width="11%">
+															<td class="p-1 align-top " width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>150.00</span>
+																	<span>100.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>750.00</span>
+																	<span>500.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3b">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -615,20 +669,20 @@
 													<tr>
 														<!-- loop offers per vendor here -->
 															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
+															<td class="p-1 align-top bg-yellow-300" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>200.00</span>
+																	<span>250.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>1000.00</span>
+																	<span>1250.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3b">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -641,17 +695,17 @@
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>300.00</span>
+																	<span>350.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>1500.00</span>
+																	<span>1750.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3b">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -663,7 +717,7 @@
 
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">3</td>
+													<td class="p-1 align-top text-center" rowspan="4">2</td>
 													<td class="p-1 align-top" rowspan="4">Keyboard</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -687,7 +741,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3c">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -710,7 +764,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3c">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -733,7 +787,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_3c">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -764,7 +818,7 @@
 											</tr>
 											<tr class="!border-0">
 												<td class="!border-0 text-center">c.</td>
-												<td class="!border-0 text-center" colspan="1">Delivery Term</td>
+												<td class="!border-0 text-center" colspan="1">Work Duration</td>
 												<td class="!border-0" colspan="2"></td>	
 												<td class="!border-0 !border-b" colspan="1"></td>
 												<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
@@ -833,7 +887,7 @@
 											</tr>
 											<tr>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="3%">#</td>
-												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Item Description</td>
+												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Description</td>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">Qty</td>
 												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">UOM</td>
 												<!-- loop offer header per vendor here start -->
@@ -844,9 +898,30 @@
 												<!-- loop offer header per vendor here end-->
 											</tr>
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+											<tr>
+												<td class="bg-gray-50 p-1 uppercase" colspan="19">
+													Supply of technical expertise for the following:
+												</td>
+												<!-- loop vendors here end-->
+											</tr>
+											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
 													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">Monitor</td>
+													<td class="p-1 align-top" rowspan="4">
+														Supply of manpower/labor, tools, equipment and technical expertise for the following:
+														<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+														<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+														<br>3. Repair and replacement of parts as seen upon inspection.
+														<br>4. Setting of internal parts and mounting of the governor.
+														<br>5. Calibration and bench testing for:
+														<br>5.1. Speed Setting and Indicator
+														<br>5.2. Speed Droop Setting and Indicator
+														<br>5.3. Load Limit Setting and Indicator
+														<br>6. Functional test of shut-down solenoid valve
+														<br>7. Testing and Commissioning
+														<br>8. Submission of inspection, service, commissioning and bench testing reports.
+														<br>9. Other works necessary for job completion.
+													</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
 												</tr>
@@ -856,20 +931,20 @@
 															<td class="p-1" width="30%">
 																sample 1
 															</td>
-															<td class="p-1 align-top" width="11%">
+															<td class="p-1 align-top bg-yellow-300" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>150.00</span>
+																	<span>100.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>750.00</span>
+																	<span>500.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1a">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -882,17 +957,17 @@
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>200.00</span>
+																	<span>250.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>1000.00</span>
+																	<span>1250.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1a">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -905,17 +980,17 @@
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>300.00</span>
+																	<span>350.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top" width="11%">
 																<div class="flex justify-between space-x-1">
 																	<span>Php</span>
-																	<span>1500.00</span>
+																	<span>1750.00</span>
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1a">
+																<input type="radio" name="offer_2a" >
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -923,11 +998,15 @@
 														<!-- loop offers per vendor here -->
 													</tr>
 												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+												<tr>
+													<td class="bg-gray-50 p-1 uppercase" colspan="19">
+														Materials
+													</td>
+												</tr>
 
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">2</td>
+													<td class="p-1 align-top text-center" rowspan="4">1</td>
 													<td class="p-1 align-top" rowspan="4">Mouse</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -951,7 +1030,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1b">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -974,7 +1053,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1b">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -997,7 +1076,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1b">
+																<input type="radio" name="offer_2b">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1009,7 +1088,7 @@
 
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">3</td>
+													<td class="p-1 align-top text-center" rowspan="4">2</td>
 													<td class="p-1 align-top" rowspan="4">Keyboard</td>
 													<td class="p-1 align-top text-center" rowspan="4">5</td>
 													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -1033,7 +1112,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1c">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1056,7 +1135,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1c">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1079,7 +1158,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_1c">
+																<input type="radio" name="offer_2c">
 															</td>
 															<td class="p-1 align-top" width="10%">
 																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
@@ -1110,7 +1189,7 @@
 											</tr>
 											<tr class="!border-0">
 												<td class="!border-0 text-center">c.</td>
-												<td class="!border-0 text-center" colspan="1">Delivery Term</td>
+												<td class="!border-0 text-center" colspan="1">Work Duration</td>
 												<td class="!border-0" colspan="2"></td>	
 												<td class="!border-0 !border-b" colspan="1"></td>
 												<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
@@ -1195,8 +1274,43 @@
 										<option value="">A-1 Gas Corporation</option>
 									</select>
 								</div>
-								<table class="table-bordered w-full !text-xs">
+								<table class="table-bordered w-full !text-xs mb-2">
+									<tr class="bg-gray-100">
+										<td class="p-1" width="50%">Scope of Work</td>
+										<td class="p-1" width="35%">Offer</td>
+										<td class="p-1">Price</td>
+									</tr>
 									<tr>
+										<td class="p-1 align-top">
+											Supply of manpower/labor, tools, equipment and technical expertise for the following:
+											<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+											<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+											<br>3. Repair and replacement of parts as seen upon inspection.
+											<br>4. Setting of internal parts and mounting of the governor.
+											<br>5. Calibration and bench testing for:
+											<br>5.1. Speed Setting and Indicator
+											<br>5.2. Speed Droop Setting and Indicator
+											<br>5.3. Load Limit Setting and Indicator
+											<br>6. Functional test of shut-down solenoid valve
+											<br>7. Testing and Commissioning
+											<br>8. Submission of inspection, service, commissioning and bench testing reports.
+											<br>9. Other works necessary for job completion.
+										</td>
+										<td class="align-top">
+											<textarea name="" id="" class="resize w-full  h-screen !max-h-[300px] !min-h-[100] p-1"></textarea>
+										</td>
+										<td class="align-top">
+											<div class="!h-14 border-b">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
+												<select name="" id="" class=" p-1 w-full !align-top text-center">
+													<option value="">PHP</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<table class="table-bordered w-full !text-xs">
+									<tr class="bg-gray-100">
 										<td class="p-1 text-center" width="5%">No</td>
 										<td class="p-1 text-center" width="10%">Qty</td>
 										<td class="p-1" width="35%">Item Description</td>
@@ -1263,43 +1377,13 @@
 											</div>
 										</td>
 									</tr>
-									<tr>
-										<td class="p-1 align-top text-center">1</td>
-										<td class="p-1 align-top text-center">5</td>
-										<td class="p-1 align-top">Keyboard</td>
-										<td class="align-top">
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-										</td>
-										<td class="align-top">
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-										</td>
-									</tr>
 								</table>
 							</div>
 						</div>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
+									<a href="/job_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
 								</div>
 							</div>
 						</div>
@@ -1317,7 +1401,7 @@
         >
 			<div class="modal pt-4 px-3" :class="{ show:showPreview }">
 				<div @click="closeModal" class="w-full h-full fixed"></div>
-				<div class="modal__content w-10/12 mb-5">
+				<div class="modal__content w-11/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Preview AOQ</span>
@@ -1331,8 +1415,8 @@
 							<div class="">
 								<table class="w-full !text-xs mb-3 ">
 									<tr>
-										<td class="font-bold pr-1" width="8%">PR No: </td>
-										<td class="">PR-CENPRI24-1002</td>
+										<td class="font-bold pr-1" width="8%">JOR No: </td>
+										<td class="">JOR-CENPRI24-1002</td>
 										<td class=" font-bold pr-1" width="8%">AOQ No: </td>
 										<td class="">AOQ-1009-1001</td>
 										<td class=" font-bold pr-1" width="8%">Requested By: </td>
@@ -1344,7 +1428,7 @@
 										<td class=" font-bold pr-1">Date: </td>
 										<td class="">05/16/24</td>
 										<td class=" font-bold pr-1">Date Needed: </td>
-										<td class="">05/16/24</td>
+										<td class="">01/16/24</td>
 									</tr>
 									<tr>
 										<td class="font-bold pr-1">End-Use:</td>
@@ -1352,7 +1436,11 @@
 									</tr>
 									<tr>
 										<td class="font-bold pr-1">Purpose:</td>
-										<td class="">IT Department</td>
+										<td class="">Replace damage monitor, mouse and keyboard</td>
+									</tr>
+									<tr>
+										<td class="font-bold pr-1">Project Title:</td>
+										<td class="">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</td>
 									</tr>
 								</table>
 								<table class="table-bordered !text-xs mb-3" width="250%">
@@ -1391,9 +1479,10 @@
 										</td>
 										<!-- loop vendors here end-->
 									</tr>
+									
 									<tr>
 										<td class="uppercase bg-gray-100 p-1 align-top text-center" width="1%">#</td>
-										<td class="uppercase bg-gray-100 p-1 align-top" width="10%">Item Description</td>
+										<td class="uppercase bg-gray-100 p-1 align-top" width="10%">Description</td>
 										<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">Qty</td>
 										<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">UOM</td>
 										<!-- loop offer header per vendor here start -->
@@ -1415,10 +1504,30 @@
 										<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
 										<!-- loop offer header per vendor here end-->
 									</tr>
+									<tr>
+										<td class="bg-gray-50 p-1 uppercase" colspan="19">
+											Supply of technical expertise for the following:
+										</td>
+										<!-- loop vendors here end-->
+									</tr>
 									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 										<tr>
 											<td class="p-1 align-top text-center" rowspan="4">1</td>
-											<td class="p-1 align-top" rowspan="4">Monitor</td>
+											<td class="p-1 align-top" rowspan="4">
+												Supply of manpower/labor, tools, equipment and technical expertise for the following:
+												<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+												<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+												<br>3. Repair and replacement of parts as seen upon inspection.
+												<br>4. Setting of internal parts and mounting of the governor.
+												<br>5. Calibration and bench testing for:
+												<br>5.1. Speed Setting and Indicator
+												<br>5.2. Speed Droop Setting and Indicator
+												<br>5.3. Load Limit Setting and Indicator
+												<br>6. Functional test of shut-down solenoid valve
+												<br>7. Testing and Commissioning
+												<br>8. Submission of inspection, service, commissioning and bench testing reports.
+												<br>9. Other works necessary for job completion.
+											</td>
 											<td class="p-1 align-top text-center" rowspan="4">5</td>
 											<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
 										</tr>
@@ -1596,10 +1705,14 @@
 											</tr>
 										<!-- loop here if 3 and below offers here -->
 									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-
+									<tr>
+										<td class="bg-gray-50 p-1 uppercase" colspan="19">
+											Materials
+										</td>
+									</tr>
 									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 										<tr>
-											<td class="p-1 align-top text-center" rowspan="4">2</td>
+											<td class="p-1 align-top text-center" rowspan="4">1</td>
 											<td class="p-1 align-top" rowspan="4">Mouse</td>
 											<td class="p-1 align-top text-center" rowspan="4">5</td>
 											<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -1781,7 +1894,7 @@
 
 									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 										<tr>
-											<td class="p-1 align-top text-center" rowspan="4">3</td>
+											<td class="p-1 align-top text-center" rowspan="4">2</td>
 											<td class="p-1 align-top" rowspan="4">Keyboard</td>
 											<td class="p-1 align-top text-center" rowspan="4">5</td>
 											<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -1988,7 +2101,7 @@
 									</tr>
 									<tr class="!border-0">
 										<td class="!border-0 text-center">c.</td>
-										<td class="!border-0 text-center" colspan="1">Delivery Term</td>
+										<td class="!border-0 text-center" colspan="1">Work Duration</td>
 										<td class="!border-0" colspan="2"></td>	
 										<td class="!border-0 !border-b" colspan="1"></td>
 										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
@@ -2076,8 +2189,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
-									<a href="/pur_po/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed to PO</a>
+									<!-- <a href="/job_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
+									<a href="/job_po/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed to PO</a>
 								</div>
 							</div>
 						</div>
@@ -2117,9 +2230,9 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_req/" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Show List</a>
-									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/pur_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
+									<!-- <a href="/job_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
+									<a href="/job_aoq/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
 						</div>

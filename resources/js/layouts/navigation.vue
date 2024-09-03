@@ -1,5 +1,5 @@
 <script setup>
-    import{HomeIcon, KeyIcon, UserIcon, DocumentTextIcon, RectangleGroupIcon, Square3Stack3DIcon, DocumentDuplicateIcon, TruckIcon, BanknotesIcon , Squares2X2Icon, TableCellsIcon} from '@heroicons/vue/24/solid'
+    import{HomeIcon, KeyIcon, UserIcon, DocumentTextIcon, RectangleGroupIcon, Square3Stack3DIcon, DocumentDuplicateIcon, TruckIcon, BanknotesIcon , Squares2X2Icon, TableCellsIcon, NewspaperIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
     
@@ -16,6 +16,7 @@
 
     const jobDrop = ref(false);
     const jobRfqDrop = ref(false);
+    const joiDrop = ref(false);
 
 	const hideDrop = ref(true)
 	const openMaster = () => {
@@ -27,6 +28,7 @@
         rfdDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
     const openPR = () => {
 		prDrop.value = !prDrop.value
@@ -37,6 +39,7 @@
         rfdDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
     const openRFQ = () => {
 		rfqDrop.value = !rfqDrop.value
@@ -47,6 +50,7 @@
         rfdDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
     const openPO = () => {
         poDrop.value = !poDrop.value
@@ -57,6 +61,7 @@
         rfdDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
     const openDR = () => {
         drDrop.value = !drDrop.value
@@ -67,6 +72,7 @@
         rfdDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
     const openRFD = () => {
         rfdDrop.value = !rfdDrop.value
@@ -77,6 +83,7 @@
         masterfileDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
 
     const openJobReq = () => {
@@ -88,10 +95,24 @@
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
 	}
 
     const openJobQuote = () => {
         jobRfqDrop.value = !jobRfqDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        
+	}
+    const openJobIssue = () => {
+        joiDrop.value = !joiDrop.value
+        jobRfqDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
 		masterfileDrop.value = !hideDrop.value
 		prDrop.value = !hideDrop.value
@@ -271,7 +292,7 @@
         <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas " id="sidebar">
-                <div class="h-[39rem] overflow-y-scroll">
+                <div class="h-[39rem] hover:overflow-y-scroll  overflow-y-hidden">
                     <ul class="nav ">
                         <li class="nav-item">
                             <a class="nav-link !text-gray-600" href="/dashboard">
@@ -501,13 +522,21 @@
                                 </div>
                             </Transition>
                         </li>
-                        
-                        <!-- <li class="nav-item">
-                            <a class="nav-link !text-gray-600 cursor-pointer" @click="potransDrop = !potransDrop" >
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600" href="/job_aoq">
+                                <i class="mdi mdi-home menu-icon !text-gray-600">
+                                    <NewspaperIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></NewspaperIcon >
+                                </i>
+                                <span class="menu-title">Abstract of Quotation</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openJobIssue()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <DocumentDuplicateIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentDuplicateIcon>
                                 </i>
-                                    <span class="menu-title">PO Transactions</span>
+                                    <span class="menu-title">Job Order Issuance</span>
+                                <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
                                 enter-active-class="transition ease-out duration-250"
@@ -517,19 +546,67 @@
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                                <div class=""  v-show="potransDrop">
+                                <div class="!hidden"  :class="{ show:joiDrop }">
                                     <ul class="nav flex-column sub-menu">
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_req">Purchase Request</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_quote">Request For Quotation</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_aoq">Abstract Of Quotation</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_po">Purchase Order</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Delivery Receipt</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse">Request For Disbursement</a></li>
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_issue/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_issue">Show List</a></li>
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/po_direct">Direct PO</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li> -->
                                     </ul>
                                 </div>
                             </Transition>
-                        </li> -->
-                        
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openDR()" >
+                                <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                    <TruckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></TruckIcon>
+                                </i>
+                                    <span class="menu-title">Delivery Receipt</span>
+                                <!-- <i class="menu-arrow"></i> -->
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:drDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openRFD()" >
+                                <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                    <BanknotesIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></BanknotesIcon>
+                                </i>
+                                    <span class="menu-title">Request for DISBMT</span>
+                                <!-- <i class="menu-arrow"></i> -->
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:rfdDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
                     </ul>
                 </div>
             </nav>

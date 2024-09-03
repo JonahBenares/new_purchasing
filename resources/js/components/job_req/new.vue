@@ -675,8 +675,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_req/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
+									<a href="/job_req/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/job_req/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
 								</div>
 							</div>
 						</div>
@@ -718,7 +718,7 @@
 								<div class="flex justify-center space-x-2">
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/pur_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/job_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
 						</div>

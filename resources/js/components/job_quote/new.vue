@@ -153,12 +153,18 @@
 								<div class="col-lg-12">
 									<table class="w-full table-bordered !text-xs mt-3">
 										<tr class="bg-gray-100">
+											<td class="p-1 uppercase text-center" width="2%">
+												<input type="checkbox">
+											</td>
 											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase" width="">Scope Of Works</td>
 											<td class="p-1 uppercase text-center" width="10%">Qty</td>
 											<td class="p-1 uppercase text-center" width="10%">UOM</td>
 										</tr>
 										<tr>
+											<td class="p-1 text-center">
+												<input type="checkbox">
+											</td>
 											<td class="p-1 text-center align-top">1</td>
 											<td class="p-1 align-top">
 												Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur
@@ -174,7 +180,7 @@
 								<div class="col-lg-12">
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
-											<td class="p-1 uppercase text-center" width="5%">
+											<td class="p-1 uppercase text-center" width="2%">
 												<input type="checkbox">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>
@@ -353,31 +359,6 @@
 											</button>
 										</td>
 									</tr>
-									<!-- <tr>
-										<td class="text-sm p-1 px-2">Lectrix Solutions Electrical Supplies & Services Cebu</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-sm p-1 px-2">MF Computer Solutions, Inc.</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr>
-									<tr>
-										<td class="text-sm p-1 px-2">Nexus Industrial Prime Solutions Corp.</td>
-										<td class="text-center">
-											<button class="btn btn-danger p-1">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr> -->
 								</table>
 							</div>
 						</div>

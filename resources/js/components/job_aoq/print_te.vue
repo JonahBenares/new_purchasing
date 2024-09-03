@@ -23,8 +23,8 @@
 				<div class="">
 					<table class="w-full !text-xs mb-3 ">
 						<tr>
-							<td class="font-bold pr-1" width="8%">PR No: </td>
-							<td class="">PR-CENPRI24-1002</td>
+							<td class="font-bold pr-1" width="8%">JOR No: </td>
+							<td class="">JOR-CENPRI24-1002</td>
 							<td class=" font-bold pr-1" width="8%">AOQ No: </td>
 							<td class="">AOQ-1009-1001</td>
 							<td class=" font-bold pr-1" width="8%">Requested By: </td>
@@ -45,6 +45,10 @@
 						<tr>
 							<td class="font-bold pr-1">Purpose:</td>
 							<td class="">Replace damage monitor, mouse and keyboard</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">Project Title:</td>
+							<td class="">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</td>
 						</tr>
 					</table>
 					<table class="table-bordered !text-xs mb-3" width="250%">
@@ -83,9 +87,10 @@
 							</td>
 							<!-- loop vendors here end-->
 						</tr>
+						
 						<tr>
 							<td class="uppercase bg-gray-100 p-1 align-top text-center" width="1%">#</td>
-							<td class="uppercase bg-gray-100 p-1 align-top" width="10%">Item Description</td>
+							<td class="uppercase bg-gray-100 p-1 align-top" width="10%">Description</td>
 							<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">Qty</td>
 							<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">UOM</td>
 							<!-- loop offer header per vendor here start -->
@@ -107,10 +112,30 @@
 							<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
 							<!-- loop offer header per vendor here end-->
 						</tr>
+						<tr>
+							<td class="bg-gray-50 p-1 uppercase" colspan="19">
+								Supply of technical expertise for the following:
+							</td>
+							<!-- loop vendors here end-->
+						</tr>
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 							<tr>
 								<td class="p-1 align-top text-center" rowspan="4">1</td>
-								<td class="p-1 align-top" rowspan="4">Monitor</td>
+								<td class="p-1 align-top" rowspan="4">
+									Supply of manpower/labor, tools, equipment and technical expertise for the following:
+									<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+									<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+									<br>3. Repair and replacement of parts as seen upon inspection.
+									<br>4. Setting of internal parts and mounting of the governor.
+									<br>5. Calibration and bench testing for:
+									<br>5.1. Speed Setting and Indicator
+									<br>5.2. Speed Droop Setting and Indicator
+									<br>5.3. Load Limit Setting and Indicator
+									<br>6. Functional test of shut-down solenoid valve
+									<br>7. Testing and Commissioning
+									<br>8. Submission of inspection, service, commissioning and bench testing reports.
+									<br>9. Other works necessary for job completion.
+								</td>
 								<td class="p-1 align-top text-center" rowspan="4">5</td>
 								<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
 							</tr>
@@ -288,10 +313,14 @@
 								</tr>
 							<!-- loop here if 3 and below offers here -->
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-
+						<tr>
+							<td class="bg-gray-50 p-1 uppercase" colspan="19">
+								Materials
+							</td>
+						</tr>
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 							<tr>
-								<td class="p-1 align-top text-center" rowspan="4">2</td>
+								<td class="p-1 align-top text-center" rowspan="4">1</td>
 								<td class="p-1 align-top" rowspan="4">Mouse</td>
 								<td class="p-1 align-top text-center" rowspan="4">5</td>
 								<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -473,7 +502,7 @@
 
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 							<tr>
-								<td class="p-1 align-top text-center" rowspan="4">3</td>
+								<td class="p-1 align-top text-center" rowspan="4">2</td>
 								<td class="p-1 align-top" rowspan="4">Keyboard</td>
 								<td class="p-1 align-top text-center" rowspan="4">5</td>
 								<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
@@ -680,7 +709,7 @@
 						</tr>
 						<tr class="!border-0">
 							<td class="!border-0 text-center">c.</td>
-							<td class="!border-0 text-center" colspan="1">Delivery Term</td>
+							<td class="!border-0 text-center" colspan="1">Work Duration</td>
 							<td class="!border-0" colspan="2"></td>	
 							<td class="!border-0 !border-b" colspan="1"></td>
 							<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
