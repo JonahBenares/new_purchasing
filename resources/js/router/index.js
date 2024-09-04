@@ -89,6 +89,17 @@ import job_issueEdit from '../components/job_issue/edit.vue'
 import job_issueView from '../components/job_issue/view.vue'
 import job_issuePrint from '../components/job_issue/print.vue'
 
+import job_issueDirect from '../components/job_direct/index.vue'
+import job_issueDirectView from '../components/job_direct/view.vue'
+
+import job_drIndex from '../components/job_dr/index.vue'
+import job_drNew from '../components/job_dr/new.vue'
+import job_drView from '../components/job_dr/view.vue'
+
+import job_disburseIndex from '../components/job_disburse/index.vue'
+import job_disburseNew from '../components/job_disburse/new.vue'
+import job_disburseView from '../components/job_disburse/view.vue'
+
 const routes = [
     {
         path:'/',
@@ -390,6 +401,39 @@ const routes = [
         component: job_issuePrint,
     },
 
+    {
+        path:'/job_direct',
+        component: job_issueDirect,
+    },
+    {
+        path:'/job_direct/view',
+        component: job_issueDirectView,
+    },
+    {
+        path:'/job_dr',
+        component: job_drIndex,
+    },
+    {
+        path:'/job_dr/new',
+        component: job_drNew,
+    },
+    {
+        path:'/job_dr/view',
+        component: job_drView,
+    },
+
+    {
+        path:'/job_disburse',
+        component: job_disburseIndex,
+    },
+    {
+        path:'/job_disburse/new',
+        component: job_disburseNew,
+    },
+    {
+        path:'/job_disburse/view',
+        component: job_disburseView,
+    },
     {
         path:'/:pathMatch(.*)*',
         name:'notFound',

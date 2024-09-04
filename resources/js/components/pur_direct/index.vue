@@ -36,7 +36,11 @@
 	}
 
 	const pr_det = ref(false)
-
+	const pr_supplier = ref(false)
+	const openPR = () => {
+		pr_det.value = !hideAlert.value
+		pr_supplier.value = !pr_supplier.value
+	}
 	let vendor_list=ref([]);
 	let vendor_name=ref('');
 	let terms_list=ref([]);
@@ -124,7 +128,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="/pur_repeat">Direct PO</a></li>
+                            <li class="breadcrumb-item active"><a href="/pur_direct">Direct PO</a></li>
                             <li class="breadcrumb-item active" aria-current="page">New</li>
                         </ol>
                     </nav>
@@ -151,14 +155,14 @@
 											<option value="">PR-CENPRI24-1002</option>
 										</select>
 										<span class="input-group-append">
-											<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
+											<button class="btn btn-primary" type="button" @click="openPR()">Select</button>
 										</span>
 									</div>
 									</div>
 								</div>
 							</div>
 							<hr class="border-dashed">
-							<div v-show="pr_det">
+							<div class="hidden" :class="{ show:pr_supplier }">
 								<div class="row">							
 									<div class="col-lg-6 offset-lg-3 col-md-3">
 										<div class="form-group">
@@ -176,6 +180,8 @@
 										</div>
 									</div>
 								</div>
+							</div>
+							<div class="hidden" :class="{ show:pr_det }">
 								<div class="row">
 									<div class="col-lg-6">
 										<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>

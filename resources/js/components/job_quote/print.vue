@@ -116,7 +116,8 @@
 										<table class="table-bordered w-full !text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
-												<td class="p-1" width="50%">Offer</td>
+												<td class="p-1" width="35%">Offer</td>
+												<td class="p-1 text-center" width="15%">Unit Price</td>
 											</tr>
 											<tr>
 												<td class="p-1 align-top">
@@ -134,8 +135,8 @@
 													<br>8. Submission of inspection, service, commissioning and bench testing reports.
 													<br>9. Other works necessary for job completion.
 												</td>
-												<td class="align-top">
-												</td>
+												<td class="align-top"></td>
+												<td class="align-top"></td>
 											</tr>
 										</table>
 										<table class="table-bordered w-full !text-xs mb-2">
@@ -255,7 +256,8 @@
 										<table class="table-bordered w-full !text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
-												<td class="p-1" width="50%">Offer</td>
+												<td class="p-1" width="35%">Offer</td>
+												<td class="p-1 text-center" width="15%">Unit Price</td>
 											</tr>
 											<tr>
 												<td class="p-1 align-top">
@@ -273,8 +275,8 @@
 													<br>8. Submission of inspection, service, commissioning and bench testing reports.
 													<br>9. Other works necessary for job completion.
 												</td>
-												<td class="align-top">
-												</td>
+												<td class="align-top"></td>
+												<td class="align-top"></td>
 											</tr>
 										</table>
 										<table class="table-bordered w-full !text-xs mb-2">
@@ -394,7 +396,8 @@
 										<table class="table-bordered w-full !text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
-												<td class="p-1" width="50%">Offer</td>
+												<td class="p-1" width="35%">Offer</td>
+												<td class="p-1 text-center" width="15%">Unit Price</td>
 											</tr>
 											<tr>
 												<td class="p-1 align-top">
@@ -412,8 +415,8 @@
 													<br>8. Submission of inspection, service, commissioning and bench testing reports.
 													<br>9. Other works necessary for job completion.
 												</td>
-												<td class="align-top">
-												</td>
+												<td class="align-top"></td>
+												<td class="align-top"></td>
 											</tr>
 										</table>
 										<table class="table-bordered w-full !text-xs mb-2">

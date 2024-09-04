@@ -279,9 +279,9 @@
                                                 <tr>
 													<td colspan="2" class="p-1">Sample Notes</td>
 													<td class="p-0 align-top" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+														<!-- <button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-														</button>
+														</button> -->
 													</td>
 												</tr>
                                             </table>

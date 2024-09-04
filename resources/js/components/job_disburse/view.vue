@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
@@ -27,12 +27,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Request for Disbursement <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Request for Disbursement <small>New</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/pur_disburse">Request for Disbursement</a></li>
+                            <li class="breadcrumb-item"><a href="/job_disburse">JO Request for Disbursement</a></li>
                             <li class="breadcrumb-item active" aria-current="page">New</li>
                         </ol>
                     </nav>
@@ -101,6 +101,37 @@
                                                 </td>
                                                 <td class="border-y-none p-1 text-right"></td>
                                             </tr>
+                                            <tr>
+                                                <td  class="!border-none p-1" colspan="6">
+                                                    <span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
+                                                        technical expertise for the following:</span>
+                                                </td>
+                                                <td class="border-y-none p-1 text-center"></td>
+                                            </tr>
+                                            <tr class="">
+                                                <td class="!border-none p-1" colspan="3">1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+                                                    <br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+                                                    <br>3. Repair and replacement of parts as seen upon inspection.
+                                                    <br>4. Setting of internal parts and mounting of the governor.
+                                                    <br>5. Calibration and bench testing for:
+                                                    <br>5.1. Speed Setting and Indicator
+                                                    <br>5.2. Speed Droop Setting and Indicator
+                                                    <br>5.3. Load Limit Setting and Indicator
+                                                    <br>6. Functional test of shut-down solenoid valve
+                                                    <br>7. Testing and Commissioning
+                                                    <br>8. Submission of inspection, service, commissioning and bench testing reports.
+                                                    <br>9. Other works necessary for job completion.
+                                                </td>
+                                                <td class="!border-none p-1 text-center">5</td>
+                                                <td class="!border-none p-1 text-center">pc</td>
+                                                <td class="!border-none p-1 text-right">100.00</td>
+                                                <td class="border-y-none p-1 text-center">
+                                                    <div class="flex justify-between w-full">
+                                                        <span>₱</span>
+                                                        <span>500.00</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             <tr class="">
                                                 <td class="border-y-none p-1 text-left" colspan="6">
                                                     5 pc/s Monitor Brand:Asus @ 100.00 per pc/s
@@ -143,15 +174,20 @@
                                                 <td class=""></td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="7">
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="4"> 
+                                                    <!--plus one sa rowspan if may additional nga description and amount-->
+
+
+                                                    <!-- <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
                                                     <br>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PO Number:</span>PO-CENPRI-1001</p>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001</p>
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p> -->
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001</p>
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                 </td>
-                                                <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
+                                                <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Amount of JO</td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
@@ -160,7 +196,9 @@
                                                 </td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    Sample
+                                                </td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
@@ -168,8 +206,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
+                                            <!-- <tr class="">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    
+                                                    Less: Discount
+                                                </td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
@@ -185,18 +226,17 @@
                                                         <span>500.00</span>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                             <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: 0% EWT</td>
-                                                <td class="p-1 border-y-none">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    <div class="flex justify-end space-x-3">
+                                                        <!-- <span class="flex space-x-1">
+                                                            <span class="pb-.5">Show</span>
+                                                            <input type="checkbox" class="" alt="show">
+                                                        </span> -->
+                                                        <span>Less: 2% EWT</span>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Vatable</td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>

@@ -1,11 +1,17 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
-	const vendor =  ref();
-	const preview =  ref();
 
+	const showModal = ref(false)
+	const hideModal = ref(true)
+	const openModel = () => {
+		showModal.value = !showModal.value
+	}
+	const closeModal = () => {
+		showModal.value = !hideModal.value
+	}
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const warningAlert = ref(false)
@@ -28,27 +34,53 @@
 		warningAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
 	}
-	const showAddVendor = ref(false)
-	const showPreview = ref(false)
-	const hideModal = ref(true)
-	const openAddVendor = () => {
-		showAddVendor.value = !showAddVendor.value
-	}
-	const openPreview = () => {
-		showPreview.value = !showPreview.value
-	}
-	const closeModal = () => {
-		showAddVendor.value = !hideModal.value
-		showPreview.value = !hideModal.value
-	}
 
-	
 	const jor_det = ref(false)
-
+	const pr_det = ref(false)
+	const pr_supplier = ref(false)
+	const openPR = () => {
+		pr_det.value = !hideAlert.value
+		pr_supplier.value = !pr_supplier.value
+	}
+	let vendor_list=ref([]);
+	let vendor_name=ref('');
 	let terms_list=ref([]);
 	let terms_text=ref("");
 	let other_list=ref([]);
 	let other_text=ref("");
+
+	const addVendor= () => {
+		for(var x=0; x<vendor_list.value.length; x++){
+			if(document.getElementById("v_name"+x).value == vendor_name.value){
+				var vendor_count = 1;
+			}
+		}
+
+			if(vendor_count != undefined){
+				alert("The vendor is already added!")
+			}else if(vendor_name.value == ''){
+				alert("You must select Vendor!")
+			}else{
+				const vendors = {
+					vendor_name:vendor_name.value,
+					vname:vendor_name.value,
+				}
+				vendor_list.value.push(vendors)
+				vendor_name.value='';
+
+				// vendor_list.value.forEach(function (val, index, theArray) {
+				// 	if(document.getElementById("v_name"+index).value == vendor_name.value){
+				// 		alert("This vendor is already added!")
+				// 		vendor_list.value.splice(index,1)
+				// 	}
+				// });
+				// vendor_name.value='';
+			}
+	}
+
+	const removeVendor = (index) => {
+		vendor_list.value.splice(index,1)
+	}
 
 	const addRowTerms= () => {
 		if(terms_text.value!=''){
@@ -92,12 +124,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Issuance <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Direct JOI <small>New</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/job_issue">JO Issuance</a></li>
+                            <li class="breadcrumb-item active"><a href="/job_direct">Direct JOI</a></li>
                             <li class="breadcrumb-item active" aria-current="page">New</li>
                         </ol>
                     </nav>
@@ -108,30 +140,49 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
 					<div class="card-body">
-						<div class="row">							
-							<div class="col-lg-8 offset-lg-2 col-md-3">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Choose Supplier and JOR No</label>
+						<!-- <span class="pt-2">
+							<h3 class="card-title !text-lg m-0">Request for Quotation <small>New</small></h3>
+						</span> -->
+						<hr class="border-dashed mt-0">
+						<div class="pt-1">
+							<div class="row">							
+								<div class="col-lg-6 offset-lg-3 col-md-3">
+									<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Choose JOR Number</label>
 									<input type="file" name="img[]" class="file-upload-default">
 									<div class="input-group col-xs-12">
 										<select class="form-control file-upload-info">
-											<option value="">Select Supplier</option>
-											<option value="">MF Computer Solutions, Inc. </option>
-										</select>
-										<select class="form-control file-upload-info">
-											<option value="">JOR Number</option>
-											<option value="">JOR-19772-8727</option>
+											<option value="">JOR-CENPRI24-1001</option>
+											<option value="">JOR-CENPRI24-1002</option>
 										</select>
 										<span class="input-group-append">
-											<button class="btn btn-primary" type="button" @click="jor_det = !jor_det">Select</button>
+											<button class="btn btn-primary" type="button" @click="openPR()">Select</button>
 										</span>
+									</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<hr class="border-dashed">
-						<div class="pt-1">
-							<div v-show="jor_det">
+							<hr class="border-dashed">
+							<div class="hidden" :class="{ show:pr_supplier }">
+								<div class="row">							
+									<div class="col-lg-6 offset-lg-3 col-md-3">
+										<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Choose Supplier</label>
+										<input type="file" name="img[]" class="file-upload-default">
+										<div class="input-group col-xs-12">
+											<select class="form-control file-upload-info">
+												<option value="">Suppleir 1</option>
+												<option value="">Supplier 2</option>
+											</select>
+											<span class="input-group-append">
+												<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
+											</span>
+										</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="hidden" :class="{ show:pr_det }">
 								<div class="row">
 									<div class="col-lg-1">
 										<span class="text-sm">TO:</span>
@@ -144,34 +195,34 @@
 									</div>
 								</div>
 								<hr class="border-dashed">
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
-											<input type="text" class="border-b w-full">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="flex">
+												<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
+												<input type="text" class="border-b w-full">
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="flex">
+												<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
+												<input type="text" class="border-b w-full">
+											</div>	
 										</div>
 									</div>
-									<div class="col-lg-6">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
-											<input type="text" class="border-b w-full">
-										</div>	
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
-											<input type="text" class="border-b w-full">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="flex">
+												<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
+												<input type="text" class="border-b w-full">
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="flex">
+												<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
+												<input type="text" class="border-b w-full">
+											</div>
 										</div>
 									</div>
-									<div class="col-lg-6">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
-											<input type="text" class="border-b w-full">
-										</div>
-									</div>
-								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="flex">
@@ -192,107 +243,100 @@
 										<div class="col-lg-12">
 											<div class="border-2">
 												<table class="table-bordered w-full !text-xs">
-													<tr class="!border-b-3">
-														<td colspan="7" class="py-2">
-															<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
-															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
-														</td>
-													</tr>
-													<tr class="bg-gray-100">
-														<td class="uppercase p-1" colspan="3">Scope of Work</td>
-														<td class="uppercase p-1 text-center" width="7%">Qty</td>
-														<td class="uppercase p-1 text-center" width="7%">Unit</td>
-														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
-														<td class="uppercase p-1 text-center" width="10%">Total</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1" colspan="3">
-															<span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
-															technical expertise for the following:</span>
-															<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-															<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-															<br>3. Repair and replacement of parts as seen upon inspection.
-															<br>4. Setting of internal parts and mounting of the governor.
-															<br>5. Calibration and bench testing for:
-															<br>5.1. Speed Setting and Indicator
-															<br>5.2. Speed Droop Setting and Indicator
-															<br>5.3. Load Limit Setting and Indicator
-															<br>6. Functional test of shut-down solenoid valve
-															<br>7. Testing and Commissioning
-															<br>8. Submission of inspection, service, commissioning and bench testing reports.
-															<br>9. Other works necessary for job completion.
-														</td>
-														<td class="border-y-none p-1 text-center">5</td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													<tr class="bg-gray-100">
-														<td class="p-1 text-center" width="3%">#</td>
-														<td class="p-1" colspan="2">Materials:</td>
-                                                        <td class="uppercase p-1 text-center" width="7%">Qty</td>
-														<td class="uppercase p-1 text-center" width="7%">Unit</td>
-														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
-														<td class="uppercase p-1 text-center" width="10%">Total</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">1</td>
-														<td class="border-y-none p-1" colspan="2">Monitor</td>
-														<td class="border-y-none p-1 text-center">5</td>
-														<td class="border-y-none p-1 text-center">lot</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">2</td>
-														<td class="border-y-none p-1" colspan="2">Mouse</td>
-														<td class="border-y-none p-1 text-center">5</td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													<tr class="">
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-													</tr>
-													<tr class="">
-														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-														</td>
-														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
-													</tr>
-													
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-														<td class="p-0">
-															<div class="flex">
-																<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%" value="">
-																<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
-															</div>
-														</td>
-													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
-														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
-													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
-														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
-													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-														<td class="p-1 text-right font-bold !text-sm">1000.00</td>
-													</tr>
-												</table>
+												<tr class="!border-b-3 bg-yellow-50">
+													<td colspan="7" class="py-2">
+														<textarea class="text-sm font-bold text-gray-600 bg-yellow-50  text-center m-0 w-full resize" rows="1">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</textarea>
+														<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
+													</td>
+												</tr>
+												<tr class="bg-yellow-100">
+													<td class="uppercase p-1" colspan="3">Scope of Work</td>
+													<td class="uppercase p-1 text-center" width="7%">Qty</td>
+													<td class="uppercase p-1 text-center" width="7%">Unit</td>
+													<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+													<td class="uppercase p-1 text-center" width="10%">Total</td>
+												</tr>
+												<tr class="">
+													<td class="border-y-none p-1" colspan="3">
+														<textarea class="font-bold w-full resize" rows="1">Supply of manpower/labor, laboratory tools/equipment, and technical expertise for the following:</textarea>
+														<textarea name="" id="" class="w-full resize" rows="10">1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.3. Repair and replacement of parts as seen upon inspection.4. Setting of internal parts and mounting of the governor.5. Calibration and bench testing for:5.1. Speed Setting and Indicator5.2. Speed Droop Setting and Indicator5.3. Load Limit Setting and Indicator6. Functional test of shut-down solenoid valve7. Testing and Commissioning8. Submission of inspection, service, commissioning and bench testing reports.9. Other works necessary for job completion.
+														</textarea>
+													</td>
+													<td class="border-y-none p-1 text-center"><input type="text" value="5" class="w-full text-center"></td>
+													<td class="border-y-none p-1 text-center"><input type="text" value="lot" class="w-full text-center"></td>
+													<td class="border-y-none p-1 text-right"><input type="text" value="100.00" class="w-full text-center"></td>
+													<td class="border-y-none p-1 text-right"><input type="text" value="500.00" class="w-full text-center"></td>
+												</tr>
+												<tr class="bg-yellow-100">
+													<td class="p-1 text-center" width="3%">#</td>
+													<td class="p-1" colspan="2">Materials:</td>
+													<td class="uppercase p-1 text-center" width="7%">Qty</td>
+													<td class="uppercase p-1 text-center" width="7%">Unit</td>
+													<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+													<td class="uppercase p-1 text-center" width="10%">Total</td>
+												</tr>
+												<tr class="">
+													<td class="p-1 text-center align-top">1</td>
+													<td class="p-0 align-top " colspan="2">
+														<textarea name="" id="" class="w-full  p-1 resize" rows="1">Monitor</textarea>
+													</td>
+													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
+													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
+												</tr>
+												<tr class="">
+													<td class="p-1 text-center align-top">1</td>
+													<td class="p-0 align-top " colspan="2">
+														<textarea name="" id="" class="w-full  p-1 resize" rows="1">Mouse</textarea>
+													</td>
+													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
+													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
+												</tr>
+												<tr class="">
+													<td class=""></td>
+													<td class=""></td>
+													<td class=""></td>
+													<td class=""></td>
+													<td class=""></td>
+													<td class=""></td>
+													<td class=""></td>
+												</tr>
+												<tr class="">
+													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
+														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
+														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
+														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+													</td>
+													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
+												</tr>
+												
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
+													<td class="p-0">
+														<div class="flex">
+															<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%" value="">
+															<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
+														</div>
+													</td>
+												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
+												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
+												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
+													<td class="p-1 text-right font-bold !text-sm">1000.00</td>
+												</tr>
+											</table>
 											</div>
 										</div>
 									</div>
@@ -451,17 +495,8 @@
 								<div class="row my-2"> 
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-center space-x-2">
-											<!-- <div class="flex justify-between space-x-1">
-												<button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-												<button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
-											</div> -->
-											<div class="flex justify-between space-x-1">
-												<!-- kung wala pa na save -->
-												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
-												<button @click="openWarningAlert()" class="btn btn-warning w-26 !text-white" >Save as Draft</button>
-												<button @click="openSuccessAlert()" type="submit" class="btn btn-primary w-36">Save</button>
-											</div>
-											
+											<button type="submit" class="btn btn-warning text-white mr-2 w-36" @click="openWarningAlert()">Save as Draft</button>
+											<button type="submit" class="btn btn-primary mr-2 w-44" @click="openSuccessAlert()">Save</button>
 										</div>
 									</div>
 								</div>
@@ -495,7 +530,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created a new JOI.</h5>
+									<h5 class="leading-tight">You have successfully created a Direct JOI.</h5>
 								</div>
 							</div>
 						</div>
@@ -503,12 +538,12 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/job_issue/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a href="/job_issue/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
+									<a href="/job_direct" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/job_direct/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> 
 				</div>
 			</div>
 		</Transition>
@@ -536,7 +571,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-yellow-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully saved a JOI as draft.</h5>
+									<h5 class="leading-tight">You have successfully saved a Direct JOI as draft.</h5>
 								</div>
 							</div>
 						</div>
@@ -546,7 +581,7 @@
 								<div class="flex justify-center space-x-2">
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/job_issue/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/job_direct" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
 						</div>
@@ -555,5 +590,4 @@
 			</div>
 		</Transition>
 	</navigation>
-	
 </template>

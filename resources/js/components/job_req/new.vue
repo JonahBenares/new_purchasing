@@ -235,12 +235,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Job Order Request<small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Request<small>New</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="/job_req">Job Order Request</a></li>
+                            <li class="breadcrumb-item active"><a href="/job_req">JO Request</a></li>
                             <li class="breadcrumb-item active" aria-current="page">New</li>
                         </ol>
                     </nav>
@@ -808,7 +808,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/job_req/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a href="/job_req/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
+									<a href="/job_req/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
 								</div>
 							</div>
 						</div>

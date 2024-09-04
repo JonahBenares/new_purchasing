@@ -17,6 +17,8 @@
     const jobDrop = ref(false);
     const jobRfqDrop = ref(false);
     const joiDrop = ref(false);
+    const jobDrDrop = ref(false);
+    const jobRfdDrop = ref(false);
 
 	const hideDrop = ref(true)
 	const openMaster = () => {
@@ -29,6 +31,8 @@
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
     const openPR = () => {
 		prDrop.value = !prDrop.value
@@ -40,6 +44,8 @@
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
     const openRFQ = () => {
 		rfqDrop.value = !rfqDrop.value
@@ -51,6 +57,8 @@
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
     const openPO = () => {
         poDrop.value = !poDrop.value
@@ -62,6 +70,8 @@
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
     const openDR = () => {
         drDrop.value = !drDrop.value
@@ -73,6 +83,8 @@
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
     const openRFD = () => {
         rfdDrop.value = !rfdDrop.value
@@ -84,6 +96,8 @@
         jobDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
 
     const openJobReq = () => {
@@ -96,6 +110,8 @@
         rfdDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
 	}
 
     const openJobQuote = () => {
@@ -108,6 +124,8 @@
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
         
 	}
     const openJobIssue = () => {
@@ -120,7 +138,36 @@
         poDrop.value = !hideDrop.value
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
-        
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
+	}
+
+    const openJobRFD = () => {
+        jobRfdDrop.value = !jobRfdDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
+	}
+
+    const openJobDR = () => {
+        jobDrDrop.value = !jobDrDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
 	}
 
 
@@ -551,14 +598,14 @@
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_issue/new">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_issue">Show List</a></li>
-                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/po_direct">Direct PO</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_direct">Direct JOI</a></li>
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li> -->
                                     </ul>
                                 </div>
                             </Transition>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openDR()" >
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openJobDR()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <TruckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></TruckIcon>
                                 </i>
@@ -573,17 +620,17 @@
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                                <div class="!hidden"  :class="{ show:drDrop }">
+                                <div class="!hidden"  :class="{ show:jobDrDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new">Add New</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Show List</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_dr/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_dr">Show List</a></li>
                                     </ul>
                                 </div>
                             </Transition>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openRFD()" >
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openJobRFD()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <BanknotesIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></BanknotesIcon>
                                 </i>
@@ -598,11 +645,11 @@
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                                <div class="!hidden"  :class="{ show:rfdDrop }">
+                                <div class="!hidden"  :class="{ show:jobRfdDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse/new">Add New</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse">Show List</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_disburse/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_disburse">Show List</a></li>
                                     </ul>
                                 </div>
                             </Transition>

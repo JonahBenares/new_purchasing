@@ -17,11 +17,11 @@
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
     const data = [
-        ['<span>2024-08-15</span>', '<span>2024-08-15</span>', 'POPE19-1000-1001' , 'POPE19-1000-1001' , 'MF Computer Solutions, Inc.','PR-19772-8727','Purchase Request','Pending',''],
-        ['<span>2024-08-16</span>', '<span>2024-08-15</span>', 'PEIC20-1176-1283' , 'POPE19-1000-1001' , 'A-one Industrial Sales','FLM22-2020','Direct Purchase','Pending',''],
-        ['<span>2024-08-16</span>', '<span>2024-08-15</span>', 'PSPE20-1224-1358' , 'POPE19-1000-1001' , '7RJ Brothers Sand & Gravel & Gen. Mdse.','ENV24-1359','Purchase Request','Fully Delivered',''],
-        ['<span>2024-08-17</span>', '<span>2024-08-15</span>', 'PENV19-1045-1344' , 'POPE19-1000-1001' , 'A.C. Parts Merchandising','OPE24-1355','Repeat Order','Cancelled',''],
-        ['<span>2024-08-20</span>', '<span>2024-08-15</span>', 'PWHC19-1173-1398' , 'POPE19-1000-1001' , 'Bacolod General Parts Marketing','HAS24-1354','Purchase Request','Fully Delivered',''],
+        ['2024-08-15','DR1001','POPE19-1000-1001','Purchase Request',''],
+        ['2024-08-16','DR1002','PEIC20-1176-1283','Direct Purchase',''],
+        ['2024-08-16','DR1003','PSPE20-1224-1358','Purchase Request',''],
+        ['2024-08-17','DR1004','PENV19-1045-1344','Repeat Order',''],
+        ['2024-08-20','DR1005','PWHC19-1173-1398','Purchase Request',''],
     ];
     const options = {
 		// dom: 'Bftip',
@@ -33,22 +33,22 @@
 		],
 		buttons: [
 			{
-				title:'Purchase Order',
+				title:'Delivery Receipt',
 				extend: 'copy',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5],
+					columns: [ 0, 1, 2, 3],
 					orthogonal: null
 				}
 			},
 			{
-				title:'Purchase Order',
+				title:'Delivery Receipt',
 				extend: 'excel',
 				exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5],
+                    columns: [ 0, 1, 2, 3],
 					orthogonal: null,
                     format: {
                         body: function (data, row, column, node) {
-                            if (column === 0){
+                            if (column === 0 ){
                                return moment.utc(data).format('MMMM DD, YYYY');
                             }else if(column === 6){
 								data = data.replace(/&gt;/g, '>')
@@ -77,10 +77,10 @@
                 }
 			},
 			{
-				title:'Purchase Order',
+				title:'Delivery Receipt',
 				extend: 'print',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5],
+					columns: [ 0, 1, 2, 3],
 					orthogonal: null
 				}
 			},
@@ -97,12 +97,12 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Issuance <small>List</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Delivery Receipt <small>List</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">JO Issuance</li>
+                            <li class="breadcrumb-item active" aria-current="page">JO Delivery Receipt</li>
                         </ol>
                     </nav>
                 </div>
@@ -113,22 +113,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/job_issue/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
-                                <span>Add New PO</span>
+                            <a href="/job_dr/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                                <span>Add New DR</span>
                             </a>
                         </div>
-                        <div class="pt-3">
+                        <div class=" pt-3">
                             <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="8%"> Date Prepared</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="8%"> Date Needed</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> JOI No</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> CENJO #/ JO #</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Supplier</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Project Title</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Mode</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Status</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> DR Date</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> DR No</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> JOI No</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> Mode</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -136,8 +132,8 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-8="">
-                                    <a href="/job_issue/view" class="btn btn-xs btn-warning text-white p-1">
+                                <template #column-4="">
+                                    <a href="/job_dr/view" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>

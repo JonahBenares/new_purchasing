@@ -249,8 +249,17 @@
 											<td class="p-1 text-center">2</td>
 											<td class="p-1 ">Monitor</td>
 											<td class="p-1">
-                                                <p class="w-full text-xs m-0 font-bold ">MF Computer Solutions, Inc.</p>
-                                                <span class="">Asus, 15 inches </span>
+												<div class="flex justify-between space-x-1">
+													<div>
+														<p class="w-full text-xs m-0 font-bold ">MF Computer Solutions, Inc.</p>
+														<span class="">Asus, 15 inches </span>
+													</div>
+													<div>
+														<a href="" class="btn btn-link p-0 !text-red-500" >
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XMarkIcon>
+														</a>
+													</div>
+												</div>
                                             </td>
 											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
 											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
@@ -499,9 +508,7 @@
 							<div class="col-lg-5 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Item Description</label>
-                                    <select class="w-full text-sm p-1 px-2 border">
-                                        <option value="">Select Item</option>
-                                    </select>
+                                    <input class="w-full text-sm p-1 px-2 border" placeholder="Item Description">
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-3">
