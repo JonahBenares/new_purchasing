@@ -155,7 +155,7 @@
 											<option value="">PR-CENPRI24-1002</option>
 										</select>
 										<span class="input-group-append">
-											<button class="btn btn-primary" type="button" @click="openPR()">Select</button>
+											<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
 										</span>
 									</div>
 									</div>
@@ -166,22 +166,29 @@
 								<div class="row">							
 									<div class="col-lg-6 offset-lg-3 col-md-3">
 										<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Choose Supplier</label>
-										<input type="file" name="img[]" class="file-upload-default">
-										<div class="input-group col-xs-12">
-											<select class="form-control file-upload-info">
-												<option value="">Suppleir 1</option>
-												<option value="">Supplier 2</option>
-											</select>
-											<span class="input-group-append">
-												<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
-											</span>
-										</div>
+											<label class="text-gray-500 m-0" for="">Choose Supplier</label>
+											<div class="input-group col-xs-12 !text-gray-600">
+												<select class="form-control !text-gray-600">
+													<option value="">Suppleir 1</option>
+													<option value="">Supplier 2</option>
+												</select>
+												<span class="input-group-append">
+													<button class="btn btn-primary" type="button">Select</button>
+												</span>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="hidden" :class="{ show:pr_det }">
+								<div class="row">
+									<div class="col-lg-6">
+										<select class="form-control !text-gray-600 !w-96 mb-1">
+											<option value="">Suppleir 1</option>
+											<option value="">Supplier 2</option>
+										</select>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
@@ -401,6 +408,56 @@
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 													</button>
 												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="row mt-4 mb-4">
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Noted by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2">Conforme: </td>
+												<td class="text-center border-b" colspan="3"></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2"></td>
+												<td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+												<td class="text-center"></td>
 											</tr>
 										</table>
 									</div>

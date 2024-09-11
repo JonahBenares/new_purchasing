@@ -19,21 +19,23 @@
 		showAddVendor.value = !hideModal.value
 		showPreview.value = !hideModal.value
 	}
-
+    const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Request for Disbursement <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Request for Disbursement <small>View</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item"><a href="/pur_disburse">Request for Disbursement</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">New</li>
+                            <li class="breadcrumb-item active" aria-current="page">View</li>
                         </ol>
                     </nav>
                 </div>
@@ -44,7 +46,7 @@
 				<div class="card">
 				<div class="card-body">
                     <hr class="border-dashed mt-0">
-					<div class="pt-1">					
+					<div class="pt-1" id="printable">					
                         <div class="" >
                             <table class="w-full text-sm table-borsdered">
                                 <tr>
@@ -90,7 +92,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="border-2">
-                                        <table class="table-bordered w-full !text-xs">
+                                        <table class="table-bordered w-full text-xs">
                                             <tr class="bg-gray-100">
                                                 <td class="uppercase p-1 text-center" colspan="6">Explanation</td>
                                                 <td class="uppercase p-1 text-center" width="12%">Total</td>
@@ -220,22 +222,65 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <br>
+                            <table class="w-full text-xs">
+                                <tr>
+                                    <td class="" width="30%">Prepared by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Checked by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Noted by</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center border-b"><br></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center p-1"><input class="w-full"></td>
+                                    <td></td>
+                                    <td class="text-center p-1"><input class="w-full"></td>
+                                    <td></td>
+                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><br><br></td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="30%">Endorsed by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Approved by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Payment Received by</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center border-b"><br></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center p-1">Henne Tanant</td>
+                                    <td></td>
+                                    <td class="text-center p-1">Beverly Sy</td>
+                                    <td></td>
+                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                </tr>
+                            </table>
                             <hr	class="border-dashed">
-                            <div class="row my-2"> 
+                            <div class="row my-2 po_buttons"> 
                                 <div class="col-lg-12 col-md-12">
                                     <div class="flex justify-center space-x-2">
-                                        <!-- <div class="flex justify-between space-x-1">
-                                            <button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-                                            <button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
-                                        </div> -->
                                         <div class="flex justify-between space-x-1">
-                                            <!-- kung wala pa na save -->
-                                            <!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
-                                            <!-- <button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button> -->
-                                            <a href="#" type="submit" class="btn btn-primary w-36">Print</a>
+                                            <button class="btn btn-primary w-36"  @click="printDiv()">Print</button>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>

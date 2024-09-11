@@ -22,10 +22,13 @@
 		dangerAlert.value = !hideAlert.value
 		dangerAlert_item.value = !hideAlert.value
 	}
+	const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -46,38 +49,38 @@
 				<div class="card">
 				<div class="card-body">
 					<hr class="border-dashed mt-0">
-					<div class="pt-1">
+					<div class="pt-1" id="printable">
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
 								<span class="text-sm text-gray-700">Bacolod</span>
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
 								<span class="text-sm text-gray-700">01/16/24</span>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
 								<span class="text-sm text-gray-700">PR-BCD24-1209</span>
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
 								<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
 							</div>
 						</div>
 
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
 								<span class="text-sm text-gray-700">IT Department</span>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
 								<span class="text-sm text-gray-700">0912</span>
 							</div>
-							<div class="col-lg-2">
+							<div class="col-lg-2 col-sm-2 col-md-2">
 								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
 								<span class="text-sm text-gray-700">X</span>
 							</div>
@@ -103,7 +106,7 @@
 										<td class="p-1 uppercase" width="">Item Description</td>
 										<td class="p-1 uppercase" width="10%">WH Stocks</td>
 										<td class="p-1 uppercase" width="15%">Date Needed</td>
-										<td class="p-1 uppercase" width="1%" align="center">
+										<td class="p-1 uppercase po_buttons" width="1%" align="center">
 											<span>
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></XMarkIcon>
 											</span>
@@ -117,7 +120,7 @@
 										<td class="p-1">Monitor</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
-										<td class="text-center">
+										<td class="text-center po_buttons">
 											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
 											</button>
@@ -131,7 +134,7 @@
 										<td class="p-1">Mouse</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
-										<td class="text-center">
+										<td class="text-center po_buttons">
 											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
 											</button>
@@ -145,7 +148,7 @@
 										<td class="p-1">Keyboard</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
-										<td class="text-center">
+										<td class="text-center po_buttons">
 											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
 											</button>
@@ -156,11 +159,11 @@
 						</div>
 						<br>
 						<!-- <hr class="border-dashed"> -->
-						<div class="row my-2"> 
+						<div class="row my-2 po_buttons" > 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button type="submit" class="btn btn-danger mr-2 w-36" @click="opendangerAlert()">Cancel</button>
-									<button type="submit" class="btn btn-primary mr-2 w-36">Print</button>
+									<button type="submit" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
 								</div>
 							</div>
 						</div>

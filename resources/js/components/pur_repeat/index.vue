@@ -161,50 +161,50 @@
 						<hr class="border-dashed">
 						<div v-show="pr_det">
 							<div class="row">
-							<div class="col-lg-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
-								<span class="text-sm text-gray-700">Bacolod</span>
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
+									<span class="text-sm text-gray-700">Bacolod</span>
+								</div>
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
+									<span class="text-sm text-gray-700">01/16/24</span>
+								</div>
 							</div>
-							<div class="col-lg-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
-								<span class="text-sm text-gray-700">01/16/24</span>
+							<div class="row">
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
+									<span class="text-sm text-gray-700">PR-BCD24-1209</span>
+								</div>
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
+									<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
-								<span class="text-sm text-gray-700">PR-BCD24-1209</span>
-							</div>
-							<div class="col-lg-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
-								<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
-							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-lg-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
-								<span class="text-sm text-gray-700">IT Department</span>
+							<div class="row">
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
+									<span class="text-sm text-gray-700">IT Department</span>
+								</div>
+								<div class="col-lg-4">
+									<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+									<span class="text-sm text-gray-700">0912</span>
+								</div>
+								<div class="col-lg-2">
+									<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
+									<span class="text-sm text-gray-700">X</span>
+								</div>
 							</div>
-							<div class="col-lg-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
-								<span class="text-sm text-gray-700">0912</span>
+							<div class="row">
+								<div class="col-lg-12">
+									<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
+									<span class="text-sm text-gray-700">IT Department</span>
+								</div>
+								<div class="col-lg-12">
+									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
+									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+								</div>
 							</div>
-							<div class="col-lg-2">
-								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
-								<span class="text-sm text-gray-700">X</span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
-								<span class="text-sm text-gray-700">IT Department</span>
-							</div>
-							<div class="col-lg-12">
-								<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
-								<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
-							</div>
-						</div>
 							<br>
 							<div class="row">
 								<div class="col-lg-12">
@@ -464,6 +464,56 @@
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 												</button>
 											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="row mt-4 mb-4">
+								<div class="col-lg-12">
+									<table class="w-full text-xs">
+										<tr>
+											<td class="text-center" width="20%">Prepared by</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Noted by</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Approved by</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Approved by</td>
+										</tr>
+										<tr>
+											<td class="text-center border-b"><br></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+										</tr>
+										<tr>
+											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td></td>
+											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td></td>
+											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td></td>
+											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+										</tr>
+										<tr>
+											<td class="text-center"><br><br></td>
+											<td></td>
+											<td class="text-center"></td>
+											<td></td>
+											<td class="text-center"></td>
+										</tr>
+										<tr>
+											<td class="text-right" colspan="2">Conforme: </td>
+											<td class="text-center border-b" colspan="3"></td>
+											<td class="text-center"></td>
+										</tr>
+										<tr>
+											<td class="text-right" colspan="2"></td>
+											<td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+											<td class="text-center"></td>
 										</tr>
 									</table>
 								</div>

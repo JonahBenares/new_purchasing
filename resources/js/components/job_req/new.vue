@@ -273,7 +273,7 @@
 								<div class="form-group m-0">
 									<label class="text-gray-500 m-0" for="">Add JOR and Items Manually</label>
 								</div>
-								<button class="btn btn-primary btn-block" type="button" v-on:click="jo_options = 'jo_manual'">Manual PR</button>
+								<button class="btn btn-primary btn-block" type="button" v-on:click="jo_options = 'jo_manual'">Manual JOR</button>
 							</div>
 						</div>
 						<div class="" id="upload" v-if="jo_options === 'jo_upload'">

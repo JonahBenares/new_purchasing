@@ -166,8 +166,48 @@
 									</div>
 								</div>
 								<br>
+								<div class="row mt-4 mb-4">
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Received by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Complete & Accepted by Enduser</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Witnessed by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1">Henne Tanant</td>
+												<td></td>
+												<td class="text-center p-1">Print Name & Signature with Date Received</td>
+												<td></td>
+												<td class="text-center p-1">Print Name & Signature with Date Received</td>
+												<td></td>
+												<td class="text-center p-1">Print Name & Signature with Date Received</td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
 								<!-- <hr class="border-dashed"> -->
-								<div class="block" :class="{ hidden:save_button }">
+								<div>
 									<div class="row my-2"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2">
@@ -176,15 +216,7 @@
 										</div>
 									</div>
 								</div>
-								<div class=" !hidden" :class="{ show:print_button }">
-									<div class="row my-2"> 
-										<div class="col-lg-12 col-md-12">
-											<div class="flex justify-center space-x-2">
-												<button type="submit" class="btn btn-primary mr-2 w-36">Print</button>
-											</div>
-										</div>
-									</div>
-								</div>
+								
 								
 							</div>
 						</div>
@@ -225,7 +257,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/job_po/view" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Back to PO</a>
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeSuccessAlert()">Close</button>
+									<a href="/job_dr/view" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</a>
 								</div>
 							</div>
 						</div>

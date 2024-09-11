@@ -127,7 +127,7 @@
                         <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Direct JOI <small>New</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
+                        <ol class="breadcrumb !mb-0 text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item active"><a href="/job_direct">Direct JOI</a></li>
                             <li class="breadcrumb-item active" aria-current="page">New</li>
@@ -156,38 +156,23 @@
 											<option value="">JOR-CENPRI24-1002</option>
 										</select>
 										<span class="input-group-append">
-											<button class="btn btn-primary" type="button" @click="openPR()">Select</button>
+											<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
 										</span>
 									</div>
 									</div>
 								</div>
 							</div>
 							<hr class="border-dashed">
-							<div class="hidden" :class="{ show:pr_supplier }">
-								<div class="row">							
-									<div class="col-lg-6 offset-lg-3 col-md-3">
-										<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Choose Supplier</label>
-										<input type="file" name="img[]" class="file-upload-default">
-										<div class="input-group col-xs-12">
-											<select class="form-control file-upload-info">
-												<option value="">Suppleir 1</option>
-												<option value="">Supplier 2</option>
-											</select>
-											<span class="input-group-append">
-												<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
-											</span>
-										</div>
-										</div>
-									</div>
-								</div>
-							</div>
 							<div class="hidden" :class="{ show:pr_det }">
 								<div class="row">
 									<div class="col-lg-1">
 										<span class="text-sm">TO:</span>
 									</div>
 									<div class="col-lg-11">
+										<select class="form-control !text-gray-600 !w-96 mb-1">
+											<option value="">Suppleir 1</option>
+											<option value="">Supplier 2</option>
+										</select>
 										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
 										<p class="m-0">Beverly Marie Dy</p>
 										<p class="m-0">Taculing Road, Bacolod City 6100</p>
@@ -195,34 +180,34 @@
 									</div>
 								</div>
 								<hr class="border-dashed">
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="flex">
-												<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
-												<input type="text" class="border-b w-full">
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="flex">
-												<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
-												<input type="text" class="border-b w-full">
-											</div>	
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
+											<input type="text" class="border-b w-full">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="flex">
-												<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
-												<input type="text" class="border-b w-full">
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="flex">
-												<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
-												<input type="text" class="border-b w-full">
-											</div>
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
+											<input type="text" class="border-b w-full">
+										</div>	
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
+											<input type="text" class="border-b w-full">
 										</div>
 									</div>
+									<div class="col-lg-6">
+										<div class="flex">
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
+											<input type="text" class="border-b w-full">
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="flex">
@@ -242,108 +227,108 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<div class="border-2">
-												<table class="table-bordered w-full !text-xs">
-												<tr class="!border-b-3 bg-yellow-50">
-													<td colspan="7" class="py-2">
-														<textarea class="text-sm font-bold text-gray-600 bg-yellow-50  text-center m-0 w-full resize" rows="1">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</textarea>
-														<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
-													</td>
-												</tr>
-												<tr class="bg-yellow-100">
-													<td class="uppercase p-1" colspan="3">Scope of Work</td>
-													<td class="uppercase p-1 text-center" width="7%">Qty</td>
-													<td class="uppercase p-1 text-center" width="7%">Unit</td>
-													<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
-													<td class="uppercase p-1 text-center" width="10%">Total</td>
-												</tr>
-												<tr class="">
-													<td class="border-y-none p-1" colspan="3">
-														<textarea class="font-bold w-full resize" rows="1">Supply of manpower/labor, laboratory tools/equipment, and technical expertise for the following:</textarea>
-														<textarea name="" id="" class="w-full resize" rows="10">1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.3. Repair and replacement of parts as seen upon inspection.4. Setting of internal parts and mounting of the governor.5. Calibration and bench testing for:5.1. Speed Setting and Indicator5.2. Speed Droop Setting and Indicator5.3. Load Limit Setting and Indicator6. Functional test of shut-down solenoid valve7. Testing and Commissioning8. Submission of inspection, service, commissioning and bench testing reports.9. Other works necessary for job completion.
-														</textarea>
-													</td>
-													<td class="border-y-none p-1 text-center"><input type="text" value="5" class="w-full text-center"></td>
-													<td class="border-y-none p-1 text-center"><input type="text" value="lot" class="w-full text-center"></td>
-													<td class="border-y-none p-1 text-right"><input type="text" value="100.00" class="w-full text-center"></td>
-													<td class="border-y-none p-1 text-right"><input type="text" value="500.00" class="w-full text-center"></td>
-												</tr>
-												<tr class="bg-yellow-100">
-													<td class="p-1 text-center" width="3%">#</td>
-													<td class="p-1" colspan="2">Materials:</td>
-													<td class="uppercase p-1 text-center" width="7%">Qty</td>
-													<td class="uppercase p-1 text-center" width="7%">Unit</td>
-													<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
-													<td class="uppercase p-1 text-center" width="10%">Total</td>
-												</tr>
-												<tr class="">
-													<td class="p-1 text-center align-top">1</td>
-													<td class="p-0 align-top " colspan="2">
-														<textarea name="" id="" class="w-full  p-1 resize" rows="1">Monitor</textarea>
-													</td>
-													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
-													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
-												</tr>
-												<tr class="">
-													<td class="p-1 text-center align-top">1</td>
-													<td class="p-0 align-top " colspan="2">
-														<textarea name="" id="" class="w-full  p-1 resize" rows="1">Mouse</textarea>
-													</td>
-													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
-													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
-												</tr>
-												<tr class="">
-													<td class=""></td>
-													<td class=""></td>
-													<td class=""></td>
-													<td class=""></td>
-													<td class=""></td>
-													<td class=""></td>
-													<td class=""></td>
-												</tr>
-												<tr class="">
-													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
-														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-													</td>
-													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
-												</tr>
-												
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-													<td class="p-0">
-														<div class="flex">
-															<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%" value="">
-															<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
-														</div>
-													</td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-													<td class="p-1 text-right font-bold !text-sm">1000.00</td>
-												</tr>
-											</table>
+												<table class="table-bordered w-full text-xs">
+													<tr class="!border-b-3 bg-yellow-50">
+														<td colspan="7" class="py-2">
+															<textarea class="text-sm font-bold text-gray-600 bg-yellow-50  text-center m-0 w-full resize" rows="1">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</textarea>
+															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
+														</td>
+													</tr>
+													<tr class="bg-yellow-100">
+														<td class="uppercase p-1" colspan="3">Scope of Work</td>
+														<td class="uppercase p-1 text-center" width="7%">Qty</td>
+														<td class="uppercase p-1 text-center" width="7%">Unit</td>
+														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+														<td class="uppercase p-1 text-center" width="10%">Total</td>
+													</tr>
+													<tr class="">
+														<td class="border-y-none p-1" colspan="3">
+															<textarea class="font-bold w-full resize" rows="1">Supply of manpower/labor, laboratory tools/equipment, and technical expertise for the following:</textarea>
+															<textarea name="" id="" class="w-full resize" rows="10">1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.3. Repair and replacement of parts as seen upon inspection.4. Setting of internal parts and mounting of the governor.5. Calibration and bench testing for:5.1. Speed Setting and Indicator5.2. Speed Droop Setting and Indicator5.3. Load Limit Setting and Indicator6. Functional test of shut-down solenoid valve7. Testing and Commissioning8. Submission of inspection, service, commissioning and bench testing reports.9. Other works necessary for job completion.
+															</textarea>
+														</td>
+														<td class="border-y-none p-1 text-center"><input type="text" value="5" class="w-full text-center"></td>
+														<td class="border-y-none p-1 text-center"><input type="text" value="lot" class="w-full text-center"></td>
+														<td class="border-y-none p-1 text-right"><input type="text" value="100.00" class="w-full text-center"></td>
+														<td class="border-y-none p-1 text-right"><input type="text" value="500.00" class="w-full text-center"></td>
+													</tr>
+													<tr class="bg-yellow-100">
+														<td class="p-1 text-center" width="3%">#</td>
+														<td class="p-1" colspan="2">Materials:</td>
+														<td class="uppercase p-1 text-center" width="7%">Qty</td>
+														<td class="uppercase p-1 text-center" width="7%">Unit</td>
+														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
+														<td class="uppercase p-1 text-center" width="10%">Total</td>
+													</tr>
+													<tr class="">
+														<td class="p-1 text-center align-top">1</td>
+														<td class="p-0 align-top " colspan="2">
+															<textarea name="" id="" class="w-full  p-1 resize" rows="1">Monitor</textarea>
+														</td>
+														<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
+														<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
+														<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
+														<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
+													</tr>
+													<tr class="">
+														<td class="p-1 text-center align-top">1</td>
+														<td class="p-0 align-top " colspan="2">
+															<textarea name="" id="" class="w-full  p-1 resize" rows="1">Mouse</textarea>
+														</td>
+														<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
+														<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
+														<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
+														<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
+													</tr>
+													<tr class="">
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+														<td class=""></td>
+													</tr>
+													<tr class="">
+														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
+															<p class="m-0 text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
+															<p class="m-0 text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
+															<p class="m-0 text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+															<p class="m-0 text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+														</td>
+														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
+														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
+													</tr>
+													
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
+														<td class="p-0">
+															<div class="flex">
+																<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%" value="">
+																<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
+															</div>
+														</td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
+														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
+														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
+													</tr>
+													<tr class="">
+														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
+														<td class="p-1 text-right font-bold !text-sm">1000.00</td>
+													</tr>
+												</table>
 											</div>
 										</div>
 									</div>
 									
 									<div class="row mt-2">
-										<div class="col-lg-6">
-											<table class="table-bordered !text-xs w-full">
+										<div class="col-lg-6 col-md-6 col-sm-6">
+											<table class="table-bordered text-xs w-full">
 												<tr>
 													<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
 												</tr>
@@ -426,8 +411,8 @@
 												</tr>
 											</table>
 										</div>
-										<div class="col-lg-6">
-											<table class="table-bordered !text-xs w-full">
+										<div class="col-lg-6 col-md-6 col-sm-6">
+											<table class="table-bordered text-xs w-full">
 												<tr>
 													<td class="p-1 uppercase" colspan="3">Other Instructions</td>
 												</tr>
@@ -487,6 +472,56 @@
 												<td></td>
 												<td class="text-xs text-center">Contractor's Signature Over Printed Name</td>
 												<td></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="row mt-4 mb-4">
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Noted by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2">Work Completion Verified by:: </td>
+												<td class="text-center border-b" colspan="3"></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2"></td>
+												<td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+												<td class="text-center"></td>
 											</tr>
 										</table>
 									</div>

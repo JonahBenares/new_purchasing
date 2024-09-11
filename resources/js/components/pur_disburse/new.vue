@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, CheckIcon, XMarkIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
@@ -244,6 +244,58 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
+                                <table class="w-full text-xs">
+                                    <tr>
+                                        <td class="" width="30%">Prepared by</td>
+                                        <td width="5%"></td>
+                                        <td class="" width="30%">Checked by</td>
+                                        <td width="5%"></td>
+                                        <td class="" width="30%">Noted by</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center border-b"><br></td>
+                                        <td></td>
+                                        <td class="text-center border-b"></td>
+                                        <td></td>
+                                        <td class="text-center border-b"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center p-1"><input class="w-full text-center" placeholder="Employee Name"></td>
+                                        <td></td>
+                                        <td class="text-center p-1"><input class="w-full text-center" placeholder="Employee Name"></td>
+                                        <td></td>
+                                        <td class="text-center p-1"><input class="w-full text-center" placeholder="Employee Name"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><br><br></td>
+                                        <td></td>
+                                        <td class="text-center"></td>
+                                        <td></td>
+                                        <td class="text-center"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="" width="30%">Endorsed by</td>
+                                        <td width="5%"></td>
+                                        <td class="" width="30%">Approved by</td>
+                                        <td width="5%"></td>
+                                        <td class="" width="30%">Payment Received by</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center border-b"><br></td>
+                                        <td></td>
+                                        <td class="text-center border-b"></td>
+                                        <td></td>
+                                        <td class="text-center border-b"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center p-1"><input class="w-full text-center" placeholder="Employee Name"></td>
+                                        <td></td>
+                                        <td class="text-center p-1"><input class="w-full text-center" placeholder="Employee Name"></td>
+                                        <td></td>
+                                        <td class="text-center p-1"><input class="w-full text-center" placeholder="Employee Name"></td>
+                                    </tr>
+                                </table>
                                 <hr	class="border-dashed">
                                 <div class="block" :class="{ hidden:save_button }">
                                     <div class="row my-2"> 
@@ -254,7 +306,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class=" !hidden" :class="{ show:print_button }">
+                                <!-- <div class=" !hidden" :class="{ show:print_button }">
                                     <div class="row my-2"> 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-center space-x-2">
@@ -262,7 +314,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             
                         </div>
@@ -303,7 +355,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/pur_po/view" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Back to PO</a>
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeSuccessAlert()">Close</button>
+									<a href="/pur_disburse/view"  class="btn !bg-gray-100 btn-sm !rounded-full w-full" >Close & Print</a>
 								</div>
 							</div>
 						</div>

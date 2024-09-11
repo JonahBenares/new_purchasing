@@ -24,11 +24,13 @@
 		drawer_rfd.value = !hideModal.value
 		drawer_revise.value = !hideModal.value
 	}
-
+    const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -49,40 +51,40 @@
 				<div class="card">
                     <div class="card-body">
                         <hr class="border-dashed mt-0">
-                        <div class="pt-1">
+                        <div class="pt-1" id="printable">
                             <div>
                                 <div class="row">
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
                                         <span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
                                         <span class="text-sm text-gray-700">05/16/24</span>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
                                         <span class="text-sm text-gray-700">MF Computer Solutions, Inc.</span>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Address:</span>
                                         <span class="text-sm text-gray-700">February 16, 2024</span>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
                                         <span class="text-sm text-gray-700">(034) 9872-2772</span>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
                                         <span class="text-sm text-gray-700">Mary Marie</span>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
                                         <span class="text-sm text-gray-700">(034) 9872-2772</span>
                                     </div>
@@ -93,7 +95,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="border-2">
-                                                <table class="table-bordered w-full !text-xs">
+                                                <table class="table-bordered w-full text-xs">
                                                     <tr class="bg-gray-100">
                                                         <td class="uppercase p-1 text-center" width="3%">#</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Qty</td>
@@ -137,10 +139,10 @@
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                            <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
                                                         </td>
                                                         <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
                                                         <td class="p-1 text-right ">200.00</td>
@@ -172,8 +174,8 @@
                                     </div>
                                     
                                     <div class="row mt-2">
-                                        <div class="col-lg-6">
-                                            <table class="table-bordsered !text-xs w-full">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <table class="table-bordsered text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
                                                 </tr>
@@ -218,8 +220,8 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <table class="table-bordsered !text-xs w-full">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <table class="table-bordsered text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Other Instructions</td>
                                                 </tr>
@@ -234,8 +236,58 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <hr	class="border-dashed">
-                                    <div class="row my-2"> 
+                                    <div class="row mt-4 mb-4">
+                                        <div class="col-lg-12">
+                                            <table class="w-full text-xs">
+                                                <tr>
+                                                    <td class="text-center" width="20%">Prepared by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%">Noted by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%">Approved by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%">Approved by</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center border-b"><br></td>
+                                                    <td></td>
+                                                    <td class="text-center border-b"></td>
+                                                    <td></td>
+                                                    <td class="text-center border-b"></td>
+                                                    <td></td>
+                                                    <td class="text-center border-b"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center p-1">Henne Tanant</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Beverly Sy</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Glenn Paulate</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center"><br><br></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" colspan="2">Conforme: </td>
+                                                    <td class="text-center border-b" colspan="3"></td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" colspan="2"></td>
+                                                    <td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row my-2 po_buttons"> 
+                                        <hr	class="border-dashed">
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between">
@@ -258,7 +310,7 @@
                                                         </button>
                                                     </div>
                                                     
-                                                    <button type="submit" class="btn btn-primary w-36" >Print PO</button>
+                                                    <button type="submit" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
                                             </div>

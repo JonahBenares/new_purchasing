@@ -19,11 +19,13 @@
 		showAddVendor.value = !hideModal.value
 		showPreview.value = !hideModal.value
 	}
-
+    const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -44,7 +46,7 @@
 				<div class="card">
 				<div class="card-body">
                     <hr class="border-dashed mt-0">
-					<div class="pt-1">					
+					<div class="pt-1" id="printable">					
                         <div class="" >
                             <table class="w-full text-sm table-borsdered">
                                 <tr>
@@ -93,7 +95,7 @@
                                         <table class="table-bordered w-full !text-xs">
                                             <tr class="bg-gray-100">
                                                 <td class="uppercase p-1 text-center" colspan="6">Explanation</td>
-                                                <td class="uppercase p-1 text-center" width="12%">Total</td>
+                                                <td class="uppercase p-1 text-center" width="12%">Remarks</td>
                                             </tr>
                                             <tr class="">
                                                 <td class="border-y-none p-1 text-left" colspan="6">
@@ -101,30 +103,14 @@
                                                 </td>
                                                 <td class="border-y-none p-1 text-right"></td>
                                             </tr>
-                                            <tr>
-                                                <td  class="!border-none p-1" colspan="6">
+                                            <tr class="">
+                                                <td class="!border-none p-1" colspan="3">
                                                     <span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
                                                         technical expertise for the following:</span>
                                                 </td>
-                                                <td class="border-y-none p-1 text-center"></td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="!border-none p-1" colspan="3">1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-                                                    <br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-                                                    <br>3. Repair and replacement of parts as seen upon inspection.
-                                                    <br>4. Setting of internal parts and mounting of the governor.
-                                                    <br>5. Calibration and bench testing for:
-                                                    <br>5.1. Speed Setting and Indicator
-                                                    <br>5.2. Speed Droop Setting and Indicator
-                                                    <br>5.3. Load Limit Setting and Indicator
-                                                    <br>6. Functional test of shut-down solenoid valve
-                                                    <br>7. Testing and Commissioning
-                                                    <br>8. Submission of inspection, service, commissioning and bench testing reports.
-                                                    <br>9. Other works necessary for job completion.
-                                                </td>
-                                                <td class="!border-none p-1 text-center">5</td>
-                                                <td class="!border-none p-1 text-center">pc</td>
-                                                <td class="!border-none p-1 text-right">100.00</td>
+                                                <td class="!border-none p-1 text-center"></td>
+                                                <td class="!border-none p-1 text-center"></td>
+                                                <td class="!border-none p-1 text-right">Total Amount of JO</td>
                                                 <td class="border-y-none p-1 text-center">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
@@ -132,42 +118,16 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            
                                             <tr class="">
                                                 <td class="border-y-none p-1 text-left" colspan="6">
-                                                    5 pc/s Monitor Brand:Asus @ 100.00 per pc/s
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
                                                 </td>
                                                 <td class="border-y-none p-1 text-center">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
-                                                    </div>
                                                 </td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="border-y-none p-1 text-left" colspan="6">
-                                                    5 pc/s Mouse Brand:A4tech @ 100.00 per pc/s
-                                                </td>
-                                                <td class="border-y-none p-1 text-center">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="border-y-none p-1 text-left" colspan="6">
-                                                    5 pc/s Keyboard Brand:A4tech @ 100.00 per pc/s
-                                                </td>
-                                                <td class="border-y-none p-1 text-center">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="border-y-none" colspan="6"><br></td>
-                                                <td class="border-y-none"></td>
                                             </tr>
                                             <tr class="">
                                                 <td class="" colspan="6"></td>
@@ -184,7 +144,7 @@
                                                     <br>
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001</p>
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p> -->
-                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001</p>
+                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001 / JOI-8277207273</p>
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                 </td>
                                                 <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Amount of JO</td>
@@ -260,22 +220,65 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <br>
+                            <table class="w-full text-xs">
+                                <tr>
+                                    <td class="" width="30%">Prepared by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Checked by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Noted by</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center border-b"><br></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center p-1"><input class="w-full"></td>
+                                    <td></td>
+                                    <td class="text-center p-1"><input class="w-full"></td>
+                                    <td></td>
+                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><br><br></td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="" width="30%">Endorsed by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Approved by</td>
+                                    <td width="5%"></td>
+                                    <td class="" width="30%">Payment Received by</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center border-b"><br></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                    <td></td>
+                                    <td class="text-center border-b"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center p-1">Henne Tanant</td>
+                                    <td></td>
+                                    <td class="text-center p-1">Beverly Sy</td>
+                                    <td></td>
+                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                </tr>
+                            </table>
                             <hr	class="border-dashed">
-                            <div class="row my-2"> 
+                            <div class="row my-2 po_buttons"> 
                                 <div class="col-lg-12 col-md-12">
                                     <div class="flex justify-center space-x-2">
-                                        <!-- <div class="flex justify-between space-x-1">
-                                            <button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-                                            <button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
-                                        </div> -->
                                         <div class="flex justify-between space-x-1">
-                                            <!-- kung wala pa na save -->
-                                            <!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
-                                            <!-- <button type="submit" class="btn btn-warning w-26 !text-white" >Save as Draft</button> -->
-                                            <a href="#" type="submit" class="btn btn-primary w-36">Print</a>
+                                            <a href="#" type="submit" class="btn btn-primary w-36" @click="printDiv()">Print</a>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>

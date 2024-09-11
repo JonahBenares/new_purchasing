@@ -3,10 +3,13 @@
 	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
+	const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -27,33 +30,33 @@
 				<div class="card">
 				<div class="card-body">
 					<hr class="border-dashed mt-0">
-					<div class="pt-1">
+					<div class="pt-1" id="printable">
 						<div class="row">
-							<div class="col-lg-8">
+							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
 								<span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">DR No: </span>
 								<span class="text-sm text-gray-700">DR-CENPRI24-1001</span>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-8">
+							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
 								<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
 								<span class="text-sm text-gray-700">05/16/24</span>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-8">
+							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">End-use: </span>
 								<span class="text-sm text-gray-700">IT Department</span>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
 								<span class="text-sm text-gray-700">Henne Marie Tanan</span>
 							</div>
@@ -67,7 +70,7 @@
 						                               
 						<div class="row">
 							<div class="col-lg-12">
-								<table class="w-full table-bordered !text-xs mt-3">
+								<table class="w-full table-bordered text-xs mt-3">
 									<tr class="bg-gray-100">
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
@@ -112,11 +115,51 @@
 							</div>
 						</div>
 						<br>
-						<!-- <hr class="border-dashed"> -->
-						<div class="row my-2"> 
+						<div class="row mt-4 mb-4">
+							<div class="col-lg-12">
+								<table class="w-full text-xs">
+									<tr>
+										<td class="text-center" width="20%">Prepared by</td>
+										<td width="2%"></td>
+										<td class="text-center" width="20%">Received by</td>
+										<td width="2%"></td>
+										<td class="text-center" width="20%">Complete & Accepted by Enduser</td>
+										<td width="2%"></td>
+										<td class="text-center" width="20%">Witnessed by</td>
+									</tr>
+									<tr>
+										<td class="text-center border-b"><br><br></td>
+										<td></td>
+										<td class="text-center border-b"></td>
+										<td></td>
+										<td class="text-center border-b"></td>
+										<td></td>
+										<td class="text-center border-b"></td>
+									</tr>
+									<tr>
+										<td class="text-center p-1">Henne Tanant</td>
+										<td></td>
+										<td class="text-center p-1">Print Name & Signature with Date Received</td>
+										<td></td>
+										<td class="text-center p-1">Print Name & Signature with Date Received</td>
+										<td></td>
+										<td class="text-center p-1">Print Name & Signature with Date Received</td>
+									</tr>
+									<tr>
+										<td class="text-center"><br><br></td>
+										<td></td>
+										<td class="text-center"></td>
+										<td></td>
+										<td class="text-center"></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<hr class="border-dashed">
+						<div class="row my-2 po_buttons" > 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-primary mr-2 w-36">Print</button>
+									<button type="submit" class="btn btn-primary mr-2 w-36"  @click="printDiv()">Print</button>
 								</div>
 							</div>
 						</div>

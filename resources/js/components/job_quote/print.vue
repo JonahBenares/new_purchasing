@@ -12,10 +12,13 @@
 	const closeModal = () => {
 		showModal.value = !hideModal.value
 	}
+	const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -36,41 +39,45 @@
 				<div class="card">
 				<div class="card-body">
 					
-					<hr class="border-dashed mt-2">
 					<div class="pt-1">
-						<div class="row">
-							<div class="col-lg-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
-								<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+						<div id="details">
+							<hr class="border-dashed mt-2">
+							<div class="row">
+								<div class="col-lg-4">
+									<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+									<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+								</div>
+								<div class="col-lg-4">
+									<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
+									<span class="text-sm text-gray-700">February 16, 2024</span>
+								</div>
 							</div>
-							<div class="col-lg-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
-								<span class="text-sm text-gray-700">February 16, 2024</span>
+							<div class="row">
+								<div class="col-lg-12">
+									<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
+									<span class="text-sm text-gray-700">rfq_it001</span>
+								</div>
+								
 							</div>
+							<br>
 						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
-								<span class="text-sm text-gray-700">rfq_it001</span>
-							</div>
-							
-						</div>
-						<br>
 						<div v-if="vendor === 'vendor_1'">
-							<div class="w-full flex justify-between space-x-1">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
-								<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
-								<button @click="openModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
+							<div class="rfq_buttons">
+								<div class="w-full flex justify-between space-x-1">
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
+									<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
+									<button @click="openModel()" class="btn btn-primary p-1">
+										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+									</button>
+								</div>
 							</div>
-							<div class="bg-gray-200 !border !border-orange-200">
+							<div class="page-bg">
 								<div class="page">
 									<div class="subpage">
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
-										<table class="table-bosrdered w-full !text-xs mb-0">
+										<table class="table-bosrdered w-full text-xs mb-0">
 											<tr>
 												<td class="" width="10%">Date: </td>
 												<td class="">June 28, 2024</td>
@@ -85,7 +92,7 @@
 											</tr>
 										</table>
 										<hr class="border-dashed my-2">
-										<table class="table-bsordered w-full !text-xs mb-2">
+										<table class="table-bsordered w-full text-xs mb-2">
 											<tr>
 												<td class="" width="10%">Supplier: </td>
 												<td class="" colspan="4">MF Computer Solutions, Inc.</td>
@@ -113,7 +120,7 @@
 											<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
 											<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 										</div>
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
 												<td class="p-1" width="35%">Offer</td>
@@ -139,7 +146,7 @@
 												<td class="align-top"></td>
 											</tr>
 										</table>
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1 text-center" width="5%">No</td>
 												<td class="p-1 text-center" width="10%">Qty</td>
@@ -178,8 +185,7 @@
 												</td>
 											</tr>
 										</table>
-
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="">notes</td>
 											</tr>
@@ -189,28 +195,65 @@
 												</td>
 											</tr>
 										</table>
-										
 										<br>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+										<br>
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="30%">Prepared by</td>
+												<td width="5%"></td>
+												<td class="text-center" width="30%">Noted by</td>
+												<td width="5%"></td>
+												<td class="text-center" width="30%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1">Henne Tanant</td>
+												<td></td>
+												<td class="text-center p-1">Beverly Sy</td>
+												<td></td>
+												<td class="text-center p-1">Jonah Marie Dy</td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="row my-2 po_buttons"> 
+									<div class="col-lg-12 col-md-12">
+										<div class="flex justify-center space-x-2">
+											<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div v-else-if="vendor === 'vendor_2'">
-							<div class="w-full flex justify-between space-x-1">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
-								<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
-								<button @click="openModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
+							<div class="rfq_buttons">
+								<div class="w-full flex justify-between space-x-1">
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
+									<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
+									<button @click="openModel()" class="btn btn-primary p-1">
+										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+									</button>
+								</div>
 							</div>
-							<div class="bg-gray-200 !border !border-orange-200">
+							<div class="page-bg">
 								<div class="page">
 									<div class="subpage">
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
-										<table class="table-bosrdered w-full !text-xs mb-0">
+										<table class="table-bosrdered w-full text-xs mb-0">
 											<tr>
 												<td class="" width="10%">Date: </td>
 												<td class="">June 28, 2024</td>
@@ -225,7 +268,7 @@
 											</tr>
 										</table>
 										<hr class="border-dashed my-2">
-										<table class="table-bsordered w-full !text-xs mb-2">
+										<table class="table-bsordered w-full text-xs mb-2">
 											<tr>
 												<td class="" width="10%">Supplier: </td>
 												<td class="" colspan="4">Nexus Industrial Prime Solutions Corp.</td>
@@ -253,7 +296,7 @@
 											<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
 											<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 										</div>
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
 												<td class="p-1" width="35%">Offer</td>
@@ -279,7 +322,7 @@
 												<td class="align-top"></td>
 											</tr>
 										</table>
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1 text-center" width="5%">No</td>
 												<td class="p-1 text-center" width="10%">Qty</td>
@@ -318,8 +361,7 @@
 												</td>
 											</tr>
 										</table>
-
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="">notes</td>
 											</tr>
@@ -329,28 +371,66 @@
 												</td>
 											</tr>
 										</table>
-										
 										<br>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+										<br>
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="30%">Prepared by</td>
+												<td width="5%"></td>
+												<td class="text-center" width="30%">Noted by</td>
+												<td width="5%"></td>
+												<td class="text-center" width="30%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1">Henne Tanant</td>
+												<td></td>
+												<td class="text-center p-1">Beverly Sy</td>
+												<td></td>
+												<td class="text-center p-1">Jonah Marie Dy</td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="row my-2 po_buttons"> 
+									<div class="col-lg-12 col-md-12">
+										<div class="flex justify-center space-x-2">
+											<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div v-else>
-							<div class="w-full flex justify-between space-x-1">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
-								<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
-								<button @click="openModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
+							<div class="rfq_buttons">
+								<div class="w-full flex justify-between space-x-1">
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
+									<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
+									<button @click="openModel()" class="btn btn-primary p-1">
+										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+									</button>
+								</div>
 							</div>
-							<div class="bg-gray-200 !border !border-orange-200">
+							<div class="page-bg">
 								<div class="page">
 									<div class="subpage">
 										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
-										<table class="table-bosrdered w-full !text-xs mb-0">
+										<table class="table-bosrdered w-full text-xs mb-0">
 											<tr>
 												<td class="" width="10%">Date: </td>
 												<td class="">June 28, 2024</td>
@@ -365,7 +445,7 @@
 											</tr>
 										</table>
 										<hr class="border-dashed my-2">
-										<table class="table-bsordered w-full !text-xs mb-2">
+										<table class="table-bsordered w-full text-xs mb-2">
 											<tr>
 												<td class="" width="10%">Supplier: </td>
 												<td class="" colspan="4">Lectrix Solutions Electrical Supplies & Services Cebu</td>
@@ -393,7 +473,7 @@
 											<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
 											<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 										</div>
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="50%">Scope of Work</td>
 												<td class="p-1" width="35%">Offer</td>
@@ -419,7 +499,7 @@
 												<td class="align-top"></td>
 											</tr>
 										</table>
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1 text-center" width="5%">No</td>
 												<td class="p-1 text-center" width="10%">Qty</td>
@@ -459,7 +539,7 @@
 											</tr>
 										</table>
 
-										<table class="table-bordered w-full !text-xs mb-2">
+										<table class="table-bordered w-full text-xs mb-2">
 											<tr class="bg-gray-100">
 												<td class="p-1" width="">notes</td>
 											</tr>
@@ -471,20 +551,56 @@
 										</table>
 										
 										<br>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+										<br>
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="30%">Prepared by</td>
+												<td width="5%"></td>
+												<td class="text-center" width="30%">Noted by</td>
+												<td width="5%"></td>
+												<td class="text-center" width="30%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1">Henne Tanant</td>
+												<td></td>
+												<td class="text-center p-1">Beverly Sy</td>
+												<td></td>
+												<td class="text-center p-1">Jonah Marie Dy</td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="row my-2 po_buttons"> 
+									<div class="col-lg-12 col-md-12">
+										<div class="flex justify-center space-x-2">
+											<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<br>
+						<!-- <br>
 						<div class="row my-2"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button type="submit" class="btn btn-primary mr-2 w-44">Print</button>
-									<!-- <button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button> -->
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				</div>

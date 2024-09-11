@@ -101,10 +101,13 @@
 	const removeOthers = (index) => {
 		other_list.value.splice(index,1)
 	}
+	const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -124,15 +127,15 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
 				<div class="card-body">
-                    <span class="font-bold uppercase text-lg text-center text-yellow-500">CHANGE ORDER FORM</span>
-					<hr class="border-dashed mt-">
-					<div class="pt-1">
+					<div class="pt-1" id="printable">
+						<span class="font-bold uppercase text-lg text-center text-yellow-500">CHANGE ORDER FORM</span>
+						<hr class="border-dashed mt-">
 						<div>
 							<div class="row">
-								<div class="col-lg-1">
+								<div class="col-lg-1 col-sm-1 col-md-1">
 									<span class="text-sm">TO:</span>
 								</div>
-								<div class="col-lg-11">
+								<div class="col-lg-11 col-sm-11 col-md-11">
 									<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
 									<p class="m-0">Beverly Marie Dy</p>
 									<p class="m-0">Taculing Road, Bacolod City 6100</p>
@@ -141,13 +144,13 @@
 							</div>
 							<hr class="border-dashed">
 							<div class="row">
-								<div class="col-lg-6">
+								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
 										<input type="text" class="border-b bg-white w-full" disabled>
 									</div>
 								</div>
-								<div class="col-lg-6">
+								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
 										<input type="text" class="border-b bg-white w-full" disabled>
@@ -155,13 +158,13 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6">
+								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
 										<input type="text" class="border-b bg-white w-full" disabled>
 									</div>
 								</div>
-								<div class="col-lg-6">
+								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
 										<input type="text" class="border-b bg-white w-full" disabled>
@@ -169,13 +172,13 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6">
+								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
 										<input type="text" class="border-b bg-white w-full" disabled>
 									</div>
 								</div>
-								<div class="col-lg-6">
+								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
 										<input type="text" class="border-b bg-white w-full" disabled>
@@ -399,7 +402,7 @@
 								</div>
 								
 								<div class="row mt-2">
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<table class="table-bordered !text-xs w-full">
 											<tr>
 												<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
@@ -465,7 +468,7 @@
 											</tr>
 										</table>
 									</div>
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<table class="table-bordered !text-xs w-full">
 											<tr>
 												<td class="p-1 uppercase" colspan="3">Other Instructions</td>
@@ -529,39 +532,98 @@
 										</table>
 									</div>
 								</div>
-								<hr	class="border-dashed mt-4">
-								<div class=""></div>
-								<div class=" !hidden" :class="{ show:approval_set }">
-									<div class="row my-2 bg-yellow-50 px-2 py-3"> 
-										<div class="col-lg-2 col-md-3 pl-0">
-											<span class="text-sm p-1">Approve Date</span>
-											<input type="date" class="form-control">
-										</div>
-										<div class="col-lg-3 col-md-3">
-											<span class="text-sm p-1">Approve By</span>
-											<select class="form-control">
-												<option value="">Beverly Espareal</option>
-											</select>
-										</div>
-										<div class="col-lg-6 col-md-6">
-											<span class="text-sm p-1">Reason</span>
-											<textarea name="" class="form-control" rows="1"></textarea>
-										</div>
-										<div class="col-lg-1 col-md-1">
-											<span class="text-sm p-1"><br></span>
-											<button @click="openApproveAlert()" class="btn btn-primary btn-sm" >Approve</button>
-										</div>
+								<br>
+								<div class="row mt-4 mb-4">
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Noted by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2">Work Completion Verified by: </td>
+												<td class="text-center border-b" colspan="3"></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2"></td>
+												<td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
 									</div>
 								</div>
-								<div class="" :class="{ hidden:buttons_set }">
-									<div class="row my-2" > 
-										<div class="col-lg-12 col-md-12">
-											<div class="flex justify-center space-x-2">
-												<div class="flex justify-between space-x-1">
-													<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
-													<button  class="btn btn-primary w-36"  @click="openInfoAlert()">Save</button>
+								<hr	class="border-dashed mt-4">
+								<div class="po_buttons">
+									<div class="!hidden " :class="{ show:approval_set }">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="flex justify-center">
+													<button  class="btn btn-primary w-36" @click="printDiv()">Print</button>
 												</div>
-												
+											</div>
+										</div>
+										<div class="row my-2 bg-yellow-50 px-2 py-3"> 
+											<div class="col-lg-2 col-md-3 pl-0">
+												<span class="text-sm p-1">Approve Date</span>
+												<input type="date" class="form-control">
+											</div>
+											<div class="col-lg-3 col-md-3">
+												<span class="text-sm p-1">Approve By</span>
+												<select class="form-control">
+													<option value="">Beverly Espareal</option>
+												</select>
+											</div>
+											<div class="col-lg-6 col-md-6">
+												<span class="text-sm p-1">Reason</span>
+												<textarea name="" class="form-control" rows="1"></textarea>
+											</div>
+											<div class="col-lg-1 col-md-1">
+												<span class="text-sm p-1"><br></span>
+												<button @click="openApproveAlert()" class="btn btn-primary btn-sm" >Approve</button>
+											</div>
+										</div>
+									</div>
+									<div class="" :class="{ hidden:buttons_set }">
+										<div class="row my-2" > 
+											<div class="col-lg-12 col-md-12">
+												<div class="flex justify-center space-x-2">
+													<div class="flex justify-between space-x-1">
+														<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
+														<button  class="btn btn-primary w-36"  @click="openInfoAlert()">Save</button>
+													</div>
+													
+												</div>
 											</div>
 										</div>
 									</div>

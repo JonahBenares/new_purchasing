@@ -230,7 +230,48 @@
 												<td width="10%"></td>
 											</tr>
 										</table>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+										<br>
+											<br>
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="30%">Prepared by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Noted by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-1">Henne Tanant</td>
+													<td></td>
+													<td class="text-center p-1">Beverly Sy</td>
+													<td></td>
+													<td class="text-center p-1">Jonah Marie Dy</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2">Conforme: </td>
+													<td class="text-center border-b" colspan="2"></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2"></td>
+													<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
 									</div>
 								</div>
 							</div>
@@ -409,7 +450,48 @@
 												<td width="10%"></td>
 											</tr>
 										</table>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+										<br>
+											<br>
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="30%">Prepared by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Noted by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-1">Henne Tanant</td>
+													<td></td>
+													<td class="text-center p-1">Beverly Sy</td>
+													<td></td>
+													<td class="text-center p-1">Jonah Marie Dy</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2">Conforme: </td>
+													<td class="text-center border-b" colspan="2"></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2"></td>
+													<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
 									</div>
 								</div>
 							</div>
@@ -588,7 +670,48 @@
 												<td width="10%"></td>
 											</tr>
 										</table>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+										<br>
+											<br>
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="30%">Prepared by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Noted by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-1">Henne Tanant</td>
+													<td></td>
+													<td class="text-center p-1">Beverly Sy</td>
+													<td></td>
+													<td class="text-center p-1">Jonah Marie Dy</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2">Conforme: </td>
+													<td class="text-center border-b" colspan="2"></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2"></td>
+													<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
 									</div>
 								</div>
 							</div>

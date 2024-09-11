@@ -24,11 +24,13 @@
 		drawer_rfd.value = !hideModal.value
 		drawer_revise.value = !hideModal.value
 	}
-
+    const printDiv = () => {
+		window.print();
+	}
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -49,13 +51,13 @@
 				<div class="card">
                     <div class="card-body">
                         <hr class="border-dashed mt-0">
-                        <div class="pt-1">
+                        <div class="pt-1" id="printable">
                             <div>
                                 <div class="row">
-									<div class="col-lg-1">
+									<div class="col-lg-1 col-sm-1 col-md-1">
 										<span class="text-sm">TO:</span>
 									</div>
-									<div class="col-lg-11">
+									<div class="col-lg-11 col-sm-11 col-md-11">
 										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
 										<p class="m-0">Beverly Marie Dy</p>
 										<p class="m-0">Taculing Road, Bacolod City 6100</p>
@@ -64,13 +66,13 @@
 								</div>
 								<hr class="border-dashed">
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
@@ -78,13 +80,13 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
@@ -92,13 +94,13 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
@@ -217,7 +219,7 @@
 									</div>
                                     
                                     <div class="row mt-2">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6  col-sm-6 col-md-6">
                                             <table class="table-bordsered !text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
@@ -263,7 +265,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6  col-sm-6 col-md-6">
                                             <table class="table-bordsered !text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Other Instructions</td>
@@ -278,7 +280,7 @@
                                                 </tr>
                                                 <tr>
 													<td colspan="2" class="p-1">Sample Notes</td>
-													<td class="p-0 align-top" width="1">
+													<td class="p-0 align-top po_buttons" width="1">
 														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
@@ -317,8 +319,59 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <br>
+                                    <div class="row mt-4 mb-4">
+                                        <div class="col-lg-12">
+                                            <table class="w-full text-xs">
+                                                <tr>
+                                                    <td class="text-center" width="20%">Prepared by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%">Noted by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%">Approved by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%">Approved by</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center border-b"><br></td>
+                                                    <td></td>
+                                                    <td class="text-center border-b"></td>
+                                                    <td></td>
+                                                    <td class="text-center border-b"></td>
+                                                    <td></td>
+                                                    <td class="text-center border-b"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center p-1">Henne Tanant</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Beverly Sy</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Glenn Paulate</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center"><br><br></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" colspan="2">Work Completion Verified by: </td>
+                                                    <td class="text-center border-b" colspan="3"></td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" colspan="2"></td>
+                                                    <td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
                                     <hr	class="border-dashed">
-                                    <div class="row my-2"> 
+                                    <div class="row my-2 po_buttons" > 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between">
@@ -340,8 +393,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    
-                                                    <button type="submit" class="btn btn-primary w-36" >Print PO</button>
+                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
                                             </div>

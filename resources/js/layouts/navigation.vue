@@ -20,6 +20,10 @@
     const jobDrDrop = ref(false);
     const jobRfdDrop = ref(false);
 
+
+    const jobReportDrop = ref(false);
+    const poReportDrop = ref(false);
+
 	const hideDrop = ref(true)
 	const openMaster = () => {
 		masterfileDrop.value = !masterfileDrop.value
@@ -33,6 +37,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
     const openPR = () => {
 		prDrop.value = !prDrop.value
@@ -46,6 +52,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
     const openRFQ = () => {
 		rfqDrop.value = !rfqDrop.value
@@ -59,6 +67,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
     const openPO = () => {
         poDrop.value = !poDrop.value
@@ -72,6 +82,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
     const openDR = () => {
         drDrop.value = !drDrop.value
@@ -85,6 +97,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
     const openRFD = () => {
         rfdDrop.value = !rfdDrop.value
@@ -98,6 +112,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
 
     const openJobReq = () => {
@@ -112,6 +128,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
 
     const openJobQuote = () => {
@@ -126,6 +144,8 @@
         joiDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
         
 	}
     const openJobIssue = () => {
@@ -140,6 +160,8 @@
         rfdDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
 
     const openJobRFD = () => {
@@ -154,6 +176,8 @@
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
 
     const openJobDR = () => {
@@ -168,8 +192,41 @@
         poDrop.value = !hideDrop.value
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        poReportDrop.value = !hideDrop.value 
 	}
 
+    const openJobReport = () => {
+        jobReportDrop.value = !jobReportDrop.value 
+        jobDrDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        poReportDrop.value = !hideDrop.value 
+	}
+
+    const openPurchaseReport = () => {
+        poReportDrop.value = !poReportDrop.value 
+        jobReportDrop.value = !hideDrop.value 
+        jobDrDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+	}
 
 	const closeModal = () => {
 		drawer_dr.value = !hideDrop.value
@@ -181,7 +238,7 @@
     
     <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" id="topbar">
             <div class="navbar-brand-wrapper d-flex justify-content-center">
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
                 <!-- <a class="navbar-brand brand-logo" href="index.html">\PURCHASING</a>
@@ -654,6 +711,59 @@
                                 </div>
                             </Transition>
                         </li>
+                        <li class="nav-item py-2 text-xs uppercase font-bold !text-gray-600 bg-gray-50 px-4">
+                            <span class="menu-title">Reports</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openPurchaseReport()" >
+                                <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                    <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
+                                </i>
+                                    <span class="menu-title">PO Reports</span>
+                                <!-- <i class="menu-arrow"></i> -->
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:poReportDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_weekly_report" target="_blank">Weekly Recom</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openJobReport()" >
+                                <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                    <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
+                                </i>
+                                    <span class="menu-title">JO Reports</span>
+                                <!-- <i class="menu-arrow"></i> -->
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:jobReportDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_req/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_req">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
+                       
                     </ul>
                 </div>
             </nav>

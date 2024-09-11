@@ -12,10 +12,14 @@
 	const closeModal = () => {
 		showModal.value = !hideModal.value
 	}
+	const printDiv = () => {
+		window.print();
+	}
+	
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -34,441 +38,585 @@
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
-				<div class="card-body">
-					
-					<hr class="border-dashed mt-2">
-					<div class="pt-1">
-						<div class="row">
-							<div class="col-lg-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
-								<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+					<div class="card-body">
+						<div class="">
+							<div id="details">
+								<hr class="border-dashed mt-2">
+								<div class="row">
+									<div class="col-lg-4">
+										<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+										<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+									</div>
+									<div class="col-lg-4">
+										<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
+										<span class="text-sm text-gray-700">February 16, 2024</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-12">
+										<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
+										<span class="text-sm text-gray-700">rfq_it001</span>
+									</div>
+								</div>
+								<br>
 							</div>
-							<div class="col-lg-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
-								<span class="text-sm text-gray-700">February 16, 2024</span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
-								<span class="text-sm text-gray-700">rfq_it001</span>
-							</div>
-							
-						</div>
-						<br>
-						<div v-if="vendor === 'vendor_1'">
-							<div class="w-full flex justify-between space-x-1">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
-								<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
-								<button @click="openModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
-							</div>
-							<div class="bg-gray-200 !border !border-orange-200">
-								<div class="page">
-									<div class="subpage">
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
-										<table class="table-bsordered w-full !text-xs mb-2">
-											<tr>
-												<td class="" width="10%">Date: </td>
-												<td class="">June 28, 2024</td>
-												<td class="" width="8%">RFQ No.:</td>
-												<td class="" >RFQ-CENPRI-1001</td>
-												<td class="">Urg:</td>		    			
-												<td class="">X</td>
-											</tr>
-											<tr>
-												<td class="">PR No:</td>
-												<td class="" width="50%">PR-CENPRI24-1002</td>
-												<td class="" width="10%">RFQ Name:</td>
-												<td class="" colspan="3">rfq_it001</td>
-											</tr>
-											<tr>
-												<td class="">Supplier: </td>
-												<td class="">MF Computer Solutions, Inc.</td>
-												<td class="">Tel. No.:</td>
-												<td class="" colspan="3">(034) 433-8370</td>
-											</tr>
-										</table>
-										<table class="table-bordered w-full !text-xs">
-											<tr class="bg-gray-100">
-												<td class="p-1 text-center" width="5%">No</td>
-												<td class="p-1 text-center" width="10%">Qty</td>
-												<td class="p-1" width="35%">Item Description</td>
-												<td class="p-1" width="35%">Brand/Offer</td>
-												<td class="p-1 text-center" width="15%">Unit Price</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Monitor</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Mouse</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class=" p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class=" p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Keyboard</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class=" p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class=" p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<table class="table-bordesred w-full text-xs">
-											<tr>
-												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
-											</tr>
-											<tr>
-												<td colspan="4">2. Please Fill - Up :</td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">a. Price Validity</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">b. Payment Terms</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">c. Delivery Time</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">d. Item's Warranty</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">e. In-land Freight</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-										</table>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+							<div v-if="vendor === 'vendor_1'">
+								<div class="rfq_buttons">
+									<div class="w-full flex justify-between space-x-1 ">
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
+										<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
+										<button @click="openModel()" class="btn btn-primary p-1">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</div>
+								</div>
+								<div class="page-bg">
+									<div class="page">
+										<div class="subpage">
+											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
+											<table class="table-bsordered w-full text-xs mb-2">
+												<tr>
+													<td class="" width="10%">Date: </td>
+													<td class="">June 28, 2024</td>
+													<td class="" width="8%">RFQ No.:</td>
+													<td class="" >RFQ-CENPRI-1001</td>
+													<td class="">Urg:</td>		    			
+													<td class="">X</td>
+												</tr>
+												<tr>
+													<td class="">PR No:</td>
+													<td class="" width="50%">PR-CENPRI24-1002</td>
+													<td class="" width="10%">RFQ Name:</td>
+													<td class="" colspan="3">rfq_it001</td>
+												</tr>
+												<tr>
+													<td class="">Supplier: </td>
+													<td class="">MF Computer Solutions, Inc.</td>
+													<td class="">Tel. No.:</td>
+													<td class="" colspan="3">(034) 433-8370</td>
+												</tr>
+											</table>
+											<table class="table-bordered w-full text-xs">
+												<tr class="bg-gray-100">
+													<td class="p-1 text-center" width="5%">No</td>
+													<td class="p-1 text-center" width="10%">Qty</td>
+													<td class="p-1" width="35%">Item Description</td>
+													<td class="p-1" width="35%">Brand/Offer</td>
+													<td class="p-1 text-center" width="15%">Unit Price</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Monitor</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Mouse</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class=" p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class=" p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Keyboard</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class=" p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class=" p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+											</table>
+											<br>
+											<table class="table-bordesred w-full text-xs">
+												<tr>
+													<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+												</tr>
+												<tr>
+													<td colspan="4">2. Please Fill - Up :</td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">a. Price Validity</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">b. Payment Terms</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">c. Delivery Time</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">d. Item's Warranty</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">e. In-land Freight</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+											</table>
+											<br>
+											<br>
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="30%">Prepared by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Noted by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-1">Henne Tanant</td>
+													<td></td>
+													<td class="text-center p-1">Beverly Sy</td>
+													<td></td>
+													<td class="text-center p-1">Jonah Marie Dy</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2">Conforme: </td>
+													<td class="text-center border-b" colspan="2"></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2"></td>
+													<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="row my-2 po_buttons"> 
+										<div class="col-lg-12 col-md-12">
+											<div class="flex justify-center space-x-2">
+												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div v-else-if="vendor === 'vendor_2'">
-							<div class="w-full flex justify-between space-x-1">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
-								<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
-								<button @click="openModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
-							</div>
-							<div class="bg-gray-200 !border !border-orange-200">
-								<div class="page">
-									<div class="subpage">
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
-										<table class="table-bsordered w-full !text-xs mb-2">
-											<tr>
-												<td class="" width="10%">Date: </td>
-												<td class="">June 28, 2024</td>
-												<td class="" width="8%">RFQ No.:</td>
-												<td class="" >RFQ-CENPRI-1001</td>
-												<td class="">Urg:</td>		    			
-												<td class="">X</td>
-											</tr>
-											<tr>
-												<td class="">PR No:</td>
-												<td class="" width="50%">PR-CENPRI24-1002</td>
-												<td class="" width="10%">RFQ Name:</td>
-												<td class="" colspan="3">rfq_it001</td>
-											</tr>
-											<tr>
-												<td class="">Supplier: </td>
-												<td class="">Nexus Industrial Prime Solutions Corp.</td>
-												<td class="">Tel. No.:</td>
-												<td class="" colspan="3">(034) 433-8370</td>
-											</tr>
-										</table>
-										<table class="table-bordered w-full !text-xs">
-											<tr class="bg-gray-100">
-												<td class="p-1 text-center" width="5%">No</td>
-												<td class="p-1 text-center" width="10%">Qty</td>
-												<td class="p-1" width="35%">Item Description</td>
-												<td class="p-1" width="35%">Brand/Offer</td>
-												<td class="p-1 text-center" width="15%">Unit Price</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Monitor</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Mouse</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class=" p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class=" p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Keyboard</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class=" p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class=" p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<table class="table-bordesred w-full text-xs">
-											<tr>
-												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
-											</tr>
-											<tr>
-												<td colspan="4">2. Please Fill - Up :</td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">a. Price Validity</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">b. Payment Terms</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">c. Delivery Time</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">d. Item's Warranty</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">e. In-land Freight</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-										</table>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+							<div v-else-if="vendor === 'vendor_2'">
+								<div class="rfq_buttons">
+									<div class="w-full flex justify-between space-x-1 ">
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
+										<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
+										<button @click="openModel()" class="btn btn-primary p-1">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</div>
+								</div>
+								<div class="page-bg">
+									<div class="page">
+										<div class="subpage">
+											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
+											<table class="table-bsordered w-full text-xs mb-2">
+												<tr>
+													<td class="" width="10%">Date: </td>
+													<td class="">June 28, 2024</td>
+													<td class="" width="8%">RFQ No.:</td>
+													<td class="" >RFQ-CENPRI-1001</td>
+													<td class="">Urg:</td>		    			
+													<td class="">X</td>
+												</tr>
+												<tr>
+													<td class="">PR No:</td>
+													<td class="" width="50%">PR-CENPRI24-1002</td>
+													<td class="" width="10%">RFQ Name:</td>
+													<td class="" colspan="3">rfq_it001</td>
+												</tr>
+												<tr>
+													<td class="">Supplier: </td>
+													<td class="">Nexus Industrial Prime Solutions Corp.</td>
+													<td class="">Tel. No.:</td>
+													<td class="" colspan="3">(034) 433-8370</td>
+												</tr>
+											</table>
+											<table class="table-bordered w-full text-xs">
+												<tr class="bg-gray-100">
+													<td class="p-1 text-center" width="5%">No</td>
+													<td class="p-1 text-center" width="10%">Qty</td>
+													<td class="p-1" width="35%">Item Description</td>
+													<td class="p-1" width="35%">Brand/Offer</td>
+													<td class="p-1 text-center" width="15%">Unit Price</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Monitor</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Mouse</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class=" p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class=" p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Keyboard</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class=" p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class=" p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+											</table>
+											<br>
+											<table class="table-bordesred w-full text-xs">
+												<tr>
+													<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+												</tr>
+												<tr>
+													<td colspan="4">2. Please Fill - Up :</td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">a. Price Validity</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">b. Payment Terms</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">c. Delivery Time</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">d. Item's Warranty</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">e. In-land Freight</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+											</table>
+											<br>
+											<br>
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="30%">Prepared by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Noted by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-1">Henne Tanant</td>
+													<td></td>
+													<td class="text-center p-1">Beverly Sy</td>
+													<td></td>
+													<td class="text-center p-1">Jonah Marie Dy</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2">Conforme: </td>
+													<td class="text-center border-b" colspan="2"></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2"></td>
+													<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="row my-2 po_buttons"> 
+										<div class="col-lg-12 col-md-12">
+											<div class="flex justify-center space-x-2">
+												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
+												<!-- <button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button> -->
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div v-else>
-							<div class="w-full flex justify-between space-x-1">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
-								<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
-								<button @click="openModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
-							</div>
-							<div class="bg-gray-200 !border !border-orange-200">
-								<div class="page">
-									<div class="subpage">
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
-										<table class="table-bsordered w-full !text-xs mb-2">
-											<tr>
-												<td class="" width="10%">Date: </td>
-												<td class="">June 28, 2024</td>
-												<td class="" width="8%">RFQ No.:</td>
-												<td class="" >RFQ-CENPRI-1001</td>
-												<td class="">Urg:</td>		    			
-												<td class="">X</td>
-											</tr>
-											<tr>
-												<td class="">PR No:</td>
-												<td class="" width="50%">PR-CENPRI24-1002</td>
-												<td class="" width="10%">RFQ Name:</td>
-												<td class="" colspan="3">rfq_it001</td>
-											</tr>
-											<tr>
-												<td class="">Supplier: </td>
-												<td class="">Lectrix Solutions Electrical Supplies & Services Cebu </td>
-												<td class="">Tel. No.:</td>
-												<td class="" colspan="3">(034) 433-8370</td>
-											</tr>
-										</table>
-										<table class="table-bordered w-full !text-xs">
-											<tr class="bg-gray-100">
-												<td class="p-1 text-center" width="5%">No</td>
-												<td class="p-1 text-center" width="10%">Qty</td>
-												<td class="p-1" width="35%">Item Description</td>
-												<td class="p-1" width="35%">Brand/Offer</td>
-												<td class="p-1 text-center" width="15%">Unit Price</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Monitor</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Mouse</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class=" p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class=" p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-											<tr>
-												<td class="p-1 align-top text-center">1</td>
-												<td class="p-1 align-top text-center">5</td>
-												<td class="p-1 align-top">Keyboard</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class="border-b p-1 w-full h-14 !align-top"></div>
-													<div class=" p-1 w-full h-14 !align-top"></div>
-												</td>
-												<td class="align-top">
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
-													<div class=" p-1 w-full h-14 !align-top text-center"></div>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<table class="table-bordesred w-full text-xs">
-											<tr>
-												<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
-											</tr>
-											<tr>
-												<td colspan="4">2. Please Fill - Up :</td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">a. Price Validity</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">b. Payment Terms</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">c. Delivery Time</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">d. Item's Warranty</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-											<tr>
-												<td width="10%"></td>
-												<td width="40%">e. In-land Freight</td>
-												<td width="40%" class="p-0 border-b"></td>
-												<td width="10%"></td>
-											</tr>
-										</table>
-										<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+							<div v-else>
+								<div class="rfq_buttons">
+									<div class="w-full flex justify-between space-x-1 ">
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-on:click="vendor = ''">Lectrix Solutions Electrical Supplies & Services Cebu</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_1'">MF Computer Solutions, Inc.</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-700 !border-orange-100 !bg-orange-100" v-on:click="vendor = 'vendor_2'">Nexus Industrial Prime Solutions Corp.</button>
+										<!-- <button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !text-orange-900 !border-orange-200 !bg-orange-200">Dongwoo Electric Corp. / BMJE Marketing and Electrical Services Inc.</button> -->
+										<button @click="openModel()" class="btn btn-primary p-1">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</div>
+								</div>
+								<div class="page-bg">
+									<div class="page">
+										<div class="subpage">
+											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
+											<table class="table-bsordered w-full text-xs mb-2">
+												<tr>
+													<td class="" width="10%">Date: </td>
+													<td class="">June 28, 2024</td>
+													<td class="" width="8%">RFQ No.:</td>
+													<td class="" >RFQ-CENPRI-1001</td>
+													<td class="">Urg:</td>		    			
+													<td class="">X</td>
+												</tr>
+												<tr>
+													<td class="">PR No:</td>
+													<td class="" width="50%">PR-CENPRI24-1002</td>
+													<td class="" width="10%">RFQ Name:</td>
+													<td class="" colspan="3">rfq_it001</td>
+												</tr>
+												<tr>
+													<td class="">Supplier: </td>
+													<td class="">Lectrix Solutions Electrical Supplies & Services Cebu </td>
+													<td class="">Tel. No.:</td>
+													<td class="" colspan="3">(034) 433-8370</td>
+												</tr>
+											</table>
+											<table class="table-bordered w-full text-xs">
+												<tr class="bg-gray-100">
+													<td class="p-1 text-center" width="5%">No</td>
+													<td class="p-1 text-center" width="10%">Qty</td>
+													<td class="p-1" width="35%">Item Description</td>
+													<td class="p-1" width="35%">Brand/Offer</td>
+													<td class="p-1 text-center" width="15%">Unit Price</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Monitor</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Mouse</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class=" p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class=" p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+												<tr>
+													<td class="p-1 align-top text-center">1</td>
+													<td class="p-1 align-top text-center">5</td>
+													<td class="p-1 align-top">Keyboard</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class="border-b p-1 w-full h-14 !align-top"></div>
+														<div class=" p-1 w-full h-14 !align-top"></div>
+													</td>
+													<td class="align-top">
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class="border-b p-1 w-full h-14 !align-top text-center"></div>
+														<div class=" p-1 w-full h-14 !align-top text-center"></div>
+													</td>
+												</tr>
+											</table>
+											<br>
+											<table class="table-bordesred w-full text-xs">
+												<tr>
+													<td colspan="4">1. Quotation must be submitted on or before June 28, 2024</td>
+												</tr>
+												<tr>
+													<td colspan="4">2. Please Fill - Up :</td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">a. Price Validity</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">b. Payment Terms</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">c. Delivery Time</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">d. Item's Warranty</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+												<tr>
+													<td width="10%"></td>
+													<td width="40%">e. In-land Freight</td>
+													<td width="40%" class="p-0 border-b"></td>
+													<td width="10%"></td>
+												</tr>
+											</table>
+											<br>
+											<br>
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="30%">Prepared by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Noted by</td>
+													<td width="5%"></td>
+													<td class="text-center" width="30%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-1">Henne Tanant</td>
+													<td></td>
+													<td class="text-center p-1">Beverly Sy</td>
+													<td></td>
+													<td class="text-center p-1">Jonah Marie Dy</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2">Conforme: </td>
+													<td class="text-center border-b" colspan="2"></td>
+													<td class="text-center"></td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="2"></td>
+													<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="row my-2 po_buttons"> 
+										<div class="col-lg-12 col-md-12">
+											<div class="flex justify-center space-x-2">
+												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
+												<!-- <button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button> -->
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<br>
-						<div class="row my-2"> 
-							<div class="col-lg-12 col-md-12">
-								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-primary mr-2 w-44">Print</button>
-									<!-- <button type="submit" class="btn btn-primary mr-2 w-44">Canvass Complete</button> -->
-								</div>
-							</div>
+							<br>
 						</div>
 					</div>
-				</div>
 				</div>
 			</div>
 		</div>
