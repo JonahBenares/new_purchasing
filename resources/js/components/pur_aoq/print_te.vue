@@ -5,6 +5,8 @@
     import { useRouter } from "vue-router"
 
 	const showModal = ref(false)
+	const printbutton = ref(false)
+	const signatories = ref(false)
 	const hideModal = ref(true)
 	const openModel = () => {
 		showModal.value = !showModal.value
@@ -730,13 +732,68 @@
 							<td class="!border-0" colspan="4"><br></td>
 						</tr>
 					</table>
+
+					<table class="!text-xs" width="250%">
+						<tr>
+							<td></td>
+							<td width="12%">Prepared by:</td>
+							<td></td>
+							<td width="12%">Received and Checked by</td>
+							<td></td>
+							<td width="12%">Award Recommended by</td>
+							<td></td>
+							<td width="12%">Recommending Approval</td>
+							<td></td>
+							<td width="12%">Aprroved by</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class=""><br></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="border-b">
+								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							</td>
+							<td></td>
+							<td class="border-b">
+								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							</td>
+							<td></td>
+							<td class="border-b">
+								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							</td>
+							<td></td>
+							<td class="border-b">
+								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							</td>
+							<td></td>
+							<td class="border-b">
+								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							</td>
+							<td></td>
+						</tr>
+						
+					</table>
+					<br>
 				</div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="flex justify-center">
-						<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Print TE</a>
+					<div class="flex justify-center space-x-1">
+						<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Save</a>
+						<a href="#" class="btn btn-primary mr-2 w-44">Export</a>
 					</div>
 				</div>
 			</div>

@@ -443,6 +443,54 @@
 												<td class="!border-0" colspan="4"><br></td>
 											</tr>
 										</table>
+										<br>
+										<table class="!text-xs" width="100%">
+											<tr>
+												<td width="19%" class="text-center">Prepared by:</td>
+												<td></td>
+												<td width="19%" class="text-center">Received and Checked by</td>
+												<td></td>
+												<td width="19%" class="text-center">Award Recommended by</td>
+												<td></td>
+												<td width="19%" class="text-center">Recommending Approval</td>
+												<td></td>
+												<td width="19%" class="text-center">Aprroved by</td>
+											</tr>
+											<tr>
+												<td class=""><br></td>
+												<td></td>
+												<td class=""></td>
+												<td></td>
+												<td class=""></td>
+												<td></td>
+												<td class=""></td>
+												<td></td>
+												<td class=""></td>
+											</tr>
+											<tr>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+											</tr>
+											
+										</table>
+										<br>
 									</div>
 								</div>
 								<br>
@@ -790,6 +838,54 @@
 												<td class="!border-0" colspan="4"><br></td>
 											</tr>
 										</table>
+										<br>
+										<table class="!text-xs" width="100%">
+											<tr>
+												<td width="19%" class="text-center">Prepared by:</td>
+												<td></td>
+												<td width="19%" class="text-center">Received and Checked by</td>
+												<td></td>
+												<td width="19%" class="text-center">Award Recommended by</td>
+												<td></td>
+												<td width="19%" class="text-center">Recommending Approval</td>
+												<td></td>
+												<td width="19%" class="text-center">Aprroved by</td>
+											</tr>
+											<tr>
+												<td class=""><br></td>
+												<td></td>
+												<td class=""></td>
+												<td></td>
+												<td class=""></td>
+												<td></td>
+												<td class=""></td>
+												<td></td>
+												<td class=""></td>
+											</tr>
+											<tr>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+												<td></td>
+												<td class="border-b text-center pb-1">
+													Employee Name
+												</td>
+											</tr>
+											
+										</table>
+										<br>
 									</div>
 								</div>
 								<br>
@@ -1139,6 +1235,53 @@
 									</div>
 								</div>
 								<br>
+								<table class="!text-xs" width="100%">
+									<tr>
+										<td width="19%" class="text-center">Prepared by:</td>
+										<td></td>
+										<td width="19%" class="text-center">Received and Checked by</td>
+										<td></td>
+										<td width="19%" class="text-center">Award Recommended by</td>
+										<td></td>
+										<td width="19%" class="text-center">Recommending Approval</td>
+										<td></td>
+										<td width="19%" class="text-center">Aprroved by</td>
+									</tr>
+									<tr>
+										<td class=""><br></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+										<td class=""></td>
+									</tr>
+									<tr>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+									</tr>
+									
+								</table>
+								<br>
 								<div class="row my-2"> 
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-between space-x-2">
@@ -1294,6 +1437,7 @@
 										</td>
 									</tr>
 								</table>
+								
 							</div>
 						</div>
 						<div class="row mt-4"> 
@@ -2037,6 +2181,58 @@
 										<td class="!border-0" colspan="4"><br></td>
 										<td class="!border-0" colspan="4"><br></td>
 									</tr>
+								</table>
+								<table class="!text-xs" width="250%">
+									<tr>
+										<td></td>
+										<td width="12%">Prepared by:</td>
+										<td></td>
+										<td width="12%">Received and Checked by</td>
+										<td></td>
+										<td width="12%">Award Recommended by</td>
+										<td></td>
+										<td width="12%">Recommending Approval</td>
+										<td></td>
+										<td width="12%">Aprroved by</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class=""><br></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+										<td class=""></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+										<td class="border-b text-center pb-1">
+											Employee Name
+										</td>
+										<td></td>
+									</tr>
+									
 								</table>
 							</div>
 						</div>

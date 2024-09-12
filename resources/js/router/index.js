@@ -99,6 +99,7 @@ import job_drView from '../components/job_dr/view.vue'
 import job_disburseIndex from '../components/job_disburse/index.vue'
 import job_disburseNew from '../components/job_disburse/new.vue'
 import job_disburseView from '../components/job_disburse/view.vue'
+import job_disburseView2 from '../components/job_disburse/view_2.vue'
 
 import pur_weekly_repIndex from '../components/pur_weekly_rep/index.vue'
 
@@ -436,7 +437,10 @@ const routes = [
         path:'/job_disburse/view',
         component: job_disburseView,
     },
-
+    {
+        path:'/job_disburse/view2',
+        component: job_disburseView2,
+    },
     {
         path:'/pur_weekly_report',
         component: pur_weekly_repIndex,

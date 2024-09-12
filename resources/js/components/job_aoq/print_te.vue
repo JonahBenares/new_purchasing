@@ -759,13 +759,67 @@
 							<td class="!border-0" colspan="4"><br></td>
 						</tr>
 					</table>
+					<table class="!text-xs" width="250%">
+						<tr>
+							<td></td>
+							<td width="12%">Prepared by:</td>
+							<td></td>
+							<td width="12%">Received and Checked by</td>
+							<td></td>
+							<td width="12%">Award Recommended by</td>
+							<td></td>
+							<td width="12%">Recommending Approval</td>
+							<td></td>
+							<td width="12%">Aprroved by</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class=""><br></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="border-b text-center pb-1">
+								Employee Name
+							</td>
+							<td></td>
+							<td class="border-b text-center pb-1">
+								Employee Name
+							</td>
+							<td></td>
+							<td class="border-b text-center pb-1">
+								Employee Name
+							</td>
+							<td></td>
+							<td class="border-b text-center pb-1">
+								Employee Name
+							</td>
+							<td></td>
+							<td class="border-b text-center pb-1">
+								Employee Name
+							</td>
+							<td></td>
+						</tr>
+						
+					</table>
+					<br>
 				</div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="flex justify-center">
-						<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Print TE</a>
+					<div class="flex justify-center space-x-1">
+						<a href="#" class="btn btn-primary mr-2 w-44">Save</a>
+						<a href="#" class="btn btn-primary mr-2 w-44">Export</a>
 					</div>
 				</div>
 			</div>
