@@ -134,20 +134,15 @@
                                                 <td class=""></td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="4"> 
-                                                    <!--plus one sa rowspan if may additional nga description and amount-->
-
-
-                                                    <!-- <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-                                                    <br>
-                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001</p>
-                                                    <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p> -->
+                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="8"> 
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001 / JOI-8277207273</p>
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                 </td>
-                                                <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Amount of JO</td>
+                                            </tr>
+                                            <tr class="">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    Full Payment (Details)
+                                                </td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
@@ -157,19 +152,11 @@
                                             </tr>
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right" colspan="2">
-                                                    Sample
-                                                </td>
-                                                <td class="p-1 border-y-none">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
+                                                    <div class="flex justify-end space-x-1">
+                                                        <span>EWT</span>
+                                                        <span>VAT</span>
+                                                        <span>3%</span>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            <!-- <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
-                                                    
-                                                    Less: Discount
                                                 </td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
@@ -179,22 +166,36 @@
                                                 </td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">Sub Total</td>
-                                                <td class="p-1 border-t">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    Sample 
+                                                </td>
+                                                <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
                                                         <span>500.00</span>
                                                     </div>
                                                 </td>
-                                            </tr> -->
+                                            </tr>
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right" colspan="2">
-                                                    <div class="flex justify-end space-x-3">
-                                                        <!-- <span class="flex space-x-1">
-                                                            <span class="pb-.5">Show</span>
-                                                            <input type="checkbox" class="" alt="show">
-                                                        </span> -->
-                                                        <span>Less: 2% EWT</span>
+                                                    <div class="flex justify-end space-x-1">
+                                                        <span>EWT</span>
+                                                        <span>VAT</span>
+                                                        <span>3%</span>
+                                                    </div>
+                                                </td>
+                                                <td class="p-1 border-y-none">
+                                                    <div class="flex justify-between w-full">
+                                                        <span>₱</span>
+                                                        <span>500.00</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    <div class="flex justify-end space-x-1">
+                                                        <span>Retention</span>
+                                                        <span>2%</span>
                                                     </div>
                                                 </td>
                                                 <td class="p-1 border-y-none">
@@ -206,7 +207,25 @@
                                             </tr>
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right font-bold " colspan="2">Total Amount Due</td>
-                                                <td class="p-1 text-right font-bold !text-sm">1000.00</td>
+                                                <td class="p-1 text-right font-bold !text-sm">
+                                                    <div class="flex justify-between w-full">
+                                                        <span>₱</span>
+                                                        <span>1000.00</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                    <div class="flex justify-end space-x-1">
+                                                        <span>Remaining Balance</span>
+                                                    </div>
+                                                </td>
+                                                <td class="p-1 border-y-none">
+                                                    <div class="flex justify-between w-full">
+                                                        <span>₱</span>
+                                                        <span>500.00</span>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="7">

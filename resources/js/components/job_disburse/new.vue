@@ -157,15 +157,7 @@
                                                 </tr>
                                                 <tr class="">
                                                     <!--plus one sa rowspan if may additional nga description and amount-->
-                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="3"> 
-
-
-                                                        <!-- <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                        <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                        <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-                                                        <br>
-                                                        <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001</p>
-                                                        <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p> -->
+                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"> 
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001  / JOI-8277207273</p>
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                     </td>
@@ -190,16 +182,8 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="">
-                                                    <td class="border-l-none border-y-none p-1 text-right" colspan="2">
-                                                        <div class="flex justify-end space-x-3">
-                                                            <span class="flex space-x-1">
-                                                                <span class="pb-.5">Show</span>
-                                                                <input type="checkbox" class="" alt="show">
-                                                            </span>
-                                                            <span>Less: 2% EWT</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="p-1 border-y-none">
+                                                    <td class="border-l-none border-y-none text-right p-1" colspan="2">Sub Total</td>
+                                                    <td class="p-1 text-right !text-xs">
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>
                                                             <span>500.00</span>
@@ -207,8 +191,61 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="">
+                                                    <td class="border-l-none border-y-none text-right p-0" colspan="2">
+                                                        <div class="flex justify-end space-x-1">
+                                                            <!-- <span class="flex space-x-1">
+                                                                <span class="pb-.5">Show</span>
+                                                                <input type="checkbox" class="" alt="show">
+                                                            </span> -->
+                                                            <span class="p-1">EWT</span>
+                                                            <div class="flex ">
+                                                                <select name="" id="" class="w-14 border p-1">
+                                                                    <option value="">VAT</option>
+                                                                </select>
+                                                                <input type="text" class="w-10 text-center border p-1" placeholder="%">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-0 pr-0 border-y-none">
+                                                        <div class="flex justify-between w-full">
+                                                            <span class="p-1">₱</span>
+                                                            <input type="text" class="w-20 text-right border p-1" placeholder="00">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="">
+                                                    <td class="border-l-none border-y-none text-right p-0" colspan="2">
+                                                        <div class="flex justify-end space-x-1">
+                                                            <span class="p-1">Retention</span>
+                                                            <div class="flex ">
+                                                                <input type="text" class="w-10 text-center border p-1" placeholder="%">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-0 border-y-none">
+                                                        <div class="flex justify-between w-full">
+                                                            <span class="p-1">₱</span>
+                                                            <input type="text" class="w-20 text-right border p-1" placeholder="00">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="">
                                                     <td class="border-l-none border-y-none p-1 text-right font-bold " colspan="2">Total Amount Due</td>
-                                                    <td class="p-1 text-right font-bold !text-sm">1000.00</td>
+                                                    <td class="p-1 text-right font-bold !text-sm">
+                                                        <div class="flex justify-between w-full">
+                                                            <span>₱</span>
+                                                            <span>1000.00</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="">
+                                                    <td class="border-l-none border-y-none p-0 text-right  " colspan="2">Remaining Balance</td>
+                                                    <td class="px-1 text-right !text-xs">
+                                                        <div class="flex justify-between w-full">
+                                                            <span>₱</span>
+                                                            <span>500.00</span>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="7">

@@ -389,6 +389,7 @@
                                                 <div class="flex justify-between space-x-1">
                                                     <div class="flex justify-between">
                                                         <a href="/job_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
+                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD 2</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
