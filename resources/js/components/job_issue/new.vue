@@ -222,7 +222,9 @@
 															<br>8. Submission of inspection, service, commissioning and bench testing reports.
 															<br>9. Other works necessary for job completion.
 														</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+															<input type="text" class="w-full text-center" placeholder="00" value="5">
+														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -238,7 +240,9 @@
 													<tr class="">
 														<td class="border-y-none p-1 text-center">1</td>
 														<td class="border-y-none p-1" colspan="2">Monitor</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+															<input type="text" class="w-full text-center" placeholder="00" value="5">
+														</td>
 														<td class="border-y-none p-1 text-center">lot</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -246,7 +250,9 @@
 													<tr class="">
 														<td class="border-y-none p-1 text-center">2</td>
 														<td class="border-y-none p-1" colspan="2">Mouse</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+															<input type="text" class="w-full text-center" placeholder="00" value="5">
+														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>

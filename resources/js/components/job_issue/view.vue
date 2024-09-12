@@ -143,7 +143,9 @@
 															<br>8. Submission of inspection, service, commissioning and bench testing reports.
 															<br>9. Other works necessary for job completion.
 														</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+                                                        </td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -159,7 +161,9 @@
 													<tr class="">
 														<td class="border-y-none p-1 text-center">1</td>
 														<td class="border-y-none p-1" colspan="2">Monitor</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+                                                        </td>
 														<td class="border-y-none p-1 text-center">lot</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -167,7 +171,9 @@
 													<tr class="">
 														<td class="border-y-none p-1 text-center">2</td>
 														<td class="border-y-none p-1" colspan="2">Mouse</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+                                                        </td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -375,7 +381,7 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between">
-                                                    <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                    <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise JOI</a>
                                                     <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                         <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                     </button>
@@ -393,7 +399,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print PO</button>
+                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print JOI</button>
                                                 </div>
                                                 
                                             </div>
