@@ -106,6 +106,7 @@
 										<td class="p-1 uppercase" width="">Item Description</td>
 										<td class="p-1 uppercase" width="10%">WH Stocks</td>
 										<td class="p-1 uppercase" width="15%">Date Needed</td>
+										<td class="p-1 uppercase" width="15%">Recom Date</td>
 										<td class="p-1 uppercase po_buttons" width="1%" align="center">
 											<span>
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></XMarkIcon>
@@ -120,6 +121,7 @@
 										<td class="p-1">Monitor</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
+										<td class="p-1"><input type="date" class="w-full"></td>
 										<td class="text-center po_buttons">
 											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
@@ -134,6 +136,7 @@
 										<td class="p-1">Mouse</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
+										<td class="p-1"><input type="date" class="w-full"></td>
 										<td class="text-center po_buttons">
 											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
@@ -148,6 +151,7 @@
 										<td class="p-1">Keyboard</td>
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
+										<td class="p-1"><input type="date" class="w-full"></td>
 										<td class="text-center po_buttons">
 											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>

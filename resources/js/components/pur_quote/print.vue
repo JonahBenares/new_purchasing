@@ -43,19 +43,28 @@
 							<div id="details">
 								<hr class="border-dashed mt-2">
 								<div class="row">
-									<div class="col-lg-4">
-										<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
-										<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+									<div class="col-lg-8">
+										<div class="row">
+											<div class="col-lg-6">
+												<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+												<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+											</div>
+											<div class="col-lg-6">
+												<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
+												<span class="text-sm text-gray-700">February 16, 2024</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-12">
+												<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
+												<span class="text-sm text-gray-700">rfq_it001</span>
+											</div>
+										</div>
 									</div>
 									<div class="col-lg-4">
-										<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
-										<span class="text-sm text-gray-700">February 16, 2024</span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-12">
-										<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
-										<span class="text-sm text-gray-700">rfq_it001</span>
+										<div class="flex justify-end">
+											<a href="/pur_quote/view" class="btn btn-sm p-1 px-3 !text-xs btn-primary">Encode For TE</a>
+										</div>
 									</div>
 								</div>
 								<br>
