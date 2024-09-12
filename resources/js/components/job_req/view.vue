@@ -322,7 +322,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">Are you sure you want to cancel this PR?</h5>
+									<h5 class="leading-tight">Are you sure you want to cancel this JOR?</h5>
 								</div>
 							</div>
 						</div>

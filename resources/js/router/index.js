@@ -98,6 +98,7 @@ import job_drView from '../components/job_dr/view.vue'
 
 import job_disburseIndex from '../components/job_disburse/index.vue'
 import job_disburseNew from '../components/job_disburse/new.vue'
+import job_disburseNew2 from '../components/job_disburse/new_2.vue'
 import job_disburseView from '../components/job_disburse/view.vue'
 import job_disburseView2 from '../components/job_disburse/view_2.vue'
 
@@ -432,6 +433,10 @@ const routes = [
     {
         path:'/job_disburse/new',
         component: job_disburseNew,
+    },
+    {
+        path:'/job_disburse/new2',
+        component: job_disburseNew2,
     },
     {
         path:'/job_disburse/view',
