@@ -236,6 +236,7 @@
 											<td class="p-1 uppercase" width="">Item Description</td>
 											<td class="p-1 uppercase" width="10%">WH Stocks</td>
 											<td class="p-1 uppercase" width="15%">Date Needed</td>
+											<td class="p-1 uppercase" width="15%">Recom Date</td>
 											<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
 												<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 											</td>
@@ -248,6 +249,7 @@
 											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1"></td>
 											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1"></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-primary p-1" @click="addItem">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
@@ -262,6 +264,7 @@
 											<td class="p-1">Monitor</td>
 											<td class="p-1"></td>
 											<td class="p-1">08/25/24</td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="openDangerAlert_item1()">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
@@ -276,6 +279,7 @@
 											<td class="p-1">Mouse</td>
 											<td class="p-1"></td>
 											<td class="p-1">08/25/24</td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="removeItem2(2)">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
@@ -290,6 +294,7 @@
 											<td class="p-1">Keyboard</td>
 											<td class="p-1"></td>
 											<td class="p-1">08/25/24</td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="removeItem3(3)">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
@@ -401,6 +406,7 @@
 											<td class="p-1 uppercase" width="">Item Description</td>
 											<td class="p-1 uppercase" width="10%">WH Stocks</td>
 											<td class="p-1 uppercase" width="15%">Date Needed</td>
+											<td class="p-1 uppercase" width="15%">Recom Date</td>
 											<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
 												<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 											</td>
@@ -413,6 +419,7 @@
 											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1"></td>
 											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1"></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-primary p-1" @click="addItem">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
@@ -428,6 +435,7 @@
 											<td class="p-1">{{ i.item_desc }}</td>
 											<td class="p-1">{{ i.wh_stocks }}</td>
 											<td class="p-1">{{ i.date_needed }}</td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="openDangerAlert_item()">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>

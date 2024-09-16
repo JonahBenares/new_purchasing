@@ -134,14 +134,14 @@
                                                 <td class=""></td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="7"> 
+                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"> 
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001 / JOI-8277207273</p>
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                 </td>
                                             </tr>
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right" colspan="2">
-                                                    Sample
+                                                    First Payment
                                                 </td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
@@ -150,7 +150,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr class="">
+                                            <!-- <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right" colspan="2">
                                                     Sub Total
                                                 </td>
@@ -160,7 +160,7 @@
                                                         <span>500.00</span>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right" colspan="2">
                                                     <div class="flex justify-end space-x-1">

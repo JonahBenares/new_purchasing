@@ -103,6 +103,7 @@ import job_disburseView from '../components/job_disburse/view.vue'
 import job_disburseView2 from '../components/job_disburse/view_2.vue'
 
 import pur_weekly_repIndex from '../components/pur_weekly_rep/index.vue'
+import job_weekly_repIndex from '../components/job_weekly_rep/index.vue'
 
 const routes = [
     {
@@ -449,6 +450,10 @@ const routes = [
     {
         path:'/pur_weekly_report',
         component: pur_weekly_repIndex,
+    },
+    {
+        path:'/job_weekly_report',
+        component: job_weekly_repIndex,
     },
     {
         path:'/:pathMatch(.*)*',

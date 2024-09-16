@@ -754,13 +754,10 @@
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                                <div class="!hidden"  :class="{ show:jobReportDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_req/new">Add New</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_req">Show List</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_weekly_report" target="_blank">Weekly Recom</a></li>
                                     </ul>
-                                </div>
                             </Transition>
                         </li>
                        

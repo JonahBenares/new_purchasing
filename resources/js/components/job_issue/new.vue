@@ -222,8 +222,8 @@
 															<br>8. Submission of inspection, service, commissioning and bench testing reports.
 															<br>9. Other works necessary for job completion.
 														</td>
-														<td class="border-y-none p-1 text-center">
-															<input type="text" class="w-full text-center" placeholder="00" value="5">
+														<td class="border-y-none p-0 text-center">
+															<input type="text" class="w-full bg-yellow-50 border-b p-1 text-center" value="5">
 														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
@@ -240,8 +240,8 @@
 													<tr class="">
 														<td class="border-y-none p-1 text-center">1</td>
 														<td class="border-y-none p-1" colspan="2">Monitor</td>
-														<td class="border-y-none p-1 text-center">
-															<input type="text" class="w-full text-center" placeholder="00" value="5">
+														<td class="border-y-none p-0 text-center">
+															<input type="text" class="w-full bg-yellow-50 border-b p-1 text-center" value="5">
 														</td>
 														<td class="border-y-none p-1 text-center">lot</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
@@ -250,8 +250,8 @@
 													<tr class="">
 														<td class="border-y-none p-1 text-center">2</td>
 														<td class="border-y-none p-1" colspan="2">Mouse</td>
-														<td class="border-y-none p-1 text-center">
-															<input type="text" class="w-full text-center" placeholder="00" value="5">
+														<td class="border-y-none p-0 text-center">
+															<input type="text" class="w-full bg-yellow-50 border-b p-1 text-center" value="5">
 														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
@@ -460,9 +460,9 @@
 											<tr>
 												<td class="text-center" width="20%">Prepared by</td>
 												<td width="2%"></td>
-												<td class="text-center" width="20%">Noted by</td>
+												<td class="text-center" width="20%">Reviewed/Checked by</td>
 												<td width="2%"></td>
-												<td class="text-center" width="20%">Approved by</td>
+												<td class="text-center" width="20%">Recommended by</td>
 												<td width="2%"></td>
 												<td class="text-center" width="20%">Approved by</td>
 											</tr>

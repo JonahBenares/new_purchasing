@@ -157,13 +157,13 @@
                                                 </tr>
                                                 <tr class="">
                                                     <!--plus one sa rowspan if may additional nga description and amount-->
-                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="7"> 
+                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="8"> 
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001  / JOI-8277207273</p>
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                     </td>
                                                     <td class="border-l-none border-y-none text-right" colspan="2">
                                                         <div class="flex justify-end space-x-3">
-                                                            <span class="p-1">Full Payment</span>
+                                                            <span class="p-1">First Payment</span>
                                                             <div class="flex ">
                                                                 <input type="text" class="w-32 text-right border p-1" placeholder="Description">
                                                             </div>
@@ -177,7 +177,11 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="">
-                                                    <td class="border-l-none border-y-none text-right p-1" colspan="2">EWT Vat 2%</td>
+                                                    <td class="border-l-none border-y-none text-right p-1" colspan="2">EWT Vat 3%</td>
+                                                    <td class="p-1 text-right font-bold !text-xs">1000.00</td>
+                                                </tr>
+                                                <tr class="">
+                                                    <td class="border-l-none border-y-none text-right p-1" colspan="2">Retention 5%</td>
                                                     <td class="p-1 text-right font-bold !text-xs">1000.00</td>
                                                 </tr>
                                                 <tr class="">
@@ -211,6 +215,7 @@
                                                             <div class="flex ">
                                                                 <select name="" id="" class="w-14 border p-1">
                                                                     <option value="">VAT</option>
+                                                                    <option value="">NON-VAT</option>
                                                                 </select>
                                                                 <input type="text" class="w-10 text-center border p-1" placeholder="%">
                                                             </div>

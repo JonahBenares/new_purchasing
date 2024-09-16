@@ -81,9 +81,9 @@
                                         <td class="p-1">Point Person</td>	
                                         <td class="p-1" width="10%">Purpose</td>
                                         <td class="p-1" width="10%">End Use</td>
-                                        <td class="p-1" width="5%">PR No. / JO No.</td>
+                                        <td class="p-1" width="5%">PR No.</td>
                                         <td class="p-1" width="5%">Requestor</td>
-                                        <td class="p-1" width="5%">PR/JOR Qty</td>
+                                        <td class="p-1" width="5%">PR Qty</td>
                                         <td class="p-1" width="5%">Recom Qty</td>
                                         <td class="p-1" width="3%">UOM</td>
                                         <td class="p-1" width="10%">Description</td>
@@ -107,9 +107,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -131,7 +131,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -162,9 +162,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -177,7 +177,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -208,9 +208,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -223,7 +223,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -254,9 +254,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -269,7 +269,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -300,9 +300,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -315,7 +315,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -346,9 +346,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -361,7 +361,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -392,9 +392,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -407,7 +407,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -438,9 +438,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -453,7 +453,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -484,9 +484,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -499,7 +499,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -530,9 +530,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -545,7 +545,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -576,9 +576,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -591,7 +591,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -622,9 +622,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -637,7 +637,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -668,9 +668,9 @@
                                         </td>	
                                         <td class="p-1 align-top">Purpose</td>
                                         <td class="p-1 align-top">End Use</td>
-                                        <td class="p-1 align-top">PR No. / JO No.</td>
+                                        <td class="p-1 align-top">PR No.</td>
                                         <td class="p-1 align-top">Requestor</td>
-                                        <td class="p-1 align-top">PR/JOR Qty</td>
+                                        <td class="p-1 align-top">PR Qty</td>
                                         <td class="p-0 align-top">
                                             <input type="text" class="p-1 w-full bg-yellow-100">
                                         </td>
@@ -683,7 +683,7 @@
                                         </td>
                                         <td class="p-0 align-top">
                                             <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                                <option value="">Select Employee</option>
+                                                <option value="">Select Supplier</option>
                                             </select>
                                         </td>
                                         <td class="p-0 align-top">
@@ -747,9 +747,9 @@
                                     <td class="p-1 align-top">Point Person</td>	
                                     <td class="p-1 align-top">Purpose</td>
                                     <td class="p-1 align-top">End Use</td>
-                                    <td class="p-1 align-top">PR No. / JO No.</td>
+                                    <td class="p-1 align-top">PR No.</td>
                                     <td class="p-1 align-top">Requestor</td>
-                                    <td class="p-1 align-top">PR/JOR Qty</td>
+                                    <td class="p-1 align-top">PR Qty</td>
                                     <td class="p-1 align-top" width="5%">Recom Qty</td>
                                     <td class="p-1 align-top">UOM</td>
                                     <td class="p-1 align-top">Description</td>
@@ -771,9 +771,9 @@
                                     </td>	
                                     <td class="p-1">Purpose</td>
                                     <td class="p-1">End Use</td>
-                                    <td class="p-1">PR No. / JO No.</td>
+                                    <td class="p-1">PR No.</td>
                                     <td class="p-1">Requestor</td>
-                                    <td class="p-1">PR/JOR Qty</td>
+                                    <td class="p-1">PR Qty</td>
                                     <td class="p-0 align-top">
                                         <input type="text" class="p-1 w-full bg-yellow-100">
                                     </td>
@@ -822,9 +822,9 @@
                                     </td>	
                                     <td class="p-1">Purpose</td>
                                     <td class="p-1">End Use</td>
-                                    <td class="p-1">PR No. / JO No.</td>
+                                    <td class="p-1">PR No.</td>
                                     <td class="p-1">Requestor</td>
-                                    <td class="p-1">PR/JOR Qty</td>
+                                    <td class="p-1">PR Qty</td>
                                     <td class="p-0 align-top">
                                         <input type="text" class="p-1 w-full bg-yellow-100">
                                     </td>

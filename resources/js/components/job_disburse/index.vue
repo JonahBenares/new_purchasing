@@ -135,7 +135,7 @@
                                     </tr>
                                 </thead>
                                 <template #column-6="">
-                                    <a href="/pur_disburse/view" class="btn btn-xs btn-warning text-white p-1">
+                                    <a href="/job_disburse/view" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>

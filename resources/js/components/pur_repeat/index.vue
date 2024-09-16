@@ -474,9 +474,9 @@
 										<tr>
 											<td class="text-center" width="20%">Prepared by</td>
 											<td width="2%"></td>
-											<td class="text-center" width="20%">Noted by</td>
+											<td class="text-center" width="20%">Reviewed/Checked by</td>
 											<td width="2%"></td>
-											<td class="text-center" width="20%">Approved by</td>
+											<td class="text-center" width="20%">Recommended by</td>
 											<td width="2%"></td>
 											<td class="text-center" width="20%">Approved by</td>
 										</tr>

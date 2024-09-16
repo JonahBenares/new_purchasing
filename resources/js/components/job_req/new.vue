@@ -645,6 +645,7 @@
 											<td class="p-1 uppercase text-center" width="10%">UOM</td>
 											<td class="p-1 uppercase text-center" width="10%">Unit Cost</td>
 											<td class="p-1 uppercase text-center" width="10%">Total Cost</td>
+											<td class="p-1 uppercase" width="10%">Recom Date</td>
 											<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
 												<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 											</td>
@@ -656,6 +657,7 @@
 											<td class="p-0 align-top"><input type="text" id="scope_uom_check" class="w-full p-1 text-center" placeholder="lot" v-model="scope_uom"></td>
 											<td class="p-0 align-top"><input type="text" id="scope_unit_cost_check" class="w-full p-1 text-center" placeholder="00" v-model="scope_unit_cost"></td>
 											<td class="p-0 align-top"><input type="text" class="w-full p-1 text-center" placeholder="00" :value="scope_qty * scope_unit_cost" readonly disabled></td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-primary p-1" @click="addScope">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
@@ -669,6 +671,7 @@
 											<td class="p-1 align-top text-center">{{ x.scope_uom }}</td>
 											<td class="p-1 align-top text-center">{{ x.scope_unit_cost }}</td>
 											<td class="p-1 align-top text-center">{{ x.scope_unit_cost * x.scope_qty  }}</td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="removeScopeitem(indexes)">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
@@ -689,6 +692,7 @@
 											<td class="p-1 uppercase" width="">Item Description</td>
 											<td class="p-1 uppercase" width="10%">WH Stocks</td>
 											<td class="p-1 uppercase" width="15%">Date Needed</td>
+											<td class="p-1 uppercase" width="10%">Recom Date</td>
 											<td class="p-1 space-x-auto uppercase text-center" align="center" width="1%">
 												<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 											</td>
@@ -701,6 +705,7 @@
 											<td class=""><input placeholder="Item Description" id="item_check" v-model="item_desc" type="text" class="w-full p-1"></td>
 											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1"></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-primary p-1" @click="addItem">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
@@ -715,6 +720,7 @@
 											<td class="p-1">{{ i.item_desc }}</td>
 											<td class="p-1">{{ i.wh_stocks }}</td>
 											<td class="p-1">{{ i.date_needed }}</td>
+											<td class="p-1"><input type="date" class="w-full"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="removeItem(index)" >
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>

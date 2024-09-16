@@ -240,14 +240,14 @@
                                         <div class="col-lg-12">
                                             <table class="w-full text-xs">
                                                 <tr>
-                                                    <td class="text-center" width="20%">Prepared by</td>
-                                                    <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Noted by</td>
-                                                    <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Approved by</td>
-                                                    <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Approved by</td>
-                                                </tr>
+													<td class="text-center" width="20%">Prepared by</td>
+													<td width="2%"></td>
+													<td class="text-center" width="20%">Reviewed/Checked by</td>
+													<td width="2%"></td>
+													<td class="text-center" width="20%">Recommended by</td>
+													<td width="2%"></td>
+													<td class="text-center" width="20%">Approved by</td>
+												</tr>
                                                 <tr>
                                                     <td class="text-center border-b"><br></td>
                                                     <td></td>

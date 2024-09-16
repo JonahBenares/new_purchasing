@@ -184,7 +184,9 @@
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">1</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-0 text-center">
+															<input type="text" class="w-full bg-yellow-50 border-b p-1 text-center" value="5">
+														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1" colspan="2">Monitor</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
@@ -192,7 +194,9 @@
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">2</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-0 text-center">
+															<input type="text" class="w-full bg-yellow-50 border-b p-1 text-center" value="5">
+														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1" colspan="2">Mouse</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
@@ -200,7 +204,9 @@
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">3</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-0 text-center">
+															<input type="text" class="w-full bg-yellow-50 border-b p-1 text-center" value="5">
+														</td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1" colspan="2">Keyboard</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
@@ -368,9 +374,9 @@
 												<tr>
 													<td class="text-center" width="20%">Prepared by</td>
 													<td width="2%"></td>
-													<td class="text-center" width="20%">Noted by</td>
+													<td class="text-center" width="20%">Reviewed/Checked by</td>
 													<td width="2%"></td>
-													<td class="text-center" width="20%">Approved by</td>
+													<td class="text-center" width="20%">Recommended by</td>
 													<td width="2%"></td>
 													<td class="text-center" width="20%">Approved by</td>
 												</tr>
