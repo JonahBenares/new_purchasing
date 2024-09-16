@@ -19,6 +19,41 @@
 		print_button.value = !print_button.value
 		save_button.value = hideAlert.value
 	}
+
+    let payment_list=ref([]);
+    let p_description=ref("");
+    let p_amount=ref("");
+    let rows=ref(6);
+
+    const addPayment= () => {
+		if(p_description.value ==''){
+			document.getElementById('pdescription').placeholder="Please fill in Description."
+			document.getElementById('pdescription').style.backgroundColor = '#FAA0A0';
+		}else if(p_amount.value ==''){
+            document.getElementById('pamount').placeholder="Please fill in Amount."
+			document.getElementById('pamount').style.backgroundColor = '#FAA0A0';
+        }else{
+            const add_payments = {
+				p_description:p_description.value,
+				p_amount:p_amount.value,
+			}
+			payment_list.value.push(add_payments)
+			p_description.value='';
+			p_amount.value='';
+			document.getElementById('pdescription').placeholder=""
+			document.getElementById('pdescription').style.backgroundColor = '#FEF9C3';
+            document.getElementById('pdescription').placeholder="Description"
+            document.getElementById('pamount').placeholder=""
+			document.getElementById('pamount').style.backgroundColor = '#FEF9C3';
+            document.getElementById('pamount').placeholder="Amount"
+            rows.value++;
+
+			
+		}
+	}
+	const removePayment = (index) => {
+		payment_list.value.splice(index,1)
+	}
 </script>
 <template>
 	<navigation>
@@ -157,19 +192,19 @@
                                                 </tr>
                                                 <tr class="">
                                                     <!--plus one sa rowspan if may additional nga description and amount-->
-                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"> 
+                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rows"> 
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001  / JOI-8277207273</p>
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                     </td>
                                                     <td class="border-l-none border-y-none p-0 text-right" colspan="2">
                                                         <div class="flex justify-between space-x-1">
-                                                            <button class="btn btn-xs btn-primary p-0 px-1">
+                                                            <button class="btn btn-xs btn-primary p-0 px-1" @click="addPayment">
                                                                 <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
                                                             </button>
-                                                            <button class="btn btn-xs btn-danger  p-0 px-1">
+                                                            <!-- <button class="btn btn-xs btn-danger  p-0 px-1" @click="removePayment">
                                                                 <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                                            </button>
-                                                            <input type="text" class="w-full text-left bg-yellow-100 p-1" placeholder="Description">
+                                                            </button> -->
+                                                            <input type="text" class="w-full text-left bg-yellow-100 p-1" v-model="p_description" id="pdescription" placeholder="Description">
                                                         </div>
                                                     </td>
                                                     <td class="p-0 border-y-none">
@@ -177,7 +212,26 @@
                                                             <button class="btn btn-xs p-0 !bg-yellow-100 ">
                                                                 <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
                                                             </button>
-                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" placeholder="Amount">
+                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" v-model="p_amount" id="pamount" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" placeholder="Amount">
+                                                        </div>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr class="" v-for="(p, indexes) in payment_list">
+                                                    <td class="border-l-none border-y-none p-0 text-right" colspan="2">
+                                                        <div class="flex justify-between space-x-1">
+                                                            <button type="button" @click="removePayment(indexes)" class="btn btn-danger p-1">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                                                </button>
+                                                            <input type="text" class="w-full text-left bg-yellow-100 p-1" v-model="p.p_description" id="pdescription" readonly>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-0 border-y-none">
+                                                        <div class="flex justify-between w-full">
+                                                            <button class="btn btn-xs p-0 !bg-yellow-100 ">
+                                                                <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
+                                                            </button>
+                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" v-model="p.p_amount" id="pamount" readonly>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -202,14 +256,14 @@
                                                                 <select name="" id="" class="w-14 border p-1">
                                                                     <option value="">VAT</option>
                                                                 </select>
-                                                                <input type="text" class="w-10 text-center border p-1" placeholder="%">
+                                                                <input type="text" class="w-10 text-center border p-1 bg-yellow-100" placeholder="%">
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="p-0 pr-0 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <span class="p-1">₱</span>
-                                                            <input type="text" class="w-20 text-right border p-1" placeholder="00">
+                                                            <input type="text" class="w-20 text-right border p-1 bg-yellow-100" placeholder="00">
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -218,14 +272,14 @@
                                                         <div class="flex justify-end space-x-1">
                                                             <span class="p-1">Retention</span>
                                                             <div class="flex ">
-                                                                <input type="text" class="w-10 text-center border p-1" placeholder="%">
+                                                                <input type="text" class="w-10 text-center border p-1 bg-yellow-100" placeholder="%">
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="p-0 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <span class="p-1">₱</span>
-                                                            <input type="text" class="w-20 text-right border p-1" placeholder="00">
+                                                            <input type="text" class="w-20 text-right border p-1 bg-yellow-100" placeholder="00">
                                                         </div>
                                                     </td>
                                                 </tr>
