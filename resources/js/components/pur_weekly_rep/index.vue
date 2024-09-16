@@ -63,7 +63,7 @@
 							</div>
 						</div>
                         <!-- v-show="pr_det" -->
-                        <div class="pt-0" >
+                        <div class="pt-0"  v-show="pr_det">
                             <hr class="border-dashed">
                             <div class="flex justify-between space-x-2 pb-2">
                                 <div>
@@ -708,17 +708,18 @@
                                     </tr>
                                 </table>
                             </div>
+                            <div class="bottom-0 left-0 fixed w-full shadow-2xl z-50">
+                                <div class="flex justify-center bg-white py-3">
+                                    <button class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                 </div>
             </div>
         </div>
-        <div class="bottom-0 fixed w-full z-50">
-            <div class="flex justify-center bg-white py-3">
-                <button class="btn btn-primary">Save</button>
-            </div>
-        </div>
+        
         <Transition
             enter-active-class="transition ease-out duration-200"
             enter-from-class="opacity-0 scale-95"
