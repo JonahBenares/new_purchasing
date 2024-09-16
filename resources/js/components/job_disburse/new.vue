@@ -201,6 +201,7 @@
                                                             <div class="flex ">
                                                                 <select name="" id="" class="w-14 border p-1">
                                                                     <option value="">VAT</option>
+                                                                    <option value="">Non-VAT</option>
                                                                 </select>
                                                                 <input type="text" class="w-10 text-center border p-1" placeholder="%">
                                                             </div>
