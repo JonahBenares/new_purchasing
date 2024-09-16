@@ -19,6 +19,42 @@
 		print_button.value = !print_button.value
 		save_button.value = hideAlert.value
 	}
+    let description_list=ref([]);
+	let description_text=ref("");
+	let amount_text=ref("");
+	let rows=ref(8);
+	const addRowDescription= () => {
+		if(description_text.value!='' && amount_text.value!=''){
+			const description = {
+				description_disp:description_text.value,
+				amount_disp:amount_text.value,
+			}
+			description_list.value.push(description)
+			description_text.value='';
+			amount_text.value='';
+			document.getElementById('check_description').placeholder="Description"
+			document.getElementById('check_description').style.backgroundColor = '#fef9c3';
+            document.getElementById('check_amount').placeholder="Amount"
+			document.getElementById('check_amount').style.backgroundColor = '#fef9c3';
+            rows.value++
+		}else{
+            if(description_text.value==''){
+                document.getElementById('check_description').placeholder="Please fill in Description"
+                document.getElementById('check_description').style.backgroundColor = '#FAA0A0';
+            }else{
+                document.getElementById('check_description').style.backgroundColor = '#fef9c3';
+            }
+            if(amount_text.value==''){
+                document.getElementById('check_amount').placeholder="Please fill in Amount"
+			    document.getElementById('check_amount').style.backgroundColor = '#FAA0A0';
+            }else{
+                document.getElementById('check_description').style.backgroundColor = '#fef9c3';
+            }
+		}
+	}
+	const removeDescription = (index) => {
+		description_list.value.splice(index,1)
+	}
 </script>
 <template>
 	<navigation>
@@ -157,7 +193,7 @@
                                                 </tr>
                                                 <tr class="">
                                                     <!--plus one sa rowspan if may additional nga description and amount-->
-                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="8"> 
+                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rows"> 
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>JOI-CENPRI-1001  / JOI-8277207273</p>
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
                                                     </td>
@@ -187,20 +223,39 @@
                                                 <tr class="">
                                                     <td class="border-l-none border-y-none p-0 text-right" colspan="2">
                                                         <div class="flex justify-between space-x-1">
-                                                            <button class="btn btn-xs btn-primary p-0 px-1">
+                                                            <button type="button" class="btn btn-xs btn-primary p-0 px-1" @click="addRowDescription">
                                                                 <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
                                                             </button>
-                                                            <button class="btn btn-xs btn-danger  p-0 px-1">
-                                                                <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                                            </button>
-                                                            <input type="text" class="w-full text-left bg-yellow-100 p-1" placeholder="Description">
+                                                            <input type="text" class="w-full text-left bg-yellow-100 p-1" id="check_description" v-model="description_text" placeholder="Description">
                                                         </div>
                                                     </td>
                                                     <td class="p-0 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <button class="btn btn-xs p-0 !bg-yellow-100 ">
                                                             </button>
-                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" placeholder="Amount">
+                                                            <input type="number" min="0" class="w-full text-right bg-yellow-100 p-1" id="check_amount" v-model="amount_text" placeholder="Amount">
+                                                        </div>
+                                                    </td>                                                    
+                                                </tr>
+                                                <tr class="" v-for="(d,index) in description_list">
+                                                    <td class="border-l-none border-y-none p-0 text-right" colspan="2">
+                                                        <div class="flex justify-between space-x-1">
+                                                            <!-- <button type="button" class="btn btn-xs btn-primary p-0 px-1" @click="addRowDescription">
+                                                                <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+                                                            </button> -->
+                                                            <button type="button" @click="removeDescription(index)" class="btn btn-xs btn-danger  p-0 px-1">
+                                                                <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                                            </button>
+                                                            <!-- <span class="w-32 text-left ">{{ d.description_disp }}</span> -->
+                                                            <input type="text" class="w-full text-left bg-yellow-100 p-1" v-model="d.description_disp"   placeholder="Description" readonly>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-0 border-y-none">
+                                                        <div class="flex justify-between w-full">
+                                                            <button class="btn btn-xs p-0 !bg-yellow-100 ">
+                                                            </button>
+                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" v-model="d.amount_disp" placeholder="Amount" readonly>
+                                                            <!-- <span class="w-32 text-left bg-yellow-100 p-1">{{ d.amount_disp }}</span> -->
                                                         </div>
                                                     </td>                                                    
                                                 </tr>
@@ -217,14 +272,14 @@
                                                                     <option value="">VAT</option>
                                                                     <option value="">NON-VAT</option>
                                                                 </select>
-                                                                <input type="text" class="w-10 text-center border p-1" placeholder="%">
+                                                                <input type="text" class="w-10 text-center border p-1 bg-yellow-100" placeholder="%">
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="p-0 pr-0 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <span class="p-1">₱</span>
-                                                            <input type="text" class="w-20 text-right border p-1" placeholder="00">
+                                                            <input type="text" class="w-20 text-right border p-1 bg-yellow-100" placeholder="00">
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -233,14 +288,14 @@
                                                         <div class="flex justify-end space-x-1">
                                                             <span class="p-1">Retention</span>
                                                             <div class="flex ">
-                                                                <input type="text" class="w-10 text-center border p-1" placeholder="%">
+                                                                <input type="text" class="w-10 text-center border p-1 bg-yellow-100" placeholder="%">
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="p-0 border-y-none">
                                                         <div class="flex justify-between w-full">
                                                             <span class="p-1">₱</span>
-                                                            <input type="text" class="w-20 text-right border p-1" placeholder="00">
+                                                            <input type="text" class="w-20 text-right border p-1 bg-yellow-100" placeholder="00">
                                                         </div>
                                                     </td>
                                                 </tr>
