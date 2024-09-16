@@ -253,8 +253,9 @@
                                                             </span> -->
                                                             <span class="p-1">EWT</span>
                                                             <div class="flex ">
-                                                                <select name="" id="" class="w-14 border p-1">
+                                                                <select name="" id="" class="w-20 border p-1">
                                                                     <option value="">VAT</option>
+                                                                    <option value="">NON-VAT</option>
                                                                 </select>
                                                                 <input type="text" class="w-10 text-center border p-1 bg-yellow-100" placeholder="%">
                                                             </div>
