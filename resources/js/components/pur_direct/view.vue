@@ -209,7 +209,7 @@
                                                     <td class="align-top text-center" width="4%">5.</td>
                                                     <td class="align-top  pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
-                                                            <span>Delivery Time </span>
+                                                            <span>Delivery Term </span>
                                                             <span> Sample</span>
                                                         </div>
                                                     </td>

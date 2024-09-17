@@ -211,18 +211,26 @@
 									<table class="w-full table-bordered !text-xs mb-0">
 										<tr class="bg-gray-100">
                                             <td class="p-1 uppercase text-center" width="2%">#</td>
-											<td class="p-1 uppercase" width="">Item Description</td>
-											<td class="p-1 uppercase" width="40%">Details (Offer and Supplier)</td>
-											<td class="p-1 uppercase text-center" width="9%">Qty</td>
-											<td class="p-1 uppercase text-center" width="9%">UOM</td>
+											<td class="p-1 uppercase text-center" width="5%">Qty</td>
+											<td class="p-1 uppercase text-center" width="5%">UOM</td>
+											<td class="p-1 uppercase" width="25%">Item Description</td>
+											<td class="p-1 uppercase" width="25%">Details (Offer and Supplier)</td>
+											<td class="uppercase p-1 text-center" width="7%">Unit Price</td>
+											<td class="uppercase p-1 text-center" width="6%">Total</td>
                                             <td class="p-1 text-center" align="center" width="1%">
                                                 <span>
-                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></MagnifyingGlassIcon>
+                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </span>
                                             </td>
 										</tr>
 										<tr>
 											<td class="p-1 text-center">1</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="--">
+											</td>
 											<td class="p-1 ">Mouse</td>
 											<td class="p-1">
 												<div class="flex justify-between space-x-1">
@@ -232,21 +240,31 @@
 													</div>
 													<div>
 														<a href="" class="btn btn-link p-0 !text-red-500" >
-															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XMarkIcon>
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</a>
 													</div>
 												</div>
                                             </td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0">
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0" align="center">
                                                 <button class="btn btn-sm btn-primary p-1" @click="openModel()">
-                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></MagnifyingGlassIcon>
+                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </button>
                                             </td>
 										</tr>
                                         <tr>
 											<td class="p-1 text-center">2</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="--">
+											</td>
 											<td class="p-1 ">Monitor</td>
 											<td class="p-1">
 												<div class="flex justify-between space-x-1">
@@ -256,40 +274,64 @@
 													</div>
 													<div>
 														<a href="" class="btn btn-link p-0 !text-red-500" >
-															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XMarkIcon>
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</a>
 													</div>
 												</div>
                                             </td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0">
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0" align="center">
                                                 <button class="btn btn-sm btn-primary p-1" @click="openModel()">
-                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></MagnifyingGlassIcon>
+                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </button>
                                             </td>
 										</tr>
 										<tr>
 											<td class="p-1 text-center">3</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="--">
+											</td>
 											<td class="p-1 ">Sample</td>
 											<td class="p-1"></td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0">
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0" align="center">
                                                 <button class="btn btn-sm btn-primary p-1" @click="openModel()">
-                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></MagnifyingGlassIcon>
+                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </button>
                                             </td>
 										</tr>
 										<tr>
 											<td class="p-1 text-center">4</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="--">
+											</td>
 											<td class="p-1 ">Sample</td>
 											<td class="p-1"></td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0 bg-orange-50"><input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00"></td>
-											<td class="p-0">
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0 bg-orange-50">
+												<input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00">
+											</td>
+											<td class="p-0" align="center">
                                                 <button class="btn btn-sm btn-primary p-1" @click="openModel()">
-                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></MagnifyingGlassIcon>
+                                                    <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </button>
                                             </td>
 										</tr>
@@ -405,7 +447,7 @@
 											<td class="align-top text-center" width="4%">6.</td>
 											<td class="align-top  pl-1" colspan="2">
 												<div class="flex justify-between">
-													<span class="w-32">Delivery Time </span>
+													<span class="w-32">Delivery Term </span>
 													<input name="" class="w-full bg-yellow-50 px-1" id="">
 												</div>
 											</td>
@@ -598,7 +640,7 @@
 										<td class="p-1">BCG Bacolod</td>
                                         <td class="p-0 text-center">
                                             <button class="btn btn-sm btn-primary p-1" @click="closeModal()">
-                                                <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon>
+                                                <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
                                             </button>
                                         </td>
 									</tr>

@@ -416,7 +416,7 @@
 												<td class="align-top text-center" width="4%">5.</td>
 												<td class="align-top  pl-1" colspan="2">
 													<div class="flex justify-between">
-														<span class="w-32">Delivery Time </span>
+														<span class="w-32">Delivery Term </span>
 														<input name="" class="w-full bg-yellow-50 px-1" id="">
 													</div>
 												</td>
