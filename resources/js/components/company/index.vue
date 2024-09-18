@@ -140,6 +140,7 @@
 		successAlert.value = !hideAlert.value
 		form.value.company_name=''
 		modalNew.value = !RemainModal.value
+		getCompany()
 	}
 
 	const UpdateExistingCompany = () => {
