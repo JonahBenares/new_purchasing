@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CompanyController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,3 +31,9 @@ Route::post('/add_employee',[EmployeeController::class,'add_employee']);
 Route::get('/edit_employee/{id}',[EmployeeController::class,'edit_employee']);
 Route::post('/update_employee/{id}',[EmployeeController::class,'update_employee']);
 Route::get('/get_department',[EmployeeController::class,'get_department']);
+
+Route::get('/get_all_company', [CompanyController::class,'get_all_company']);
+Route::get('/create_company',[CompanyController::class,'create_company']);
+Route::post('/add_company',[CompanyController::class,'add_company']);
+Route::get('/edit_company/{id}',[CompanyController::class,'edit_company']);
+Route::post('/update_company/{id}',[CompanyController::class,'update_company']);

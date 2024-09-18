@@ -149,14 +149,14 @@ const routes = [
         path:'/company',
         component: companyIndex,
     },
-
     {
         path:'/company/new',
         component: companyNew,
     },
     {
-        path:'/company/edit',
+        path:'/company/edit/:id',
         component: companyEdit,
+        props:true,
     },
 
     {
