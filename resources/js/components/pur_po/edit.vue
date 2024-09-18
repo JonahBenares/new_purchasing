@@ -231,18 +231,27 @@
 													<td class="p-1 text-right ">200.00</td>
 												</tr>
 												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-													<td class="p-0">
-														<div class="flex">
-															<input type="text" class="w-10 bg-white border-r text-center" disabled value="">
-															<input type="text" class="w-full bg-white p-1 text-right" disabled value="">
-														</div>
-													</td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-													<td class="p-1 text-right ">100.00</td>
-												</tr>
+                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
+                                                        <td class="p-1 text-right ">100.00</td>
+                                                    </tr>
+                                                    <!-- <tr class="">
+                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
+                                                        <td class="p-0">
+                                                            <div class="flex">
+                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12%">
+                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="">
+                                                            </div>
+                                                        </td>
+                                                    </tr> -->
+                                                    <tr class="">
+                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
+                                                        <td class="p-0">
+                                                            <div class="flex">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="--">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
 													<td class="p-1 text-right font-bold !text-sm">1000.00</td>
@@ -346,17 +355,42 @@
 													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right"></td>
 												</tr>
 												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-													<td class="p-0">
-														<div class="flex">
-															<input type="text" class="w-10 bg-yellow-50 border-r text-center" placeholder="%">
-															<input type="text" class="w-full bg-yellow-50 p-1 text-right">
-														</div>
-													</td>
-												</tr>
-												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
 													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right"></td>
+												</tr>
+												<!-- <tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
+													<td class="p-0">
+														<div class="flex">
+															<input type="text" class="w-10 bg-white border-r text-center" disabled value="12%">
+															<input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
+															<input type="text" class="w-full bg-white p-1 text-right" disabled value="">
+														</div>
+													</td>
+												</tr> -->
+												<tr class="">
+													<td class="border-l-none border-y-none p-0 text-right" colspan="2">
+														<div class="flex justify-end">
+															<!-- <span class="p-1" >VAT</span> -->
+															<select name="" class="border px-1 text-xs" id="">
+																<option value="">VAT</option>
+																<option value="">NON-VAT</option>
+															</select>
+														</div>
+													</td>
+													<!-- Kamo na bahala mag hide sang duwa ka input sa dalom kung Non VAT-->
+													<td class="p-0">
+														<div class="flex p-0">
+															<input type="text" class="w-10 border-r bg-yellow-50 text-center" value="12%">
+															<input type="text" class="w-10 border-r bg-yellow-50 text-center" value="12" hidden>
+															<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
+														</div>
+													</td>
+													<!-- <td class="p-0">
+														<div class="flex">
+															<input type="text" class="w-full bg-white p-1 text-right" disabled value="--">
+														</div>
+													</td> -->
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
