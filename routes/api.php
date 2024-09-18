@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +20,9 @@ use App\Http\Controllers\CompanyController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/login_form', [LoginController::class,'login_form']);
+Route::post('/login_process', [LoginController::class,'login_process']);
+
 Route::get('/get_all_department', [DepartmentController::class,'get_all_department']);
 Route::get('/create_department',[DepartmentController::class,'create_department']);
 Route::post('/add_department',[DepartmentController::class,'add_department']);
