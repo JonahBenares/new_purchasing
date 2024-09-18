@@ -169,8 +169,9 @@ const routes = [
         component: employeeNew,
     },
     {
-        path:'/employee/edit',
+        path:'/employee/edit/:id',
         component: employeeEdit,
+        props:true,
     },
 
     {

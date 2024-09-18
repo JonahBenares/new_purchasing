@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, PencilIcon, MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -16,13 +16,23 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
-    const data = [
-        ['Melinda Smith','Accounting Department','Accounting Supervisor',''],
-        ['John Doe','IT Department','Junior Software Developer',''],       
-        ['Tamira Jones','Finance Department','Financial Analyst',''],
-        ['Jerry Fox','Trading Department','Trade Marketing Specialist',''],
-        ['Stella Evans','Purchasing Department','Purchasing Assistant',''],
-    ];
+    let form=ref([]);
+	let success=ref('');
+	let error=ref([]);
+	let employee_list=ref([]);
+	let edit_employee=ref([]);
+	onMounted(async () => {
+		employeesForm()
+		getEmployee()
+	})
+    const employeesForm = async () => {
+		let response = await axios.get("/api/create_employee");
+		form.value = response.data;
+	}
+	const getEmployee = async () => {
+		let response = await axios.get("/api/get_all_employee");
+		employee_list.value=response.data.employee
+	}
     const options = {
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
@@ -68,6 +78,9 @@
 			}
 		]
 	};
+    const onEdit= (id) => {
+		router.push('/employee/edit/'+id)
+	}
 </script>
 <template>
 	<navigation>
@@ -96,7 +109,7 @@
                             </a>
                         </div>
                         <div class="pt-3">
-                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                            <DataTable :data="employee_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase"> Employee Name</th>
@@ -109,8 +122,8 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-3="">
-                                    <a href="/employee/edit" class="btn btn-xs btn-info text-white p-1">
+                                <template #column-3="props">
+                                    <a :href="'/employee/edit/'+props.rowData.id" class="btn btn-xs btn-info text-white p-1">
                                         <PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PencilIcon>
                                     </a>
                                 </template>
