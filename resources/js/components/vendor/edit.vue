@@ -255,7 +255,7 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Products/Services</label>
-									<textarea class="form-control" placeholder="Products/Services" v-model="head.product_services" readonly></textarea>
+									<textarea class="form-control !bg-gray-200" placeholder="Products/Services" v-model="head.product_services" readonly></textarea>
 								</div>
 							</div>
 						</div>
@@ -475,13 +475,13 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Address</label>
-									<textarea class="form-control" placeholder="Address" v-model="branch_dets.address" readonly></textarea>
+									<textarea class="form-control !bg-gray-200" placeholder="Address" v-model="branch_dets.address" readonly></textarea>
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-12">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Terms</label>
-									<textarea class="form-control" placeholder="Terms" v-model="branch_dets.terms" readonly></textarea>
+									<textarea class="form-control !bg-gray-200" placeholder="Terms" v-model="branch_dets.terms" readonly></textarea>
 								</div>
 							</div>
 						</div>
@@ -515,19 +515,19 @@
 							<div class="col-lg-6 col-md-2">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >TIN</label>
-									<input type="text" class="form-control" placeholder="TIN" v-model="branch_dets.tin" readonly>
+									<input type="text" class="form-control !bg-gray-200" placeholder="TIN" v-model="branch_dets.tin" readonly>
 								</div>
 							</div>
 							<div class="col-lg-6  col-md-2">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Type</label>
-									<input type="text" class="form-control" placeholder="Type" v-model="branch_dets.type" readonly>
+									<input type="text" class="form-control !bg-gray-200" placeholder="Type" v-model="branch_dets.type" readonly>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-2">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >EWT%</label>
-									<input type="text" class="form-control" placeholder="EWT%" v-model="branch_dets.ewt" readonly>
+									<input type="text" class="form-control !bg-gray-200" placeholder="EWT%" v-model="branch_dets.ewt" readonly>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-2">
@@ -544,12 +544,12 @@
 									<div class="form-group text-center flex justify-center space-x-2 pt-2">
 										<label class="text-gray-500 m-0" >VAT</label>
 										<input type="radio" name="vat" class="form-control !w-5 !h-5" placeholder="Vat" checked v-if="branch_dets.vat=='1'">
-										<input type="radio" name="vat" class="form-control !w-5 !h-5" placeholder="Vat" v-else disabled>
+										<input type="radio" name="vat" class="form-control !bg-gray-200 !w-5 !h-5" placeholder="Vat" v-else disabled>
 									</div>
 									<div class="form-group text-center flex justify-center space-x-2 pt-2">
 										<label class="text-gray-500 m-0" >Non-VAT</label>
 										<input type="radio" name="vat" class="form-control !w-5 !h-5" placeholder="Non-vat" checked v-if="branch_dets.vat=='0'">
-										<input type="radio" name="vat" class="form-control !w-5 !h-5" placeholder="Non-vat" v-else disabled>
+										<input type="radio" name="vat" class="form-control !bg-gray-200 !w-5 !h-5" placeholder="Non-vat" v-else disabled>
 									</div>
 								</div>
 							</div>
