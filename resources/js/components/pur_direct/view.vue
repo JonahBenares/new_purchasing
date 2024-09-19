@@ -152,17 +152,26 @@
                                                         <td class="p-1 text-right ">200.00</td>
                                                     </tr>
                                                     <tr class="">
-                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
+                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
+                                                        <td class="p-1 text-right ">100.00</td>
+                                                    </tr>
+                                                    <!-- <tr class="">
+                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
-                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="">
+                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12%">
+                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
                                                                 <input type="text" class="w-full bg-white p-1 text-right" disabled value="">
                                                             </div>
                                                         </td>
-                                                    </tr>
+                                                    </tr> -->
                                                     <tr class="">
-                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">100.00</td>
+                                                        <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
+                                                        <td class="p-0">
+                                                            <div class="flex">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="--">
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
@@ -209,7 +218,7 @@
                                                     <td class="align-top text-center" width="4%">5.</td>
                                                     <td class="align-top  pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
-                                                            <span>Delivery Time </span>
+                                                            <span>Delivery Term </span>
                                                             <span> Sample</span>
                                                         </div>
                                                     </td>

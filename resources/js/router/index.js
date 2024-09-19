@@ -173,19 +173,19 @@ const routes = [
         component: employeeEdit,
     },
 
-    {
-        path:'/unit',
-        component: unitIndex,
-    },
+    // {
+    //     path:'/unit',
+    //     component: unitIndex,
+    // },
 
-    {
-        path:'/unit/new',
-        component: unitNew,
-    },
-    {
-        path:'/unit/edit',
-        component: unitEdit,
-    },
+    // {
+    //     path:'/unit/new',
+    //     component: unitNew,
+    // },
+    // {
+    //     path:'/unit/edit',
+    //     component: unitEdit,
+    // },
 
     {
         path:'/vendor',
@@ -201,19 +201,19 @@ const routes = [
         component: vendorEdit,
     },
 
-    {
-        path:'/project',
-        component: projectIndex,
-    },
+    // {
+    //     path:'/project',
+    //     component: projectIndex,
+    // },
 
-    {
-        path:'/project/new',
-        component: projectNew,
-    },
-    {
-        path:'/project/edit',
-        component: projectEdit,
-    },
+    // {
+    //     path:'/project/new',
+    //     component: projectNew,
+    // },
+    // {
+    //     path:'/project/edit',
+    //     component: projectEdit,
+    // },
 
 
     {

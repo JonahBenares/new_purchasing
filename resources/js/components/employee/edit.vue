@@ -3,6 +3,17 @@
 	import{HomeIcon, UserIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
+
+	const showCredentials = () => {
+		let show=document.getElementById('showCred');
+		let checkbox=document.getElementById('checkbox');
+		if(checkbox.checked){
+			show.style.display = 'block';   
+		}else{
+			show.style.display = 'none'; 
+		}
+	}
+	
 </script>
 <template>
 	<navigation>
@@ -28,28 +39,54 @@
 				<div class="card-body">
 					<div class="pt-2">
 						<div class="row">
-							<div class="col-lg-12 col-md-6">
+							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Employee Name</label>
 									<input class="form-control" placeholder="Employee Name">
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Department</label>
 									<input class="form-control" placeholder="Department">
 								</div>
-							</div>
-							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Position</label>
 									<input class="form-control" placeholder="Position">
 								</div>
 							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group mt-3">
+									<div class="flex justify-center space-x-2">
+										<input class="form-control !w-5"  id="checkbox"  type="checkbox" @click="showCredentials()">
+										<label class="form-check-label text-xs mb-0"> Check the box if employee can access the system.</label>
+									</div>
+								</div>
+								<hr class="mb-3">
+								<div class="" style="display: none;" id="showCred">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" >Email</label>
+										<input type="text" class="form-control border">
+									</div>	
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label class="text-gray-500 m-0" >Password</label>
+												<input type="text" class="form-control border" readonly>
+											</div>										
+										</div>
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label class="text-gray-500 m-0" >Type</label>
+												<select class="form-control border">
+													<option value="Admin">Admin</option>
+													<option value="Staff">Staff</option>
+												</select>
+											</div>										
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<!-- <hr class="border-dashed"> -->
+						<hr class="border-dashed">
 						<div class="row my-2"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">

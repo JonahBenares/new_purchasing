@@ -10335,7 +10335,7 @@
     }
   }
   
-  .form-control::-ms-expand, .dataTables_wrapper select::-ms-expand {
+  /* .form-control::-ms-expand, .dataTables_wrapper select::-ms-expand {
     background-color: transparent;
     border: 0;
   }
@@ -10346,9 +10346,9 @@
     border-color: #80bdff;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
+  } */
   
-  .form-control::placeholder, .dataTables_wrapper select::placeholder {
+  /* .form-control::placeholder, .dataTables_wrapper select::placeholder {
     color: #c9c8c8;
     opacity: 1;
   }
@@ -10357,12 +10357,12 @@
     background-color: #e9ecef;
     opacity: 1;
   }
-  
-  select.form-control:focus::-ms-value, .dataTables_wrapper select:focus::-ms-value {
+   */
+  /* select.form-control:focus::-ms-value, .dataTables_wrapper select:focus::-ms-value {
     color: #495057;
     background-color: #ffffff;
   }
-  
+   */
   .form-control-file,
   .form-control-range {
     display: block;
@@ -22376,6 +22376,43 @@ table tr td {
 
 table tr.selected td{
   color:white!important
+}
+
+form-row>.col,.form-row>[class*=col-]{
+  padding-right:5px;
+  padding-left:5px
+}
+.form-check{
+  position:relative;
+  display:block;
+  padding-left:1.25rem
+}
+.form-check-input{
+  position:absolute;
+  margin-top:.3rem;
+  margin-left:-1.25rem
+}
+.form-check-input:disabled~.form-check-label{
+  color:#6c757d
+}
+.form-check-label{
+  margin-bottom:0
+}
+.form-check-inline{
+  display:-webkit-inline-box;
+  display:-ms-inline-flexbox;
+  display:inline-flex;
+  -webkit-box-align:center;
+  -ms-flex-align:center;
+  align-items:center;
+  padding-left:0;
+  margin-right:.75rem
+}
+.form-check-inline .form-check-input{
+  position:static;
+  margin-top:0;
+  margin-right:.3125rem;
+  margin-left:0
 }
 
 /* latin */

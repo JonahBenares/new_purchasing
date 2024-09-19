@@ -429,8 +429,6 @@
                                         <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/unit">Unit</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/project">Project/Activity</a></li>
                                     </ul>
                                 </div>
                             </Transition>
