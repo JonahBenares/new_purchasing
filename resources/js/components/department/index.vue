@@ -85,17 +85,21 @@
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const hideAlert = ref(true)
+	const button = ref("")
 	const openNew = () => {
 		modalNew.value = !modalNew.value
+		button.value='Create New'
 	}
     const openEdit = async (id) => {
 		let response = await axios.get("/api/edit_department/"+id);
 		edit_department.value=response.data.department
 		modalEdit.value = !modalEdit.value
+		button.value='Update'
 	}
 	const closeModal = () => {
 		modalNew.value = !hideModal.value
 		modalEdit.value = !hideModal.value
+		successAlert.value = !hideAlert.value
 	}
 
 	const closeAlert = () => {
@@ -111,10 +115,10 @@
 			form.value.department_name=''
 			successAlert.value = !successAlert.value
 			getDepartment()
-			setTimeout(() => {
-				closeModal()
-				closeAlert()
-			}, 2000);
+			// setTimeout(() => {
+			// 	closeModal()
+			// 	closeAlert()
+			// }, 2000);
 		}, function (err) {
 			error.value = err.response.data.message;
 			dangerAlert.value = !dangerAlert.value
@@ -130,10 +134,10 @@
 			form.value.department_name=''
 			successAlert.value = !successAlert.value
 			getDepartment()
-			setTimeout(() => {
-				closeModal()
-				closeAlert()
-			}, 2000);
+			// setTimeout(() => {
+			// 	closeModal()
+			// 	closeAlert()
+			// }, 2000);
 		}, function (err) {
 			error.value = err.response.data.message;
 			dangerAlert.value = !dangerAlert.value
@@ -300,6 +304,15 @@
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
 									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">{{button}}</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeModal()">Close</button>
 								</div>
 							</div>
 						</div>
