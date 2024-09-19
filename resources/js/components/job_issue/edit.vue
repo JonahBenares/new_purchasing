@@ -407,7 +407,7 @@
 											<tr>
 												<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
 											</tr>
-											<tr>
+											<tr class="">
 												<td class="p-0" colspan="2">
 													<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
 												</td>
@@ -473,7 +473,7 @@
 											<tr>
 												<td class="p-1 uppercase" colspan="3">Other Instructions</td>
 											</tr>
-											<tr>
+											<tr class="">
 												<td class="p-0" colspan="2">
 													<input type="text" class="p-1 w-full bg-yellow-50" v-model="other_text" id="check_others">
 												</td>
@@ -584,6 +584,13 @@
 									</div>
 								</div>
 								<hr	class="border-dashed mt-4">
+								<div class="row mt-2 po_buttons">
+									<div class="col-lg-12">
+										<span class="text-xs">Internal Comment</span>
+										<textarea name="" id=""  rows="2" class="w-full bg-yellow-50 text-xs border p-1"></textarea>
+									</div>
+								</div>
+								<hr	class="border-dashed">
 								<div class="po_buttons">
 									<div class="!hidden " :class="{ show:approval_set }">
 										<div class="row">

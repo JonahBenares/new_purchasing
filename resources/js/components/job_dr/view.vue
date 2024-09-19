@@ -140,8 +140,33 @@
 							<div class="col-lg-12">
 								<table class="w-full text-xs">
 									<tr>
+										<td width="10%"></td>
 										<td class="text-center" width="20%">Prepared by</td>
-										<td width="2%"></td>
+										<td width="10%"></td>
+										<td class="text-center" width="20%">Driver</td>
+										<td width="10%"></td>	
+									</tr>
+									<tr>
+										<td></td>
+										<td class="text-center border-b"><br><br></td>
+										<td></td>
+										<td class="text-center border-b"></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="text-center p-1">Henne Tanant</td>
+										<td></td>
+										<td class="text-center p-1">Glenn Paul Marie</td>
+										<td></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="row mt-4 mb-4">
+							<div class="col-lg-12">
+								<table class="w-full text-xs">
+									<tr>
 										<td class="text-center" width="20%">Received by</td>
 										<td width="2%"></td>
 										<td class="text-center" width="20%">Complete & Accepted by Enduser</td>
@@ -154,12 +179,8 @@
 										<td class="text-center border-b"></td>
 										<td></td>
 										<td class="text-center border-b"></td>
-										<td></td>
-										<td class="text-center border-b"></td>
 									</tr>
 									<tr>
-										<td class="text-center p-1">Henne Tanant</td>
-										<td></td>
 										<td class="text-center p-1">Print Name & Signature with Date Received</td>
 										<td></td>
 										<td class="text-center p-1">Print Name & Signature with Date Received</td>

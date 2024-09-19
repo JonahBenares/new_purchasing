@@ -403,11 +403,11 @@
 								
 								<div class="row mt-2">
 									<div class="col-lg-6 col-md-6 col-sm-6">
-										<table class="table-bordered !text-xs w-full">
+										<table class="table-bordered !text-xs w-full ">
 											<tr>
 												<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
 											</tr>
-											<tr>
+											<tr class="">
 												<td class="p-0" colspan="2">
 													<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
 												</td>
@@ -473,7 +473,7 @@
 											<tr>
 												<td class="p-1 uppercase" colspan="3">Other Instructions</td>
 											</tr>
-											<tr>
+											<tr class="">
 												<td class="p-0" colspan="2">
 													<input type="text" class="p-1 w-full bg-yellow-50" v-model="other_text" id="check_others">
 												</td>
@@ -495,56 +495,63 @@
 									</div>
 								</div>
 								<div class="row mt-4 mb-4">
-                                        <div class="col-lg-12">
-                                            <table class="w-full text-xs">
-                                                <tr>
-													<td class="text-center" width="20%">Prepared by</td>
-													<td width="2%"></td>
-													<td class="text-center" width="20%">Reviewed/Checked by</td>
-													<td width="2%"></td>
-													<td class="text-center" width="20%">Recommended by</td>
-													<td width="2%"></td>
-													<td class="text-center" width="20%">Approved by</td>
-												</tr>
-                                                <tr>
-                                                    <td class="text-center border-b"><br></td>
-                                                    <td></td>
-                                                    <td class="text-center border-b"></td>
-                                                    <td></td>
-                                                    <td class="text-center border-b"></td>
-                                                    <td></td>
-                                                    <td class="text-center border-b"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-center p-1">Henne Tanant</td>
-                                                    <td></td>
-                                                    <td class="text-center p-1">Beverly Sy</td>
-                                                    <td></td>
-                                                    <td class="text-center p-1">Jonah Marie Dy</td>
-                                                    <td></td>
-                                                    <td class="text-center p-1">Glenn Paulate</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-center"><br><br></td>
-                                                    <td></td>
-                                                    <td class="text-center"></td>
-                                                    <td></td>
-                                                    <td class="text-center"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-right" colspan="2">Conforme: </td>
-                                                    <td class="text-center border-b" colspan="3"></td>
-                                                    <td class="text-center"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-right" colspan="2"></td>
-                                                    <td class="text-center p-1" colspan="3">Signature over Printed Name</td>
-                                                    <td class="text-center"></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Reviewed/Checked by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Recommended by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-1">Henne Tanant</td>
+												<td></td>
+												<td class="text-center p-1">Beverly Sy</td>
+												<td></td>
+												<td class="text-center p-1">Jonah Marie Dy</td>
+												<td></td>
+												<td class="text-center p-1">Glenn Paulate</td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2">Conforme: </td>
+												<td class="text-center border-b" colspan="3"></td>
+												<td class="text-center"></td>
+											</tr>
+											<tr>
+												<td class="text-right" colspan="2"></td>
+												<td class="text-center p-1" colspan="3">Signature over Printed Name</td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
 								<hr	class="border-dashed mt-4">
+								<div class="row mt-2 po_buttons">
+									<div class="col-lg-12">
+										<span class="text-xs">Internal Comment</span>
+										<textarea name="" id=""  rows="2" class="w-full bg-yellow-50 text-xs border p-1"></textarea>
+									</div>
+								</div>
+								<hr	class="border-dashed">
 								<div class="po_buttons">
 									<div class="!hidden " :class="{ show:approval_set }">
 										<div class="row">

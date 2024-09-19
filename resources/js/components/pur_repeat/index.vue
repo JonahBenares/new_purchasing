@@ -576,6 +576,7 @@
 								</div>
 							</div>
 							<hr	class="border-dashed">
+							
 							<div class="row my-2"> 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
