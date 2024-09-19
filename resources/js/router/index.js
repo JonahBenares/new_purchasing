@@ -105,6 +105,8 @@ import job_disburseView2 from '../components/job_disburse/view_2.vue'
 import pur_weekly_repIndex from '../components/pur_weekly_rep/index.vue'
 import job_weekly_repIndex from '../components/job_weekly_rep/index.vue'
 
+import change_password from '../components/change_password/index.vue'
+
 const routes = [
     {
         path:'/',
@@ -673,9 +675,19 @@ const routes = [
         }
     },
     {
+        path:'/change_password',
+        component: change_password,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
         path:'/:pathMatch(.*)*',
         name:'notFound',
         component: notFound,
+        meta:{
+            requiresAuth:false
+        }
     }
 ]
 

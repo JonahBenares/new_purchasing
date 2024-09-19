@@ -16,6 +16,7 @@
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const hideAlert = ref(true)
+	let randomstr = ref('')
 	onMounted(async () =>{
         getDepartment()
 		employeesForm()
@@ -27,23 +28,61 @@
 	const employeesForm = async () => {
 		let response = await axios.get(`/api/edit_employee/${props.id}`);
 		form.value = response.data.employee;
+		randomstr.value=response.data
 	}
 	const onEdit = () => {
 		const formData= new FormData()
-		var dept = (form.value.department_id!='') ? form.value.department_id : 0; 
-		formData.append('employee_name', form.value.employee_name)
-		formData.append('department_id', dept)
+		let checkbox=document.getElementById('checkbox');
+		if(checkbox.checked){
+			var access=1
+		}else{
+			var access=0
+		}
+		formData.append('name',form.value.name)
+		formData.append('email',form.value.email ?? '')
+		if((form.value.temp_password==null || form.value.temp_password=='') && form.value.access==1 && form.value.email!=null){
+			formData.append('temp_password',randomstr.value.random_string)
+		}else{
+			formData.append('temp_password',form.value.temp_password ?? '')
+		}
+		formData.append('email', form.value.email)
+		formData.append('department_id', form.value.department_id)
 		formData.append('position', form.value.position)
+		formData.append('access', access)
+		formData.append('user_type', form.value.user_type)
 		axios.post(`/api/update_employee/${props.id}`,formData).then(function () {
 			success.value='You have successfully updated employee!'
 			form.value.department_name=''
 			successAlert.value = !successAlert.value
 			getDepartment()
+			employeesForm()
 			setTimeout(() => {
 				closeAlert()
 			}, 2000);
 		}, function (err) {
-			error.value = err.response.data.message;
+			success.value=''
+			error.value=[]
+			if (err.response.data.errors.name) {
+				error.value.push(err.response.data.errors.name[0])
+			}
+			if (err.response.data.errors.position) {
+				error.value.push(err.response.data.errors.position[0])
+			}
+			if (err.response.data.errors.department_id) {
+				error.value.push(err.response.data.errors.department_id[0])
+			}
+			if (err.response.data.errors.email) {
+				error.value.push(err.response.data.errors.email[0])
+			}
+			if (err.response.data.errors.user_type) {
+				error.value.push(err.response.data.errors.user_type[0])
+			}
+			if (err.response.data.errors.password) {
+				error.value.push(err.response.data.errors.password[0])
+			} 
+			if (err.response.data.errors.temp_password) {
+				error.value.push(err.response.data.errors.temp_password[0])
+			} 
 			dangerAlert.value = !dangerAlert.value
 			getDepartment()
 		});
@@ -89,7 +128,7 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Employee Name</label>
-									<input class="form-control" placeholder="Employee Name" v-model="form.employee_name">
+									<input class="form-control" placeholder="Employee Name" v-model="form.name">
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Department</label>
@@ -107,27 +146,28 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group mt-3">
 									<div class="flex justify-center space-x-2">
-										<input class="form-control !w-5"  id="checkbox"  type="checkbox" @click="showCredentials()">
+										<input class="form-control !w-5"  id="checkbox" v-model="form.access" type="checkbox" @click="showCredentials()" true-value="1" false-value="0" :checked="form.access==1">
 										<label class="form-check-label text-xs mb-0"> Check the box if employee can access the system.</label>
 									</div>
 								</div>
 								<hr class="mb-3">
-								<div class="" style="display: none;" id="showCred">
+								<div class="" v-if="form.access==1" id="showCred">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" >Email</label>
-										<input type="text" class="form-control border">
+										<input type="email" class="form-control border" v-model="form.email">
 									</div>	
 									<div class="row">
-										<div class="col-lg-6">
+										<div class="col-lg-6" v-if="form.change_password==0">
 											<div class="form-group">
 												<label class="text-gray-500 m-0" >Password</label>
-												<input type="text" class="form-control border" readonly>
+												<input v-if="form.temp_password==null || form.temp_password==''" type="text" class="form-control border" v-model="randomstr.random_string" placeholder="Password" readonly>
+												<input v-else-if="form.temp_password!=null || form.temp_password!=''" type="text" class="form-control border" v-model="form.temp_password" placeholder="Password" readonly>
 											</div>										
 										</div>
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label class="text-gray-500 m-0" >Type</label>
-												<select class="form-control border">
+												<label class="text-gray-500 m-0" >User Type</label>
+												<select class="form-control border" v-model="form.user_type">
 													<option value="Admin">Admin</option>
 													<option value="Staff">Staff</option>
 												</select>
@@ -208,7 +248,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
-									<h5 class="leading-tight" >{{ error }}</h5>
+									<h5 class="leading-tight" v-for="er in error">{{ er }}</h5>
 								</div>
 							</div>
 						</div>

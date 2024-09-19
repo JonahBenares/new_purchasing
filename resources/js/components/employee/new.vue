@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{HomeIcon, UserIcon} from '@heroicons/vue/24/solid'
+	import{HomeIcon, UserIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	let form=ref([]);
@@ -24,22 +24,58 @@
 	}
 	const onSave = () => {
 		const formData= new FormData()
-		var dept = (form.value.department_id!='') ? form.value.department_id : 0; 
-		formData.append('employee_name', form.value.employee_name)
-		formData.append('department_id', dept)
+		let checkbox=document.getElementById('checkbox');
+		if(checkbox.checked){
+			var access=1
+			formData.append('temp_password',form.value.temp_password)
+			formData.append('password',form.value.temp_password)
+		}else{
+			var access=0
+			formData.append('temp_password','')
+			formData.append('password','')
+		}
+		formData.append('name', form.value.name)
+		formData.append('email', form.value.email)
+		formData.append('department_id', form.value.department_id)
 		formData.append('position', form.value.position)
+		formData.append('access', access)
+		formData.append('user_type', form.value.user_type)
 		axios.post("/api/add_employee",formData).then(function () {
 			success.value='You have successfully added new employee!'
+			// form.value=[]
+			error.value=[]
 			form.value.employee_name=''
 			form.value.department_id=''
 			form.value.position=''
 			successAlert.value = !successAlert.value
+			let show=document.getElementById('showCred');
+			show.style.display = 'none'; 
 			getDepartment()
+			employeesForm()
 			setTimeout(() => {
 				closeAlert()
 			}, 2000);
 		}, function (err) {
-			error.value = err.response.data.message;
+			// error.value = err.response.data.message;
+			error.value=[]
+			if (err.response.data.errors.name) {
+				error.value.push(err.response.data.errors.name[0])
+			}
+			if (err.response.data.errors.position) {
+				error.value.push(err.response.data.errors.position[0])
+			}
+			if (err.response.data.errors.department_id) {
+				error.value.push(err.response.data.errors.department_id[0])
+			}
+			if (err.response.data.errors.email) {
+				error.value.push(err.response.data.errors.email[0])
+			}
+			if (err.response.data.errors.temp_password) {
+				error.value.push(err.response.data.errors.temp_password[0])
+			} 
+			if (err.response.data.errors.user_type) {
+				error.value.push(err.response.data.errors.user_type[0])
+			}
 			dangerAlert.value = !dangerAlert.value
 			getDepartment()
 		});
@@ -86,7 +122,7 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Employee Name</label>
-									<input class="form-control" placeholder="Employee Name" v-model="form.employee_name">
+									<input class="form-control" placeholder="Employee Name" v-model="form.name">
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Department</label>
@@ -98,13 +134,13 @@
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Position</label>
-									<input class="form-control" placeholder="Position" v-model="form.position">
+									<input type="text" class="form-control" placeholder="Position" v-model="form.position">
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group mt-3">
 									<div class="flex justify-center space-x-2">
-										<input class="form-control !w-5"  id="checkbox"  type="checkbox" @click="showCredentials()">
+										<input class="form-control !w-5"  id="checkbox"  type="checkbox" @click="showCredentials()" v-model="form.access">
 										<label class="form-check-label text-xs mb-0"> Check the box if employee can access the system.</label>
 									</div>
 								</div>
@@ -112,19 +148,19 @@
 								<div class="" style="display: none;" id="showCred">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" >Email</label>
-										<input type="text" class="form-control border">
+										<input type="email" class="form-control border" v-model="form.email">
 									</div>	
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="text-gray-500 m-0" >Password</label>
-												<input type="text" class="form-control border" readonly>
+												<input type="text" class="form-control border" v-model="form.temp_password" readonly>
 											</div>										
 										</div>
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="text-gray-500 m-0" >Type</label>
-												<select class="form-control border">
+												<select class="form-control border" v-model="form.user_type">
 													<option value="Admin">Admin</option>
 													<option value="Staff">Staff</option>
 												</select>
@@ -206,7 +242,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
-									<h5 class="leading-tight" >{{ error }}</h5>
+									<h5 class="leading-tight" v-for="er in error">{{ er }}</h5>
 								</div>
 							</div>
 						</div>

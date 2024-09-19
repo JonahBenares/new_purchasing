@@ -22,6 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/login_form', [LoginController::class,'login_form']);
 Route::post('/login_process', [LoginController::class,'login_process']);
+Route::get('/change_password', [LoginController::class,'change_password']);
+Route::get('/create_credential',[LoginController::class,'create_credential']);
+Route::post('/edit_password',[LoginController::class,'edit_password']);
+Route::get('/dashboard',[LoginController::class,'dashboard']);
 
 Route::get('/get_all_department', [DepartmentController::class,'get_all_department']);
 Route::get('/create_department',[DepartmentController::class,'create_department']);

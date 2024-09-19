@@ -1,8 +1,12 @@
 <script setup>
     import{HomeIcon, KeyIcon, UserIcon, DocumentTextIcon, RectangleGroupIcon, Square3Stack3DIcon, DocumentDuplicateIcon, TruckIcon, BanknotesIcon , Squares2X2Icon, TableCellsIcon, NewspaperIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref , onMounted} from "vue"
     import { useRouter } from "vue-router"
-    
+    const router = useRouter();
+    onMounted(async () => {
+		getDashboard()
+	})
+    let credentials=ref([])
     const userDrop = ref(false);
     const notif = ref(false);
     
@@ -238,6 +242,16 @@
 		localStorage.removeItem('token')
 		router.push('/')
 	}
+
+    const getDashboard = async () => {
+		const response = await fetch(`/api/dashboard`);
+		credentials.value = await response.json();
+		if(!credentials.value.name){
+			alert('You have been logged out due to inactivity.')
+            localStorage.removeItem('token')
+			router.push('/')
+		}
+	}
 </script>
 <template>
     
@@ -369,7 +383,7 @@
                             <span>
                                 <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
                             </span>
-                            <span class="nav-profile-name">Louis Barnett</span>
+                            <span class="nav-profile-name">{{ credentials.name }}</span>
                     </a>
                     <Transition
 						enter-active-class="transition ease-out duration-200"
@@ -380,10 +394,8 @@
 						leave-to-class="opacity-0"
 					>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown"  v-show="userDrop">
-                        <a class="dropdown-item">
-                            <i class="mdi mdi-settings text-primary"></i>
-                            Settings
-                        </a>
+                        <a class="dropdown-item" href="/change_password/">Change password</a>
+						<div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item" @click="logout">
                             <i class="mdi mdi-logout text-primary"></i>
                             Logout
