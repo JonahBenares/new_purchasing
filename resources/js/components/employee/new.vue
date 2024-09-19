@@ -57,6 +57,7 @@
 	}else{
 		show.style.display = 'none'; 
 	}
+}
 </script>
 <template>
 	<navigation>
