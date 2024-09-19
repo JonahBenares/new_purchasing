@@ -2,8 +2,8 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, PencilIcon, MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
-    import { useRouter } from "vue-router"
+    import {onMounted, ref} from "vue";
+	import { useRouter } from "vue-router";
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
 	import 'datatables.net-responsive';
@@ -16,13 +16,7 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
-    const data = [
-        ['2GO Express, Inc.','Forwarder','BREDCO, Port 2, Reclamation Area, Brgy. 10, Bacolod City','(034) 435-4965 / 704-2039 / 704-2396/434-4595','2goexpress@gmail.com','Freight Collect / Prepaid','Forwarder','','2','1','Active',''],
-        ['7RJ Brothers Sand & Gravel & Gen. Mdse.','Aggregates','Circumferential Road, Brgy. Villamonte, Bacolod City','(034)458-0190/213-2249','7rjbrothers@gmail.com','COD-Actual Quantity (delivered to site)','Manufacturer/Supplier','','1','1','Active',''],
-        ['Republic Hardware','Hardware','Bonifacio St., Bacolod City','434-8317; 434-5125; 433-9941','republic_hardware@yahoo.com','COD','Distributor','','1','1','Active',''],
-        ['Bacolod Steel Center Corporation','Structural Steels / Pipes / Welding Electrodes (Rod) / Tool Steel','#22 LM Bldg., Gonzaga St., Bacolod City','435-2721-25','bscc.ph@gmail.com','COD','Wholesale / Retail','','1','1','Active',''],
-        ['Bacolod Sure Computer, Inc.','Computer Supplies and Accessories, Printers','Capitol Shopping Center, Hilado St, Villamonte, Bacolod City','(034) 435-1949','bacsure.sales1@gmail.com','COD','Distributor / Supplier','','1','1','Active',''],
-    ];
+    const router = useRouter();
     const options = {
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
@@ -36,7 +30,7 @@
 				title:'Vendor',
 				extend: 'copy',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+					columns: [ 0, 1, 2, 3],
 					orthogonal: null
 				}
 			},
@@ -44,7 +38,7 @@
 				title:'Vendor',
 				extend: 'excel',
 				exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    columns: [ 0, 1, 2, 3],
 					orthogonal: null,
 				},
 				createEmptyCells: true,
@@ -59,7 +53,7 @@
 				title:'Vendor',
 				extend: 'print',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+					columns: [ 0, 1, 2, 3],
 					orthogonal: null
 				}
 			},
@@ -68,6 +62,21 @@
 			}
 		]
 	};
+
+    let vendors=ref([]);
+
+    onMounted(async () => {
+		getVendors()
+	})
+
+    const getVendors = async (page = 1) => {
+		let response = await axios.get(`/api/get_all_vendors?page=${page}`);
+		vendors.value=response.data.vendorarray
+	}
+
+    const EditVendor = (id) => {
+		router.push('/vendor/edit/'+id)
+	}
 </script>
 <template>
 	<navigation>
@@ -96,12 +105,13 @@
                             </a>
                         </div>
                         <div class="overflow-x-scroll pt-3 relative">
-                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap"  width="200%">
+                            <DataTable :data="vendors" :options="options" class="display table table-bordered table-hover !border nowrap"  width="200%">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase"> Vendor Name</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Products/Services</th>
-                                        <th class="!text-xs bg-gray-100 uppercase"> Address</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> No of Branches</th>
+                                        <!-- <th class="!text-xs bg-gray-100 uppercase"> Address</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Phone</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Email</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Terms</th>
@@ -109,7 +119,7 @@
                                         <th class="!text-xs bg-gray-100 uppercase"> Notes</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="3%"> EWT</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="3%"> Vat</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Status</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Status</th> -->
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -117,10 +127,10 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-11="" class="">
-                                    <a href="/vendor/edit" class="btn btn-xs btn-info text-white p-1">
+                                <template #column-3="props">
+                                    <button @click="EditVendor(props.rowData.id)" class="btn btn-xs btn-info text-white p-1">
                                         <PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PencilIcon>
-                                    </a>
+                                    </button>
                                 </template>
                             </DataTable>
                             <!-- <table class="table table-bordered table-hover !border" width="200%">

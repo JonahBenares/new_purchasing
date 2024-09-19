@@ -248,8 +248,9 @@ const routes = [
         }
     },
     {
-        path:'/vendor/edit',
+        path:'/vendor/edit/:id',
         component: vendorEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }

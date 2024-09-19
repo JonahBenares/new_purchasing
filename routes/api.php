@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,12 @@ Route::get('/create_company',[CompanyController::class,'create_company']);
 Route::post('/add_company',[CompanyController::class,'add_company']);
 Route::get('/edit_company/{id}',[CompanyController::class,'edit_company']);
 Route::post('/update_company/{id}',[CompanyController::class,'update_company']);
+
+Route::get('/get_all_vendors', [VendorController::class,'get_all_vendors']);
+Route::get('/create_vendor',[VendorController::class,'create_vendor']);
+Route::post('/add_vendor',[VendorController::class,'add_vendor']);
+Route::get('/edit_vendor/{id}',[VendorController::class,'edit_vendor']);
+Route::post('/update_vendor/{id}',[VendorController::class,'update_vendor']);
+Route::get('/edit_branch/{id}',[VendorController::class,'edit_branch']);
+Route::post('/update_branch/{id}',[VendorController::class,'update_branch']);
+Route::get('/check_vendor_name/{vendor_name}', [VendorController::class,'check_vendor_name']);
