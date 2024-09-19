@@ -233,6 +233,11 @@
 		drawer_rfd.value = !hideDrop.value
 		drawer_revise.value = !hideDrop.value
 	}
+
+    const logout = () => {
+		localStorage.removeItem('token')
+		router.push('/')
+	}
 </script>
 <template>
     
@@ -379,7 +384,7 @@
                             <i class="mdi mdi-settings text-primary"></i>
                             Settings
                         </a>
-                        <a class="dropdown-item">
+                        <a href="#" class="dropdown-item" @click="logout">
                             <i class="mdi mdi-logout text-primary"></i>
                             Logout
                         </a>
@@ -429,8 +434,6 @@
                                         <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/unit">Unit</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/project">Project/Activity</a></li>
                                     </ul>
                                 </div>
                             </Transition>

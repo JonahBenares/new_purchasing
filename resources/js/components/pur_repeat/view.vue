@@ -108,7 +108,7 @@
                                                         <td class="border-y-none p-1 text-center">1</td>
                                                         <td class="border-y-none p-1 text-center">5</td>
                                                         <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Monitor</td>
+                                                        <td class="border-y-none p-1" colspan="2">Monitor - Offer</td>
                                                         <td class="border-y-none p-1 text-right">100.00</td>
                                                         <td class="border-y-none p-1 text-right">500.00</td>
                                                     </tr>
@@ -116,7 +116,7 @@
                                                         <td class="border-y-none p-1 text-center">2</td>
                                                         <td class="border-y-none p-1 text-center">5</td>
                                                         <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Mouse</td>
+                                                        <td class="border-y-none p-1" colspan="2">Mouse - Offer</td>
                                                         <td class="border-y-none p-1 text-right">100.00</td>
                                                         <td class="border-y-none p-1 text-right">500.00</td>
                                                     </tr>
@@ -124,7 +124,7 @@
                                                         <td class="border-y-none p-1 text-center">3</td>
                                                         <td class="border-y-none p-1 text-center">5</td>
                                                         <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Keyboard</td>
+                                                        <td class="border-y-none p-1" colspan="2">Keyboard - Offer</td>
                                                         <td class="border-y-none p-1 text-right">100.00</td>
                                                         <td class="border-y-none p-1 text-right">500.00</td>
                                                     </tr>
@@ -209,7 +209,7 @@
                                                     <td class="align-top text-center" width="4%">5.</td>
                                                     <td class="align-top  pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
-                                                            <span>Delivery Time </span>
+                                                            <span>Delivery Term </span>
                                                             <span> Sample</span>
                                                         </div>
                                                     </td>

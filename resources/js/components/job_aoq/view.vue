@@ -1527,7 +1527,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/job_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
+									<a href="/job_aoq/view" class="btn btn-primary mr-2 w-44">Save</a>
 								</div>
 							</div>
 						</div>

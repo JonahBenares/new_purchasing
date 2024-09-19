@@ -110,211 +110,331 @@ const routes = [
         path:'/',
         name:'login',
         component: loginForm,
+        meta:{
+            requiresAuth:false
+        }
     },
     {
         path:'/dashboard',
         component: dashboard,
+        meta:{
+            requiresAuth:true
+        }
     },
     
 
     {
         path:'/items',
         component: itemsIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/items/new',
         component: itemsNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/items/edit',
         component: itemsEdit,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/department',
         component: departmentIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/department/new',
         component: departmentNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/department/edit',
         component: departmentEdit,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/company',
         component: companyIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/company/new',
         component: companyNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/company/edit/:id',
         component: companyEdit,
         props:true,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/employee',
         component: employeeIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/employee/new',
         component: employeeNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/employee/edit/:id',
         component: employeeEdit,
         props:true,
+        meta:{
+            requiresAuth:true
+        }
     },
 
-    {
-        path:'/unit',
-        component: unitIndex,
-    },
+    // {
+    //     path:'/unit',
+    //     component: unitIndex,
+    // },
 
-    {
-        path:'/unit/new',
-        component: unitNew,
-    },
-    {
-        path:'/unit/edit',
-        component: unitEdit,
-    },
+    // {
+    //     path:'/unit/new',
+    //     component: unitNew,
+    // },
+    // {
+    //     path:'/unit/edit',
+    //     component: unitEdit,
+    // },
 
     {
         path:'/vendor',
         component: vendorIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/vendor/new',
         component: vendorNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/vendor/edit/:id',
         component: vendorEdit,
         props:true,
+        meta:{
+            requiresAuth:true
+        }
     },
 
-    {
-        path:'/project',
-        component: projectIndex,
-    },
+    // {
+    //     path:'/project',
+    //     component: projectIndex,
+    // },
 
-    {
-        path:'/project/new',
-        component: projectNew,
-    },
-    {
-        path:'/project/edit',
-        component: projectEdit,
-    },
+    // {
+    //     path:'/project/new',
+    //     component: projectNew,
+    // },
+    // {
+    //     path:'/project/edit',
+    //     component: projectEdit,
+    // },
 
 
     {
         path:'/pur_req',
         component: pur_reqIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_req/new',
         component: pur_reqNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_req/view',
         component: pur_reqView,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/pur_quote',
         component: pur_quoteIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_quote/new',
         component: pur_quoteNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_quote/view',
         component: pur_quoteView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_quote/print',
         component: pur_quotePrint,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/pur_aoq',
         component: pur_aoqIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_aoq/new',
         component: pur_aoqNew,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/pur_aoq/view',
         component: pur_aoqView,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/pur_aoq/print_te',
         component: pur_aoqPrintTe,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_aoq/awarded',
         component: pur_aoqAwarded,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/pur_po',
         component: pur_poIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_po/new',
         component: pur_poNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_po/view',
         component: pur_poView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_po/edit',
         component: pur_poEdit,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_po/print',
         component: pur_poPrint,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/po_direct',
         component: pur_poDirect,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/po_repeat',
         component: pur_poRepeat,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/po_repeat/view',
         component: pur_poRepeatView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/po_direct/view',
         component: pur_poDirectView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_dr',
         component: pur_drIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_dr/new',
         component: pur_drNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_dr/view',
@@ -324,138 +444,234 @@ const routes = [
     {
         path:'/pur_disburse',
         component: pur_disburseIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_disburse/new',
         component: pur_disburseNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_disburse/view',
         component: pur_disburseView,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_req',
         component: job_reqIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_req/new',
         component: job_reqNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_req/view',
         component: job_reqView,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_quote',
         component: job_quoteIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_quote/new',
         component: job_quoteNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_quote/view',
         component: job_quoteView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_quote/print',
         component: job_quotePrint,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_aoq',
         component: job_aoqIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_aoq/new',
         component: job_aoqNew,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_aoq/view',
         component: job_aoqView,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_aoq/print_te',
         component: job_aoqPrintTe,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_aoq/awarded',
         component: job_aoqAwarded,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_issue',
         component: job_issueIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_issue/new',
         component: job_issueNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_issue/view',
         component: job_issueView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_issue/edit',
         component: job_issueEdit,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_issue/print',
         component: job_issuePrint,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_direct',
         component: job_issueDirect,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_direct/view',
         component: job_issueDirectView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_dr',
         component: job_drIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_dr/new',
         component: job_drNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_dr/view',
         component: job_drView,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
         path:'/job_disburse',
         component: job_disburseIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_disburse/new',
         component: job_disburseNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_disburse/new2',
         component: job_disburseNew2,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_disburse/view',
         component: job_disburseView,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_disburse/view2',
         component: job_disburseView2,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/pur_weekly_report',
         component: pur_weekly_repIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/job_weekly_report',
         component: job_weekly_repIndex,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path:'/:pathMatch(.*)*',
@@ -467,6 +683,12 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach((to,from) => {
+    if(to.meta.requiresAuth && !localStorage.getItem('token') ){
+        return { name: 'login'}
+    } 
 })
 
 export default router
