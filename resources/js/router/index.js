@@ -198,8 +198,9 @@ const routes = [
         component: vendorNew,
     },
     {
-        path:'/vendor/edit',
+        path:'/vendor/edit/:id',
         component: vendorEdit,
+        props:true,
     },
 
     {
