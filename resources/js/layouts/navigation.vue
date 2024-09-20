@@ -20,9 +20,11 @@
     const jobDrDrop = ref(false);
     const jobRfdDrop = ref(false);
 
-
     const jobReportDrop = ref(false);
-    const poReportDrop = ref(false);
+    const weeklyPORecomDrop = ref(false);
+    const weeklyJORRecomDrop = ref(false);
+    const monthlyPORecomDrop = ref(false);
+    const monthlyJORRecomDrop = ref(false);
 
 	const hideDrop = ref(true)
 	const openMaster = () => {
@@ -38,7 +40,10 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value 
+        monthlyJORRecomDrop.value = !hideDrop.value
 	}
     const openPR = () => {
 		prDrop.value = !prDrop.value
@@ -53,7 +58,10 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value
+        weeklyJORRecomDrop.value = !hideDrop.value 
+        monthlyPORecomDrop.value = !hideDrop.value 
+        monthlyJORRecomDrop.value = !hideDrop.value
 	}
     const openRFQ = () => {
 		rfqDrop.value = !rfqDrop.value
@@ -68,7 +76,10 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
     const openPO = () => {
         poDrop.value = !poDrop.value
@@ -83,7 +94,10 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value 
+        monthlyJORRecomDrop.value = !hideDrop.value
 	}
     const openDR = () => {
         drDrop.value = !drDrop.value
@@ -98,7 +112,10 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
     const openRFD = () => {
         rfdDrop.value = !rfdDrop.value
@@ -113,9 +130,11 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
-
     const openJobReq = () => {
         jobDrop.value = !jobDrop.value
 		masterfileDrop.value = !hideDrop.value
@@ -129,9 +148,11 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
-
     const openJobQuote = () => {
         jobRfqDrop.value = !jobRfqDrop.value
         jobDrop.value = !hideDrop.value
@@ -145,7 +166,10 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
         
 	}
     const openJobIssue = () => {
@@ -161,9 +185,11 @@
         jobRfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
-
     const openJobRFD = () => {
         jobRfdDrop.value = !jobRfdDrop.value
         joiDrop.value = !hideDrop.value
@@ -177,9 +203,11 @@
         rfdDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
-
     const openJobDR = () => {
         jobDrDrop.value = !jobDrDrop.value
         jobRfdDrop.value = !hideDrop.value
@@ -193,9 +221,11 @@
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value 
+        monthlyJORRecomDrop.value = !hideDrop.value
 	}
-
     const openJobReport = () => {
         jobReportDrop.value = !jobReportDrop.value 
         jobDrDrop.value = !hideDrop.value
@@ -209,11 +239,72 @@
         poDrop.value = !hideDrop.value
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
-        poReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
+	}
+    const weeklyPORecomOpen = () => {
+        weeklyPORecomDrop.value = !weeklyPORecomDrop.value 
+        jobReportDrop.value = !hideDrop.value 
+        jobDrDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
+	}
+    const weeklyJORRecomOpen = () => {
+        weeklyJORRecomDrop.value = !weeklyJORRecomDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        jobReportDrop.value = !hideDrop.value 
+        jobDrDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
 	}
 
-    const openPurchaseReport = () => {
-        poReportDrop.value = !poReportDrop.value 
+    const monthlyPORecomOpen = () => {
+        monthlyPORecomDrop.value = !monthlyPORecomDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        jobReportDrop.value = !hideDrop.value 
+        jobDrDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value
+	}
+
+    const monthlyJORRecomOpen = () => {
+        monthlyJORRecomDrop.value = !monthlyJORRecomDrop.value 
+        monthlyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
         jobReportDrop.value = !hideDrop.value 
         jobDrDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
@@ -227,13 +318,12 @@
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
 	}
-
+    
 	const closeModal = () => {
 		drawer_dr.value = !hideDrop.value
 		drawer_rfd.value = !hideDrop.value
 		drawer_revise.value = !hideDrop.value
 	}
-
     const logout = () => {
 		localStorage.removeItem('token')
 		router.push('/')
@@ -365,11 +455,10 @@
                 </li>
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle !flex" href="#" data-toggle="dropdown" id="profileDropdown" @click="userDrop = !userDrop">
-                      
-                            <span>
-                                <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
-                            </span>
-                            <span class="nav-profile-name">Louis Barnett</span>
+                        <span>
+                            <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
+                        </span>
+                        <span class="nav-profile-name">Louis Barnett</span>
                     </a>
                     <Transition
 						enter-active-class="transition ease-out duration-200"
@@ -715,14 +804,14 @@
                             </Transition>
                         </li>
                         <li class="nav-item py-2 text-xs uppercase font-bold !text-gray-600 bg-gray-50 px-4">
-                            <span class="menu-title">Reports</span>
+                            <span class="menu-title">PO Reports</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openPurchaseReport()" >
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="weeklyPORecomOpen()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
                                 </i>
-                                    <span class="menu-title">PO Reports</span>
+                                    <span class="menu-title">Weekly Recom</span>
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
@@ -733,20 +822,20 @@
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                                <div class="!hidden"  :class="{ show:poReportDrop }">
+                                <div class="!hidden"  :class="{ show:weeklyPORecomDrop }">
                                     <ul class="nav flex-column sub-menu">
-                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_weekly_report" target="_blank">Weekly Recom</a></li>
+                                        <li class="nav-item list-none"><a class="nav-link" href="/pur_weekly_report/new" target="_blank">Encode</a></li>
+                                        <li class="nav-item list-none"><a class="nav-link" href="/pur_weekly_report" target="_blank">Show List</a></li>
                                     </ul>
                                 </div>
                             </Transition>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openJobReport()" >
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="monthlyPORecomOpen()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
                                 </i>
-                                    <span class="menu-title">JO Reports</span>
+                                    <span class="menu-title">Monthly Recom</span>
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
@@ -757,13 +846,67 @@
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
+                                <div class="!hidden"  :class="{ show:monthlyPORecomDrop }">
                                     <ul class="nav flex-column sub-menu">
-                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_weekly_report" target="_blank">Weekly Recom</a></li>
+                                        <li class="nav-item list-none"><a class="nav-link" href="/pur_monthly_report/new" target="_blank">Encode</a></li>
+                                        <li class="nav-item list-none"><a class="nav-link" href="/pur_monthly_report" target="_blank">Show List</a></li>
                                     </ul>
+                                </div>
                             </Transition>
                         </li>
-                       
+                        <li class="nav-item py-2 text-xs uppercase font-bold !text-gray-600 bg-gray-50 px-4">
+                            <span class="menu-title">JOI Reports</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="weeklyJORRecomOpen()" >
+                                <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                    <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
+                                </i>
+                                    <span class="menu-title">Weekly Recom</span>
+                                <!-- <i class="menu-arrow"></i> -->
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:weeklyJORRecomDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_weekly_report/new" target="_blank">Encode</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_weekly_report" target="_blank">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="monthlyJORRecomOpen()" >
+                                <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
+                                    <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
+                                </i>
+                                    <span class="menu-title">Monthly Recom</span>
+                                <!-- <i class="menu-arrow"></i> -->
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:monthlyJORRecomDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_monthly_report/new" target="_blank">Encode</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_monthly_report" target="_blank">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
                     </ul>
                 </div>
             </nav>

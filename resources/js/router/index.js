@@ -102,8 +102,15 @@ import job_disburseNew2 from '../components/job_disburse/new_2.vue'
 import job_disburseView from '../components/job_disburse/view.vue'
 import job_disburseView2 from '../components/job_disburse/view_2.vue'
 
+import pur_weekly_repNew from '../components/pur_weekly_rep/new.vue'
 import pur_weekly_repIndex from '../components/pur_weekly_rep/index.vue'
+import pur_monthly_repNew from '../components/pur_monthly_rep/new.vue'
+import pur_monthly_repIndex from '../components/pur_monthly_rep/index.vue'
+
+import job_weekly_repNew from '../components/job_weekly_rep/new.vue'
 import job_weekly_repIndex from '../components/job_weekly_rep/index.vue'
+import job_monthly_repNew from '../components/job_monthly_rep/new.vue'
+import job_monthly_repIndex from '../components/job_monthly_rep/index.vue'
 
 const routes = [
     {
@@ -666,12 +673,56 @@ const routes = [
         }
     },
     {
+        path:'/pur_weekly_report/new',
+        component: pur_weekly_repNew,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
         path:'/job_weekly_report',
         component: job_weekly_repIndex,
         meta:{
             requiresAuth:true
         }
     },
+    {
+        path:'/job_weekly_report/new',
+        component: job_weekly_repNew,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    
+    {
+        path:'/pur_monthly_report',
+        component: pur_monthly_repIndex,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_monthly_report/new',
+        component: pur_monthly_repNew,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/job_monthly_report',
+        component: job_monthly_repIndex,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/job_monthly_report/new',
+        component: job_monthly_repNew,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    
     {
         path:'/:pathMatch(.*)*',
         name:'notFound',
