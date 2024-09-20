@@ -295,7 +295,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Address</label>
-									<textarea class="form-control" placeholder="Address" v-model="address" @change="BranchChecker()"></textarea>
+									<textarea class="form-control" placeholder="Address" v-model="address"></textarea>
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-12">
@@ -746,8 +746,9 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight" v-if="address.value == ''">Address is required!</h5>
-									<h5 class="leading-tight" v-else>Address is already existing!</h5>
+									<h5 class="leading-tight">Address is required!</h5>
+									<!-- <h5 class="leading-tight" v-if="address.value == ''">Address is required!</h5>
+									<h5 class="leading-tight" v-else>Address is already existing!</h5> -->
 								</div>
 							</div>
 						</div>
