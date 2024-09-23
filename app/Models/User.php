@@ -24,6 +24,9 @@ class User extends Authenticatable
         'department_id',
         'position',
         'access',
+        'temp_password',
+        'change_password',
+        'user_type',
     ];
 
     /**

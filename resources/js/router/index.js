@@ -112,6 +112,8 @@ import job_weekly_repIndex from '../components/job_weekly_rep/index.vue'
 import job_monthly_repNew from '../components/job_monthly_rep/new.vue'
 import job_monthly_repIndex from '../components/job_monthly_rep/index.vue'
 
+import change_password from '../components/change_password/index.vue'
+
 const routes = [
     {
         path:'/',
@@ -253,8 +255,9 @@ const routes = [
         }
     },
     {
-        path:'/vendor/edit',
+        path:'/vendor/edit/:id',
         component: vendorEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -687,12 +690,18 @@ const routes = [
         }
     },
     {
+<<<<<<< HEAD
         path:'/job_weekly_report/new',
         component: job_weekly_repNew,
+=======
+        path:'/change_password',
+        component: change_password,
+>>>>>>> a57c95260e35861633f044081f68c55b5864ae82
         meta:{
             requiresAuth:true
         }
     },
+<<<<<<< HEAD
     
     {
         path:'/pur_monthly_report',
@@ -723,10 +732,15 @@ const routes = [
         }
     },
     
+=======
+>>>>>>> a57c95260e35861633f044081f68c55b5864ae82
     {
         path:'/:pathMatch(.*)*',
         name:'notFound',
         component: notFound,
+        meta:{
+            requiresAuth:false
+        }
     }
 ]
 
