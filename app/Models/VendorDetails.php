@@ -12,6 +12,7 @@ class VendorDetails extends Model
     protected $fillable = [
         'vendor_head_id',
         'address',
+        'identifier',
         'terms',
         'phone',
         'fax',

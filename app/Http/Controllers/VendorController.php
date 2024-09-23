@@ -43,6 +43,7 @@ class VendorController extends Controller
         foreach(json_decode($branch_list) as $bl){
             $branch_details['vendor_head_id']=$vendor_head_id;
             $branch_details['address']=$bl->address;
+            $branch_details['identifier']=$bl->identifier;
             $branch_details['terms']=$bl->terms;
             $branch_details['phone']=$bl->phone;
             $branch_details['fax']=$bl->fax;
@@ -104,6 +105,7 @@ class VendorController extends Controller
                 if($bl->id == 0){
                     $branch_details['vendor_head_id']=$request->input('head_id');
                     $branch_details['address']=$bl->address;
+                    $branch_details['identifier']=$bl->identifier;
                     $branch_details['terms']=$bl->terms;
                     $branch_details['phone']=$bl->phone;
                     $branch_details['fax']=$bl->fax;

@@ -11,6 +11,7 @@
 	let branches=ref([]);
 	let branch_dets=ref([]);
 	let address=ref('');
+	let identifier=ref('');
     let terms=ref('');
     let phone=ref('');
     let fax=ref('');
@@ -68,6 +69,7 @@
 		BranchAddressAlert.value = !hideModal.value
 		successBranchAlert.value = !hideModal.value
 		address.value=''
+		identifier.value=''
 		terms.value=''
 		phone.value=''
 		fax.value=''
@@ -128,6 +130,7 @@
 	const AddBranch = () => {
 		successAddBranchAlert.value = !hideModal.value
 		address.value=''
+		identifier.value=''
 		terms.value=''
 		phone.value=''
 		fax.value=''
@@ -148,6 +151,7 @@
 			successAddBranchAlert.value = !successAddBranchAlert.value
 			branches.value.push({
 			address:address.value,
+			identifier:identifier.value,
 			terms:terms.value,
 			phone:phone.value,
 			fax:fax.value,
@@ -162,6 +166,7 @@
 			id:0,
 			});
 		address.value=''
+		identifier.value=''
 		terms.value=''
 		phone.value=''
 		fax.value=''
@@ -270,6 +275,7 @@
 									<table class="border table-bordered" width="200%">
 										<tr>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="15%"> Address</th>
+											<th class="!text-xs p-1 bg-gray-100 uppercase" width="15%"> Identifier</th>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="15%"> Terms</th>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="8%"> Phone</th>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="8%"> Fax</th>
@@ -289,6 +295,7 @@
 										</tr>
 										<tr v-for="(b, index) in branches">
 											<td class="!text-sm p-1">{{ b.address}}</td>
+											<td class="!text-sm p-1">{{ b.identifier}}</td>
 											<td class="!text-sm p-1">{{ b.terms}}</td>
 											<td class="!text-sm p-1">{{ b.phone}}</td>
 											<td class="!text-sm p-1">{{ b.fax}}</td>
@@ -352,7 +359,13 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Address</label>
-									<textarea class="form-control" placeholder="Address" v-model="address" @change="BranchChecker()"></textarea>
+									<textarea class="form-control" placeholder="Address" v-model="address"></textarea>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Identifier</label>
+									<textarea class="form-control" placeholder="Identifier" v-model="identifier"></textarea>
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-12">
@@ -476,6 +489,12 @@
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Address</label>
 									<textarea class="form-control !bg-gray-200" placeholder="Address" v-model="branch_dets.address" readonly></textarea>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" >Identifer</label>
+									<textarea class="form-control !bg-gray-200" placeholder="Identifier" v-model="branch_dets.identifier" readonly></textarea>
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-12">
@@ -805,8 +824,9 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight" v-if="address.value == ''">Address is required!</h5>
-									<h5 class="leading-tight" v-else>Address is already existing!</h5>
+									<h5 class="leading-tight">Address is required!</h5>
+									<!-- <h5 class="leading-tight" v-if="address.value == ''">Address is required!</h5>
+									<h5 class="leading-tight" v-else>Address is already existing!</h5> -->
 								</div>
 							</div>
 						</div>
