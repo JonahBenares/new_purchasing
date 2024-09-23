@@ -690,19 +690,19 @@ const routes = [
         }
     },
     {
-<<<<<<< HEAD
         path:'/job_weekly_report/new',
         component: job_weekly_repNew,
-=======
-        path:'/change_password',
-        component: change_password,
->>>>>>> a57c95260e35861633f044081f68c55b5864ae82
         meta:{
             requiresAuth:true
         }
     },
-<<<<<<< HEAD
-    
+    {
+        path:'/change_password',
+        component: change_password,
+        meta:{
+            requiresAuth:true
+        }
+    },
     {
         path:'/pur_monthly_report',
         component: pur_monthly_repIndex,
@@ -732,8 +732,6 @@ const routes = [
         }
     },
     
-=======
->>>>>>> a57c95260e35861633f044081f68c55b5864ae82
     {
         path:'/:pathMatch(.*)*',
         name:'notFound',
