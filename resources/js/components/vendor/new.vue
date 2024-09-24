@@ -217,9 +217,9 @@
 								<div class="overflow-x-scroll">
 									<table class="border table-bordered" width="200%">
 										<tr>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="15%"> Address</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="15%"> Identifier</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="15%"> Terms</th>
+											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Address</th>
+											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Identifier</th>
+											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Terms</th>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="8%"> Phone</th>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="8%"> Fax</th>
 											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Contact Person</th>
