@@ -626,69 +626,6 @@
 										<td class="p-1 align-top text-center" width="4%">1.</td>
 										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
 									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">2.</td>
-										<td class="p-1 align-top" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">3.</td>
-										<td class="align-top pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-14 p-1 ">Price is </span>
-												<select name="" class="w-full bg-yellow-50 p-1 " id="">
-													<option value="">Inclusive of VAT</option>
-													<option value="">Exclusive of VAT</option>
-												</select>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">4.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Payment </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class=" p-1 align-top text-center" width="4%">5.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Item Warranty </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class=" p-1 align-top text-center" width="4%">6.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Delivery Term </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class=" p-1 align-top text-center" width="4%">7.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Freight </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr v-for="(t,index) in terms_list">
-										<td class="align-top text-center" width="4%">{{ index + 8 }}.</td>
-										<td class="px-1" colspan="2">
-											<span class="w-32">{{ t.terms_condition }}</span>
-										</td>
-										<td class="p-0 align-top" width="1">
-											<button type="button" class="btn btn-danger p-1">
-												<XMarkIcon fill="none" @click="removeTerms(index)" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr>
 								</table>
 							</div>
 							<div class="col-lg-8">
@@ -812,69 +749,7 @@
 										<td class="p-1 align-top text-center" width="4%">1.</td>
 										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
 									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">2.</td>
-										<td class="p-1 align-top" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">3.</td>
-										<td class="align-top pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-14 p-1 ">Price is </span>
-												<select name="" class="w-full bg-yellow-50 p-1 " id="">
-													<option value="">Inclusive of VAT</option>
-													<option value="">Exclusive of VAT</option>
-												</select>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">4.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Payment </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class=" p-1 align-top text-center" width="4%">5.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Item Warranty </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class=" p-1 align-top text-center" width="4%">6.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Delivery Term </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class=" p-1 align-top text-center" width="4%">7.</td>
-										<td class="align-top  pl-1" colspan="2">
-											<div class="flex justify-between">
-												<span class="w-32 p-1 ">Freight </span>
-												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
-											</div>
-										</td>
-									</tr>
-									<tr v-for="(t,index) in terms_list">
-										<td class="align-top text-center" width="4%">{{ index + 8 }}.</td>
-										<td class="px-1" colspan="2">
-											<span class="w-32">{{ t.terms_condition }}</span>
-										</td>
-										<td class="p-0 align-top" width="1">
-											<button type="button" class="btn btn-danger p-1">
-												<XMarkIcon fill="none" @click="removeTerms(index)" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr>
+									
 								</table>
 							</div>
 						</div>
