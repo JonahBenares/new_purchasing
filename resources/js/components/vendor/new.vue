@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, XMarkIcon, PencilIcon, CheckIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, XMarkIcon, PlusIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import {onMounted, ref} from "vue";
 	import { useRouter } from "vue-router";
 	const router = useRouter()
@@ -30,14 +30,24 @@
 	const AddBranchAlert = ref(false)
 	const BranchAddressAlert = ref(false)
     const RemoveAlert = ref(false)
+	const termsModal = ref(false)
+    const viewTermsModal = ref(false)
 	const hideModal = ref(true)
+
 	const openNew = () => {
 		modalNew.value = !modalNew.value
 	}
-    const openEdit = () => {
-		modalEdit.value = !modalEdit.value
+
+	const openTerms = () => {
+		termsModal.value = !termsModal.value
+	}
+	const openViewTerms = () => {
+		viewTermsModal.value = !viewTermsModal.value
 	}
 	const closeModal = () => {
+		viewTermsModal.value = !hideModal.value
+		modalNew.value = !hideModal.value
+		termsModal.value = !hideModal.value
 		modalNew.value = !hideModal.value
 		modalEdit.value = !hideModal.value
 		RemoveAlert.value = !hideModal.value
@@ -209,48 +219,53 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
-								<div class="flex justify-between  mt-2 mb-3  z-50 ">
-									<button @click="openNew()" class="btn btn-primary mt-2 mt-xl-0 text-white">
+								<div class="flex justify-start  mt-2 mb-3  z-50 space-x-2">
+									<button @click="openNew()" class="btn btn-primary btn-sm mt-2 mt-xl-0 text-white">
 										<span>Add Branch</span>
+									</button>
+									<button @click="openTerms()" class="btn btn-primary btn-sm btn-sm mt-2 mt-xl-0 text-white">
+										<span>Add Terms</span>
 									</button>
 								</div>
 								<div class="overflow-x-scroll">
-									<table class="border table-bordered" width="200%">
+									<table class="border table-bordered" width="180%">
 										<tr>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Address</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Identifier</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Terms</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="8%"> Phone</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="8%"> Fax</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Contact Person</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="10%"> Email</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase"> TIN</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase"> Type</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase"> EWT</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase"> Vat</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase"> Status</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase"> Notes</th>
-											<th class="!text-xs p-1 bg-gray-100 uppercase" width="1%"> 
+											<th class="!text-xs p-1 bg-gray-100" width="15%"> Address</th>
+											<th class="!text-xs p-1 bg-gray-100" width="10%"> Identifier</th>
+											<th class="!text-xs p-1 bg-gray-100" width="12%"> Terms</th>
+											<th class="!text-xs p-1 bg-gray-100" width="8%"> Phone</th>
+											<th class="!text-xs p-1 bg-gray-100" width="8%"> Fax</th>
+											<th class="!text-xs p-1 bg-gray-100" width="8%"> Contact Person</th>
+											<th class="!text-xs p-1 bg-gray-100" width="10%"> Email</th>
+											<th class="!text-xs p-1 bg-gray-100" width="10%"> TIN</th>
+											<th class="!text-xs p-1 bg-gray-100"> Type</th>
+											<th class="!text-xs p-1 bg-gray-100"> EWT</th>
+											<th class="!text-xs p-1 bg-gray-100"> Vat</th>
+											<th class="!text-xs p-1 bg-gray-100"> Status</th>
+											<th class="!text-xs p-1 bg-gray-100" width="5%"> Notes</th>
+											<th class="!text-xs p-1 bg-gray-100" width="1%"> 
 												<span class="text-center justify-center flex px-auto">
 													<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
 												</span>
 											</th>
 										</tr>
 										<tr v-for="(b, index) in branches">
-											<td class="!text-sm p-1">{{ b.address }}</td>
-											<td class="!text-sm p-1">{{ b.indentifier }}</td>
-											<td class="!text-sm p-1">{{ b.terms }}</td>
-											<td class="!text-sm p-1">{{ b.phone }}</td>
-											<td class="!text-sm p-1">{{ b.fax }}</td>
-											<td class="!text-sm p-1">{{ b.contact_person }}</td>
-											<td class="!text-sm p-1">{{ b.email }}</td>
-											<td class="!text-sm p-1">{{ b.tin }}</td>
-											<td class="!text-sm p-1">{{ b.type }}</td>
-											<td class="!text-sm p-1">{{ b.ewt }}</td>
-											<td class="!text-sm p-1">{{ (b.vat == 1) ? 'Vat' : 'Non-Vat' }}</td>
-											<td class="!text-sm p-1">{{ b.status }}</td>
-											<td class="!text-sm p-1">{{ b.notes }}</td>
-											<td class="!text-sm p-0" align="center">
+											<td class="!text-xs p-1">{{ b.address }}</td>
+											<td class="!text-xs p-1">{{ b.indentifier }}</td>
+											<td class="!text-xs p-1">
+												<button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button>
+											</td>
+											<td class="!text-xs p-1">{{ b.phone }}</td>
+											<td class="!text-xs p-1">{{ b.fax }}</td>
+											<td class="!text-xs p-1">{{ b.contact_person }}</td>
+											<td class="!text-xs p-1">{{ b.email }}</td>
+											<td class="!text-xs p-1">{{ b.tin }}</td>
+											<td class="!text-xs p-1">{{ b.type }}</td>
+											<td class="!text-xs p-1">{{ b.ewt }}</td>
+											<td class="!text-xs p-1">{{ (b.vat == 1) ? 'Vat' : 'Non-Vat' }}</td>
+											<td class="!text-xs p-1">{{ b.status }}</td>
+											<td class="!text-xs p-1">{{ b.notes }}</td>
+											<td class="!text-xs p-0" align="center">
 												<!-- <button class="btn-info btn btn-xs text-white p-1" @click="openEdit()">
 													<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></PencilIcon>
 												</button> -->
@@ -311,10 +326,26 @@
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-12">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" >Terms</label>
-									<textarea class="form-control" placeholder="Terms" v-model="terms"></textarea>
-								</div>
+								<table class="table-bordered !text-xs w-full mb-3">
+									<tr>
+										<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
+									</tr>
+									<tr>
+										<td class="p-0" colspan="2">
+											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
+										</td>
+										<td class="p-0" width="1">
+											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
+												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+											</button>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center" width="4%">1.</td>
+										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
+									</tr>
+									
+								</table>
 							</div>
 						</div>
 						<div class="row">
@@ -391,6 +422,271 @@
 									<label class="text-gray-500 m-0" >Notes</label>
 									<textarea class="form-control" placeholder="Notes" v-model="notes"></textarea>
 								</div>
+							</div>
+						</div>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<!-- <a href="/" class="btn btn-primary mr-2 w-44">Save</a> -->
+									<button @click="AddNewBranch()" class="btn btn-primary mr-2 w-44">Add</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3 " :class="{ show:viewTermsModal }">
+				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div class="modal__content w-6/12 mb-5">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">View Terns and Condition</span>
+							<a href="#" class="text-gray-600" @click="closeModal">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-12">
+								<p class="m-0 leading-none uppercase font-bold">Vendor Name Here</p>
+								<p class="text-xs uppercase">Products and Services here</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<p class="m-0 leading-none  font-bold text-xs">Branch Address</p>
+								<p class="text-xs ">Contact Person | Contact Number</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<table class="table-bordered text-xs w-full">
+									<tr>
+										<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
+									</tr>
+									<tr>
+										<td class="align-top text-center" width="4%">1.</td>
+										<td class="align-top px-1" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
+									</tr>
+									<tr>
+										<td class="align-top text-center" width="4%">2.</td>
+										<td class="align-top px-1" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
+									</tr>
+									<tr>
+										<td class="align-top text-center" width="4%">3.</td>
+										<td class="align-top pl-1" colspan="2">
+											<div class="flex justify-start space-x-1">
+												<span >Price is </span>
+												<span>Exclusive of VAT</span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="align-top text-center" width="4%">4.</td>
+										<td class="align-top  pl-1" colspan="2">
+											<div class="flex justify-start space-x-1">
+												<span>Payment </span>
+												<span> COD</span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="align-top text-center" width="4%">5.</td>
+										<td class="align-top  pl-1" colspan="2">
+											<div class="flex justify-start space-x-1">
+												<span>Delivery Term </span>
+												<span> Sample</span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="align-top text-center" width="4%">6.</td>
+										<td class="align-top  pl-1" colspan="2">sample term</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3 " :class="{ show:termsModal }">
+				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div class="modal__content w-11/12 mb-5">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Add Terns and Condition</span>
+							<a href="#" class="text-gray-600" @click="closeModal">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-6">
+								<p class="m-0 leading-none uppercase font-bold">Vendor Name Here</p>
+								<p class="text-xs uppercase">Products and Services here</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4 border-r">
+								<table class="table-bordered !text-xs w-full">
+									<tr>
+										<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
+									</tr>
+									<tr>
+										<td class="p-0" colspan="2">
+											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
+										</td>
+										<td class="p-0" width="1">
+											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
+												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+											</button>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center" width="4%">1.</td>
+										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center" width="4%">2.</td>
+										<td class="p-1 align-top" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center" width="4%">3.</td>
+										<td class="align-top pl-1" colspan="2">
+											<div class="flex justify-between">
+												<span class="w-14 p-1 ">Price is </span>
+												<select name="" class="w-full bg-yellow-50 p-1 " id="">
+													<option value="">Inclusive of VAT</option>
+													<option value="">Exclusive of VAT</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="p-1 align-top text-center" width="4%">4.</td>
+										<td class="align-top  pl-1" colspan="2">
+											<div class="flex justify-between">
+												<span class="w-32 p-1 ">Payment </span>
+												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class=" p-1 align-top text-center" width="4%">5.</td>
+										<td class="align-top  pl-1" colspan="2">
+											<div class="flex justify-between">
+												<span class="w-32 p-1 ">Item Warranty </span>
+												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class=" p-1 align-top text-center" width="4%">6.</td>
+										<td class="align-top  pl-1" colspan="2">
+											<div class="flex justify-between">
+												<span class="w-32 p-1 ">Delivery Term </span>
+												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class=" p-1 align-top text-center" width="4%">7.</td>
+										<td class="align-top  pl-1" colspan="2">
+											<div class="flex justify-between">
+												<span class="w-32 p-1 ">Freight </span>
+												<input name="" class="w-full bg-yellow-50 px-1 p-1 " id="">
+											</div>
+										</td>
+									</tr>
+									<tr v-for="(t,index) in terms_list">
+										<td class="align-top text-center" width="4%">{{ index + 8 }}.</td>
+										<td class="px-1" colspan="2">
+											<span class="w-32">{{ t.terms_condition }}</span>
+										</td>
+										<td class="p-0 align-top" width="1">
+											<button type="button" class="btn btn-danger p-1">
+												<XMarkIcon fill="none" @click="removeTerms(index)" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+											</button>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="col-lg-8">
+								<table class="table-bordered text-xs w-full"> 
+									<tr>
+										<td colspan="5" class="p-1 bg-gray-100">
+											Choose Branch to apply Terms and Condition
+										</td>
+									</tr>
+									<tr class="bg-gray-50">
+										<td class="p-1" width="1%">
+											<input type="checkbox">
+										</td>
+										<td class="p-1" width="40%">Address</td>
+										<td class="p-1" width="15%">Contact Person</td>
+										<td class="p-1" width="15%">Contact Number</td>
+										<td class="p-1" width="15%">Email</td>
+									</tr>
+									<tr>
+										<td class="p-1" width="1%">
+											<input type="checkbox">
+										</td>
+										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
+										<td class="p-1" width="15%">Glenn Marie Sy</td>
+										<td class="p-1" width="15%">093342425/ 524461414</td>
+										<td class="p-1" width="15%">sample@gmail.com</td>
+									</tr>
+
+									<tr>
+										<td class="p-1" width="1%">
+											<input type="checkbox">
+										</td>
+										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
+										<td class="p-1" width="15%">Glenn Marie Sy</td>
+										<td class="p-1" width="15%">093342425</td>
+										<td class="p-1" width="15%">sample@gmail.com</td>
+									</tr>
+									<tr>
+										<td class="p-1" width="1%">
+											<input type="checkbox">
+										</td>
+										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
+										<td class="p-1" width="15%">Glenn Marie Sy</td>
+										<td class="p-1" width="15%">093342425</td>
+										<td class="p-1" width="15%">sample@gmail.com</td>
+									</tr>
+									<tr>
+										<td class="p-1" width="1%">
+											<input type="checkbox">
+										</td>
+										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
+										<td class="p-1" width="15%">Glenn Marie Sy</td>
+										<td class="p-1" width="15%">093342425/ 524461414</td>
+										<td class="p-1" width="15%">sample@gmail.com</td>
+									</tr>
+								</table>
 							</div>
 						</div>
 						<div class="row mt-4"> 
