@@ -86,14 +86,14 @@
 		dangerAlert.value = !hideAlert.value
 	}
 	const showCredentials = () => {
-	let show=document.getElementById('showCred');
-	let checkbox=document.getElementById('checkbox');
-	if(checkbox.checked){
-		show.style.display = 'block';   
-	}else{
-		show.style.display = 'none'; 
+		let show=document.getElementById('showCred');
+		let checkbox=document.getElementById('checkbox');
+		if(checkbox.checked){
+			show.style.display = 'block';   
+		}else{
+			show.style.display = 'none'; 
+		}
 	}
-}
 </script>
 <template>
 	<navigation>
