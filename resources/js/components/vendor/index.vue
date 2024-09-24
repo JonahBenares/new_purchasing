@@ -104,7 +104,7 @@
                                 <span>Add New Vendor</span>
                             </a>
                         </div>
-                        <div class="overflow-x-scroll pt-3 relative">
+                        <div class="pt-3 relative">
                             <DataTable :data="vendors" :options="options" class="display table table-bordered table-hover !border nowrap"  width="200%">
                                 <thead>
                                     <tr>
