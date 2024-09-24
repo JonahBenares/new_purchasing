@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('site_pr')->nullable();
             $table->string('dr_date')->nullable();
             $table->string('dr_no')->nullable();
-            $table->string('dr_no')->nullable();
             $table->string('status')->nullable()->comment('Saved, Cancelled');
             $table->string('delivery_date')->nullable();
             $table->integer('user_id')->default(0);
