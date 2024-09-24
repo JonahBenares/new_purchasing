@@ -24,8 +24,6 @@ return new class extends Migration
             $table->double('dpo_qty')->default(0);
             $table->double('rpo_qty')->default(0);
             $table->string('uom')->nullable();
-            $table->double('unit_price')->default(0);
-            $table->string('currency')->nullable();
             $table->string('method')->nullable();
             $table->string('status')->nullable();
             $table->text('status_remarks')->nullable();

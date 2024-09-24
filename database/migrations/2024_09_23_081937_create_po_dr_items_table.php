@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('po_dr_items', function (Blueprint $table) {
             $table->id();
             $table->integer('po_dr_id')->default(0);
-            $table->integer('po_dr_details_id')->default(0);
-            $table->integer('pr_dr_details_id')->default(0);
+            $table->integer('po_details_id')->default(0);
+            $table->integer('pr_details_id')->default(0);
             $table->integer('rfq_offer_id')->default(0);
             $table->double('quantity')->default(0);
             $table->timestamps();
