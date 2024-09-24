@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('vendor_head_id')->default(0);
             $table->integer('vendor_details_id')->default(0);
+            $table->integer('order_no')->default(0);
             $table->string('terms')->nullable();
             $table->timestamps();
         });
