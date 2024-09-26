@@ -7,12 +7,17 @@
     import moment from 'moment'
 
 	const successAlert = ref(false)
+	const itemsModal = ref(false)
     const tableWeekly = ref(false)
     const filterDet = ref(false)
     const filters = ref(true)
 	const hideValue = ref(true)
     const openSuccessAlert = () =>{
         successAlert.value = !successAlert.value
+    }
+
+    const openModalChangeItems = () =>{
+        itemsModal.value = !itemsModal.value
     }
 	const showTable = () => {
 		tableWeekly.value = !tableWeekly.value
@@ -27,7 +32,10 @@
 	}
     const closeModal = () => {
 		successAlert.value = !hideValue.value
+		itemsModal.value = !hideValue.value
 	}
+
+    const pr_det = ref(false)
 </script>
 
 <template>
@@ -79,9 +87,11 @@
                         </p> 
                         <p for="" class="m-0 text-sm">Bacolod</p>
                     </div>
-                    <div class="space-x-2">
+                    <div class="space-x-1">
                         <button class="btn btn-danger btn-sm" @click="removeFilter()">Remove Filter</button>
-                        <button class="btn btn-primary btn-sm" @click="openSuccessAlert()">Save</button>
+                        <span class="border-r mx-3"></span>
+                        <button class="btn btn-info btn-sm" @click="openModalChangeItems()">Add Items</button>
+                        <button class="btn btn-primary btn-sm" @click="openSuccessAlert()">Save All</button>
                     </div>
                 </div>
             </div>
@@ -642,6 +652,157 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:itemsModal }">
+				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div class="modal__content w-8/12">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Add Items</span>
+							<a href="#" class="text-gray-600" @click="closeModal">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="pt-1">
+                            <div class="row">							
+                                <div class="col-lg-6 offset-lg-3 col-md-3">
+                                    <div class="form-group">
+                                    <label class="text-gray-500 m-0" for="">Choose PR Number</label>
+                                    <input type="file" name="img[]" class="file-upload-default">
+                                    <div class="input-group col-xs-12">
+                                        <select class="form-control file-upload-info">
+                                            <option value="">PR-CENPRI24-1001</option>
+                                            <option value="">PR-CENPRI24-1002</option>
+                                        </select>
+                                        <span class="input-group-append">
+                                            <button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
+                                        </span>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dashed">
+                            <div v-show="pr_det">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
+                                        <span class="text-sm text-gray-700">Bacolod</span>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
+                                        <span class="text-sm text-gray-700">01/16/24</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
+                                        <span class="text-sm text-gray-700">PR-BCD24-1209</span>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
+                                        <span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
+                                        <span class="text-sm text-gray-700">IT Department</span>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+                                        <span class="text-sm text-gray-700">0912</span>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
+                                        <span class="text-sm text-gray-700">X</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
+                                        <span class="text-sm text-gray-700">IT Department</span>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
+                                        <span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="w-full table-bordered !text-xs mb-3">
+                                            <tr class="bg-gray-100">
+                                                <td class="p-1 uppercase text-center" width="5%">
+                                                    <input type="checkbox">
+                                                </td>
+                                                <td class="p-1 uppercase text-center" width="7%">Qty</td>
+                                                <td class="p-1 uppercase text-center" width="7%">UOM</td>
+                                                <td class="p-1 uppercase" width="20%">PN No.</td>
+                                                <td class="p-1 uppercase" width="">Item Description</td>
+                                                <td class="p-1 uppercase" width="10%">WH Stocks</td>
+                                                <td class="p-1 uppercase" width="15%">Date Needed</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-1 text-center">
+                                                    <input type="checkbox">
+                                                </td>
+                                                <td class="p-1 text-center">5</td>
+                                                <td class="p-1 text-center">pc/s</td>
+                                                <td class="p-1">PN-0991-001</td>
+                                                <td class="p-1">Monitor</td>
+                                                <td class="p-1"></td>
+                                                <td class="p-1">08/25/24</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-1 text-center">
+                                                    <input type="checkbox">
+                                                </td>
+                                                <td class="p-1 text-center">5</td>
+                                                <td class="p-1 text-center">pc/s</td>
+                                                <td class="p-1">PN-0991-222</td>
+                                                <td class="p-1">Mouse</td>
+                                                <td class="p-1"></td>
+                                                <td class="p-1">08/25/24</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-1 text-center">
+                                                    <input type="checkbox">
+                                                </td>
+                                                <td class="p-1 text-center">5</td>
+                                                <td class="p-1 text-center">pc/s</td>
+                                                <td class="p-1">PN-0991-333</td>
+                                                <td class="p-1">Keyboard</td>
+                                                <td class="p-1"></td>
+                                                <td class="p-1">08/25/24</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                                <br>
+                                <div class="row my-2"> 
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="flex justify-center space-x-2">
+                                            <button type="submit" class="btn btn-info mr-2 w-44">Add Item</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div> 
 				</div>
 			</div>
 		</Transition>
