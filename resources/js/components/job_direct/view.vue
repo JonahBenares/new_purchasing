@@ -195,15 +195,7 @@
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Material</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
 													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-														<td class="p-0">
-															<div class="flex">
-																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
-																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
-															</div>
-														</td>
-													</tr>
+													
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
@@ -211,6 +203,15 @@
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
+													</tr>
+                                                    <tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
+														<td class="p-0">
+															<div class="flex">
+																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
+																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
+															</div>
+														</td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
