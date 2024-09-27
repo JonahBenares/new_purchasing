@@ -10,6 +10,10 @@
     })
 	let branches=ref([]);
 	let branch_dets=ref([]);
+	let all_term_list=ref([]);
+	let new_term_list=ref([]);
+	let update_term_list=ref([]);
+	let no_terms_branch=ref([]);
 	let address=ref('');
 	let identifier=ref('');
     let terms=ref('');
@@ -24,6 +28,14 @@
     let vat=ref(0);
     let status=ref('Active');
 	let remove_id=ref(0);
+	let all_order_no=ref('');
+	let all_term_desc=ref('');
+	let new_order_no=ref('');
+	let new_term_desc=ref('');
+	let update_order_no=ref('');
+	let update_term_desc=ref('');
+	let count_branches=ref('');
+	let count_with_terms=ref('');
 
 	const props = defineProps({
         id:{
@@ -40,6 +52,8 @@
 		let response = await axios.get(`/api/edit_vendor/${props.id}`)
        	head.value = response.data.vendor_head
        	branches.value = response.data.vendor_details
+       	count_branches.value = response.data.count_branches
+       	count_with_terms.value = response.data.count_with_terms
 	}
 
 	const modalNew = ref(false)
@@ -53,15 +67,20 @@
     const RemoveAlert = ref(false)
     const termsModal = ref(false)
     const viewTermsModal = ref(false)
+	const TermsAlert = ref(false)
+	const AllTermsSuccess = ref(false)
 	const hideModal = ref(true)
 
 	const openNew = () => {
 		modalNew.value = !modalNew.value
 	}
 
-	const openTerms = () => {
+	const openTerms = async () => {
 		termsModal.value = !termsModal.value
+		let response = await axios.get(`/api/no_terms_branch/${props.id}`)
+		no_terms_branch.value = response.data.no_terms_branch
 	}
+
 	const openViewTerms = () => {
 		viewTermsModal.value = !viewTermsModal.value
 	}
@@ -78,6 +97,8 @@
 		VendorHeadAlert.value = !hideModal.value
 		BranchAddressAlert.value = !hideModal.value
 		successBranchAlert.value = !hideModal.value
+		TermsAlert.value = !hideModal.value
+		AllTermsSuccess.value = !hideModal.value
 		address.value=''
 		identifier.value=''
 		terms.value=''
@@ -104,6 +125,9 @@
 		VendorHeadAlert.value = !hideModal.value
 		BranchAddressAlert.value = !hideModal.value
 		successBranchAlert.value = !hideModal.value
+		termsModal.value = !hideModal.value
+		AllTermsSuccess.value = !hideModal.value
+		all_term_list.value=[]
 		VendorDetails()
 	}
 
@@ -127,10 +151,48 @@
 		closeModal()
 	}
 
+	const RemoveAllTerms= (index) =>{
+		all_term_list.value.splice(index,1)
+		// if(index>=1){
+		// 	document.getElementById("AllTerms").disabled = false;
+		// }else{
+		// 	document.getElementById("AllTerms").disabled = true;
+		// }
+	}
+
+	const CheckBoxChecker= () =>{
+		var isChecked = document.getElementsByClassName("checkboxes");
+		var count=0;
+		for(var x=0;x<isChecked.length;x++){
+			if(isChecked[x].checked === true){
+				count++;
+			}
+		}
+			if(count>=1){
+				document.getElementById("AllTerms").disabled = false;
+			}else{
+				document.getElementById("AllTerms").disabled = true;
+			}
+	}
+
+
+	const RemoveNewTerms= (index) =>{
+		new_term_list.value.splice(index,1)
+	}
+
+	const RemoveUpdateTerms= (index) =>{
+		update_term_list.value.splice(index,1)
+	}
+
+	const UpdateTerms = () => {
+		TermsAlert.value = !hideModal.value
+	}
+
     const EditBranch = async (id) => {
 		modalEdit.value = !modalEdit.value
 		let response = await axios.get('/api/edit_branch/'+id)
        	branch_dets.value = response.data.branch_details
+       	update_term_list.value = response.data.branch_terms
 	}
 
 	const UpdateAddress = () => {
@@ -162,7 +224,6 @@
 			branches.value.push({
 			address:address.value,
 			identifier:identifier.value,
-			terms:terms.value,
 			phone:phone.value,
 			fax:fax.value,
 			contact_person:contact_person.value,
@@ -173,6 +234,7 @@
 			ewt:ewt.value,
 			vat:vat.value,
 			status:status.value,
+			terms:new_term_list.value,
 			id:0,
 			});
 		address.value=''
@@ -188,17 +250,66 @@
 		ewt.value=0
 		vat.value=0
 		status.value='Active'
+		new_term_list.value=[]
+		}
+	}
+
+	const AddAllTerms= () => {
+		if(all_term_desc.value == ''){
+			TermsAlert.value = !TermsAlert.value
+		}else{
+		let all_orderno= all_term_list.value.length
+				all_term_list.value.push({
+					all_order_no:all_orderno+1,
+					all_term_desc:all_term_desc.value,
+				});
+				// if(all_term_list.value.length>=1){
+				// 	document.getElementById("AllTerms").disabled = false;
+				// }
+				all_order_no.value=''
+				all_term_desc.value=''
+		}
+	}
+
+	const AddTermsUpdate= () => {
+		if(update_term_desc.value == ''){
+			TermsAlert.value = !TermsAlert.value
+		}else{
+		let update_orderno= update_term_list.value.length
+				update_term_list.value.push({
+					id:0,
+					order_no:update_orderno+1,
+					terms:update_term_desc.value,
+				});
+				update_order_no.value=''
+				update_term_desc.value=''
+		}
+	}
+
+	const AddTermsNew= () => {
+		if(new_term_desc.value == ''){
+			TermsAlert.value = !TermsAlert.value
+		}else{
+		let new_orderno= new_term_list.value.length
+				new_term_list.value.push({
+					order_no:new_orderno+1,
+					terms:new_term_desc.value,
+				});
+				new_order_no.value=''
+				new_term_desc.value=''
 		}
 	}
 
 	const UpdateBranch = (id) => {
 		const formData= new FormData()
+		formData.append('vendor_head_id',head.value.id)
 		formData.append('phone', branch_dets.value.phone ?? '')
 		formData.append('fax', branch_dets.value.fax ?? '')
 		formData.append('contact_person', branch_dets.value.contact_person ?? '')
 		formData.append('email', branch_dets.value.email ?? '')
 		formData.append('notes', branch_dets.value.notes ?? '')
 		formData.append('status', branch_dets.value.status)
+		formData.append('terms', JSON.stringify(update_term_list.value))
 			axios.post(`/api/update_branch/`+id, formData).then(function () {
 				successBranchAlert.value = !successBranchAlert.value
 			});
@@ -210,6 +321,7 @@
 			const formVendor= new FormData()
 				formVendor.append('head_id',head.value.id)
 				formVendor.append('vendor_name',head.value.vendor_name)
+				formVendor.append('product_services',head.value.product_services)
 				formVendor.append('vendor_branches', JSON.stringify(branches.value))
 				axios.post(`/api/update_vendor/`+id, formVendor).then(function () {
 					successAlert.value = !successAlert.value
@@ -220,6 +332,21 @@
 		}else{
 			VendorHeadAlert.value = !VendorHeadAlert.value
 		}
+	}
+
+	const AddAllBranchTerms = () => {
+			const formTerms= new FormData()
+				formTerms.append('vendor_head_id',head.value.id)
+				if(all_term_list.value.length>=1){
+					formTerms.append('no_terms_branch', JSON.stringify(no_terms_branch.value))
+					formTerms.append('all_term_list', JSON.stringify(all_term_list.value))
+					// console.log(JSON.stringify(no_terms_branch.value))
+					axios.post('/api/add_all_terms/', formTerms).then(function () {
+						AllTermsSuccess.value = !AllTermsSuccess.value
+					});
+				}else{
+					TermsAlert.value = !TermsAlert.value
+				}
 	}
 
 	const VendorChecker = async () => {
@@ -235,6 +362,24 @@
 				BranchAddressAlert.value = !BranchAddressAlert.value
 			}
 		}
+	}
+	const allSelected=ref(false);
+	const checkall=ref([]);
+	const CheckAll = () => {
+			var count_check=document.getElementsByClassName('checkboxes');
+			var checkedValue = null; 
+			for(var x=0;x<count_check.length;x++){
+				var check=document.getElementsByClassName('checkboxes')[x].checked;
+				if(!check){
+					checkall.value=allSelected
+					no_terms_branch.value[x].checkbox=1;
+					document.getElementById("AllTerms").disabled = false;
+				}else{
+					checkall.value=!allSelected
+					document.getElementById("AllTerms").disabled = true;
+				}
+			}
+			
 	}
 </script>
 <template>
@@ -270,7 +415,7 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Products/Services</label>
-									<textarea class="form-control !bg-gray-200" placeholder="Products/Services" v-model="head.product_services" readonly></textarea>
+									<textarea class="form-control" placeholder="Products/Services" v-model="head.product_services"></textarea>
 								</div>
 							</div>
 						</div>
@@ -280,7 +425,7 @@
 									<button @click="openNew()" class="btn btn-primary btn-sm mt-2 mt-xl-0 text-white">
 										<span>Add Branch</span>
 									</button>
-									<button @click="openTerms()" class="btn btn-primary btn-sm mt-2 mt-xl-0 text-white">
+									<button @click="openTerms()" class="btn btn-primary btn-sm mt-2 mt-xl-0 text-white" v-if="(count_branches != count_with_terms)">
 										<span>Add Terms</span>
 									</button>
 								</div>
@@ -289,7 +434,7 @@
 										<tr>
 											<th class="!text-xs p-1 bg-gray-100" width="15%"> Address</th>
 											<th class="!text-xs p-1 bg-gray-100" width="10%"> Identifier</th>
-											<th class="!text-xs p-1 bg-gray-100" width="12%"> Terms</th>
+											<!-- <th class="!text-xs p-1 bg-gray-100" width="12%"> Terms</th> -->
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Phone</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Fax</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Contact Person</th>
@@ -300,6 +445,7 @@
 											<th class="!text-xs p-1 bg-gray-100"> Vat</th>
 											<th class="!text-xs p-1 bg-gray-100"> Status</th>
 											<th class="!text-xs p-1 bg-gray-100" width="5%"> Notes</th>
+											<th class="!text-xs p-1 bg-gray-100" width="12%" v-if="(branches.id != 0)"> Terms</th>
 											<th class="!text-xs p-1 bg-gray-100" width="1%"> 
 												<span class="text-center justify-center flex px-auto">
 													<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -309,9 +455,9 @@
 										<tr v-for="(b, index) in branches">
 											<td class="!text-xs p-1">{{ b.address}}</td>
 											<td class="!text-xs p-1">{{ b.identifier}}</td>
-											<td class="!text-xs p-1">
+											<!-- <td class="!text-xs p-1">
 												<button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button>
-											</td>
+											</td> -->
 											<td class="!text-xs p-1">{{ b.phone}}</td>
 											<td class="!text-xs p-1">{{ b.fax}}</td>
 											<td class="!text-xs p-1">{{ b.contact_person}}</td>
@@ -322,6 +468,12 @@
 											<td class="!text-xs p-1">{{ (b.vat == '1') ? 'Vat' : 'Non-vat'}}</td>
 											<td class="!text-xs p-1">{{ b.status}}</td>
 											<td class="!text-xs p-1">{{ b.notes}}</td>
+											<td class="!text-xs p-1">
+												<!-- <button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button> -->
+												<ul class="list-disc m-0" v-for="(t, indexes) in b.terms">
+													{{ t.order_no }}. {{ t.terms }}
+												</ul>
+											</td>
 											<input type="hidden" v-model="b.id">
 											<td class="!text-xs p-0" align="center">
 												<button class="btn-info btn btn-xs text-white p-1" @click="EditBranch(b.id)" v-if="(b.id != 0)">
@@ -383,14 +535,14 @@
 									<textarea class="form-control" placeholder="Identifier" v-model="identifier"></textarea>
 								</div>
 							</div>
-							<div class="col-lg-12 col-md-12">
+							<!-- <div class="col-lg-12 col-md-12">
 								<table class="table-bordered !text-xs w-full mb-3">
 									<tr>
 										<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
 									</tr>
 									<tr>
 										<td class="p-0" colspan="2">
-											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
+											<input type="text" class="p-1 w-full bg-yellow-50" id="check_terms">
 										</td>
 										<td class="p-0" width="1">
 											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
@@ -404,7 +556,7 @@
 									</tr>
 									
 								</table>
-							</div>
+							</div> -->
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
@@ -481,6 +633,33 @@
 									<textarea class="form-control" placeholder="Notes" v-model="notes"></textarea>
 								</div>
 							</div>
+						</div>
+						<div class="col-lg-12 col-md-12">
+							<table class="table-bordered !text-xs w-full mb-3">
+								<tr>
+									<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
+								</tr>
+								<tr>
+									<td class="p-0" colspan="2">
+										<input type="text" class="p-1 w-full bg-yellow-50" v-model="new_term_desc">
+									</td>
+									<td class="p-0" width="1">
+										<button type="button" class="btn btn-primary p-1" @click="AddTermsNew">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</td>
+								</tr>
+								<tr v-for="(nt, index) in new_term_list">
+									<td class="p-1 align-top" width="6%"><input type="text" class="form-control" v-model="nt.order_no"></td>
+									<td class="p-1 align-top" colspan="1"><input type="text" class="form-control" v-model="nt.terms"></td>
+									<td class="p-1 align-top" colspan="1">
+									<button class="btn btn-danger p-1" @click="RemoveNewTerms(index)">
+										<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+									</button>
+									</td>
+								</tr>
+								
+							</table>
 						</div>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
@@ -602,8 +781,8 @@
 					<div class="modal_s_items ">
 						<div class="row">
 							<div class="col-lg-6">
-								<p class="m-0 leading-none uppercase font-bold">Vendor Name Here</p>
-								<p class="text-xs uppercase">Products and Services here</p>
+								<p class="m-0 leading-none uppercase font-bold">{{ head.vendor_name }}</p>
+								<p class="text-xs uppercase">{{ head.product_services }}</p>
 							</div>
 						</div>
 						<div class="row">
@@ -614,72 +793,45 @@
 									</tr>
 									<tr>
 										<td class="p-0" colspan="2">
-											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
+											<input type="text" class="p-1 w-full bg-yellow-50" v-model="all_term_desc">
 										</td>
 										<td class="p-0" width="1">
-											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
+											<button type="button" class="btn btn-primary p-1" @click="AddAllTerms">
 												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 											</button>
 										</td>
 									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">1.</td>
-										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
-									</tr>
+									<tr v-for="(at, index) in all_term_list">
+									<td class="p-1 align-top" width="10%"><input type="text" class="form-control" v-model="at.all_order_no"></td>
+									<td class="p-1 align-top" colspan="1"><input type="text" class="form-control" v-model="at.all_term_desc"></td>
+									<td class="p-1 align-top" colspan="1">
+									<button class="btn btn-danger p-1" @click="RemoveAllTerms(index)">
+										<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+									</button>
+									</td>
+								</tr>
 								</table>
 							</div>
 							<div class="col-lg-8">
 								<table class="table-bordered text-xs w-full"> 
 									<tr>
+										<td class="p-1" width="1%">
+											<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
+										</td>
 										<td colspan="5" class="p-1 bg-gray-100">
 											Choose Branch to apply Terms and Condition
 										</td>
 									</tr>
-									<tr class="bg-gray-50">
+									<tr v-for="(nt, index) in no_terms_branch">
 										<td class="p-1" width="1%">
-											<input type="checkbox">
+											<input type="checkbox" class='checkboxes' @change="CheckBoxChecker" v-model="nt.checkbox" :checked="checkall" :true-value="1" :false-value="0">
 										</td>
-										<td class="p-1" width="40%">Address</td>
-										<td class="p-1" width="15%">Contact Person</td>
-										<td class="p-1" width="15%">Contact Number</td>
-										<td class="p-1" width="15%">Email</td>
-									</tr>
-									<tr>
-										<td class="p-1" width="1%">
-											<input type="checkbox">
-										</td>
-										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
-										<td class="p-1" width="15%">Glenn Marie Sy</td>
-										<td class="p-1" width="15%">093342425/ 524461414</td>
-										<td class="p-1" width="15%">sample@gmail.com</td>
-									</tr>
-
-									<tr>
-										<td class="p-1" width="1%">
-											<input type="checkbox">
-										</td>
-										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
-										<td class="p-1" width="15%">Glenn Marie Sy</td>
-										<td class="p-1" width="15%">093342425</td>
-										<td class="p-1" width="15%">sample@gmail.com</td>
-									</tr>
-									<tr>
-										<td class="p-1" width="1%">
-											<input type="checkbox">
-										</td>
-										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
-										<td class="p-1" width="15%">Glenn Marie Sy</td>
-										<td class="p-1" width="15%">093342425</td>
-										<td class="p-1" width="15%">sample@gmail.com</td>
-									</tr>
-									<tr>
-										<td class="p-1" width="1%">
-											<input type="checkbox">
-										</td>
-										<td class="p-1" width="40%">Sample Address, Bacolod City</td>
-										<td class="p-1" width="15%">Glenn Marie Sy</td>
-										<td class="p-1" width="15%">093342425/ 524461414</td>
-										<td class="p-1" width="15%">sample@gmail.com</td>
+										<input type="hidden" v-model="nt.id">
+										<td class="p-1" width="40%">{{ nt.address }}</td>
+										<td class="p-1" width="20%">{{ nt.identifier }}</td>
+										<td class="p-1" width="15%">{{ nt.contact_person }}</td>
+										<td class="p-1" width="15%">{{ nt.phone }}</td>
+										<td class="p-1" width="15%">{{ nt.email }}</td>
 									</tr>
 								</table>
 							</div>
@@ -688,7 +840,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<!-- <a href="/" class="btn btn-primary mr-2 w-44">Save</a> -->
-									<button @click="AddNewBranch()" class="btn btn-primary mr-2 w-44">Add</button>
+									<button @click="AddAllBranchTerms()" id = "AllTerms" class="btn btn-primary mr-2 w-44" disabled>Add</button>
 								</div>
 							</div>
 						</div>
@@ -729,28 +881,6 @@
 									<label class="text-gray-500 m-0" >Identifer</label>
 									<textarea class="form-control !bg-gray-200" placeholder="Identifier" v-model="branch_dets.identifier" readonly></textarea>
 								</div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<table class="table-bordered !text-xs w-full mb-3">
-									<tr>
-										<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
-									</tr>
-									<tr>
-										<td class="p-0" colspan="2">
-											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
-										</td>
-										<td class="p-0" width="1">
-											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
-												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-											</button>
-										</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">1.</td>
-										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
-									</tr>
-									
-								</table>
 							</div>
 						</div>
 						<div class="row">
@@ -830,6 +960,33 @@
 									<textarea class="form-control" placeholder="Notes" v-model="branch_dets.notes"></textarea>
 								</div>
 							</div>
+						</div>
+						<div class="col-lg-12 col-md-12">
+							<table class="table-bordered !text-xs w-full mb-3">
+								<tr>
+									<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
+								</tr>
+								<tr>
+									<td class="p-0" colspan="2">
+										<input type="text" class="p-1 w-full bg-yellow-50" v-model="update_term_desc">
+									</td>
+									<td class="p-0" width="1">
+										<button type="button" class="btn btn-primary p-1" @click="AddTermsUpdate">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</td>
+								</tr>
+								<tr v-for="(ut, index) in update_term_list">
+									<td class="p-1 align-top" width="6%"><input type="text" class="form-control" v-model="ut.order_no"></td>
+									<td class="p-1 align-top" colspan="1"><input type="hidden" class="form-control" v-model="ut.id"><input type="text" class="form-control" v-model="ut.terms"></td>
+									<td class="p-1 align-top" colspan="1">
+									<button class="btn btn-danger p-1" @click="RemoveUpdateTerms(index)" v-if="(ut.id == 0)">
+										<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+									</button>
+									</td>
+								</tr>
+								
+							</table>
 						</div>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
@@ -1089,6 +1246,90 @@
 							</div>
 						</div>
 					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:TermsAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Terms and Conditions field is empty!</h5>
+									<!-- <h5 class="leading-tight" v-if="address.value == ''">Address is required!</h5>
+									<h5 class="leading-tight" v-else>Address is already existing!</h5> -->
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="UpdateTerms()">Update</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeModal()">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:AllTermsSuccess }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">You have successfully added a Terms and Condition.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="ShowList()">Vendor List</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeUpdateModal()">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</Transition>
