@@ -848,7 +848,7 @@
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
                                 </i>
-                                    <span class="menu-title">Monthly Recom</span>
+                                    <span class="menu-title">Monthly Budget</span>
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
@@ -900,7 +900,7 @@
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
                                     <DocumentTextIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></DocumentTextIcon>
                                 </i>
-                                    <span class="menu-title">Monthly Recom</span>
+                                    <span class="menu-title">Monthly Budget</span>
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition

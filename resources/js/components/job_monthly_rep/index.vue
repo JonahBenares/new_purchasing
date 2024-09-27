@@ -32,12 +32,12 @@
                 <div class="col-lg-12">
                     <div class=" flex justify-between  px-2 ">
                         <div class="flex">
-                            <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">PR Monthly Budget <small>List</small></h3>
+                            <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JOR Monthly Budget <small>List</small></h3>
                         </div>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                                 <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">PR Monthly Budget</li>
+                                <li class="breadcrumb-item active" aria-current="page">JOR Monthly Budget</li>
                             </ol>
                         </nav>
                     </div>

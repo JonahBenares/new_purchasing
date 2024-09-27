@@ -161,8 +161,57 @@
 								</table>
 							</div>
 						</div>
-						<br>
-						<!-- <hr class="border-dashed"> -->
+						<hr class="border-dashed">
+						<div>
+							<!-- <div class="row mt-2">
+								<div class="col-lg-3 col-md-3">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Date</label>
+										<input type="date" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
+									</div>
+								</div>
+								<div class="col-lg-5 col-md-5">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Comment</label>
+										<input type="text" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
+									</div>
+								</div>
+							</div> -->
+							<div class="row mt-4 mb-4">
+								<div class="col-lg-12">
+									<table class="w-full text-xs">
+										<tr>
+											<td class="text-center" width="20%">Prepared by</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Recommending Approval</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Approved by</td>
+										</tr>
+										<tr>
+											<td class="text-center border-b"><br></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+										</tr>
+										<tr>
+											<td class="text-center p-0">Employee Name</td>
+											<td></td>
+											<td class="text-center p-0">Employee Name</td>
+											<td></td>
+											<td class="text-center p-0">Employee Name</td>
+										</tr>
+										<tr>
+											<td class="text-center"><br><br></td>
+											<td></td>
+											<td class="text-center"></td>
+											<td></td>
+											<td class="text-center"></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
 						<div class="row my-2 po_buttons" > 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">

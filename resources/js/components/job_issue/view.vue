@@ -188,7 +188,7 @@
 														<td class=""></td>
 													</tr>
 													<tr class="">
-														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
+														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6">
 															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
 															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
 															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
@@ -197,16 +197,11 @@
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" value="200.00"></td>
 													</tr>
-													
 													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-														<td class="p-0">
-															<div class="flex">
-																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
-																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
-															</div>
-														</td>
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
 													</tr>
+													
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
@@ -214,6 +209,15 @@
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
+													</tr>
+                                                    <tr class="">
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
+														<td class="p-0">
+															<div class="flex">
+																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
+																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
+															</div>
+														</td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>

@@ -262,7 +262,7 @@
 													<td class=""></td>
 												</tr>
 												<tr class="">
-													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
+													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6">
 														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
 														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
 														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
@@ -271,7 +271,19 @@
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
 													<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" value="200.00"></td>
 												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
+													<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
+												</tr>
 												
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
+													<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
+												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
+													<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
+												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 													<td class="p-0">
@@ -280,14 +292,6 @@
 															<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
 														</div>
 													</td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
-													<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
-													<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
@@ -324,8 +328,8 @@
 													</td>
 													<td class="border-y-none p-1 text-center"><input type="text" value="5" class="w-full text-center"></td>
 													<td class="border-y-none p-1 text-center"><input type="text" value="lot" class="w-full text-center"></td>
-													<td class="border-y-none p-1 text-right"><input type="text" value="100.00" class="w-full text-center"></td>
-													<td class="border-y-none p-1 text-right"><input type="text" value="500.00" class="w-full text-center"></td>
+													<td class="border-y-none p-1 text-right"><input type="text" value="100.00" class="w-full text-right"></td>
+													<td class="border-y-none p-1 text-right"><input type="text" value="500.00" class="w-full text-right"></td>
 												</tr>
 												<tr class="bg-yellow-100">
 													<td class="p-1 text-center" width="3%">#</td>
@@ -342,8 +346,8 @@
 													</td>
 													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
 													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-right p-1" value="100.00"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-right p-1" value="500.00"></td>
 												</tr>
 												<tr class="">
 													<td class="p-1 text-center align-top">1</td>
@@ -352,8 +356,8 @@
 													</td>
 													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="5"></td>
 													<td class="align-top text-center"><input type="text" class="w-full text-center p-1" value="lot"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="100.00"></td>
-													<td class="align-top text-right"><input type="text" class="w-full text-center p-1" value="500.00"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-right p-1" value="100.00"></td>
+													<td class="align-top text-right"><input type="text" class="w-full text-right p-1" value="500.00"></td>
 												</tr>
 												<tr class="">
 													<td class=""></td>
@@ -365,7 +369,7 @@
 													<td class=""></td>
 												</tr>
 												<tr class="">
-													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
+													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6">
 														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
 														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
 														<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
@@ -374,7 +378,19 @@
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
 													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" value="200.00"></td>
 												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
+												</tr>
 												
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
+												</tr>
+												<tr class="">
+													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
+													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
+												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 													<td class="p-0">
@@ -383,14 +399,6 @@
 															<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
 														</div>
 													</td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="200.00"></td>
-												</tr>
-												<tr class="">
-													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" value="100.00"></td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
@@ -555,13 +563,13 @@
 												<td class="text-center border-b"></td>
 											</tr>
 											<tr>
-												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name"></td>
 												<td></td>
-												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name"></td>
 												<td></td>
-												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name"></td>
 												<td></td>
-												<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name"></td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>

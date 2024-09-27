@@ -114,6 +114,16 @@
 		warningAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
 	}
+
+	const showSigna = () => {
+		let show=document.getElementById('showsigna');
+		let checkbox=document.getElementById('checkbox');
+		if(checkbox.checked){
+			show.style.display = 'block';   
+		}else{
+			show.style.display = 'none'; 
+		}
+	}
 </script>
 <template>
 	<navigation>
@@ -318,8 +328,65 @@
 									</table>
 								</div>
 							</div>
-							<br>
-							<!-- <hr class="border-dashed"> -->
+							<hr class="border-dashed">
+							<div class="row">
+								<div class="col-lg-12">
+									<label for="" class="text-sm leading-none">
+										<input id="checkbox" type="checkbox" @click="showSigna()">
+										Petty Cash
+									</label>
+								</div>
+							</div>
+							<div id="showsigna" style="display: none;">
+								<div class="row mt-2">
+									<div class="col-lg-3 col-md-3">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Date</label>
+											<input type="date" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
+										</div>
+									</div>
+									<div class="col-lg-5 col-md-5">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Comment</label>
+											<input type="text" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
+										</div>
+									</div>
+								</div>
+								<div class="row mt-4 mb-4">
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Recommending Approval</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-0"><input type="text" class="p-1 text-center w-full bg-yellow-50" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-0"><input type="text" class="p-1 text-center w-full bg-yellow-50" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-0"><input type="text" class="p-1 text-center w-full bg-yellow-50" placeholder="Employee Name"></td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
 							<div class="row my-2"> 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
@@ -445,8 +512,65 @@
 									</table>
 								</div>
 							</div>
-							<br>
-							<!-- <hr class="border-dashed"> -->
+							<hr class="border-dashed">
+							<div class="row">
+								<div class="col-lg-12">
+									<label for="" class="text-sm leading-none">
+										<input id="checkbox" type="checkbox" @click="showSigna()">
+										Petty Cash
+									</label>
+								</div>
+							</div>
+							<div id="showsigna" style="display: none;">
+								<div class="row mt-2">
+									<div class="col-lg-3 col-md-3">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Date</label>
+											<input type="date" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
+										</div>
+									</div>
+									<div class="col-lg-5 col-md-5">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Comment</label>
+											<input type="text" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
+										</div>
+									</div>
+								</div>
+								<div class="row mt-4 mb-4">
+									<div class="col-lg-12">
+										<table class="w-full text-xs">
+											<tr>
+												<td class="text-center" width="20%">Prepared by</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Recommending Approval</td>
+												<td width="2%"></td>
+												<td class="text-center" width="20%">Approved by</td>
+											</tr>
+											<tr>
+												<td class="text-center border-b"><br></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+												<td></td>
+												<td class="text-center border-b"></td>
+											</tr>
+											<tr>
+												<td class="text-center p-0"><input type="text" class="p-1 text-center w-full bg-yellow-50" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-0"><input type="text" class="p-1 text-center w-full bg-yellow-50" placeholder="Employee Name"></td>
+												<td></td>
+												<td class="text-center p-0"><input type="text" class="p-1 text-center w-full bg-yellow-50" placeholder="Employee Name"></td>
+											</tr>
+											<tr>
+												<td class="text-center"><br><br></td>
+												<td></td>
+												<td class="text-center"></td>
+												<td></td>
+												<td class="text-center"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
 							<div class="row my-2"> 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
@@ -454,6 +578,7 @@
 										<button type="submit" class="btn btn-danger mr-2 w-36" @click="openDangerAlert()">Cancel</button>
 										<button type="submit" class="btn btn-warning text-white mr-2 w-36" @click="openWarningAlert()">Save as Draft</button>
 										<button type="submit" class="btn btn-primary mr-2 w-44" @click="openSuccessAlert()">Save</button>
+										<!-- <a href="" class="btn btn-primary mr-2 w-52">Save & Print Petty Cash</a> -->
 									</div>
 								</div>
 							</div>
