@@ -14,14 +14,22 @@
 	import jszip from 'jszip';
 	import $ from 'jquery'
     import moment from 'moment'
+    const drawer_revise = ref(false)
+	const hideModal = ref(true)
+    const openDrawerRevise = () => {
+		drawer_revise.value = !drawer_revise.value
+	}
+    const closeModal = () => {
+		drawer_revise.value = !hideModal.value
+	}
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
     const data = [
-        ['2024-08-15','POPE19-1000-1001','MF Computer Solutions, Inc.','PR-19772-8727','Purchase Request','Pending',''],
-        ['2024-08-16','PEIC20-1176-1283','A-one Industrial Sales','FLM22-2020','Direct Purchase','Pending',''],
-        ['2024-08-16','PSPE20-1224-1358','7RJ Brothers Sand & Gravel & Gen. Mdse.','ENV24-1359','Purchase Request','Fully Delivered',''],
-        ['2024-08-17','PENV19-1045-1344','A.C. Parts Merchandising','OPE24-1355','Repeat Order','Cancelled',''],
-        ['2024-08-20','PWHC19-1173-1398','Bacolod General Parts Marketing','HAS24-1354','Purchase Request','Fully Delivered',''],
+        ['2024-08-15','','MF Computer Solutions, Inc.','PR-19772-8727','Purchase Request','Pending',''],
+        ['2024-08-16','','A-one Industrial Sales','FLM22-2020','Direct Purchase','Pending',''],
+        ['2024-08-16','','7RJ Brothers Sand & Gravel & Gen. Mdse.','ENV24-1359','Purchase Request','Fully Delivered',''],
+        ['2024-08-17','','A.C. Parts Merchandising','OPE24-1355','Repeat Order','Cancelled',''],
+        ['2024-08-20','','Bacolod General Parts Marketing','HAS24-1354','Purchase Request','Fully Delivered',''],
     ];
     const options = {
 		// dom: 'Bftip',
@@ -122,7 +130,7 @@
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" width="8%"> PO Date</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> PO No</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="18%"> PO No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> Supplier</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> PR #</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> Mode</th>
@@ -134,88 +142,61 @@
                                         </th>
                                     </tr>
                                 </thead>
+                                <template #column-1="">
+                                        <span class="text-left z-50 w-full cursor-pointer" @click="openDrawerRevise()">
+                                            POPE19-1000-1001.r1
+                                        </span>
+								</template>
                                 <template #column-6="">
                                     <a href="/pur_po/view" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>
                             </DataTable>
-                            <!-- <table class="table table-bordered table-hover !border ">
-                                <thead>
-                                    <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="8%"> PO Date</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> PO No</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Supplier</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> PR #</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Mode</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="5%"> Status</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
-                                            <span class="text-center  px-auto">
-                                                <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
-                                            </span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="">
-                                        <td class="!align-top !text-xs"> 05/06/24 </td>
-                                        <td class="!align-top !text-xs"> Supplier 1 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> rfq_it001 </td>
-                                        <td class="!align-top !text-xs"> 
-                                           Henne Tanan
-                                        </td>
-                                        <td class="!align-top !text-xs !text-center">
-                                            <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">PO Issued</span>
-                                        </td>
-                                        <td class="!align-top !text-xs p-1" align="center">
-                                            <a href="/pur_po/view" class="btn btn-xs btn-warning text-white p-1">
-                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="">
-                                        <td class="!align-top !text-xs"> 05/06/24 </td>
-                                        <td class="!align-top !text-xs"> Supplier 2 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> rfq_it001 </td>
-                                        <td class="!align-top !text-xs"> 
-                                           Henne Tanan
-                                        </td>
-                                        <td class="!align-top !text-xs !text-center">
-                                            <span class="badge bg-orange-300 text-white !rounded-xl px-2 p-1">Draft</span>
-                                        </td>
-                                        <td class="!align-top !text-xs p-1" align="center">
-                                            <a href="/pur_po/view" class="btn btn-xs btn-warning text-white p-1">
-                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="">
-                                        <td class="!align-top !text-xs"> 05/06/24 </td>
-                                        <td class="!align-top !text-xs"> Supplier 3 </td>
-                                        <td class="!align-top !text-xs"> RFQ-CENPRI-1001 </td>
-                                        <td class="!align-top !text-xs"> rfq_it001 </td>
-                                        <td class="!align-top !text-xs"> 
-                                           Henne Tanan
-                                        </td>
-                                        <td class="!align-top !text-xs !text-center">
-                                            <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">PO Issued</span>
-                                        </td>
-                                        <td class="!align-top !text-xs p-1" align="center">
-                                            <a href="/pur_po/view" class="btn btn-xs btn-warning text-white p-1">
-                                                <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table> -->
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 	</navigation>
+    <Transition
+        enter-active-class="transition ease-out duration-500"
+        enter-from-class="opacity-0 "
+        enter-to-class="opacity-100 "
+        leave-active-class="transition ease-in duration-75"
+        leave-from-class="opacity-100 "
+        leave-to-class="opacity-0 scale-95"
+    >
+        <div class="modal pt-0 px-0 !bg-transparent" :class="{ show:drawer_revise }">
+            <div @click="closeModal" class="w-full h-screen fixed bg-transparent"></div>
+            <div class="modal__content w-3/12 float-right min-h-[690px]">
+                <div class="row mb-3">
+                    <div class="col-lg-12 flex justify-between">
+                        <span class="font-bold ">Revise List</span>
+                        <a href="#" class="text-gray-600" @click="closeModal">
+                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                        </a>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="modal_s_items ">
+                    <div class="">
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
+                        <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
+                    </div>
+                    <!-- <div>
+                        <p class="text-center text-sm">No Data</p>
+                    </div> -->
+                </div> 
+            </div>
+        </div>
+    </Transition>
 </template>
 <style>
     @import 'datatables.net-dt';

@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, ArrowUpOnSquareStackIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 
@@ -9,6 +9,7 @@
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	const modalRefered = ref(true)
 	const opendangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -22,8 +23,14 @@
 		dangerAlert.value = !hideAlert.value
 		dangerAlert_item.value = !hideAlert.value
 	}
+	const closeModal = () => {
+		modalRefered.value = !hideAlert.value
+	}
 	const printDiv = () => {
 		window.print();
+	}
+	const openModalReferred = () => {
+		modalRefered.value = !modalRefered.value
 	}
 </script>
 <template>
@@ -109,7 +116,7 @@
 										<td class="p-1 uppercase" width="15%">Recom Date</td>
 										<td class="p-1 uppercase po_buttons" width="1%" align="center">
 											<span>
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></XMarkIcon>
+												<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></Bars3Icon>
 											</span>
 										</td>
 									</tr>
@@ -122,10 +129,15 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
-											</button>
+										<td class="text-center po_buttons p-1">
+											<div class="flex justify-center space-x-1">
+												<button class="btn btn-xs btn-info p-1" @click="openModalReferred()">
+													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
+												</button>
+												<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
+													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+												</button>
+											</div>
 										</td>
 									</tr>
 									<tr>
@@ -137,10 +149,15 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
-											</button>
+										<td class="text-center po_buttons p-1">
+											<div class="flex justify-center space-x-1">
+												<button class="btn btn-xs btn-info p-1" @click="openModalReferred()">
+													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
+												</button>
+												<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
+													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+												</button>
+											</div>
 										</td>
 									</tr>
 									<tr>
@@ -152,10 +169,15 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
-											</button>
+										<td class="text-center po_buttons p-1">
+											<div class="flex justify-center space-x-1">
+												<button class="btn btn-xs btn-info p-1" @click="openModalReferred()">
+													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
+												</button>
+												<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
+													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+												</button>
+											</div>
 										</td>
 									</tr>
 								</table>
@@ -300,6 +322,46 @@
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
 									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:modalRefered }">
+				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div class="modal__content w-6/12">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Referred</span>
+							<a href="#" class="text-gray-600" @click="closeModal">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Comment</label>
+									<textarea type="text" class="form-control" placeholder="Comment" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<a href="" class="btn btn-primary mr-2 w-44">Save</a>
 								</div>
 							</div>
 						</div>

@@ -14,6 +14,14 @@
 	import jszip from 'jszip';
 	import $ from 'jquery'
     import moment from 'moment'
+    const drawer_revise = ref(false)
+	const hideModal = ref(true)
+    const openDrawerRevise = () => {
+		drawer_revise.value = !drawer_revise.value
+	}
+    const closeModal = () => {
+		drawer_revise.value = !hideModal.value
+	}
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
     const data = [
@@ -91,6 +99,7 @@
 		// buttons: ['copy','excel','csv','pageLength']
 	};
 </script>
+<style></style>
 <template>
 	<navigation>
         <div class="row">
@@ -136,6 +145,11 @@
                                         </th>
                                     </tr>
                                 </thead>
+                                <template #column-2="">
+                                        <span class="text-left m-0 p-0 leadinng-none cursor-pointer" @click="openDrawerRevise()">
+                                            JOIPE19-1000-1001.r1
+                                        </span>
+								</template>
                                 <template #column-8="">
                                     <a href="/job_issue/view" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
@@ -148,6 +162,43 @@
             </div>
         </div>
 	</navigation>
+    <Transition
+        enter-active-class="transition ease-out duration-500"
+        enter-from-class="opacity-0 "
+        enter-to-class="opacity-100 "
+        leave-active-class="transition ease-in duration-75"
+        leave-from-class="opacity-100 "
+        leave-to-class="opacity-0 scale-95"
+    >
+        <div class="modal pt-0 px-0 !bg-transparent" :class="{ show:drawer_revise }">
+            <div @click="closeModal" class="w-full h-screen fixed bg-transparent"></div>
+            <div class="modal__content w-3/12 float-right min-h-[690px]">
+                <div class="row mb-3">
+                    <div class="col-lg-12 flex justify-between">
+                        <span class="font-bold ">Revise List</span>
+                        <a href="#" class="text-gray-600" @click="closeModal">
+                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                        </a>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="modal_s_items ">
+                    <div class="">
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662 (Main)</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r1</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r2</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r3</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r4</a>
+                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r5</a>
+                        <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r6 (Current)</a>
+                    </div>
+                    <!-- <div>
+                        <p class="text-center text-sm">No Data</p>
+                    </div> -->
+                </div> 
+            </div>
+        </div>
+    </Transition>
 </template>
 <style>
     @import 'datatables.net-dt';

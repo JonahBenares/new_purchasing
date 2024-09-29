@@ -27,7 +27,9 @@ import unitEdit from '../components/unit/edit.vue'
 
 import vendorIndex from '../components/vendor/index.vue'
 import vendorNew from '../components/vendor/new.vue'
+import vendorNew2 from '../components/vendor/new2.vue'
 import vendorEdit from '../components/vendor/edit.vue'
+import vendorEdit2 from '../components/vendor/edit2.vue'
 
 import projectIndex from '../components/project/index.vue'
 import projectNew from '../components/project/new.vue'
@@ -262,7 +264,21 @@ const routes = [
             requiresAuth:true
         }
     },
-
+    {
+        path:'/vendor/new2',
+        component: vendorNew2,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/vendor/edit2/:id',
+        component: vendorEdit2,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
     // {
     //     path:'/project',
     //     component: projectIndex,

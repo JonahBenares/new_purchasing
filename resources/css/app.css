@@ -22161,7 +22161,7 @@
     border-left: 0px solid #fff!important;
   }
 }
-.rfq_buttons, .po_buttons{
+.rfq_buttons{
   display: block;
 }
 /* #sidebar, #topbar, #breadcrumbs, #details{
@@ -22598,3 +22598,5 @@ form-row>.col,.form-row>[class*=col-]{
   src: url(fig/figtree-latin-ext-600-normal.woff2) format('woff2'), url(fig/figtree-latin-ext-600-normal.woff) format('woff'); 
   unicode-range: U+0100-02AF,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
+
+

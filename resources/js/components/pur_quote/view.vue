@@ -1,17 +1,22 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 
 	const vendor =  ref();
 	const showModal = ref(false)
 	const hideModal = ref(true)
+	const warningAlert = ref(false)
 	const openModel = () => {
 		showModal.value = !showModal.value
 	}
 	const closeModal = () => {
 		showModal.value = !hideModal.value
+		warningAlert.value = !hideModal.value
+	}
+	const openWarningAlert = () => {
+		warningAlert.value = !warningAlert.value
 	}
 </script>
 <template>
@@ -728,12 +733,13 @@
 						</div>
 						<br>
 						<div class="row my-2"> 
-							<div class="col-lg-3 col-md-3">
-								<div class="">
+							<div class="col-lg-4 col-md-3">
+								<div class="flex justify-start space-x-1">
 									<button type="submit" class="btn btn-primary">Canvass Complete</button>
+									<button type="submit" class="btn btn-warning text-white mr-2 w-" @click="openWarningAlert()">Save as Draft</button>
 								</div>
 							</div>
-							<div class="col-lg-9 col-md-3">
+							<div class="col-lg-8 col-md-3">
 								<ol class="flex items-center w-full">
 									<li class="flex w-full items-center text-white after:w-full after:h-1 after:border-b after:border-green-500 after:border-4 after:inline-block-800">
 										<span class="flex items-center font-bold justify-center w-10 h-10 bg-green-500 rounded-full lg:h-10 lg:w-10 shrink-0">
@@ -753,7 +759,7 @@
 									</li>
 									<li class="!w-30">
 										<!-- <a href="" class="btn !bg-gray-200 !w-36">Print TE</a> -->
-										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36">Print TE</a>
+										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36">Create AOQs</a>
 									</li>
 								</ol>
 							</div>
@@ -771,6 +777,48 @@
 				</div>
 			</div>
 		</div>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:warningAlert }">
+				<div @click="closeModal()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-yellow-400">Success!</h2>
+									<h5 class="leading-tight">You have successfully saved a RFQ as draft.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button @click="closeModal()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
+									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
+									<a href="/pur_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 		<Transition
             enter-active-class="transition ease-out duration-200"
             enter-from-class="opacity-0 scale-95"

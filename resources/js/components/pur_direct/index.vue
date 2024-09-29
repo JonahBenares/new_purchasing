@@ -162,14 +162,14 @@
 								</div>
 							</div>
 							<hr class="border-dashed">
-							<div class="hidden" :class="{ show:pr_supplier }">
+							<!-- <div class="hidden" :class="{ show:pr_supplier }">
 								<div class="row">							
 									<div class="col-lg-6 offset-lg-3 col-md-3">
 										<div class="form-group">
 											<label class="text-gray-500 m-0" for="">Choose Supplier</label>
 											<div class="input-group col-xs-12 !text-gray-600">
 												<select class="form-control !text-gray-600">
-													<option value="">Suppleir 1</option>
+													<option value="">Supplier 1</option>
 													<option value="">Supplier 2</option>
 												</select>
 												<span class="input-group-append">
@@ -179,12 +179,12 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div class="hidden" :class="{ show:pr_det }">
 								<div class="row">
 									<div class="col-lg-6">
 										<select class="form-control !text-gray-600 !w-96 mb-1">
-											<option value="">Suppleir 1</option>
+											<option value="">Supplier 1</option>
 											<option value="">Supplier 2</option>
 										</select>
 									</div>
@@ -258,7 +258,10 @@
 													<textarea name="" id="" rows="2" class="p-1 w-full bg-yellow-50">Monitor,</textarea>
 												</td>
 												<td class="align-top p-0 bg-yellow-50">
-													<input type="text" class="p-1 text-right w-full bg-yellow-50" placeholder="00">
+													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b" placeholder="00">
+													<select name="" id="" class="w-full text-center bg-yellow-50">
+														<option value="">--Select Currency--</option>
+													</select>
 												</td>
 												<td class="align-top p-0 bg-yellow-50">
 													<input type="text" class="p-1 text-right w-full bg-yellow-50" placeholder="00">

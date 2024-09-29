@@ -868,7 +868,7 @@
                             </Transition>
                         </li>
                         <li class="nav-item py-2 text-xs uppercase font-bold !text-gray-600 bg-gray-50 px-4">
-                            <span class="menu-title">JOI Reports</span>
+                            <span class="menu-title">JO Reports</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link !text-gray-600 cursor-pointer" @click="weeklyJORRecomOpen()" >

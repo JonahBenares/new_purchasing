@@ -162,6 +162,14 @@
 						<div v-show="pr_det">
 							<div class="row">
 								<div class="col-lg-6">
+									<select class="form-control !text-gray-600 !w-96 mb-1">
+										<option value="">Supplier 1</option>
+										<option value="">Supplier 2</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
 									<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
 									<span class="text-sm text-gray-700">Bacolod</span>
 								</div>
@@ -214,7 +222,7 @@
 											<td class="p-1 uppercase text-center" width="5%">Qty</td>
 											<td class="p-1 uppercase text-center" width="5%">UOM</td>
 											<td class="p-1 uppercase" width="25%">Item Description</td>
-											<td class="p-1 uppercase" width="25%">Details (Offer and Supplier)</td>
+											<td class="p-1 uppercase" width="25%">Offer</td>
 											<td class="uppercase p-1 text-center" width="7%">Unit Price</td>
 											<td class="uppercase p-1 text-center" width="6%">Total</td>
                                             <td class="p-1 text-center" align="center" width="1%">
@@ -619,7 +627,7 @@
                                     <input class="w-full text-sm p-1 px-2 border" placeholder="Item Description">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-3">
+							<!-- <div class="col-lg-6 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0 " for="">Supplier</label>
 									<select class="w-full text-sm p-1 px-2 border">
@@ -631,7 +639,7 @@
                                         <option value="United Bearing Industrial Corp">United Bearing Industrial Corp</option>
                                     </select>
 								</div>
-							</div>
+							</div> -->
 							<div class="col-lg-1">
 								<br>
 								<button class="btn btn-sm btn-primary">Search</button>
@@ -643,7 +651,7 @@
 									<tr class="bg-gray-100">
 										<td class="p-1 uppercase" width="20%">PO Number</td>
 										<td class="p-1 uppercase" width="30%">Item Description</td>
-										<td class="p-1 uppercase" width="30%">Supplier</td>
+										<!-- <td class="p-1 uppercase" width="30%">Supplier</td> -->
                                         <td class="p-1" align="center" width="1%">
                                             <span>
                                                 <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></PlusIcon>
@@ -653,7 +661,7 @@
 									<tr>
 										<td class="p-1">PO-9982792-88782</td>
 										<td class="p-1">Monitor</td>
-										<td class="p-1">BCG Bacolod</td>
+										<!-- <td class="p-1">BCG Bacolod</td> -->
                                         <td class="p-0 text-center">
                                             <button class="btn btn-sm btn-primary p-1" @click="closeModal()">
                                                 <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
