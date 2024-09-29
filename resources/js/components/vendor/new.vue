@@ -5,6 +5,7 @@
 	import { useRouter } from "vue-router";
 	const router = useRouter()
     let branches=ref([]);
+    let term_list=ref([]);
     let vendor_name=ref('');
     let product_services=ref('');
     let address=ref('');
@@ -21,6 +22,10 @@
     let vat=ref(0);
     let status=ref('Active');
     let remove_id=ref(0);
+	let order_no=ref('');
+	let term_desc=ref('');
+	let vendor_head_id=ref('');
+	let count=ref([]);
 
 	const modalNew = ref(false)
     const modalEdit = ref(false)
@@ -29,6 +34,7 @@
 	const VendorHeadAlert = ref(false)
 	const AddBranchAlert = ref(false)
 	const BranchAddressAlert = ref(false)
+	const TermsAlert = ref(false)
     const RemoveAlert = ref(false)
 	const termsModal = ref(false)
     const viewTermsModal = ref(false)
@@ -41,6 +47,11 @@
 	const openTerms = () => {
 		termsModal.value = !termsModal.value
 	}
+
+	const UpdateTerms = () => {
+		TermsAlert.value = !hideModal.value
+	}
+
 	const openViewTerms = () => {
 		viewTermsModal.value = !viewTermsModal.value
 	}
@@ -56,6 +67,7 @@
 		VendorHeadAlert.value = !hideModal.value
 		AddBranchAlert.value = !hideModal.value
 		BranchAddressAlert.value = !hideModal.value
+		TermsAlert.value = !hideModal.value
 	}
 
 	const RemoveModal = (index) => {
@@ -71,6 +83,10 @@
 			document.getElementById("SubmitButton").disabled = true;
 		}
 		closeModal()
+	}
+
+	const RemoveTerms= (index) =>{
+		term_list.value.splice(index,1)
 	}
 
 	const ShowList = () => {
@@ -110,21 +126,23 @@
 			BranchAddressAlert.value = !BranchAddressAlert.value
 		}else{
 			successBranchAlert.value = !successBranchAlert.value
+			
 					branches.value.push({
-					address:address.value,
-					identifier:identifier.value,
-					terms:terms.value,
-					phone:phone.value,
-					fax:fax.value,
-					contact_person:contact_person.value,
-					email:email.value,
-					tin:tin.value,
-					type:type.value,
-					notes:notes.value,
-					ewt:ewt.value,
-					vat:vat.value,
-					status:status.value,
+						address:address.value,
+						identifier:identifier.value,
+						phone:phone.value,
+						fax:fax.value,
+						contact_person:contact_person.value,
+						email:email.value,
+						tin:tin.value,
+						type:type.value,
+						notes:notes.value,
+						ewt:ewt.value,
+						vat:vat.value,
+						status:status.value,
+						terms:term_list.value,
 					});
+					
 				if(branches.value.length>=1){
 					document.getElementById("SubmitButton").disabled = false;
 				}
@@ -141,6 +159,22 @@
 				ewt.value=0
 				vat.value=0
 				status.value='Active'
+				term_list.value=[]
+				
+		}
+	}
+
+	const AddTerms= () => {
+		if(term_desc.value == ''){
+			TermsAlert.value = !TermsAlert.value
+		}else{
+		let orderno= term_list.value.length
+				term_list.value.push({
+					order_no:orderno+1,
+					term_desc:term_desc.value,
+				});
+				order_no.value=''
+				term_desc.value=''
 		}
 	}
 
@@ -152,9 +186,9 @@
 					formVendor.append('vendor_name',vendor_name.value)
 					formVendor.append('product_services',product_services.value)
 					formVendor.append('vendor_branches', JSON.stringify(branches.value))
-					axios.post("/api/add_vendor/", formVendor).then(function () {
-						// form.value.company_name=''
+					axios.post("/api/add_vendor/", formVendor).then(function (response) {
 						successAlert.value = !successAlert.value
+						vendor_head_id.value = response.data
 					});
 			}else{
 				AddBranchAlert.value = !AddBranchAlert.value
@@ -170,6 +204,10 @@
 			if(response.data.count_vendor != 0){
 				VendorHeadAlert.value = !VendorHeadAlert.value
 			}
+	}
+
+	const AddBranchTerms = () => {
+		router.push('/vendor/edit/'+vendor_head_id.value)
 	}
 
 	const BranchChecker = async () => {
@@ -223,16 +261,15 @@
 									<button @click="openNew()" class="btn btn-primary btn-sm mt-2 mt-xl-0 text-white">
 										<span>Add Branch</span>
 									</button>
-									<button @click="openTerms()" class="btn btn-primary btn-sm btn-sm mt-2 mt-xl-0 text-white">
+									<!-- <button @click="openTerms()" class="btn btn-primary btn-sm btn-sm mt-2 mt-xl-0 text-white">
 										<span>Add Terms</span>
-									</button>
+									</button> -->
 								</div>
 								<div class="overflow-x-scroll">
 									<table class="border table-bordered" width="180%">
 										<tr>
 											<th class="!text-xs p-1 bg-gray-100" width="15%"> Address</th>
 											<th class="!text-xs p-1 bg-gray-100" width="10%"> Identifier</th>
-											<th class="!text-xs p-1 bg-gray-100" width="12%"> Terms</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Phone</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Fax</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Contact Person</th>
@@ -243,6 +280,7 @@
 											<th class="!text-xs p-1 bg-gray-100"> Vat</th>
 											<th class="!text-xs p-1 bg-gray-100"> Status</th>
 											<th class="!text-xs p-1 bg-gray-100" width="5%"> Notes</th>
+											<th class="!text-xs p-1 bg-gray-100" width="12%"> Terms</th>
 											<th class="!text-xs p-1 bg-gray-100" width="1%"> 
 												<span class="text-center justify-center flex px-auto">
 													<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -252,9 +290,6 @@
 										<tr v-for="(b, index) in branches">
 											<td class="!text-xs p-1">{{ b.address }}</td>
 											<td class="!text-xs p-1">{{ b.indentifier }}</td>
-											<td class="!text-xs p-1">
-												<button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button>
-											</td>
 											<td class="!text-xs p-1">{{ b.phone }}</td>
 											<td class="!text-xs p-1">{{ b.fax }}</td>
 											<td class="!text-xs p-1">{{ b.contact_person }}</td>
@@ -265,6 +300,12 @@
 											<td class="!text-xs p-1">{{ (b.vat == 1) ? 'Vat' : 'Non-Vat' }}</td>
 											<td class="!text-xs p-1">{{ b.status }}</td>
 											<td class="!text-xs p-1">{{ b.notes }}</td>
+											<td class="!text-xs p-1">
+												<!-- <button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button> -->
+												<ul class="list-disc m-0" v-for="(t, indexes) in b.terms">
+													{{ t.order_no }}. {{ t.term_desc }}
+												</ul>
+											</td>
 											<td class="!text-xs p-0" align="center">
 												<!-- <button class="btn-info btn btn-xs text-white p-1" @click="openEdit()">
 													<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></PencilIcon>
@@ -324,28 +365,6 @@
 									<label class="text-gray-500 m-0" >Identifier</label>
 									<textarea class="form-control" placeholder="Indetifier" v-model="identifier"></textarea>
 								</div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<table class="table-bordered !text-xs w-full mb-3">
-									<tr>
-										<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
-									</tr>
-									<tr>
-										<td class="p-0" colspan="2">
-											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
-										</td>
-										<td class="p-0" width="1">
-											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
-												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-											</button>
-										</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center" width="4%">1.</td>
-										<td class="p-1 align-top" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
-									</tr>
-									
-								</table>
 							</div>
 						</div>
 						<div class="row">
@@ -414,7 +433,6 @@
 									</div>
 								</div>
 							</div>
-							
 						</div>
 						<div class="row">
 							<div class="col-lg-12 col-md-12">
@@ -423,6 +441,32 @@
 									<textarea class="form-control" placeholder="Notes" v-model="notes"></textarea>
 								</div>
 							</div>
+						</div>
+						<div class="col-lg-12 col-md-12">
+							<table class="table-bordered !text-xs w-full mb-3">
+								<tr>
+									<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
+								</tr>
+								<tr>
+									<td class="p-0" colspan="2">
+										<input type="text" class="p-1 w-full bg-yellow-50" v-model="term_desc">
+									</td>
+									<td class="p-0" width="1">
+										<button type="button" class="btn btn-primary p-1" @click="AddTerms">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</td>
+								</tr>
+								<tr v-for="(tl, index) in term_list">
+									<td class="p-1 align-top" width="6%"><input type="text" class="form-control" v-model="tl.order_no"></td>
+									<td class="p-1 align-top" colspan="1"><input type="text" class="form-control" v-model="tl.term_desc"></td>
+									<td class="p-1 align-top" colspan="1">
+									<button class="btn btn-danger p-1" @click="RemoveTerms(index)">
+										<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+									</button>
+									</td>
+								</tr>
+							</table>
 						</div>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
@@ -534,7 +578,7 @@
 				<div class="modal__content w-11/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
-							<span class="font-bold ">Add Terns and Condition</span>
+							<span class="font-bold ">Add Terms and Condition</span>
 							<a href="#" class="text-gray-600" @click="closeModal">
 								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
 							</a>
@@ -556,7 +600,7 @@
 									</tr>
 									<tr>
 										<td class="p-0" colspan="2">
-											<input type="text" class="p-1 w-full bg-yellow-50" v-model="terms_text" id="check_terms">
+											<input type="text" class="p-1 w-full bg-yellow-50" id="check_terms">
 										</td>
 										<td class="p-0" width="1">
 											<button type="button" class="btn btn-primary p-1" @click="addRowTerms">
@@ -834,6 +878,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="AddBranchTerms()">Add Terms</button>
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="CreateNewVendor">Create New</button>
 									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="ShowList">Vendor List</button>
 								</div>
@@ -1003,6 +1048,49 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="UpdateAddress()">Update</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeModal()">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:TermsAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Terms and Conditions field is empty!</h5>
+									<!-- <h5 class="leading-tight" v-if="address.value == ''">Address is required!</h5>
+									<h5 class="leading-tight" v-else>Address is already existing!</h5> -->
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="UpdateTerms()">Update</button>
 									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeModal()">Cancel</button>
 								</div>
 							</div>
