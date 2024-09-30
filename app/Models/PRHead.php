@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class PRHead extends Model
 {
     use HasFactory;
+    protected $table = "pr_head";
 }
