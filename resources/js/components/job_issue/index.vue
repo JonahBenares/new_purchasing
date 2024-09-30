@@ -146,7 +146,7 @@
                                     </tr>
                                 </thead>
                                 <template #column-2="">
-                                        <span class="text-left m-0 p-0 leadinng-none cursor-pointer" @click="openDrawerRevise()">
+                                        <span class="text-left m-0 p-0 leadinng-none cursor-pointer btn-link" @click="openDrawerRevise()">
                                             JOIPE19-1000-1001.r1
                                         </span>
 								</template>
