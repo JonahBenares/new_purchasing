@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RFQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,3 +58,6 @@ Route::post('/update_branch/{vendor_details_id}',[VendorController::class,'updat
 Route::get('/check_vendor_name/{vendor_name}', [VendorController::class,'check_vendor_name']);
 Route::get('/no_terms_branch/{vendor_head_id}',[VendorController::class,'no_terms_branch']);
 Route::post('/add_all_terms',[VendorController::class,'add_all_terms']);
+
+Route::get('/get_all_rfq', [RFQController::class,'get_all_rfq']);
+Route::get('/pr_list', [RFQController::class,'all_pr']);

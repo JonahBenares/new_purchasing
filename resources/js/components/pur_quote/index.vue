@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon , MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import {onMounted, ref} from "vue";
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -17,19 +17,7 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
-    const data = [
-        ['SPE/Operation24-2032-CNPR', 'RFQ-0005', 'RFQ 5', '<div class="text-center">2024-07-01</div>', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li><li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li><li class="leading-none">SGS Hardware Corporation</li></ul>', ''],
-        ['Admin24-2033-CNPR', 'RFQ-0004', 'RFQ 4', '<div class="text-center">2024-05-21</div>', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', ''],
-        ['HAS24-2034-CNPR', 'RFQ-0003', 'RFQ 3', '<div class="text-center">2024-03-13</div>', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Paint Marketing</li><li class="leading-none">Sugarland Hardware Corp.</li><li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li></ul>', ''],
-        ['FLM24-2019-CNPR', 'RFQ-0002', 'RFQ 2', '<div class="text-center">2024-02-08</div>', '<ul class="list-disc m-0"><li class="leading-none">New China Enterprise Inc.</li> </ul>', ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ 1', '<div class="text-center">2024-01-08</div>', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none">United Bearing Industrial Corp</li></ul>', ''],
-
-    ];
-
-    
-    
-    
-    
+    const router = useRouter();
 
     const options = {
 		// dom: 'Bftip',
@@ -100,6 +88,17 @@
 		// buttons: ['copy','excel','csv','pageLength']
 	};
 
+    let rfq_list=ref([]);
+
+    onMounted(async () => {
+		getRFQ()
+	})
+
+    const getRFQ = async (page = 1) => {
+		let response = await axios.get(`/api/get_all_rfq?page=${page}`);
+		rfq_list.value=response.data.rfqarray
+	}
+
 </script>
 <template>
 	<navigation>
@@ -129,7 +128,7 @@
                         </div>
                         <div class="pt-3">
                             <!-- <table class="table table-bordered table-hover !border "> -->
-                                <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                                <DataTable :data="rfq_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> PR</th>

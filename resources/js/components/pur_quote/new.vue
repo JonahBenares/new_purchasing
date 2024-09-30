@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { onMounted, ref } from "vue"
     import { useRouter } from "vue-router"
 
 	const showModal = ref(false)
@@ -15,8 +15,19 @@
 
 	const pr_det = ref(false)
 
+	let prnolist=ref([]);
+	let pr_no=ref([]);
 	let vendor_list=ref([]);
 	let vendor_name=ref('');
+
+	onMounted(async () => {
+		getprno()
+	})
+
+	const getprno = async () => {
+			let response = await axios.get("/api/pr_list");
+			prnolist.value=response.data
+	}
 
 	const addVendor= () => {
 		for(var x=0; x<vendor_list.value.length; x++){
@@ -84,9 +95,8 @@
 								<label class="text-gray-500 m-0" for="">Choose PR Number</label>
 								<input type="file" name="img[]" class="file-upload-default">
 								<div class="input-group col-xs-12">
-									<select class="form-control file-upload-info">
-                                        <option value="">PR-CENPRI24-1001</option>
-                                        <option value="">PR-CENPRI24-1002</option>
+									<select class="form-control file-upload-info" v-model="pr_no" @change="getprno()">
+                                        <option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }}</option>
                                     </select>
 									<span class="input-group-append">
 										<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
