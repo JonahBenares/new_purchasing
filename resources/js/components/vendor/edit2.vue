@@ -285,7 +285,7 @@
 									</button>
 								</div>
 								<div class="border">
-									<div class="flex justify-between p-2 ">
+									<div class="flex justify-between p-2 hover:bg-gray-100">
 										<button class="w-full !text-left" @click="moreDetails =!moreDetails">
 											<div class=" w-full bg-gren-50">
 												<p class="mb-1 text-gray-600 font-bold text-xs">Rizal-Mabini Street, Brgy 31, Bacolod City , Necgros Occidental </p>

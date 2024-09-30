@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, XMarkIcon, PlusIcon, CheckIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, XMarkIcon, PencilIcon, CheckIcon, PlusIcon, EllipsisVerticalIcon, PencilSquareIcon} from '@heroicons/vue/24/solid'
     import {onMounted, ref} from "vue";
 	import { useRouter } from "vue-router";
 	const router = useRouter()
@@ -39,7 +39,7 @@
 	const termsModal = ref(false)
     const viewTermsModal = ref(false)
 	const hideModal = ref(true)
-
+	const moreDetails = ref(false)
 	const openNew = () => {
 		modalNew.value = !modalNew.value
 	}
@@ -265,6 +265,115 @@
 										<span>Add Terms</span>
 									</button> -->
 								</div>
+								<div class="border">
+									<div class="flex justify-between p-2 hover:bg-gray-100">
+										<button class="w-full !text-left" @click="moreDetails =!moreDetails">
+											<div class=" w-full bg-gren-50">
+												<p class="mb-1 text-gray-600 font-bold text-xs">Rizal-Mabini Street, Brgy 31, Bacolod City , Necgros Occidental </p>
+												<div class="flex justify-start space-x-4 text-xs text-gray-600">
+													<span class="pr-1" ><span class="text-gray-800">TIN :</span> 9027720-8727323</span>
+													<span class="pr-1" ><span class="text-gray-800">Contact Person :</span> Maria Beverly Lee</span>
+													<span class="pr-1" ><span class="text-gray-800">Contact Number :</span> 09972872662/626278828826</span>
+													<span class="pr-1" ><span class="text-gray-800">Fax :</span> 18638271-23847</span>
+												</div>
+											</div>
+										</button>
+										<div class="w-4 pr-2">
+											<button class="text-gray-500 mr-2">
+												<PencilSquareIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PencilSquareIcon>
+											</button>
+										</div>
+										
+									</div>
+									<div class="" v-show="moreDetails">
+										<hr class="border-dashed m-0">
+										<div class="row">
+											<div class="col-lg-5 border-r">
+												<div class="p-2 ">
+													<table class="w-full text-xs">
+														<tr>
+															<td class="!text-gray-800" width="13%">Identifier </td>
+															<td>: sample data</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Email</td>
+															<td>: sample data</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Type</td>
+															<td>: sample data</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">EWT</td>
+															<td>: sample data</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">VAT</td>
+															<td>: sample data</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Status</td>
+															<td>: sample data</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Notes</td>
+															<td>: sample data</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+											<div class="col-lg-7 pl-0">
+												<div class="">
+													<table class="table-bordered text-xs w-full">
+														<tr>
+															<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
+														</tr>
+														<tr>
+															<td class="align-top text-center" width="4%">1.</td>
+															<td class="align-top px-1" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
+														</tr>
+														<tr>
+															<td class="align-top text-center" width="4%">2.</td>
+															<td class="align-top px-1" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
+														</tr>
+														<tr>
+															<td class="align-top text-center" width="4%">3.</td>
+															<td class="align-top pl-1" colspan="2">
+																<div class="flex justify-start space-x-1">
+																	<span >Price is </span>
+																	<span>Exclusive of VAT</span>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td class="align-top text-center" width="4%">4.</td>
+															<td class="align-top  pl-1" colspan="2">
+																<div class="flex justify-start space-x-1">
+																	<span>Payment </span>
+																	<span> COD</span>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td class="align-top text-center" width="4%">5.</td>
+															<td class="align-top  pl-1" colspan="2">
+																<div class="flex justify-start space-x-1">
+																	<span>Delivery Term </span>
+																	<span> Sample</span>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td class="align-top text-center" width="4%">6.</td>
+															<td class="align-top  pl-1" colspan="2">sample term</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br>
 								<div class="overflow-x-scroll">
 									<table class="border table-bordered" width="180%">
 										<tr>
