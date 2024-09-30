@@ -9,7 +9,7 @@
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
-	const modalRefered = ref(true)
+	const modalRefered = ref(false)
 	const opendangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
