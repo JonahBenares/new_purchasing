@@ -8,6 +8,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RFQController;
+use App\Http\Controllers\PRController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -61,3 +62,5 @@ Route::post('/add_all_terms',[VendorController::class,'add_all_terms']);
 
 Route::get('/get_all_rfq', [RFQController::class,'get_all_rfq']);
 Route::get('/pr_list', [RFQController::class,'all_pr']);
+
+Route::post('/import_pr',[PRController::class,'import_pr']);

@@ -1,10 +1,12 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+	import axios from 'axios';
+    import { onMounted, ref, watch } from "vue"
     import { useRouter } from "vue-router"
-
 	let item_list=ref([]);
+	let error=ref([]);
+	let success=ref('');
 	let item_no=ref();
 	let qty=ref('');
 	let uom=ref('');
@@ -12,23 +14,12 @@
 	let item_desc=ref('');
 	let wh_stocks=ref('');
 	let date_needed=ref('');
-
 	const pr_options = ref();
-	// const pr_manual= ref(false)
-	// const pr_upload= ref(false)
-	// const hide_pr = ref(true)
-	// const open_manual = () => {
-	// 	pr_manual.value = !pr_manual.value
-	// 	pr_upload.value = !hide_pr.value
-	// }
-    // const open_upload = () => {
-	// 	pr_upload.value = !pr_upload.value
-	// 	pr_manual.value = !hide_pr.value
-	// }
-	// const close_both = () => {
-	// 	pr_manual.value = !hide_pr.value
-	// 	pr_upload.value = !hide_pr.value
-	// }
+	let check_pr=ref(true)
+	let prFile=ref("");
+	let prUrl=ref("");
+	let error_inventory=ref("");
+	const dangerAlerterrors = ref(false)
 	const addItem= () => {
 		if(qty.value == ''){
 			alert("Quantity must not be empty!")
@@ -106,6 +97,7 @@
 		warningAlert.value = !warningAlert.value
 	}
 	const closeAlert = () => {
+		dangerAlerterrors.value = !hideAlert.value
 		successAlert.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
 		dangerAlert_item.value = !hideAlert.value
@@ -124,6 +116,53 @@
 			show.style.display = 'none'; 
 		}
 	}
+
+	const upload_pr = (event) => {
+		const btn_pr = document.getElementById("btn_pr");
+		btn_pr.disabled = false;
+		let file = event.target.files[0];
+		if(event.target.files.length===0){
+			prFile.value='';
+			prUrl.value='';
+			return;
+		}else if(file['size'] < 2111775){
+			prFile.value = event.target.files[0];
+			error_inventory.value=''
+		}else{
+			prUrl.value='';
+			error_inventory.value='File size cannot be bigger than 2 MB'
+			dangerAlerterrors.value = !dangerAlerterrors.value
+			btn_pr.disabled = true;
+		}
+	}
+	
+	watch(prFile, (prFile) => {
+		if(!(prFile instanceof File)){
+			return;
+		}
+		let fileReader = new FileReader();
+		fileReader.readAsDataURL(prFile)
+		fileReader.addEventListener("load", () => {
+			prUrl.value=fileReader.result
+		})
+	})
+
+	const onSave = () => {
+		const formData= new FormData()
+		formData.append('upload_pr',prFile.value)
+		axios.post("/api/import_pr",formData).then(function (response) {
+			console.log(response.data);
+			// success.value='You have successfully imported new pr.'
+			// prFile.value=''
+			// successAlert.value=!successAlert.value
+			// const btn_pr = document.getElementById("btn_pr");
+			// btn_pr.disabled = true;
+		}, function (err) {
+			console.log(err.response.data.message)
+			// error.value = err.response.data.message;
+			// dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+    }
 </script>
 <template>
 	<navigation>
@@ -155,9 +194,10 @@
 								<label class="text-gray-500 m-0" for="">Import PR Excel File here or Manual encode below</label>
 								<input type="file" name="img[]" class="file-upload-default">
 								<div class="input-group col-xs-12">
-									<input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+									<input type="file" class="form-control file-upload-info" id="upload_pr" name="upload_pr" @change="upload_pr" placeholder="Upload Image">
 									<span class="input-group-append">
-										<button class="btn btn-primary" type="button" v-on:click="pr_options = 'pr_upload'">Upload</button>
+										<button class="btn btn-primary" :disabled="check_pr" id="btn_pr" @click="onSave()">Upload</button>
+										<!-- <button class="btn btn-primary" type="button" :disabled="check_pr" id="btn_pr" v-on:click="pr_options = 'pr_upload'">Upload</button> -->
 									</span>
 								</div>
 								</div>
@@ -613,7 +653,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created a new PR.</h5>
+									<h5 class="leading-tight">{{ success }}</h5>
 								</div>
 							</div>
 						</div>
@@ -721,7 +761,7 @@
             leave-from-class="opacity-100 scale-500"
             leave-to-class="opacity-0 scale-95"
         >
-			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item }">
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlerterrors }">
 				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
@@ -736,8 +776,9 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
-									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">Are you sure you want to remove this Item?</h5>
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
+									<h5 class="leading-tight" v-if="error!=''" v-for="er in error">{{ er }}</h5>
+									<h5 class="leading-tight" v-else-if="error_inventory!=''">{{ error_inventory }}</h5>
 								</div>
 							</div>
 						</div>
@@ -745,8 +786,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="removeItem(index)">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
 						</div>
