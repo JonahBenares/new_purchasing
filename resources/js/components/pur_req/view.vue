@@ -114,7 +114,7 @@
 										<td class="p-1 uppercase" width="10%">WH Stocks</td>
 										<td class="p-1 uppercase" width="15%">Date Needed</td>
 										<td class="p-1 uppercase" width="15%">Recom Date</td>
-										<td class="p-1 uppercase po_buttons" width="1%" align="center">
+										<td class="p-1 uppercase po_buttons" width="6%" align="center">
 											<span>
 												<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></Bars3Icon>
 											</span>
@@ -129,8 +129,8 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons p-1">
-											<div class="flex justify-center space-x-1">
+										<td class="text-center po_buttons p-0">
+											<div class="space-x-1">
 												<button class="btn btn-xs btn-info p-1" @click="openModalReferred()">
 													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
 												</button>
@@ -149,8 +149,8 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons p-1">
-											<div class="flex justify-center space-x-1">
+										<td class="text-center po_buttons p-0">
+											<div class="space-x-1">
 												<button class="btn btn-xs btn-info p-1" @click="openModalReferred()">
 													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
 												</button>
@@ -169,8 +169,8 @@
 										<td class="p-1"></td>
 										<td class="p-1">08/25/24</td>
 										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons p-1">
-											<div class="flex justify-center space-x-1">
+										<td class="text-center po_buttons p-0">
+											<div class="space-x-1">
 												<button class="btn btn-xs btn-info p-1" @click="openModalReferred()">
 													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
 												</button>

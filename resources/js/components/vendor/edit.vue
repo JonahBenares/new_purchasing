@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, XMarkIcon, PencilIcon, CheckIcon, PlusIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, XMarkIcon, PencilIcon, CheckIcon, PlusIcon, EllipsisVerticalIcon, PencilSquareIcon} from '@heroicons/vue/24/solid'
 	import {onMounted, ref} from "vue";
 	import { useRouter } from "vue-router";
 	const router = useRouter();
@@ -70,7 +70,7 @@
 	const TermsAlert = ref(false)
 	const AllTermsSuccess = ref(false)
 	const hideModal = ref(true)
-
+	const moreDetails = ref(false)
 	const openNew = () => {
 		modalNew.value = !modalNew.value
 	}
@@ -128,6 +128,7 @@
 		termsModal.value = !hideModal.value
 		AllTermsSuccess.value = !hideModal.value
 		all_term_list.value=[]
+		new_term_list.value=[]
 		VendorDetails()
 	}
 
@@ -379,8 +380,18 @@
 					document.getElementById("AllTerms").disabled = true;
 				}
 			}
-			
 	}
+
+	const ShowBranchDetails= (index) => {
+		var showdetails = document.getElementById("branch_dets_disp"+index);
+		var displaySetting = showdetails.style.display;
+		if (displaySetting == 'block') {
+			showdetails.style.display = 'none';
+		}else {
+			showdetails.style.display = 'block';
+		}
+	}
+
 </script>
 <template>
 	<navigation>
@@ -429,12 +440,88 @@
 										<span>Add Terms</span>
 									</button>
 								</div>
-								<div class="overflow-x-scroll">
+								<div class="border" v-for="(b, index) in branches" :class="(b.status=='Inactive') ? 'bg-red-100' : ''">
+									<div class="flex justify-between p-2 ">
+										<!-- <button class="w-full !text-left" @click="moreDetails =!moreDetails"> -->
+											<button class="w-full !text-left" @click="ShowBranchDetails(index)">
+											<div class=" w-full bg-gren-50">
+												<p class="mb-1 text-gray-600 font-bold text-xs">{{ b.address}}</p>
+												<div class="flex justify-start space-x-4 text-xs text-gray-600">
+													<span class="pr-1" ><span class="text-gray-800">TIN :</span> {{ b.tin}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Contact Person :</span> {{ b.contact_person}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Contact Number :</span> {{ b.phone}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Fax :</span> {{ b.fax}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Email :</span> {{ b.email}}</span>
+												</div>
+											</div>
+										</button>
+										<div class="w-4 pr-2">
+											<button class="text-gray-500 mr-2" @click="EditBranch(b.id)" v-if="(b.id != 0)">
+												<PencilSquareIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PencilSquareIcon>
+											</button>
+											<button class="btn btn-danger p-1" @click="RemoveModal(index)" v-else>
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+											</button>
+										</div>
+										
+									</div>
+									<!-- <div class="" v-show="moreDetails"> -->
+									<div class="" style="display: none;" :id="'branch_dets_disp'+index">
+										<hr class="border-dashed m-0">
+										<div class="row">
+											<div class="col-lg-5 border-r">
+												<div class="p-2 ">
+													<table class="w-full text-xs">
+														<tr>
+															<td class="!text-gray-800" width="13%">Identifier </td>
+															<td>: {{ b.identifier}}</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Type</td>
+															<td>: {{ b.type}}</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">EWT</td>
+															<td>: {{ b.ewt}}</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">VAT</td>
+															<td>: {{ (b.vat == '1') ? 'Vat' : 'Non-vat'}}</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Status</td>
+															<td>: {{ b.status}}</td>
+														</tr>
+														<tr>
+															<td class="!text-gray-800">Notes</td>
+															<td>: {{ b.notes}}</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+											<div class="col-lg-7 pl-0">
+												<div class="">
+													<table class="table-bordered text-xs w-full">
+														<tr>
+															<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
+														</tr>
+														<tr  v-for="(t, indexes) in b.terms">
+															<td class="align-top text-center" width="4%">{{ t.order_no }}.</td>
+															<td class="align-top px-1" colspan="2">{{ t.terms }}</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<input type="hidden" v-model="b.id">
+								</div>
+								<br>
+								<!-- <div class="overflow-x-scroll">
 									<table class="border table-bordered" width="180%">
 										<tr>
 											<th class="!text-xs p-1 bg-gray-100" width="15%"> Address</th>
 											<th class="!text-xs p-1 bg-gray-100" width="10%"> Identifier</th>
-											<!-- <th class="!text-xs p-1 bg-gray-100" width="12%"> Terms</th> -->
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Phone</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Fax</th>
 											<th class="!text-xs p-1 bg-gray-100" width="8%"> Contact Person</th>
@@ -455,9 +542,6 @@
 										<tr v-for="(b, index) in branches">
 											<td class="!text-xs p-1">{{ b.address}}</td>
 											<td class="!text-xs p-1">{{ b.identifier}}</td>
-											<!-- <td class="!text-xs p-1">
-												<button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button>
-											</td> -->
 											<td class="!text-xs p-1">{{ b.phone}}</td>
 											<td class="!text-xs p-1">{{ b.fax}}</td>
 											<td class="!text-xs p-1">{{ b.contact_person}}</td>
@@ -469,7 +553,6 @@
 											<td class="!text-xs p-1">{{ b.status}}</td>
 											<td class="!text-xs p-1">{{ b.notes}}</td>
 											<td class="!text-xs p-1">
-												<!-- <button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button> -->
 												<ul class="list-disc m-0" v-for="(t, indexes) in b.terms">
 													{{ t.order_no }}. {{ t.terms }}
 												</ul>
@@ -485,7 +568,7 @@
 											</td>
 										</tr>
 									</table>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<hr class="border-dashed">
@@ -1156,7 +1239,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="UpdateBranchAgain()">Update</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="ShowList()">Vendor List</button>
 									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeUpdateModal()">Close</button>
 								</div>
 							</div>

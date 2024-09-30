@@ -143,7 +143,7 @@
                                     </tr>
                                 </thead>
                                 <template #column-1="">
-                                        <span class="text-left z-50 w-full cursor-pointer" @click="openDrawerRevise()">
+                                        <span class="text-left z-50 !w-full p-1 px-2 cursor-pointer btn-link" @click="openDrawerRevise()">
                                             POPE19-1000-1001.r1
                                         </span>
 								</template>
