@@ -280,7 +280,7 @@
 										</button>
 										<div class="w-4 pr-2">
 											<button class="text-red-500 mr-2">
-												<XmarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XmarkIcon>
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XMarkIcon>
 											</button>
 										</div>
 										
