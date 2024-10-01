@@ -25,4 +25,8 @@ class VendorDetails extends Model
         'vat',
         'status',
     ];
+
+    public function vendor_head(){
+        return $this->belongsTo(VendorHead::class, 'vendor_head_id');
+    }
 }

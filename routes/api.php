@@ -62,5 +62,8 @@ Route::post('/add_all_terms',[VendorController::class,'add_all_terms']);
 
 Route::get('/get_all_rfq', [RFQController::class,'get_all_rfq']);
 Route::get('/pr_list', [RFQController::class,'all_pr']);
+Route::get('/vendor_list', [RFQController::class,'all_vendor']);
+Route::get('/get_pr_data/{pr_head_id}', [RFQController::class,'get_pr_data']);
+Route::post('/add_rfq',[RFQController::class,'add_rfq']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
