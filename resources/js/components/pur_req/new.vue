@@ -4,8 +4,10 @@
 	import axios from 'axios';
     import { onMounted, ref, watch } from "vue"
     import { useRouter } from "vue-router"
+	let form=ref([]);
 	let item_list=ref([]);
-	let error=ref([]);
+	let department_list=ref([]);
+	let error=ref('');
 	let success=ref('');
 	let item_no=ref();
 	let qty=ref('');
@@ -20,6 +22,18 @@
 	let prUrl=ref("");
 	let error_inventory=ref("");
 	const dangerAlerterrors = ref(false)
+	onMounted(async () => {
+		prForm()
+		getDepartment()
+	})
+	const prForm = async () => {
+		let response = await axios.get("/api/create_pr");
+		form.value = response.data;
+	}
+	const getDepartment = async () => {
+		let response = await axios.get("/api/get_department");
+		department_list.value = response.data.department;
+	}
 	const addItem= () => {
 		if(qty.value == ''){
 			alert("Quantity must not be empty!")
@@ -151,16 +165,15 @@
 		const formData= new FormData()
 		formData.append('upload_pr',prFile.value)
 		axios.post("/api/import_pr",formData).then(function (response) {
-			console.log(response.data);
+			console.log(response.data)
 			// success.value='You have successfully imported new pr.'
 			// prFile.value=''
 			// successAlert.value=!successAlert.value
 			// const btn_pr = document.getElementById("btn_pr");
 			// btn_pr.disabled = true;
 		}, function (err) {
-			console.log(err.response.data.message)
-			// error.value = err.response.data.message;
-			// dangerAlerterrors.value=!dangerAlerterrors.value
+			error.value = err.response.data.message;
+			dangerAlerterrors.value=!dangerAlerterrors.value
 		}); 
     }
 </script>
@@ -777,7 +790,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
-									<h5 class="leading-tight" v-if="error!=''" v-for="er in error">{{ er }}</h5>
+									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
 									<h5 class="leading-tight" v-else-if="error_inventory!=''">{{ error_inventory }}</h5>
 								</div>
 							</div>

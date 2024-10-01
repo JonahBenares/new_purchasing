@@ -9,4 +9,22 @@ class PRDetails extends Model
 {
     use HasFactory;
     protected $table = "pr_details";
+    protected $fillable = [
+        'pr_head_id',
+        'date_needed',
+        'item_description',
+        'quantity',
+        'uom',
+        'pn_no',
+        'wh_stocks',
+        'status',
+        'recom_date',
+        'recom_status',
+        'referred_date',
+        'referred_by',
+        'referred_reason',
+        'cancelled_date',
+        'cancelled_by',
+        'cancelled_reason'
+    ];
 }

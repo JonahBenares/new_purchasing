@@ -60,3 +60,5 @@ Route::get('/no_terms_branch/{vendor_head_id}',[VendorController::class,'no_term
 Route::post('/add_all_terms',[VendorController::class,'add_all_terms']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
+Route::post('/manual_pr',[PRController::class,'manual_pr']);
+Route::get('/create_pr',[PRController::class,'create_pr']);
