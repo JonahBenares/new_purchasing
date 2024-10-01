@@ -67,3 +67,6 @@ Route::get('/get_pr_data/{pr_head_id}', [RFQController::class,'get_pr_data']);
 Route::post('/add_rfq',[RFQController::class,'add_rfq']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
+Route::post('/import_pr',[PRController::class,'import_pr']);
+Route::post('/manual_pr',[PRController::class,'manual_pr']);
+Route::get('/create_pr',[PRController::class,'create_pr']);

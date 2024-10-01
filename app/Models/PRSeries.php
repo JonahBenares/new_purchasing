@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PRSeries extends Model
 {
     use HasFactory;
+    protected $table = "pr_series";
+    protected $fillable=[
+        'year',
+        'series',
+    ];
 }
