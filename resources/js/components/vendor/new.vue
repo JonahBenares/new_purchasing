@@ -98,6 +98,7 @@
 		vendor_name.value=''
 		product_services.value=''
 		branches.value=''
+		document.getElementById("SubmitButton").disabled = true;
 	}
 
 	const UpdateAddress = () => {
