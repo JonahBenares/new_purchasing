@@ -98,6 +98,7 @@
 		vendor_name.value=''
 		product_services.value=''
 		branches.value=''
+		document.getElementById("SubmitButton").disabled = true;
 	}
 
 	const UpdateAddress = () => {
@@ -210,6 +211,16 @@
 		router.push('/vendor/edit/'+vendor_head_id.value)
 	}
 
+	const ShowBranchDetails= (index) => {
+		var showdetails = document.getElementById("branch_dets_disp"+index);
+		var displaySetting = showdetails.style.display;
+		if (displaySetting == 'block') {
+			showdetails.style.display = 'none';
+		}else {
+			showdetails.style.display = 'block';
+		}
+	}
+
 	const BranchChecker = async () => {
 	for (var i = 0; i < branches.value.length; i++) {
 			if(branches.value[i].address == address.value || address.value == ''){
@@ -265,27 +276,30 @@
 										<span>Add Terms</span>
 									</button> -->
 								</div>
-								<div class="border">
-									<div class="flex justify-between p-2 hover:bg-gray-100">
-										<button class="w-full !text-left" @click="moreDetails =!moreDetails">
+								<div class="border" v-for="(b, index) in branches" :class="(b.status=='Inactive') ? 'bg-red-100' : ''">
+									<div class="flex justify-between p-2 ">
+										<!-- <button class="w-full !text-left" @click="moreDetails =!moreDetails"> -->
+											<button class="w-full !text-left" @click="ShowBranchDetails(index)">
 											<div class=" w-full bg-gren-50">
-												<p class="mb-1 text-gray-600 font-bold text-xs">Rizal-Mabini Street, Brgy 31, Bacolod City , Necgros Occidental </p>
+												<p class="mb-1 text-gray-600 font-bold text-xs">{{ b.address}}</p>
 												<div class="flex justify-start space-x-4 text-xs text-gray-600">
-													<span class="pr-1" ><span class="text-gray-800">TIN :</span> 9027720-8727323</span>
-													<span class="pr-1" ><span class="text-gray-800">Contact Person :</span> Maria Beverly Lee</span>
-													<span class="pr-1" ><span class="text-gray-800">Contact Number :</span> 09972872662/626278828826</span>
-													<span class="pr-1" ><span class="text-gray-800">Fax :</span> 18638271-23847</span>
+													<span class="pr-1" ><span class="text-gray-800">TIN :</span> {{ b.tin}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Contact Person :</span> {{ b.contact_person}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Contact Number :</span> {{ b.phone}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Fax :</span> {{ b.fax}}</span>
+													<span class="pr-1" ><span class="text-gray-800">Email :</span> {{ b.email}}</span>
 												</div>
 											</div>
 										</button>
 										<div class="w-4 pr-2">
-											<button class="text-red-500 mr-2">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></XMarkIcon>
+											<button class="btn btn-danger p-1" @click="RemoveModal(index)">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</div>
 										
 									</div>
-									<div class="" v-show="moreDetails">
+									<!-- <div class="" v-show="moreDetails"> -->
+									<div class="" style="display: none;" :id="'branch_dets_disp'+index">
 										<hr class="border-dashed m-0">
 										<div class="row">
 											<div class="col-lg-5 border-r">
@@ -293,31 +307,27 @@
 													<table class="w-full text-xs">
 														<tr>
 															<td class="!text-gray-800" width="13%">Identifier </td>
-															<td>: sample data</td>
-														</tr>
-														<tr>
-															<td class="!text-gray-800">Email</td>
-															<td>: sample data</td>
+															<td>: {{ b.identifier}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Type</td>
-															<td>: sample data</td>
+															<td>: {{ b.type}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">EWT</td>
-															<td>: sample data</td>
+															<td>: {{ b.ewt}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">VAT</td>
-															<td>: sample data</td>
+															<td>: {{ (b.vat == '1') ? 'Vat' : 'Non-vat'}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Status</td>
-															<td>: sample data</td>
+															<td>: {{ b.status}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Notes</td>
-															<td>: sample data</td>
+															<td>: {{ b.notes}}</td>
 														</tr>
 													</table>
 												</div>
@@ -328,53 +338,19 @@
 														<tr>
 															<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
 														</tr>
-														<tr>
-															<td class="align-top text-center" width="4%">1.</td>
-															<td class="align-top px-1" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
-														</tr>
-														<tr>
-															<td class="align-top text-center" width="4%">2.</td>
-															<td class="align-top px-1" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
-														</tr>
-														<tr>
-															<td class="align-top text-center" width="4%">3.</td>
-															<td class="align-top pl-1" colspan="2">
-																<div class="flex justify-start space-x-1">
-																	<span >Price is </span>
-																	<span>Exclusive of VAT</span>
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td class="align-top text-center" width="4%">4.</td>
-															<td class="align-top  pl-1" colspan="2">
-																<div class="flex justify-start space-x-1">
-																	<span>Payment </span>
-																	<span> COD</span>
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td class="align-top text-center" width="4%">5.</td>
-															<td class="align-top  pl-1" colspan="2">
-																<div class="flex justify-start space-x-1">
-																	<span>Delivery Term </span>
-																	<span> Sample</span>
-																</div>
-															</td>
-														</tr>
-														<tr>
-															<td class="align-top text-center" width="4%">6.</td>
-															<td class="align-top  pl-1" colspan="2">sample term</td>
+														<tr  v-for="(t, indexes) in b.terms">
+															<td class="align-top text-center" width="4%">{{ t.order_no }}.</td>
+															<td class="align-top px-1" colspan="2">{{ t.term_desc }}</td>
 														</tr>
 													</table>
 												</div>
 											</div>
 										</div>
 									</div>
+									<input type="hidden" v-model="b.id">
 								</div>
 								<br>
-								<div class="overflow-x-scroll">
+								<!-- <div class="overflow-x-scroll">
 									<table class="border table-bordered" width="180%">
 										<tr>
 											<th class="!text-xs p-1 bg-gray-100" width="15%"> Address</th>
@@ -410,22 +386,18 @@
 											<td class="!text-xs p-1">{{ b.status }}</td>
 											<td class="!text-xs p-1">{{ b.notes }}</td>
 											<td class="!text-xs p-1">
-												<!-- <button class="btn btn-link p-0 px-2 !text-xs btn-block" @click="openViewTerms">View Terms</button> -->
 												<ul class="list-disc m-0" v-for="(t, indexes) in b.terms">
 													{{ t.order_no }}. {{ t.term_desc }}
 												</ul>
 											</td>
 											<td class="!text-xs p-0" align="center">
-												<!-- <button class="btn-info btn btn-xs text-white p-1" @click="openEdit()">
-													<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3"></PencilIcon>
-												</button> -->
 												<button class="btn btn-danger p-1" @click="RemoveModal(index)">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 												</button>
 											</td>
 										</tr>
 									</table>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<hr class="border-dashed">
