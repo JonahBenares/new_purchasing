@@ -77,5 +77,5 @@ Route::get('/get_allpr',[PRController::class,'get_allpr']);
 Route::get('/get_view_details/{pr_head_id}',[PRController::class,'get_view_details']);
 Route::post('/insert_referred/{id}',[PRController::class,'insert_referred']);
 Route::post('/update_recomdate_view',[PRController::class,'update_recomdate_view']);
-Route::get('/cancel_prdetails/{pr_details_id}',[PRController::class,'cancel_prdetails']);
+Route::post('/cancel_prdetails/{pr_details_id}',[PRController::class,'cancel_prdetails']);
 Route::get('/cancel_allpr/{pr_head_id}',[PRController::class,'cancel_allpr']);

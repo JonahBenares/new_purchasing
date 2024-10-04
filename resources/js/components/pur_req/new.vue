@@ -5,6 +5,7 @@
     import { onMounted, ref, watch } from "vue"
     import { useRouter } from "vue-router"
 	const router = useRouter();
+	let prheadid=ref(0);
 	let pr_head_id=ref(0);
 	let pr_details_id=ref(0);
 	let prhead=ref([]);
@@ -310,6 +311,7 @@
 		formData.append('pr_no', prhead.value.pr_no)
 		formData.append('site_pr', prhead.value.site_pr)
 		formData.append('date_prepared', prhead.value.date_prepared)
+		formData.append('pr_date', prhead.value.pr_date)
 		formData.append('department_id', prhead.value.department_id)
 		formData.append('urgency', prhead.value.urgency)
 		formData.append('process_code', prhead.value.process_code)
@@ -361,6 +363,7 @@
 		formData.append('pr_no', prhead.value.pr_no)
 		formData.append('site_pr', prhead.value.site_pr)
 		formData.append('date_prepared', prhead.value.date_prepared)
+		formData.append('pr_date', prhead.value.pr_date)
 		formData.append('department_id', prhead.value.department_id)
 		formData.append('urgency', prhead.value.urgency)
 		formData.append('process_code', prhead.value.process_code)
@@ -393,6 +396,9 @@
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
 			success.value='You have successfully draft new pr.'
 			warningAlert.value=!warningAlert.value
+			setTimeout(() => {
+				closeAlert()
+			}, 2000);
 		}, function (err) {
 			console.log(err.response.data.message)
 			error.value = err.response.data.message;
@@ -403,10 +409,17 @@
 	const generatePrNo = () => {
 		const formData= new FormData()
 		if(props.id==0){
-			formData.append('date_prepared', form.value.date_prepared)
-			formData.append('department', form.value.department)
-			formData.append('series', pr_series.value)
-			formData.append('pr_no', form.value.pr_no)
+			if(prhead.value.pr_no!='' && prhead.value.pr_no!=undefined){
+				formData.append('date_prepared', prhead.value.date_prepared)
+				formData.append('department',  prhead.value.department_id)
+				formData.append('series', pr_series.value)
+				formData.append('pr_no',  prhead.value.pr_no)
+			}else{
+				formData.append('date_prepared', form.value.date_prepared)
+				formData.append('department', form.value.department)
+				formData.append('series', pr_series.value)
+				formData.append('pr_no', form.value.pr_no)
+			}
 		}else{
 			formData.append('date_prepared', prhead.value.date_prepared)
 			formData.append('department',  prhead.value.department_id)
@@ -416,7 +429,11 @@
 		formData.append('props_id', props.id)
 		axios.post(`/api/generate_prno`,formData).then(function (response) {
 			if(props.id==0){
-				form.value.pr_no=response.data
+				if(prhead.value.pr_no!='' && prhead.value.pr_no!=undefined){
+					prhead.value.pr_no=response.data
+				}else{
+					form.value.pr_no=response.data
+				}
 			}else{
 				prhead.value.pr_no=response.data
 			}
@@ -447,6 +464,7 @@
 		formData.append('location', form.value.purchase_request)
 		formData.append('pr_no', form.value.pr_no)
 		formData.append('site_pr', form.value.site_pr)
+		formData.append('pr_date', form.value.pr_date)
 		formData.append('date_prepared', form.value.date_prepared)
 		formData.append('department_id', form.value.department)
 		formData.append('urgency', form.value.urgency)
@@ -461,11 +479,13 @@
 		formData.append('recommended_by', recommended_by.value)
 		formData.append('approved_by', approved_by.value)
 		formData.append('series', pr_series.value)
+		formData.append('prhead_id', prheadid.value)
 		formData.append('item_list', JSON.stringify(item_list.value))
 		if(item_list.value.length!=0){
 			axios.post(`/api/save_manual`,formData).then(function (response) {
 				success.value='You have successfully saved new pr.'
 				successAlert.value=!successAlert.value
+				prheadid.value=response.data;
 			}, function (err) {
 				// error.value = err.response.data.message;
 				error.value=''
@@ -490,6 +510,7 @@
 		formData.append('location', form.value.purchase_request)
 		formData.append('pr_no', form.value.pr_no)
 		formData.append('site_pr', form.value.site_pr)
+		formData.append('pr_date', form.value.pr_date)
 		formData.append('date_prepared', form.value.date_prepared)
 		formData.append('department_id', form.value.department)
 		formData.append('urgency', form.value.urgency)
@@ -504,10 +525,15 @@
 		formData.append('recommended_by', recommended_by.value)
 		formData.append('approved_by', approved_by.value)
 		formData.append('series', pr_series.value)
+		formData.append('prhead_id', prheadid.value)
 		formData.append('item_list', JSON.stringify(item_list.value))
 		axios.post(`/api/save_manual_draft`,formData).then(function (response) {
 			success.value='You have successfully saved new pr.'
 			warningAlert.value=!warningAlert.value
+			prheadid.value=response.data;
+			setTimeout(() => {
+				closeAlert()
+			}, 2000);
 		}, function (err) {
 			error_pr.value=[]
 			// error_pr.value = err.response.data.message;
@@ -590,16 +616,22 @@
 										<input type="text" class="form-control" placeholder="PR No" v-model="prhead.pr_no" readonly>
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-2 col-md-2">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Site PR No</label>
 										<input type="text" class="form-control" placeholder="Site PR No" v-model="prhead.site_pr">
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-2 col-md-2">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="prhead.date_prepared">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Date Issued</label>
+										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="prhead.pr_date">
 									</div>
 								</div>
 							</div>
@@ -838,16 +870,22 @@
 										<input type="text" class="form-control" placeholder="PR No" v-model="form.pr_no" readonly>
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-2 col-md-2">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Site PR No</label>
 										<input type="text" class="form-control" placeholder="Site PR No" v-model="form.site_pr">
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-2 col-md-2">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="form.date_prepared">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Date Issued</label>
+										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="form.pr_date">
 									</div>
 								</div>
 							</div>
@@ -1142,17 +1180,15 @@
 								</div>
 							</div>
 						</div>
-						<br>
+						<!-- <br>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/pur_req" class="btn !bg-gray-100 btn-sm !rounded-full w-full">PR List</a>
-									<!-- <button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button> -->
-									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<a href="/pur_req/new/0" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div> 
 				</div>
 			</div>

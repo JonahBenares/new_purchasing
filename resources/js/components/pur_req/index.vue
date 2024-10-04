@@ -158,8 +158,8 @@
                                     <div class="flex justify-center">
                                         <span class="badge bg-green-500 text-white !rounded-xl px-2 p-1" v-if="props.rowData.status=='Saved'">{{props.rowData.status}}</span>
                                         <span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Draft'">{{props.rowData.status}}</span>
-                                        <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Cancelled'">{{props.rowData.status}}</span>
-                                        <span class="badge bg-red-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Closed'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-red-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Cancelled'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Closed'">{{props.rowData.status}}</span>
                                     </div>
                                 </template>
                                 <template #column-8="props">

@@ -22,6 +22,7 @@
 	let comment=ref("");
 	let pr_details_id_view=ref("")
 	let pr_head_id_view=ref("")
+	let cancel_reason=ref("")
 	const props = defineProps({
 		id:{
 			type:String,
@@ -96,11 +97,14 @@
 
 	const cancelPrdetails = (option, id) => {
 		if(option=='yes'){
-			axios.get(`/api/cancel_prdetails/`+id).then(function (response) {
+			const formData= new FormData()
+			formData.append('cancel_reason', cancel_reason.value)
+			axios.post(`/api/cancel_prdetails/`+id,formData).then(function (response) {
 				if(response.data!='error'){
 					dangerAlert_item.value = !hideAlert.value
 					success.value='Successfully cancelled item!'
 					successAlert.value = !successAlert.value
+					cancel_reason.value=''
 					setTimeout(() => {
 						closeAlert()
 						getPR()
@@ -257,7 +261,7 @@
 												</button>
 											</div>
 											<div class="space-x-1" v-else-if="pd.status!='Referred'">
-												<button class="btn btn-xs btn-info p-1" @click="openModalReferred(pd.id)" >
+												<button class="btn btn-xs btn-info p-1" @click="openModalReferred(pd.id)" title="Refer">
 													<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
 												</button>
 												<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
@@ -471,7 +475,9 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">Are you sure you want to remove this item?</h5>
+									<h5 class="leading-tight">Are you sure you want to cancel this item?</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="" class="form-control !border" rows="3" v-model="cancel_reason"></textarea>
 								</div>
 							</div>
 						</div>

@@ -59,6 +59,7 @@ class PRController extends Controller
             'purchase_request'=>'',
             'pr_no'=>'',
             'site_pr'=>'',
+            'pr_date'=>'',
             'dae_prepared'=>'',
             'department'=>'',
             'urgency'=>0,
@@ -91,18 +92,19 @@ class PRController extends Controller
                     $department_code=Departments::where('id',$request->department_id)->value('department_code');
                     $status=($request->petty_cash==0) ? 'Saved' : 'Closed';
                     $data_head=[
-                        'location'=>$request->location,
+                        'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
                         'pr_no'=>$request->pr_no,
-                        'site_pr'=>$request->site_pr,
+                        'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
+                        'pr_date'=>($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '',
                         'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
                         'department_id'=>$request->department_id,
                         'department_name'=>$department_name,
                         'dept_code'=>$department_code,
-                        'urgency'=>$request->urgency,
-                        'process_code'=>$request->process_code,
-                        'requestor'=>$request->requestor,
-                        'enduse'=>$request->enduse,
-                        'purpose'=>$request->purpose,
+                        'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
+                        'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
+                        'requestor'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
+                        'enduse'=>($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '',
+                        'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
                         'status'=>$status,
                         'petty_cash'=>$request->petty_cash,
                         'user_id'=>Auth::id(),
@@ -212,18 +214,19 @@ class PRController extends Controller
                         $department_code=Departments::where('id',$request->department_id)->value('department_code');
                     }
                     $data_head=[
-                        'location'=>$request->location,
+                        'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
                         'pr_no'=>($request->props_id==0) ? $request->pr_no : $pr_no,
-                        'site_pr'=>$request->site_pr,
+                        'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
+                        'pr_date'=>($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '',
                         'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
-                        'department_id'=>$request->department_id,
+                        'department_id'=>($request->department_id!='undefined' && $request->department_id!='null' && $request->department_id!='') ? $request->department_id : '',
                         'department_name'=>$department_name,
                         'dept_code'=>$department_code,
-                        'urgency'=>$request->urgency,
-                        'process_code'=>$request->process_code,
-                        'requestor'=>$request->requestor,
-                        'enduse'=>$request->enduse,
-                        'purpose'=>$request->purpose,
+                        'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
+                        'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
+                        'requestor'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
+                        'enduse'=>($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '',
+                        'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
                         'status'=>'Draft',
                         'petty_cash'=>$request->petty_cash,
                         'user_id'=>Auth::id(),
@@ -349,10 +352,14 @@ class PRController extends Controller
     public function cancel_pr(Request $request, $pr_head_id){
         $update_prhead=PRHead::where('id',$pr_head_id)->first();
         $updatehead['status']='Cancelled';
+        $updatehead['cancelled_by']=Auth::id();
+        $updatehead['cancelled_date']=date('Y-m-d h:i:s');
         $update_prhead->update($updatehead);
         if($update_prhead){
             $update_prdetails=PRDetails::where('pr_head_id',$pr_head_id)->update([
-                'status'=>'Cancelled'
+                'status'=>'Cancelled',
+                'cancelled_by'=>Auth::id(),
+                'cancelled_date'=>date('Y-m-d h:i:s')
             ]);
             if($update_prdetails){
                 $prdetails=PRDetails::where('pr_head_id',$pr_head_id)->get();
@@ -378,9 +385,13 @@ class PRController extends Controller
             $max_series=PRSeries::where('year',$year)->max('series');
             $pr_series=$max_series+1;
             if($request->props_id==0){
-                $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+                if($request->pr_no!='' && $request->pr_no!='undefined'){
+                    $exp=explode('-',$request->pr_no);
+                    $pr_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+                }else{
+                    $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+                }
             }else{
-                $exp=explode('-',$request->pr_no);
                 $pr_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
             }
         }
@@ -442,21 +453,28 @@ class PRController extends Controller
                'department_id.required'=> 'The department field is required.'
             ]
         );
-        $data_head['location']=$request->location;
-        $data_head['site_pr']=$request->site_pr;
+        $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+        $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+        $data_head['pr_date']=($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '';
         $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
-        $data_head['urgency']=$request->urgency;
-        $data_head['process_code']=$request->process_code;
-        $data_head['requestor']=$request->requestor;
-        $data_head['enduse']=$request->enduse;
-        $data_head['purpose']=$request->purpose;
+        $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
+        $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+        $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+        $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
+        $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';
         $data_head['status']='Saved';
         $data_head['petty_cash']=$request->petty_cash;
         $data_head['user_id']=Auth::id();
-        $insertprhead=PRHead::create($data_head);
+        // $insertprhead=PRHead::create($data_head);
+        if($request->prhead_id==0){
+            $insertprhead=PRHead::create($data_head);
+        }else{
+            $insertprhead=PRHead::where('id',$request->prhead_id)->first();
+            $insertprhead->update($data_head);
+        }
         if($series_rows==0){
             $max_series='1';
             $pr_series='0001';
@@ -527,6 +545,7 @@ class PRController extends Controller
                 }
             }
         // }
+        return $insertprhead->id;
     }
 
     public function save_manual_draft(Request $request){
@@ -547,16 +566,17 @@ class PRController extends Controller
                'department_id.required'=> 'The department field is required.'
             ]
         );
-        $data_head['location']=$request->location;
-        $data_head['site_pr']=$request->site_pr;
+        $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+        $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+        $data_head['pr_date']=($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '';
         $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
-        $data_head['urgency']=$request->urgency;
-        $data_head['process_code']=$request->process_code;
-        $data_head['requestor']=$request->requestor;
-        $data_head['enduse']=$request->enduse;
-        $data_head['purpose']=$request->purpose;
+        $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
+        $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+        $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+        $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
+        $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';
         $data_head['status']='Draft';
         $data_head['petty_cash']=$request->petty_cash;
@@ -577,7 +597,12 @@ class PRController extends Controller
         //     'status'=>'Draft',
         //     'petty_cash'=>$request->petty_cash,
         // ];    
-        $insertprhead=PRHead::create($data_head);
+        if($request->prhead_id==0){
+            $insertprhead=PRHead::create($data_head);
+        }else{
+            $insertprhead=PRHead::where('id',$request->prhead_id)->first();
+            $insertprhead->update($data_head);
+        }
         $exp=explode('-',$request->pr_no);
         if($series_rows==0){
             $max_series='1';
@@ -630,6 +655,7 @@ class PRController extends Controller
                 PrReportDetails::create($prreport);
             }
         }
+        return $insertprhead->id;
     }
 
     public function get_allpr(){
@@ -690,7 +716,10 @@ class PRController extends Controller
     public function cancel_prdetails(Request $request, $pr_details_id){
         if(!RfqDetails::where('pr_details_id',$pr_details_id)->exists() && !PoDetails::where('pr_details_id',$pr_details_id)->exists() && !RecomReportDetails::where('pr_details_id',$pr_details_id)->exists()){
             $update_prdetails=PRDetails::where('id',$pr_details_id)->update([
-                'status'=>'Cancelled'
+                'status'=>'Cancelled',
+                'cancelled_date'=>date('Y-m-d H:i:s'),
+                'cancelled_reason'=>$request->cancel_reason,
+                'cancelled_by'=>Auth::id(),
             ]);
             if($update_prdetails){
                 $update_prreport=PrReportDetails::where('pr_details_id',$pr_details_id)->update([
@@ -706,6 +735,8 @@ class PRController extends Controller
         if(!RfqHead::where('pr_head_id',$pr_head_id)->exists() && !PrReportDetails::where('po_qty','!=','0')->Orwhere('dpo_qty','!=','0')->Orwhere('rpo_qty','!=','0')->exists() && !PettyCash::where('pr_head_id',$pr_head_id)->exists()){
             $update_prhead=PRHead::where('id',$pr_head_id)->first();
             $updatehead['status']='Cancelled';
+            $updatehead['cancelled_by']=Auth::id();
+            $updatehead['cancelled_date']=date('Y-m-d H:i:s');
             $update_prhead->update($updatehead);
             if($update_prhead){
                 $update_prdetails=PRDetails::where('pr_head_id',$pr_head_id)->update([
