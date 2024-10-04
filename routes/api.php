@@ -60,5 +60,22 @@ Route::get('/no_terms_branch/{vendor_head_id}',[VendorController::class,'no_term
 Route::post('/add_all_terms',[VendorController::class,'add_all_terms']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
-Route::post('/manual_pr',[PRController::class,'manual_pr']);
 Route::get('/create_pr',[PRController::class,'create_pr']);
+Route::get('/get_import_data/{id}',[PRController::class,'get_import_data']);
+Route::post('/save_upload/{id}',[PRController::class,'save_upload']);
+Route::post('/save_upload_draft/{id}',[PRController::class,'save_upload_draft']);
+Route::post('/update_recomdate/{id}',[PRController::class,'update_recomdate']);
+Route::get('/get_signatories',[PRController::class,'get_signatories']);
+Route::get('/delete_item/{id}',[PRController::class,'delete_item']);
+Route::get('/cancel_pr/{pr_head_id}',[PRController::class,'cancel_pr']);
+Route::get('/processing_code',[PRController::class,'processing_code']);
+Route::post('/save_manual',[PRController::class,'save_manual']);
+Route::post('/save_manual_draft',[PRController::class,'save_manual_draft']);
+Route::post('/generate_prno',[PRController::class,'generate_prno']);
+Route::post('/insert_series',[PRController::class,'insert_series']);
+Route::get('/get_allpr',[PRController::class,'get_allpr']);
+Route::get('/get_view_details/{pr_head_id}',[PRController::class,'get_view_details']);
+Route::post('/insert_referred/{id}',[PRController::class,'insert_referred']);
+Route::post('/update_recomdate_view',[PRController::class,'update_recomdate_view']);
+Route::get('/cancel_prdetails/{pr_details_id}',[PRController::class,'cancel_prdetails']);
+Route::get('/cancel_allpr/{pr_head_id}',[PRController::class,'cancel_allpr']);

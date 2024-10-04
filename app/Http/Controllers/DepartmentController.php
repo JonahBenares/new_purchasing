@@ -9,6 +9,7 @@ class DepartmentController extends Controller
     public function create_department(Request $request){
         $formData=[
             'department_name'=>'',
+            'department_code'=>'',
         ];
         return response()->json($formData);
     }
@@ -19,6 +20,7 @@ class DepartmentController extends Controller
         foreach($department_all AS $d){
             $departmentarray[]=[
                 'id'=>$d->id,
+                $d->department_code,
                 $d->department_name,
                 ''
             ];
@@ -30,7 +32,8 @@ class DepartmentController extends Controller
 
     public function add_department(Request $request){
         $validated=$this->validate($request,[
-            'department_name'=>['unique:department','required','string']
+            'department_name'=>['unique:department','required','string'],
+            'department_code'=>['required','string'],
         ]);
         Departments::create($validated);
     }
@@ -45,7 +48,8 @@ class DepartmentController extends Controller
     public function update_department(Request $request, $id){
         $departments=Departments::where('id',$id)->first();
         $validated=$this->validate($request,[
-            'department_name'=>'required|string|unique:department,department_name,'.$id
+            'department_name'=>'required|string|unique:department,department_name,'.$id,
+            'department_code'=>'required|string',
         ]);
         $departments->update($validated);
     }

@@ -302,15 +302,17 @@ const routes = [
         }
     },
     {
-        path:'/pur_req/new',
+        path:'/pur_req/new/:id',
         component: pur_reqNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_req/view',
+        path:'/pur_req/view/:id',
         component: pur_reqView,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -324,8 +326,9 @@ const routes = [
         }
     },
     {
-        path:'/pur_quote/new',
+        path:'/pur_quote/new/:id',
         component: pur_quoteNew,
+        props:true,
         meta:{
             requiresAuth:true
         }

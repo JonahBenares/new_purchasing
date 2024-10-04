@@ -14,15 +14,13 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 class PRImport implements WithMappedCells, ToModel, WithHeadingRow
 {
-
     public $data;
+    public $id;
     public function  __construct($user_id)
     {
-
         $this->user_id =$user_id;
     }
 
-   
 
     public function transformDate($value, $format = 'Y-m-d'){
         try {
@@ -69,14 +67,15 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                 }
                 $series['year']=$year;
                 $series['series']=$pr_series;
-                // $pr_series=PRSeries::create($series);
+                $pr_series=PRSeries::create($series);
                 if($pr_series){
                     $department_id=Departments::where('department_name','LIKE','%'.$row['department'].'%')->value('id');
                     $prhead['location']=$row['purchase_request'];
-                    $prhead['date_prepared']=$this->transformDate($row['date_prepared']);
-                    $prhead['pr_date']=$this->transformDate($row['date_issued']);
+                    $prhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
+                    $prhead['pr_date']=date('Y-m-d',strtotime($this->transformDate($row['date_issued'])));
                     $prhead['pr_no']=$pr_no;
                     $prhead['location']=$row['purchase_request'];
+                    $prhead['site_pr']='';
                     $prhead['department_id']=$department_id;
                     $prhead['department_name']=$row['department'];
                     $prhead['dept_code']=$row['department_code'];
@@ -85,11 +84,13 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                     $prhead['purpose']=$row['purpose'];
                     $prhead['enduse']=$row['enduse'];
                     $prhead['petty_cash']=0;
+                    $prhead['process_code']='';
                     $prhead['user_id']= $this->user_id;
                     $prhead['method']='Upload';
-                    $prhead['status']='Saved';
-                    return $prhead;
-                    // $pr_head_id=PRHead::create($prhead);
+                    $prhead['status']='Draft';
+                    $pr_head_id=PRHead::create($prhead);
+                    $this->data = $prhead;
+                    $this->id = $pr_head_id->id;
                 }
             }
         }

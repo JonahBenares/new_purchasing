@@ -110,6 +110,7 @@
 	const onSave = () => {
 		const formData= new FormData()
 		formData.append('department_name', form.value.department_name)
+		formData.append('department_code', form.value.department_code)
 		axios.post("/api/add_department",formData).then(function () {
 			success.value='You have successfully added new department!'
 			form.value.department_name=''
@@ -129,6 +130,7 @@
 	const onEdit = (id) => {
 		const formData= new FormData()
 		formData.append('department_name', edit_department.value.department_name)
+		formData.append('department_code', edit_department.value.department_code)
 		axios.post(`/api/update_department/${id}`,formData).then(function () {
 			success.value='You have successfully updated department!'
 			form.value.department_name=''
@@ -176,6 +178,7 @@
                             <DataTable :data="department_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Department Code</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Department Name</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
@@ -184,7 +187,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-1="props" align="center">
+                                <template #column-2="props" align="center">
 									<center>
 										<button @click="openEdit(props.rowData.id)" class="btn btn-xs btn-info text-white p-1">
 											<PencilIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PencilIcon>
@@ -220,10 +223,16 @@
 					<hr class="mt-0">
 					<div class="modal_s_items ">
 						<div class="row">
-							<div class="col-lg-12 col-md-3">
+							<div class="col-lg-6 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Department Name</label>
-									<input type="text" class="form-control" placeholder="Department" v-model="form.department_name">
+									<input type="text" class="form-control" placeholder="Department Name" v-model="form.department_name">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Department Code</label>
+									<input type="text" class="form-control" placeholder="Department Code" v-model="form.department_code">
 								</div>
 							</div>
 						</div>
@@ -260,10 +269,16 @@
 					<hr class="mt-0">
 					<div class="modal_s_items ">
 						<div class="row">
-							<div class="col-lg-12 col-md-3">
+							<div class="col-lg-6 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Department Name</label>
 									<input type="text" class="form-control" placeholder="Department Name" v-model="edit_department.department_name">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Department Code</label>
+									<input type="text" class="form-control" placeholder="Department Code" v-model="edit_department.department_code">
 								</div>
 							</div>
 						</div>
