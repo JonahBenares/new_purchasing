@@ -45,9 +45,11 @@ class PRController extends Controller
     public function get_import_data($id){
         $pr_head = PRHead::where('id',$id)->where('status','!=','Cancelled')->get();
         $pr_details = PRDetails::where('pr_head_id',$id)->where('status','!=','Cancelled')->get();
+        $petty_cash = PettyCash::where('pr_head_id',$id)->orderByDesc('created_at')->first();
         return response()->json([
             'pr_head'=>$pr_head,
             'pr_details'=>$pr_details,
+            'petty_cash'=>$petty_cash,
         ],200);
     }
 
@@ -90,7 +92,7 @@ class PRController extends Controller
                         'location'=>$ph->location,
                         'pr_no'=>$ph->pr_no,
                         'site_pr'=>$ph->site_pr,
-                        'date_prepared'=>$ph->date_prepared,
+                        'date_prepared'=>($ph->date_prepared!='undefined') ? $ph->date_prepared : '',
                         'department_id'=>$ph->department_id,
                         'department_name'=>$department_name,
                         'urgency'=>$ph->urgency,
@@ -103,17 +105,31 @@ class PRController extends Controller
                     ];    
                     $insertprhead->update($data_head); 
                     if($insertprhead && $ph->petty_cash==1){
-                        $data_petty=[
-                            'pr_head_id'=>$ph->id,
-                            'pr_no'=>$ph->pr_no,
-                            'prepared_by'=>$request->prepared_by,
-                            'recommended_by'=>$request->recommended_by,
-                            'approved_by'=>$request->approved_by,
-                            'approved_date'=>$request->approved_date,
-                            'remarks'=>$request->remarks,
-                            'user_id'=>Auth::id(),
-                        ];  
+                        if($request->props_id==0){
+                            $data_petty=[
+                                'pr_head_id'=>$ph->id,
+                                'pr_no'=>$ph->pr_no,
+                                'prepared_by'=>$request->prepared_by,
+                                'recommended_by'=>$request->recommended_by,
+                                'approved_by'=>$request->approved_by,
+                                'approved_date'=>$request->approved_date,
+                                'remarks'=>$request->remarks,
+                                'user_id'=>Auth::id(),
+                            ];
+                        } else{
+                            $data_petty=[
+                                'pr_head_id'=>$ph->id,
+                                'pr_no'=>$ph->pr_no,
+                                'prepared_by'=>$request->prepared_by,
+                                'recommended_by'=>$request->recommended_by,
+                                'approved_by'=>$request->approved_by,
+                                'approved_date'=>$request->approved_date,
+                                'remarks'=>$request->remarks,
+                                'user_id'=>Auth::id(),
+                            ];
+                        } 
                         PettyCash::create($data_petty);
+                        
                     }   
                     foreach(json_decode($prdetails) AS $pd){
                         $insertprdetails=PRDetails::where('id',$pd->id)->first();
@@ -160,8 +176,8 @@ class PRController extends Controller
                     $insertprhead=PRHead::where('id',$ph->id)->first();
                     // $department_name=Departments::where('id',$ph->department_id)->value('department_name');
                     if($request->props_id!=0){
-                        $year= ($ph->date_prepared!='undefined') ? date("Y", strtotime($ph->date_prepared)) : date('Y');
-                        $year_short = ($ph->date_prepared!='undefined') ? date("y", strtotime($ph->date_prepared)) : date('y');
+                        $year= ($ph->date_prepared!='undefined' && $ph->date_prepared!='') ? date("Y", strtotime($ph->date_prepared)) : date('Y');
+                        $year_short = ($ph->date_prepared!='undefined' && $ph->date_prepared!='') ? date("y", strtotime($ph->date_prepared)) : date('y');
                         $pr_no=explode('-',$ph->pr_no);
                         $department_name=Departments::where('id',$ph->department_id)->value('department_name');
                         $department_code=Departments::where('id',$ph->department_id)->value('department_code');
@@ -189,7 +205,7 @@ class PRController extends Controller
                         'location'=>$ph->location,
                         'pr_no'=>($request->props_id==0) ? $ph->pr_no : $pr_no,
                         'site_pr'=>$ph->site_pr,
-                        'date_prepared'=>$ph->date_prepared,
+                        'date_prepared'=>($ph->date_prepared!='undefined') ? $ph->date_prepared : '',
                         'department_id'=>$ph->department_id,
                         'department_name'=>$department_name,
                         'urgency'=>$ph->urgency,
@@ -202,16 +218,29 @@ class PRController extends Controller
                     ];    
                     $insertprhead->update($data_head); 
                     if($insertprhead && $ph->petty_cash==1){
-                        $data_petty=[
-                            'pr_head_id'=>$ph->id,
-                            'pr_no'=>$ph->pr_no,
-                            'prepared_by'=>$request->prepared_by,
-                            'recommended_by'=>$request->recommended_by,
-                            'approved_by'=>$request->approved_by,
-                            'approved_date'=>$request->approved_date,
-                            'remarks'=>$request->remarks,
-                            'user_id'=>Auth::id(),
-                        ];  
+                        if($request->props_id==0){
+                            $data_petty=[
+                                'pr_head_id'=>$ph->id,
+                                'pr_no'=>$ph->pr_no,
+                                'prepared_by'=>$request->prepared_by,
+                                'recommended_by'=>$request->recommended_by,
+                                'approved_by'=>$request->approved_by,
+                                'approved_date'=>$request->approved_date,
+                                'remarks'=>$request->remarks,
+                                'user_id'=>Auth::id(),
+                            ];  
+                        } else{
+                            $data_petty=[
+                                'pr_head_id'=>$ph->id,
+                                'pr_no'=>$ph->pr_no,
+                                'prepared_by'=>$request->prepared_by,
+                                'recommended_by'=>$request->recommended_by,
+                                'approved_by'=>$request->approved_by,
+                                'approved_date'=>$request->approved_date,
+                                'remarks'=>$request->remarks,
+                                'user_id'=>Auth::id(),
+                            ];
+                        } 
                         PettyCash::create($data_petty);
                     }   
                     foreach(json_decode($prdetails) AS $pd){
@@ -319,8 +348,8 @@ class PRController extends Controller
     }
 
     public function generate_prno(Request $request){
-        $year= ($request->date_prepared!='undefined') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined') ? date("y", strtotime($request->date_prepared)) : date('y');
+        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         $department_code=Departments::where('id',$request->department)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
         if($series_rows==0){
@@ -330,7 +359,12 @@ class PRController extends Controller
         } else {
             $max_series=PRSeries::where('year',$year)->max('series');
             $pr_series=$max_series+1;
-            $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+            if($request->props_id==0){
+                $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+            }else{
+                $exp=explode('-',$request->pr_no);
+                $pr_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+            }
         }
         // $series['year']=$year;
         // $series['series']=$pr_series;
@@ -481,7 +515,7 @@ class PRController extends Controller
             'location'=>$request->location,
             'pr_no'=>$pr_no,
             'site_pr'=>$request->site_pr,
-            'date_prepared'=>$request->date_prepared,
+            'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : '',
             'department_id'=>$request->department,
             'department_name'=>$department_name,
             'urgency'=>$request->urgency,

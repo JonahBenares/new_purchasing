@@ -36,6 +36,7 @@
 	let recommended_by=ref("");
 	let approved_by=ref("");
 	let processing_code=ref([]);
+	let petty_cash=ref([]);
 	let pr_series=ref('0');
 	const props = defineProps({
 		id:{
@@ -76,6 +77,9 @@
 		let response = await axios.get('/api/get_import_data/'+id);
 		prhead.value = response.data.pr_head;
 		prdetails.value = response.data.pr_details;
+		if(prhead.value[0].petty_cash==1){
+			petty_cash.value = response.data.petty_cash;
+		}
 	}
 	const getSignatories = async () => {
 		let response = await axios.get("/api/get_signatories");
@@ -83,12 +87,24 @@
 	}
 	const addItem= () => {
 		if(qty.value == ''){
-			alert("Quantity must not be empty!")
+			// alert("Quantity must not be empty!")
+			document.getElementById('check_qty').placeholder="Quantity must not be empty!"
+			document.getElementById('check_qty').style.backgroundColor = '#FAA0A0';
 		}else if(uom.value == ''){
-			alert("Uom must not be empty!")
+			// alert("Uom must not be empty!")
+			document.getElementById('check_uom').placeholder="Uom must not be empty!"
+			document.getElementById('check_uom').style.backgroundColor = '#FAA0A0';
 		}else if(item_desc.value == ''){
-			alert("Item Description must not be empty!")
+			// alert("Item Description must not be empty!")
+			document.getElementById('check_description').placeholder="Item Description must not be empty!"
+			document.getElementById('check_description').style.backgroundColor = '#FAA0A0';
 		}else{
+			document.getElementById('check_qty').placeholder="Qty"
+			document.getElementById('check_qty').style.backgroundColor = '#FFFFFF';
+			document.getElementById('check_uom').placeholder="UOM"
+			document.getElementById('check_uom').style.backgroundColor = '#FFFFFF';
+			document.getElementById('check_description').placeholder="Item Description"
+			document.getElementById('check_description').style.backgroundColor = '#FFFFFF';
 			const items = {
 				item_no:item_no.value,
 				qty:qty.value,
@@ -291,24 +307,38 @@
 		formData.append('prhead', JSON.stringify(prhead.value))
 		formData.append('prdetails', JSON.stringify(prdetails.value))
 		formData.append('item_list', JSON.stringify(item_list.value))
-		formData.append('approved_date', approved_date.value)
-		formData.append('remarks', remarks.value)
-		formData.append('prepared_by', prepared_by.value)
-		formData.append('recommended_by', recommended_by.value)
-		formData.append('approved_by', approved_by.value)
-		axios.post(`/api/save_upload/${pr_head_id.value}`,formData).then(function (response) {
-			if(prhead.value[0].petty_cash==0){
-				success.value='You have successfully saved new pr.'
-				successAlert.value=!successAlert.value
-			}else{
-				// success.value='You have successfully saved new pr.'
-				// successAlert.value=!successAlert.value
-				router.push('/pur_req/view/'+prhead.value[0].id)
-			}
-		}, function (err) {
-			error.value = err.response.data.message;
+		if(props.id==0){
+			formData.append('approved_date', approved_date.value)
+			formData.append('remarks', remarks.value)
+			formData.append('prepared_by', prepared_by.value)
+			formData.append('recommended_by', recommended_by.value)
+			formData.append('approved_by', approved_by.value)
+		}else{
+			formData.append('approved_date', petty_cash.value.approved_date)
+			formData.append('remarks', petty_cash.value.remarks)
+			formData.append('prepared_by', petty_cash.value.prepared_by)
+			formData.append('recommended_by', petty_cash.value.recommended_by)
+			formData.append('approved_by', petty_cash.value.approved_by)
+		}
+		formData.append('props_id', props.id)
+		if(prdetails.value.length!=0 || item_list.value.length!=0){
+			axios.post(`/api/save_upload/${pr_head_id.value}`,formData).then(function (response) {
+				if(prhead.value[0].petty_cash==0){
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
+				}else{
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
+					router.push('/pur_req/view/'+prhead.value[0].id)
+				}
+			}, function (err) {
+				error.value = err.response.data.message;
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			error.value = 'Items cannot be empty, Please fill in data.';
 			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
+		}
     }
 
 	const onSaveDraftUpload = () => {
@@ -316,11 +346,24 @@
 		formData.append('prhead', JSON.stringify(prhead.value))
 		formData.append('prdetails', JSON.stringify(prdetails.value))
 		formData.append('item_list', JSON.stringify(item_list.value))
-		formData.append('approved_date', approved_date.value)
-		formData.append('remarks', remarks.value)
-		formData.append('prepared_by', prepared_by.value)
-		formData.append('recommended_by', recommended_by.value)
-		formData.append('approved_by', approved_by.value)
+		// formData.append('approved_date', approved_date.value)
+		// formData.append('remarks', remarks.value)
+		// formData.append('prepared_by', prepared_by.value)
+		// formData.append('recommended_by', recommended_by.value)
+		// formData.append('approved_by', approved_by.value)
+		if(props.id==0){
+			formData.append('approved_date', approved_date.value)
+			formData.append('remarks', remarks.value)
+			formData.append('prepared_by', prepared_by.value)
+			formData.append('recommended_by', recommended_by.value)
+			formData.append('approved_by', approved_by.value)
+		}else{
+			formData.append('approved_date', petty_cash.value.approved_date)
+			formData.append('remarks', petty_cash.value.remarks)
+			formData.append('prepared_by', petty_cash.value.prepared_by)
+			formData.append('recommended_by', petty_cash.value.recommended_by)
+			formData.append('approved_by', petty_cash.value.approved_by)
+		}
 		formData.append('props_id', props.id)
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
 			success.value='You have successfully draft new pr.'
@@ -345,6 +388,7 @@
 			formData.append('series', pr_series.value)
 			formData.append('pr_no',  prhead.value[0].pr_no)
 		}
+		formData.append('props_id', props.id)
 		axios.post(`/api/generate_prno`,formData).then(function (response) {
 			if(props.id==0){
 				form.value.pr_no=response.data
@@ -393,13 +437,18 @@
 		formData.append('approved_by', approved_by.value)
 		formData.append('series', pr_series.value)
 		formData.append('item_list', JSON.stringify(item_list.value))
-		axios.post(`/api/save_manual`,formData).then(function (response) {
-			success.value='You have successfully saved new pr.'
-			successAlert.value=!successAlert.value
-		}, function (err) {
-			error.value = err.response.data.message;
+		if(item_list.value.length!=0){
+			axios.post(`/api/save_manual`,formData).then(function (response) {
+				success.value='You have successfully saved new pr.'
+				successAlert.value=!successAlert.value
+			}, function (err) {
+				error.value = err.response.data.message;
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			error.value = 'Items cannot be empty, Please fill in data.';
 			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
+		}
     }
 
 	const onSaveDraftManual = () => {
@@ -577,10 +626,10 @@
 										</tr>
 										<tr>
 											<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
-											<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center"></td>
-											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center"></td>
+											<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center" id="check_qty"></td>
+											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center" id="check_uom"></td>
 											<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
-											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1"></td>
+											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1" id="check_description"></td>
 											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" ></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
@@ -635,68 +684,84 @@
 									</label>
 								</div>
 							</div>
-							<div id="showsigna" style="display: none;">
-								<div class="row mt-2">
-									<div class="col-lg-3 col-md-3">
-										<div class="form-group">
-											<label class="text-gray-500 m-0" for="">Date</label>
-											<input type="date" class="form-control" placeholder="Date" v-model="approved_date">
+							<div v-for="p in prhead">
+								<div id="showsigna" :style="(props.id!=0 && p.petty_cash==1) ? '' : 'display: none;'">
+									<div class="row mt-2">
+										<div class="col-lg-3 col-md-3">
+											<div class="form-group">
+												<label class="text-gray-500 m-0" for="">Date</label>
+												<input type="date" class="form-control" placeholder="Date" v-model="approved_date" v-if="props.id==0">
+												<input type="date" class="form-control" placeholder="Date" v-model="petty_cash.approved_date" v-else>
+											</div>
+										</div>
+										<div class="col-lg-9 col-md-9">
+											<div class="form-group">
+												<label class="text-gray-500 m-0" for="">Comment</label>
+												<textarea class="form-control" placeholder="Comment" v-model="remarks" rows="1" v-if="props.id==0"></textarea>
+												<textarea class="form-control" placeholder="Comment" v-model="petty_cash.remarks" rows="1" v-else></textarea>
+											</div>
 										</div>
 									</div>
-									<div class="col-lg-9 col-md-9">
-										<div class="form-group">
-											<label class="text-gray-500 m-0" for="">Comment</label>
-											<textarea class="form-control" placeholder="Comment" v-model="remarks" rows="1"></textarea>
+									<div class="row mt-4 mb-4">
+										<div class="col-lg-12">
+											<table class="w-full text-xs">
+												<tr>
+													<td class="text-center" width="20%">Prepared by</td>
+													<td width="2%"></td>
+													<td class="text-center" width="20%">Recommending Approval</td>
+													<td width="2%"></td>
+													<td class="text-center" width="20%">Approved by</td>
+												</tr>
+												<tr>
+													<td class="text-center border-b"><br></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+													<td></td>
+													<td class="text-center border-b"></td>
+												</tr>
+												<tr>
+													<td class="text-center p-0">
+														<select class="p-1 text-center w-full bg-yellow-50" v-model="prepared_by" v-if="props.id==0">
+															<option value=''>--Select Signatory--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+														<select class="p-1 text-center w-full bg-yellow-50" v-model="petty_cash.prepared_by" v-else>
+															<option value=''>--Select Signatory--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+													</td>
+													<td></td>
+													<td class="text-center p-0">
+														<select class="p-1 text-center w-full bg-yellow-50" v-model="recommended_by" v-if="props.id==0">
+															<option value=''>--Select Signatory--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+														<select class="p-1 text-center w-full bg-yellow-50" v-model="petty_cash.recommended_by" v-else>
+															<option value=''>--Select Signatory--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+													</td>
+													<td></td>
+													<td class="text-center p-0">
+														<select class="p-1 text-center w-full bg-yellow-50" v-model="approved_by" v-if="props.id==0">
+															<option value=''>--Select Signatory--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+														<select class="p-1 text-center w-full bg-yellow-50" v-model="petty_cash.approved_by" v-else>
+															<option value=''>--Select Signatory--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-center"><br><br></td>
+													<td></td>
+													<td class="text-center"></td>
+													<td></td>
+													<td class="text-center"></td>
+												</tr>
+											</table>
 										</div>
-									</div>
-								</div>
-								<div class="row mt-4 mb-4">
-									<div class="col-lg-12">
-										<table class="w-full text-xs">
-											<tr>
-												<td class="text-center" width="20%">Prepared by</td>
-												<td width="2%"></td>
-												<td class="text-center" width="20%">Recommending Approval</td>
-												<td width="2%"></td>
-												<td class="text-center" width="20%">Approved by</td>
-											</tr>
-											<tr>
-												<td class="text-center border-b"><br></td>
-												<td></td>
-												<td class="text-center border-b"></td>
-												<td></td>
-												<td class="text-center border-b"></td>
-											</tr>
-											<tr>
-												<td class="text-center p-0">
-													<select class="p-1 text-center w-full bg-yellow-50" v-model="prepared_by">
-														<option value=''>--Select Signatory--</option>
-														<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
-													</select>
-												</td>
-												<td></td>
-												<td class="text-center p-0">
-													<select class="p-1 text-center w-full bg-yellow-50" v-model="recommended_by">
-														<option value=''>--Select Signatory--</option>
-														<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
-													</select>
-												</td>
-												<td></td>
-												<td class="text-center p-0">
-													<select class="p-1 text-center w-full bg-yellow-50" v-model="approved_by">
-														<option value=''>--Select Signatory--</option>
-														<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<td class="text-center"><br><br></td>
-												<td></td>
-												<td class="text-center"></td>
-												<td></td>
-												<td class="text-center"></td>
-											</tr>
-										</table>
 									</div>
 								</div>
 							</div>
@@ -807,10 +872,10 @@
 										</tr>
 										<tr>
 											<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
-											<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center"></td>
-											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center"></td>
+											<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center" id="check_qty"></td>
+											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center" id="check_uom"></td>
 											<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
-											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1"></td>
+											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1" id="check_description"></td>
 											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
