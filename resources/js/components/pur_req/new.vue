@@ -13,6 +13,7 @@
 	let item_list=ref([]);
 	let department_list=ref([]);
 	let error=ref('');
+	let error_pr=ref([]);
 	let success=ref('');
 	let item_no=ref();
 	let qty=ref('');
@@ -423,7 +424,7 @@
 		formData.append('pr_no', form.value.pr_no)
 		formData.append('site_pr', form.value.site_pr)
 		formData.append('date_prepared', form.value.date_prepared)
-		formData.append('department', form.value.department)
+		formData.append('department_id', form.value.department)
 		formData.append('urgency', form.value.urgency)
 		formData.append('process_code', form.value.process_code)
 		formData.append('requestor', form.value.requestor)
@@ -442,10 +443,19 @@
 				success.value='You have successfully saved new pr.'
 				successAlert.value=!successAlert.value
 			}, function (err) {
-				error.value = err.response.data.message;
+				// error.value = err.response.data.message;
+				error.value=''
+				error_pr.value=[]
+				if (err.response.data.errors.pr_no) {
+					error_pr.value.push(err.response.data.errors.pr_no[0])
+				}
+				if (err.response.data.errors.department_id) {
+					error_pr.value.push(err.response.data.errors.department_id[0])
+				}
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
 		}else{
+			error.value=''
 			error.value = 'Items cannot be empty, Please fill in data.';
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}
@@ -457,7 +467,7 @@
 		formData.append('pr_no', form.value.pr_no)
 		formData.append('site_pr', form.value.site_pr)
 		formData.append('date_prepared', form.value.date_prepared)
-		formData.append('department', form.value.department)
+		formData.append('department_id', form.value.department)
 		formData.append('urgency', form.value.urgency)
 		formData.append('process_code', form.value.process_code)
 		formData.append('requestor', form.value.requestor)
@@ -475,7 +485,14 @@
 			success.value='You have successfully saved new pr.'
 			warningAlert.value=!warningAlert.value
 		}, function (err) {
-			error.value = err.response.data.message;
+			error_pr.value=[]
+			// error_pr.value = err.response.data.message;
+			if (err.response.data.errors.pr_no) {
+				error_pr.value.push(err.response.data.errors.pr_no[0])
+			}
+			if (err.response.data.errors.department_id) {
+				error_pr.value.push(err.response.data.errors.department_id[0])
+			}
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}); 
     }
@@ -1180,6 +1197,7 @@
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
 									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
 									<h5 class="leading-tight" v-else-if="error_inventory!=''">{{ error_inventory }}</h5>
+									<h5 class="leading-tight" v-else-if="error_pr!=''" v-for="er in error_pr">{{ er }}</h5>
 								</div>
 							</div>
 						</div>

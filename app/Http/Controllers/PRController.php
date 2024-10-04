@@ -411,9 +411,32 @@ class PRController extends Controller
         $year= ($request->date_prepared!='undefined') ? date("Y", strtotime($request->date_prepared)) : date('Y');
         $year_short = ($request->date_prepared!='undefined') ? date("y", strtotime($request->date_prepared)) : date('y');
         $pr_no=explode('-',$request->pr_no);
-        $department_name=Departments::where('id',$request->department)->value('department_name');
-        $department_code=Departments::where('id',$request->department)->value('department_code');
+        $department_name=Departments::where('id',$request->department_id)->value('department_name');
+        $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
+        $status=($request->petty_cash==0) ? 'Saved' : 'Closed';
+        $data_head=$this->validate($request,
+            [
+                'pr_no'=>'required|string',
+                'department_id'=>'required|integer'
+            ],
+            [
+               'department_id.required'=> 'The department field is required.'
+            ]
+        );
+        $data_head['location']=$request->location;
+        $data_head['site_pr']=$request->site_pr;
+        $data_head['date_prepared']=($request->date_prepared!='undefined') ? $request->date_prepared : '';
+        $data_head['department_name']=$department_name;
+        $data_head['urgency']=$request->urgency;
+        $data_head['process_code']=$request->process_code;
+        $data_head['requestor']=$request->requestor;
+        $data_head['enduse']=$request->enduse;
+        $data_head['purpose']=$request->purpose;
+        $data_head['method']='Manual';
+        $data_head['status']='Saved';
+        $data_head['petty_cash']=$request->petty_cash;
+        $insertprhead=PRHead::create($data_head);
         if($series_rows==0){
             $max_series='1';
             $pr_series='0001';
@@ -429,24 +452,24 @@ class PRController extends Controller
             $pr_series=PRSeries::create($series);
         }
         // if($pr_series){
-            $status=($request->petty_cash==0) ? 'Saved' : 'Closed';
-            $data_head=[
-                'location'=>$request->location,
-                'pr_no'=>$pr_no,
-                'site_pr'=>$request->site_pr,
-                'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : null,
-                'department_id'=>$request->department,
-                'department_name'=>$department_name,
-                'urgency'=>$request->urgency,
-                'process_code'=>$request->process_code,
-                'requestor'=>$request->requestor,
-                'enduse'=>$request->enduse,
-                'purpose'=>$request->purpose,
-                'method'=>'Manual',
-                'status'=>$status,
-                'petty_cash'=>$request->petty_cash,
-            ];    
-            $insertprhead=PRHead::create($data_head);
+            // $status=($request->petty_cash==0) ? 'Saved' : 'Closed';
+            // $data_head=[
+            //     'location'=>$request->location,
+            //     'pr_no'=>$pr_no,
+            //     'site_pr'=>$request->site_pr,
+            //     'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : null,
+            //     'department_id'=>$request->department,
+            //     'department_name'=>$department_name,
+            //     'urgency'=>$request->urgency,
+            //     'process_code'=>$request->process_code,
+            //     'requestor'=>$request->requestor,
+            //     'enduse'=>$request->enduse,
+            //     'purpose'=>$request->purpose,
+            //     'method'=>'Manual',
+            //     'status'=>$status,
+            //     'petty_cash'=>$request->petty_cash,
+            // ];    
+            // $insertprhead=PRHead::create($data_head);
             if($insertprhead && $request->petty_cash==1){
                 $data_petty=[
                     'pr_head_id'=>$insertprhead->id,
@@ -495,6 +518,44 @@ class PRController extends Controller
         $department_name=Departments::where('id',$request->department)->value('department_name');
         $department_code=Departments::where('id',$request->department)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
+        $data_head=$this->validate($request,
+            [
+                'pr_no'=>'required|string',
+                'department_id'=>'required|integer'
+            ],
+            [
+               'department_id.required'=> 'The department field is required.'
+            ]
+        );
+        $data_head['location']=$request->location;
+        $data_head['site_pr']=$request->site_pr;
+        $data_head['date_prepared']=($request->date_prepared!='undefined') ? $request->date_prepared : '';
+        $data_head['department_name']=$request->department_name;
+        $data_head['urgency']=$request->urgency;
+        $data_head['process_code']=$request->process_code;
+        $data_head['requestor']=$request->requestor;
+        $data_head['enduse']=$request->enduse;
+        $data_head['purpose']=$request->purpose;
+        $data_head['method']='Manual';
+        $data_head['status']='Draft';
+        $data_head['petty_cash']=$request->petty_cash;
+        // $data_head=[
+        //     'location'=>$request->location,
+        //     'pr_no'=>$pr_no,
+        //     'site_pr'=>$request->site_pr,
+        //     'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : '',
+        //     'department_id'=>$request->department,
+        //     'department_name'=>$department_name,
+        //     'urgency'=>$request->urgency,
+        //     'process_code'=>$request->process_code,
+        //     'requestor'=>$request->requestor,
+        //     'enduse'=>$request->enduse,
+        //     'purpose'=>$request->purpose,
+        //     'method'=>'Manual',
+        //     'status'=>'Draft',
+        //     'petty_cash'=>$request->petty_cash,
+        // ];    
+        $insertprhead=PRHead::create($data_head);
         $exp=explode('-',$request->pr_no);
         if($series_rows==0){
             $max_series='1';
@@ -511,23 +572,6 @@ class PRController extends Controller
             $series['series']=$pr_series;
             $pr_series=PRSeries::create($series);
         }
-        $data_head=[
-            'location'=>$request->location,
-            'pr_no'=>$pr_no,
-            'site_pr'=>$request->site_pr,
-            'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : '',
-            'department_id'=>$request->department,
-            'department_name'=>$department_name,
-            'urgency'=>$request->urgency,
-            'process_code'=>$request->process_code,
-            'requestor'=>$request->requestor,
-            'enduse'=>$request->enduse,
-            'purpose'=>$request->purpose,
-            'method'=>'Manual',
-            'status'=>'Draft',
-            'petty_cash'=>$request->petty_cash,
-        ];    
-        $insertprhead=PRHead::create($data_head);
         if($insertprhead && $request->petty_cash==1){
             $data_petty=[
                 'pr_head_id'=>$insertprhead->id,
