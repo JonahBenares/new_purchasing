@@ -43,7 +43,8 @@ class PRController extends Controller
     }
 
     public function get_import_data($id){
-        $pr_head = PRHead::where('id',$id)->where('status','!=','Cancelled')->get();
+        // $pr_head = PRHead::where('id',$id)->where('status','!=','Cancelled')->get();
+        $pr_head = PRHead::where('id',$id)->where('status','!=','Cancelled')->first();
         $pr_details = PRDetails::where('pr_head_id',$id)->where('status','!=','Cancelled')->get();
         $petty_cash = PettyCash::where('pr_head_id',$id)->orderByDesc('created_at')->first();
         return response()->json([
@@ -79,47 +80,51 @@ class PRController extends Controller
     }
 
     public function save_upload(Request $request, $id){
-        $prhead=$request->input("prhead");
+        // $prhead=$request->input("prhead");
         $prdetails=$request->input("prdetails");
         $item_list=$request->input("item_list");
-        if(count(json_decode($prhead))>0){
-            foreach(json_decode($prhead) AS $ph){
-                if(count(json_decode($prhead))>0){ 
-                    $insertprhead=PRHead::where('id',$ph->id)->first();
-                    $department_name=Departments::where('id',$ph->department_id)->value('department_name');
-                    $status=($ph->petty_cash==0) ? 'Saved' : 'Closed';
+        // if(count(json_decode($prhead))>0){
+            // foreach(json_decode($prhead) AS $ph){
+                // if(count(json_decode($prhead))>0){ 
+                    $insertprhead=PRHead::where('id',$request->id)->first();
+                    $department_name=Departments::where('id',$request->department_id)->value('department_name');
+                    $department_code=Departments::where('id',$request->department_id)->value('department_code');
+                    $status=($request->petty_cash==0) ? 'Saved' : 'Closed';
                     $data_head=[
-                        'location'=>$ph->location,
-                        'pr_no'=>$ph->pr_no,
-                        'site_pr'=>$ph->site_pr,
-                        'date_prepared'=>($ph->date_prepared!='undefined') ? $ph->date_prepared : '',
-                        'department_id'=>$ph->department_id,
+                        'location'=>$request->location,
+                        'pr_no'=>$request->pr_no,
+                        'site_pr'=>$request->site_pr,
+                        'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
+                        'department_id'=>$request->department_id,
                         'department_name'=>$department_name,
-                        'urgency'=>$ph->urgency,
-                        'process_code'=>$ph->process_code,
-                        'requestor'=>$ph->requestor,
-                        'enduse'=>$ph->enduse,
-                        'purpose'=>$ph->purpose,
+                        'dept_code'=>$department_code,
+                        'urgency'=>$request->urgency,
+                        'process_code'=>$request->process_code,
+                        'requestor'=>$request->requestor,
+                        'enduse'=>$request->enduse,
+                        'purpose'=>$request->purpose,
                         'status'=>$status,
-                        'petty_cash'=>$ph->petty_cash,
+                        'petty_cash'=>$request->petty_cash,
+                        'user_id'=>Auth::id(),
                     ];    
                     $insertprhead->update($data_head); 
-                    if($insertprhead && $ph->petty_cash==1){
+                    if($insertprhead && $request->petty_cash==1){
                         if($request->props_id==0){
                             $data_petty=[
-                                'pr_head_id'=>$ph->id,
-                                'pr_no'=>$ph->pr_no,
+                                'pr_head_id'=>$request->id,
+                                'pr_no'=>$request->pr_no,
                                 'prepared_by'=>$request->prepared_by,
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
                                 'approved_date'=>$request->approved_date,
                                 'remarks'=>$request->remarks,
                                 'user_id'=>Auth::id(),
-                            ];
+                            ]; 
+                            PettyCash::create($data_petty);
                         } else{
                             $data_petty=[
-                                'pr_head_id'=>$ph->id,
-                                'pr_no'=>$ph->pr_no,
+                                'pr_head_id'=>$request->id,
+                                'pr_no'=>$request->pr_no,
                                 'prepared_by'=>$request->prepared_by,
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
@@ -127,9 +132,13 @@ class PRController extends Controller
                                 'remarks'=>$request->remarks,
                                 'user_id'=>Auth::id(),
                             ];
+                            if(!PettyCash::where('pr_head_id',$request->id)->exists()){
+                                PettyCash::create($data_petty);
+                            }else{
+                                $petty=PettyCash::where('id',$request->petty_cash_id)->first();
+                                $petty->update($data_petty);
+                            }
                         } 
-                        PettyCash::create($data_petty);
-                        
                     }   
                     foreach(json_decode($prdetails) AS $pd){
                         $insertprdetails=PRDetails::where('id',$pd->id)->first();
@@ -140,7 +149,7 @@ class PRController extends Controller
                     }
                     foreach(json_decode($item_list) AS $il){
                         $data=[
-                            'pr_head_id'=>$ph->id,
+                            'pr_head_id'=>$request->id,
                             'quantity'=>$il->qty,
                             'uom'=>$il->uom,
                             'pn_no'=>$il->pn_no,
@@ -152,7 +161,7 @@ class PRController extends Controller
                         ];
                         $prdetails_id=PRDetails::create($data);
                         if($prdetails_id){
-                            $prreport['pr_no']=$ph->pr_no;
+                            $prreport['pr_no']=$request->pr_no;
                             $prreport['pr_details_id']=$prdetails_id->id;
                             $prreport['item_description']=$il->item_desc;
                             $prreport['pr_qty']=$il->qty;
@@ -161,28 +170,28 @@ class PRController extends Controller
                             PrReportDetails::create($prreport);
                         }
                     }
-                }
-            }
-        }
+                // }
+            // }
+        // }
     }
 
     public function save_upload_draft(Request $request, $id){
-        $prhead=$request->input("prhead");
+        // $prhead=$request->input("prhead");
         $prdetails=$request->input("prdetails");
         $item_list=$request->input("item_list");
-        if(count(json_decode($prhead))>0){
-            foreach(json_decode($prhead) AS $ph){
-                if(count(json_decode($prhead))>0){ 
-                    $insertprhead=PRHead::where('id',$ph->id)->first();
-                    // $department_name=Departments::where('id',$ph->department_id)->value('department_name');
+        // if(count(json_decode($prhead))>0){
+        //     foreach(json_decode($prhead) AS $ph){
+        //         if(count(json_decode($prhead))>0){ 
+                    $insertprhead=PRHead::where('id',$request->id)->first();
+                    // $department_name=Departments::where('id',$request->department_id)->value('department_name');
                     if($request->props_id!=0){
-                        $year= ($ph->date_prepared!='undefined' && $ph->date_prepared!='') ? date("Y", strtotime($ph->date_prepared)) : date('Y');
-                        $year_short = ($ph->date_prepared!='undefined' && $ph->date_prepared!='') ? date("y", strtotime($ph->date_prepared)) : date('y');
-                        $pr_no=explode('-',$ph->pr_no);
-                        $department_name=Departments::where('id',$ph->department_id)->value('department_name');
-                        $department_code=Departments::where('id',$ph->department_id)->value('department_code');
+                        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+                        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
+                        $pr_no=explode('-',$request->pr_no);
+                        $department_name=Departments::where('id',$request->department_id)->value('department_name');
+                        $department_code=Departments::where('id',$request->department_id)->value('department_code');
                         $series_rows = PRSeries::where('year',$year)->count();
-                        $exp=explode('-',$ph->pr_no);
+                        $exp=explode('-',$request->pr_no);
                         if($series_rows==0){
                             $max_series='1';
                             $pr_series='0001';
@@ -199,29 +208,32 @@ class PRController extends Controller
                             $pr_series=PRSeries::create($series);
                         }
                     }else{
-                        $department_name=Departments::where('id',$ph->department_id)->value('department_name');
+                        $department_name=Departments::where('id',$request->department_id)->value('department_name');
+                        $department_code=Departments::where('id',$request->department_id)->value('department_code');
                     }
                     $data_head=[
-                        'location'=>$ph->location,
-                        'pr_no'=>($request->props_id==0) ? $ph->pr_no : $pr_no,
-                        'site_pr'=>$ph->site_pr,
-                        'date_prepared'=>($ph->date_prepared!='undefined') ? $ph->date_prepared : '',
-                        'department_id'=>$ph->department_id,
+                        'location'=>$request->location,
+                        'pr_no'=>($request->props_id==0) ? $request->pr_no : $pr_no,
+                        'site_pr'=>$request->site_pr,
+                        'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
+                        'department_id'=>$request->department_id,
                         'department_name'=>$department_name,
-                        'urgency'=>$ph->urgency,
-                        'process_code'=>$ph->process_code,
-                        'requestor'=>$ph->requestor,
-                        'enduse'=>$ph->enduse,
-                        'purpose'=>$ph->purpose,
+                        'dept_code'=>$department_code,
+                        'urgency'=>$request->urgency,
+                        'process_code'=>$request->process_code,
+                        'requestor'=>$request->requestor,
+                        'enduse'=>$request->enduse,
+                        'purpose'=>$request->purpose,
                         'status'=>'Draft',
-                        'petty_cash'=>$ph->petty_cash,
+                        'petty_cash'=>$request->petty_cash,
+                        'user_id'=>Auth::id(),
                     ];    
                     $insertprhead->update($data_head); 
-                    if($insertprhead && $ph->petty_cash==1){
+                    if($insertprhead && $request->petty_cash==1){
                         if($request->props_id==0){
                             $data_petty=[
-                                'pr_head_id'=>$ph->id,
-                                'pr_no'=>$ph->pr_no,
+                                'pr_head_id'=>$request->id,
+                                'pr_no'=>$request->pr_no,
                                 'prepared_by'=>$request->prepared_by,
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
@@ -229,10 +241,11 @@ class PRController extends Controller
                                 'remarks'=>$request->remarks,
                                 'user_id'=>Auth::id(),
                             ];  
+                            PettyCash::create($data_petty);
                         } else{
                             $data_petty=[
-                                'pr_head_id'=>$ph->id,
-                                'pr_no'=>$ph->pr_no,
+                                'pr_head_id'=>$request->id,
+                                'pr_no'=>$request->pr_no,
                                 'prepared_by'=>$request->prepared_by,
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
@@ -240,8 +253,13 @@ class PRController extends Controller
                                 'remarks'=>$request->remarks,
                                 'user_id'=>Auth::id(),
                             ];
+                            if(!PettyCash::where('pr_head_id',$request->id)->exists()){
+                                PettyCash::create($data_petty);
+                            }else{
+                                $petty=PettyCash::where('id',$request->petty_cash_id)->first();
+                                $petty->update($data_petty);
+                            }
                         } 
-                        PettyCash::create($data_petty);
                     }   
                     foreach(json_decode($prdetails) AS $pd){
                         $insertprdetails=PRDetails::where('id',$pd->id)->first();
@@ -252,7 +270,7 @@ class PRController extends Controller
                     }
                     foreach(json_decode($item_list) AS $il){
                         $data=[
-                            'pr_head_id'=>$ph->id,
+                            'pr_head_id'=>$request->id,
                             'quantity'=>$il->qty,
                             'uom'=>$il->uom,
                             'pn_no'=>$il->pn_no,
@@ -264,7 +282,7 @@ class PRController extends Controller
                         ];
                         $prdetails_id=PRDetails::create($data);
                         if($prdetails_id){
-                            $prreport['pr_no']=$ph->pr_no;
+                            $prreport['pr_no']=$request->pr_no;
                             $prreport['pr_details_id']=$prdetails_id->id;
                             $prreport['item_description']=$il->item_desc;
                             $prreport['pr_qty']=$il->qty;
@@ -273,9 +291,9 @@ class PRController extends Controller
                             PrReportDetails::create($prreport);
                         }
                     }
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
     }
 
     public function update_recomdate(Request $request, $id){
@@ -348,8 +366,8 @@ class PRController extends Controller
     }
 
     public function generate_prno(Request $request){
-        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
+        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         $department_code=Departments::where('id',$request->department)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
         if($series_rows==0){
@@ -408,8 +426,8 @@ class PRController extends Controller
     
     public function save_manual(Request $request){
         $item_list=$request->input("item_list");
-        $year= ($request->date_prepared!='undefined') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined') ? date("y", strtotime($request->date_prepared)) : date('y');
+        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         $pr_no=explode('-',$request->pr_no);
         $department_name=Departments::where('id',$request->department_id)->value('department_name');
         $department_code=Departments::where('id',$request->department_id)->value('department_code');
@@ -426,8 +444,9 @@ class PRController extends Controller
         );
         $data_head['location']=$request->location;
         $data_head['site_pr']=$request->site_pr;
-        $data_head['date_prepared']=($request->date_prepared!='undefined') ? $request->date_prepared : '';
+        $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
+        $data_head['dept_code']=$department_code;
         $data_head['urgency']=$request->urgency;
         $data_head['process_code']=$request->process_code;
         $data_head['requestor']=$request->requestor;
@@ -436,6 +455,7 @@ class PRController extends Controller
         $data_head['method']='Manual';
         $data_head['status']='Saved';
         $data_head['petty_cash']=$request->petty_cash;
+        $data_head['user_id']=Auth::id();
         $insertprhead=PRHead::create($data_head);
         if($series_rows==0){
             $max_series='1';
@@ -512,11 +532,11 @@ class PRController extends Controller
     public function save_manual_draft(Request $request){
         $item_list=$request->input("item_list");
         // $department_name=Departments::where('id',$request->department)->value('department_name');
-        $year= ($request->date_prepared!='undefined') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined') ? date("y", strtotime($request->date_prepared)) : date('y');
+        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         $pr_no=explode('-',$request->pr_no);
-        $department_name=Departments::where('id',$request->department)->value('department_name');
-        $department_code=Departments::where('id',$request->department)->value('department_code');
+        $department_name=Departments::where('id',$request->department_id)->value('department_name');
+        $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
         $data_head=$this->validate($request,
             [
@@ -529,8 +549,9 @@ class PRController extends Controller
         );
         $data_head['location']=$request->location;
         $data_head['site_pr']=$request->site_pr;
-        $data_head['date_prepared']=($request->date_prepared!='undefined') ? $request->date_prepared : '';
-        $data_head['department_name']=$request->department_name;
+        $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+        $data_head['department_name']=$department_name;
+        $data_head['dept_code']=$department_code;
         $data_head['urgency']=$request->urgency;
         $data_head['process_code']=$request->process_code;
         $data_head['requestor']=$request->requestor;
@@ -539,6 +560,7 @@ class PRController extends Controller
         $data_head['method']='Manual';
         $data_head['status']='Draft';
         $data_head['petty_cash']=$request->petty_cash;
+        $data_head['user_id']=Auth::id();
         // $data_head=[
         //     'location'=>$request->location,
         //     'pr_no'=>$pr_no,

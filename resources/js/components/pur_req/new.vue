@@ -78,7 +78,7 @@
 		let response = await axios.get('/api/get_import_data/'+id);
 		prhead.value = response.data.pr_head;
 		prdetails.value = response.data.pr_details;
-		if(prhead.value[0].petty_cash==1){
+		if(prhead.value.petty_cash==1){
 			petty_cash.value = response.data.petty_cash;
 		}
 	}
@@ -305,7 +305,18 @@
 
 	const onSave = () => {
 		const formData= new FormData()
-		formData.append('prhead', JSON.stringify(prhead.value))
+		// formData.append('prhead', JSON.stringify(prhead.value))
+		formData.append('location', prhead.value.location)
+		formData.append('pr_no', prhead.value.pr_no)
+		formData.append('site_pr', prhead.value.site_pr)
+		formData.append('date_prepared', prhead.value.date_prepared)
+		formData.append('department_id', prhead.value.department_id)
+		formData.append('urgency', prhead.value.urgency)
+		formData.append('process_code', prhead.value.process_code)
+		formData.append('requestor', prhead.value.requestor)
+		formData.append('enduse', prhead.value.enduse)
+		formData.append('purpose', prhead.value.purpose)
+		formData.append('petty_cash', prhead.value.petty_cash)
 		formData.append('prdetails', JSON.stringify(prdetails.value))
 		formData.append('item_list', JSON.stringify(item_list.value))
 		if(props.id==0){
@@ -315,6 +326,7 @@
 			formData.append('recommended_by', recommended_by.value)
 			formData.append('approved_by', approved_by.value)
 		}else{
+			formData.append('petty_cash_id', petty_cash.value.id)
 			formData.append('approved_date', petty_cash.value.approved_date)
 			formData.append('remarks', petty_cash.value.remarks)
 			formData.append('prepared_by', petty_cash.value.prepared_by)
@@ -324,13 +336,13 @@
 		formData.append('props_id', props.id)
 		if(prdetails.value.length!=0 || item_list.value.length!=0){
 			axios.post(`/api/save_upload/${pr_head_id.value}`,formData).then(function (response) {
-				if(prhead.value[0].petty_cash==0){
+				if(prhead.value.petty_cash==0){
 					success.value='You have successfully saved new pr.'
 					successAlert.value=!successAlert.value
 				}else{
 					success.value='You have successfully saved new pr.'
 					successAlert.value=!successAlert.value
-					router.push('/pur_req/view/'+prhead.value[0].id)
+					router.push('/pur_req/view/'+prhead.value.id)
 				}
 			}, function (err) {
 				error.value = err.response.data.message;
@@ -344,7 +356,18 @@
 
 	const onSaveDraftUpload = () => {
 		const formData= new FormData()
-		formData.append('prhead', JSON.stringify(prhead.value))
+		// formData.append('prhead', JSON.stringify(prhead.value))
+		formData.append('location', prhead.value.location)
+		formData.append('pr_no', prhead.value.pr_no)
+		formData.append('site_pr', prhead.value.site_pr)
+		formData.append('date_prepared', prhead.value.date_prepared)
+		formData.append('department_id', prhead.value.department_id)
+		formData.append('urgency', prhead.value.urgency)
+		formData.append('process_code', prhead.value.process_code)
+		formData.append('requestor', prhead.value.requestor)
+		formData.append('enduse', prhead.value.enduse)
+		formData.append('purpose', prhead.value.purpose)
+		formData.append('petty_cash', prhead.value.petty_cash)
 		formData.append('prdetails', JSON.stringify(prdetails.value))
 		formData.append('item_list', JSON.stringify(item_list.value))
 		// formData.append('approved_date', approved_date.value)
@@ -359,6 +382,7 @@
 			formData.append('recommended_by', recommended_by.value)
 			formData.append('approved_by', approved_by.value)
 		}else{
+			formData.append('petty_cash_id', petty_cash.value.id)
 			formData.append('approved_date', petty_cash.value.approved_date)
 			formData.append('remarks', petty_cash.value.remarks)
 			formData.append('prepared_by', petty_cash.value.prepared_by)
@@ -384,17 +408,17 @@
 			formData.append('series', pr_series.value)
 			formData.append('pr_no', form.value.pr_no)
 		}else{
-			formData.append('date_prepared', prhead.value[0].date_prepared)
-			formData.append('department',  prhead.value[0].department_id)
+			formData.append('date_prepared', prhead.value.date_prepared)
+			formData.append('department',  prhead.value.department_id)
 			formData.append('series', pr_series.value)
-			formData.append('pr_no',  prhead.value[0].pr_no)
+			formData.append('pr_no',  prhead.value.pr_no)
 		}
 		formData.append('props_id', props.id)
 		axios.post(`/api/generate_prno`,formData).then(function (response) {
 			if(props.id==0){
 				form.value.pr_no=response.data
 			}else{
-				prhead.value[0].pr_no=response.data
+				prhead.value.pr_no=response.data
 			}
 			// form.value.pr_no=response.data.pr_no
 			// pr_series.value=response.data.pr_series
@@ -503,13 +527,15 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Request <small>New</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="prhead.status=='Draft' && props.id!=0">Purchase Request <small>Draft</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-else>Purchase Request <small>New</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent" >
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item active"><a href="/pur_req">Purchase Request</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">New</li>
+                            <li class="breadcrumb-item active" aria-current="page" v-if="prhead.status=='Draft' && props.id!=0">Draft</li>
+                            <li class="breadcrumb-item active" aria-current="page" v-else>New</li>
                         </ol>
                     </nav>
                 </div>
@@ -542,37 +568,38 @@
 								<div class="form-group m-0">
 									<label class="text-gray-500 m-0" for="">Add PR and Items Manually</label>
 								</div>
-								<button class="btn btn-primary btn-block" type="button" v-on:click="pr_options = 'pr_manual'">Manual PR</button>
+								<button class="btn btn-primary btn-block" type="button" v-on:click="pr_options = 'pr_manual'" v-if="prhead.status=='Draft' && props.id!=0" disabled>Manual PR</button>
+								<button class="btn btn-primary btn-block" type="button" v-on:click="pr_options = 'pr_manual'" v-else>Manual PR</button>
 							</div>
 						</div>
 						<div class="" id="upload" v-if="pr_options === 'pr_upload'  || props.id!=0">
 							<hr class="border-dashed">
-							<div v-for="head in prhead">
-							<p class="text-gray-500 font-bold text-lg" v-if="head.status!='Draft'">From Uploaded File</p>
+							<!-- <div v-for="head in prhead"> -->
+							<p class="text-gray-500 font-bold text-lg" v-if="prhead.status!='Draft'">From Uploaded File</p>
 							<p class="text-gray-500 font-bold text-lg" v-else>DRAFT</p>
 							<div class="row">
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purchase Request</label>
-										<input type="text" class="form-control" placeholder="Purchase Request" v-model="head.location">
+										<input type="text" class="form-control" placeholder="Purchase Request" v-model="prhead.location">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">PR No</label>
-										<input type="text" class="form-control" placeholder="PR No" v-model="head.pr_no" readonly>
+										<input type="text" class="form-control" placeholder="PR No" v-model="prhead.pr_no" readonly>
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Site PR No</label>
-										<input type="text" class="form-control" placeholder="Site PR No" v-model="head.site_pr">
+										<input type="text" class="form-control" placeholder="Site PR No" v-model="prhead.site_pr">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
-										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="head.date_prepared">
+										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="prhead.date_prepared">
 									</div>
 								</div>
 							</div>
@@ -580,7 +607,7 @@
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Department</label>
-										<select class="form-control" v-model="head.department_id" @change="generatePrNo()">
+										<select class="form-control" v-model="prhead.department_id" @change="generatePrNo()">
 											<option value=''>--Select Department--</option>
 											<option :value="dept.id" v-for="dept in department_list" :key="dept.id">{{ dept.department_name }}</option>
 										</select>
@@ -590,14 +617,14 @@
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Urgency</label>
-										<input type="text" class="form-control" placeholder="" v-model="head.urgency">
+										<input type="text" class="form-control" placeholder="" v-model="prhead.urgency">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Process Code</label>
-										<!-- <input type="text" class="form-control" placeholder="" v-model="head.process_code"> -->
-										<select class="form-control" v-model="head.process_code">
+										<!-- <input type="text" class="form-control" placeholder="" v-model="prhead.process_code"> -->
+										<select class="form-control" v-model="prhead.process_code">
 											<option value=''>--Select Process Code--</option>
 											<option :value="pro" v-for="pro in processing_code" :key="pro">{{ pro }}</option>
 										</select>
@@ -608,22 +635,22 @@
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
-										<input type="text" class="form-control" placeholder="Requestor" v-model="head.requestor">
+										<input type="text" class="form-control" placeholder="Requestor" v-model="prhead.requestor">
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">End-Use</label>
-										<input type="text" class="form-control" placeholder="End-Use" v-model="head.enduse">
+										<input type="text" class="form-control" placeholder="End-Use" v-model="prhead.enduse">
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purpose</label>
-										<input type="text" class="form-control" placeholder="Purpose" v-model="head.purpose">
+										<input type="text" class="form-control" placeholder="Purpose" v-model="prhead.purpose">
 									</div>
 								</div>
-							</div>
+							<!-- </div> -->
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
@@ -695,14 +722,14 @@
 							<hr class="border-dashed">
 							<div class="row">
 								<div class="col-lg-12">
-									<label for="" class="text-sm leading-none" v-for="ph in prhead">
-										<input id="checkbox" type="checkbox" v-model="ph.petty_cash" @click="showSigna()" true-value="1" false-value="0">
+									<label for="" class="text-sm leading-none" >
+										<input id="checkbox" type="checkbox" v-model="prhead.petty_cash" @click="showSigna()" true-value="1" false-value="0">
 										Petty Cash
 									</label>
 								</div>
 							</div>
-							<div v-for="p in prhead">
-								<div id="showsigna" :style="(props.id!=0 && p.petty_cash==1) ? '' : 'display: none;'">
+							<!-- <div v-for="p in prhead"> -->
+								<div id="showsigna" :style="(props.id!=0 && prhead.petty_cash==1) ? '' : 'display: none;'">
 									<div class="row mt-2">
 										<div class="col-lg-3 col-md-3">
 											<div class="form-group">
@@ -781,7 +808,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							<!-- </div> -->
 							<div class="row my-2"> 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
