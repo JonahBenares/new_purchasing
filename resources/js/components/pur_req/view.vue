@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, ArrowUpOnSquareStackIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, ArrowUpOnSquareStackIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	let error=ref('');
@@ -178,8 +178,14 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
 				<div class="card-body">
+					<div class="py-2 px-2 bg-red-500">
+						<span class="font-bold text-white">CANCELLED</span>
+					</div>
 					<hr class="border-dashed mt-0">
 					<div class="pt-1" id="printable">
+						<div class="print:block hidden print:flex print:justify-center h-full" >
+							<img src="../../../images/bg_cancelled.png" alt="" class="absolute h-[420px] align-center opacity-100">
+						</div>
 						<div class="row">
 							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
@@ -200,7 +206,6 @@
 								<span class="text-sm text-gray-700">{{get_prhead.site_pr}}</span>
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="col-lg-6 col-sm-6 col-md-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
@@ -227,7 +232,7 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
-								<table class="w-full table-bordered !text-xs mt-3">
+								<table class="w-full table-bordered bg-transparent !text-xs mt-3">
 									<tr class="bg-gray-100">
 										<td class="p-1 uppercase text-center" width="5%">#</td>
 										<td class="p-1 uppercase text-center" width="7%">Qty</td>
@@ -277,20 +282,6 @@
 						</div>
 						<hr class="border-dashed">
 						<div>
-							<!-- <div class="row mt-2">
-								<div class="col-lg-3 col-md-3">
-									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Date</label>
-										<input type="date" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
-									</div>
-								</div>
-								<div class="col-lg-5 col-md-5">
-									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Comment</label>
-										<input type="text" class="form-control" placeholder="PR No" value="PR-BCD24-1209">
-									</div>
-								</div>
-							</div> -->
 							<div class="row mt-4 mb-4" v-if="get_prhead.petty_cash=='1'">
 								<div class="col-lg-12">
 									<table class="w-full text-xs">
