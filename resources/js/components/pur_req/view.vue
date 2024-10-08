@@ -177,13 +177,13 @@
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
-				<div class="card-body">
-					<div class="py-2 px-2 bg-red-500">
+					<div class="py-2 px-2 bg-red-500" v-if="get_prhead.status=='Cancelled'">
 						<span class="font-bold text-white">CANCELLED</span>
 					</div>
-					<hr class="border-dashed mt-0">
+				<div class="card-body">
+					
 					<div class="pt-1" id="printable">
-						<div class="print:block hidden print:flex print:justify-center h-full" >
+						<div class="print:block hidden print:flex print:justify-center h-full" v-if="get_prhead.status=='Cancelled'">
 							<img src="../../../images/bg_cancelled.png" alt="" class="absolute h-[420px] align-center opacity-100">
 						</div>
 						<div class="row">
