@@ -59,7 +59,7 @@ class PRController extends Controller
             'purchase_request'=>'',
             'pr_no'=>'',
             'site_pr'=>'',
-            'pr_date'=>'',
+            'date_issued'=>'',
             'dae_prepared'=>'',
             'department'=>'',
             'urgency'=>0,
@@ -95,7 +95,7 @@ class PRController extends Controller
                         'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
                         'pr_no'=>$request->pr_no,
                         'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
-                        'pr_date'=>($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '',
+                        'date_issued'=>($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '',
                         'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
                         'department_id'=>$request->department_id,
                         'department_name'=>$department_name,
@@ -217,7 +217,7 @@ class PRController extends Controller
                         'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
                         'pr_no'=>($request->props_id==0) ? $request->pr_no : $pr_no,
                         'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
-                        'pr_date'=>($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '',
+                        'date_issued'=>($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '',
                         'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
                         'department_id'=>($request->department_id!='undefined' && $request->department_id!='null' && $request->department_id!='') ? $request->department_id : '',
                         'department_name'=>$department_name,
@@ -439,7 +439,6 @@ class PRController extends Controller
         $item_list=$request->input("item_list");
         $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
         $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
-        $pr_no=explode('-',$request->pr_no);
         $department_name=Departments::where('id',$request->department_id)->value('department_name');
         $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
@@ -455,7 +454,7 @@ class PRController extends Controller
         );
         $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
         $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
-        $data_head['pr_date']=($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '';
+        $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
         $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
@@ -475,6 +474,7 @@ class PRController extends Controller
             $insertprhead=PRHead::where('id',$request->prhead_id)->first();
             $insertprhead->update($data_head);
         }
+        $exp=explode('-',$request->pr_no);
         if($series_rows==0){
             $max_series='1';
             $pr_series='0001';
@@ -482,9 +482,11 @@ class PRController extends Controller
         } else {
             $max_series=PRSeries::where('year',$year)->max('series');
             $pr_series=$max_series+1;
-            $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+            $pr_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+            // $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
         }
-        if(!PRSeries::where('year',$year)->where('series',$pr_series)->exists()){
+        // if(!PRSeries::where('year',$year)->where('series',$pr_series)->exists()){
+        if(!PRSeries::where('year',$year)->where('series',$exp[1])->exists()){
             $series['year']=$year;
             $series['series']=$pr_series;
             $pr_series=PRSeries::create($series);
@@ -519,7 +521,13 @@ class PRController extends Controller
                     'remarks'=>$request->remarks,
                     'user_id'=>Auth::id(),
                 ];  
-                PettyCash::create($data_petty);
+                if($request->prhead_id==0){ 
+                    PettyCash::create($data_petty);
+                }else{
+                    $updatepetty=PettyCash::where('pr_head_id',$request->prhead_id)->first();
+                    $updatepetty->update($data_head);
+                }
+                // PettyCash::create($data_petty);
             }   
             foreach(json_decode($item_list) AS $il){
                 $data=[
@@ -533,7 +541,36 @@ class PRController extends Controller
                     'recom_date'=>$il->recom_date,
                     'status'=>$status,
                 ];
-                $prdetails_id=PRDetails::create($data);
+                if($request->prhead_id==0){
+                    $prdetails_id=PRDetails::create($data);
+                }else{
+                    if(!PRDetails::where('pr_head_id',$request->prhead_id)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->exists()){
+                        $prdetails_id=PRDetails::create($data);
+                    }else{
+                        $prdetails_id=PRDetails::updateOrCreate(
+                            [
+                                'item_description'   => $il->item_desc,
+                                'pn_no'=>$il->pn_no,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                            ],
+                            [
+                                'pr_head_id'=>$insertprhead->id,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'pn_no'=>$il->pn_no,
+                                'item_description'=>$il->item_desc,
+                                'wh_stocks'=>$il->wh_stocks,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                                'status'=>'Saved',
+                            ]
+                        );
+                    }
+                }
+                // $prdetails_id=PRDetails::create($data);
                 if($prdetails_id){
                     $prreport['pr_no']=$insertprhead->pr_no;
                     $prreport['pr_details_id']=$prdetails_id->id;
@@ -541,7 +578,16 @@ class PRController extends Controller
                     $prreport['pr_qty']=$il->qty;
                     $prreport['uom']=$il->uom;
                     $prreport['status']='pending for RFQ';
-                    PrReportDetails::create($prreport);
+                    if($request->prhead_id==0){ 
+                        PrReportDetails::create($prreport);
+                    }else{
+                        if(!PrReportDetails::where('pr_details_id',$prdetails_id->id)->where('item_description',$il->item_desc)->exists()){
+                            PrReportDetails::create($prreport);
+                        }else{
+                            PrReportDetails::where('pr_details_id',$prdetails_id->id)->update($prreport);
+                        }
+                    }
+                    // PrReportDetails::create($prreport);
                 }
             }
         // }
@@ -568,7 +614,7 @@ class PRController extends Controller
         );
         $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
         $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
-        $data_head['pr_date']=($request->pr_date!='undefined' && $request->pr_date!='null' && $request->pr_date!='') ? $request->pr_date : '';
+        $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
         $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
@@ -629,8 +675,13 @@ class PRController extends Controller
                 'approved_date'=>$request->approved_date,
                 'remarks'=>$request->remarks,
                 'user_id'=>Auth::id(),
-            ];  
-            PettyCash::create($data_petty);
+            ]; 
+            if($request->prhead_id==0){ 
+                PettyCash::create($data_petty);
+            }else{
+                $updatepetty=PettyCash::where('pr_head_id',$request->prhead_id)->first();
+                $updatepetty->update($data_head);
+            }
         }   
         foreach(json_decode($item_list) AS $il){
             $data=[
@@ -644,7 +695,38 @@ class PRController extends Controller
                 'recom_date'=>$il->recom_date,
                 'status'=>'Draft',
             ];
-            $prdetails_id=PRDetails::create($data);
+            if($request->prhead_id==0){ 
+                $prdetails_id=PRDetails::create($data);
+            }else{
+                if(!PRDetails::where('pr_head_id',$request->prhead_id)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->exists()){
+                    $prdetails_id=PRDetails::create($data);
+                }else{
+                    // $prdetails_id=PRDetails::where('pr_head_id',$request->prhead_id)->update($data);
+                    // $prdetails_id=PRDetails::where('pr_head_id',$request->prhead_id)->first();
+                    // $prdetails_id->update($data);
+                    $prdetails_id=PRDetails::updateOrCreate(
+                        [
+                            'item_description'   => $il->item_desc,
+                            'pn_no'=>$il->pn_no,
+                            'quantity'=>$il->qty,
+                            'uom'=>$il->uom,
+                            'date_needed'=>$il->date_needed,
+                            'recom_date'=>$il->recom_date,
+                        ],
+                        [
+                            'pr_head_id'=>$insertprhead->id,
+                            'quantity'=>$il->qty,
+                            'uom'=>$il->uom,
+                            'pn_no'=>$il->pn_no,
+                            'item_description'=>$il->item_desc,
+                            'wh_stocks'=>$il->wh_stocks,
+                            'date_needed'=>$il->date_needed,
+                            'recom_date'=>$il->recom_date,
+                            'status'=>'Draft',
+                        ]
+                    );
+                }
+            }
             if($prdetails_id){
                 $prreport['pr_no']=$insertprhead->pr_no;
                 $prreport['pr_details_id']=$prdetails_id->id;
@@ -652,7 +734,15 @@ class PRController extends Controller
                 $prreport['pr_qty']=$il->qty;
                 $prreport['uom']=$il->uom;
                 $prreport['status']='pending for RFQ';
-                PrReportDetails::create($prreport);
+                if($request->prhead_id==0){ 
+                    PrReportDetails::create($prreport);
+                }else{
+                    if(!PrReportDetails::where('pr_details_id',$prdetails_id->id)->where('item_description',$il->item_desc)->exists()){
+                        PrReportDetails::create($prreport);
+                    }else{
+                        PrReportDetails::where('pr_details_id',$prdetails_id->id)->update($prreport);
+                    }
+                }
             }
         }
         return $insertprhead->id;

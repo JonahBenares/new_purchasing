@@ -73,6 +73,8 @@
 		axios.post(`/api/insert_referred/${id}`,formData).then(function () {
 			success.value='You have successfully referred the item!'
 			successAlert.value = !successAlert.value
+			referred_date.value=''
+			comment.value=''
 			closeModal()
 			setTimeout(() => {
 				closeAlert()
@@ -242,18 +244,18 @@
 										</td>
 									</tr>
 									<tr v-for="(pd,index) in get_prdetails">
-										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{index + 1}}</td>
-										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ pd.quantity }}</td>
-										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ pd.uom }}</td>
-										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : 'p-1'">{{ pd.pn_no }}</td>
-										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : 'p-1'">{{ pd.item_description }}</td>
-										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : 'p-1'">{{ pd.wh_stocks }}</td>
-										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : 'p-1'">{{ pd.date_needed }}</td>
-										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : 'p-1'">
+										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : (pd.status=='Referred') ? 'bg-orange-200 p-1 text-center' : 'p-1 text-center'">{{index + 1}}</td>
+										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : (pd.status=='Referred') ? 'bg-orange-200 p-1 text-center' : 'p-1 text-center'">{{ pd.quantity }}</td>
+										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : (pd.status=='Referred') ? 'bg-orange-200 p-1 text-center' : 'p-1 text-center'">{{ pd.uom }}</td>
+										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : (pd.status=='Referred') ? 'bg-orange-200 p-1' : 'p-1'">{{ pd.pn_no }}</td>
+										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : (pd.status=='Referred') ? 'bg-orange-200 p-1' : 'p-1'">{{ pd.item_description }}</td>
+										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : (pd.status=='Referred') ? 'bg-orange-200 p-1' : 'p-1'">{{ pd.wh_stocks }}</td>
+										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : (pd.status=='Referred') ? 'bg-orange-200 p-1' : 'p-1'">{{ pd.date_needed }}</td>
+										<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100' : (pd.status=='Referred') ? 'bg-orange-200 p-1' : 'p-1'">
 											<input type="date" class="w-full" v-model="pd.recom_date" @change="updateRecomdate(pd.id)"  v-if="pd.status!='Cancelled'">
 											<input type="date" class="w-full" v-model="pd.recom_date" @change="updateRecomdate(pd.id)" readonly v-else>
 										</td>
-										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 text-center po_buttons p-0' : 'text-center po_buttons p-0'">
+										<td :class="(pd.status=='Cancelled') ? 'bg-red-100 text-center po_buttons p-0' : (pd.status=='Referred') ? 'bg-orange-200 text-center po_buttons p-0' : 'text-center po_buttons p-0'">
 											<div class="space-x-1" v-if="pd.status=='Cancelled'"></div>
 											<div class="space-x-1" v-else-if="pd.status=='Referred'">
 												<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">

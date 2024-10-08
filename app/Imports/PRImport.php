@@ -54,32 +54,33 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
     public function model(array $row)
     {
         if(count($row)!=0){
+            $department_id=Departments::where('department_name',$row['department'])->value('id');
+            $department_code=Departments::where('department_name',$row['department'])->value('department_code');
             if($row['purchase_request']!=''){
                 $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                 $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
                 $series_rows = PRSeries::where('year',$year)->count();
                 if($series_rows==0){
                     $pr_series='0001';
-                    $pr_no = $row['department_code'].$year_short."-".$pr_series;
+                    $pr_no = $department_code.$year_short."-".$pr_series;
                 } else {
                     $max_series=PRSeries::where('year',$year)->max('series');
                     $pr_series=$max_series+1;
-                    $pr_no = $row['department_code'].$year_short."-".Str::padLeft($pr_series, 4,'000');
+                    $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
                 }
                 $series['year']=$year;
                 $series['series']=$pr_series;
                 $pr_series=PRSeries::create($series);
                 if($pr_series){
-                    $department_id=Departments::where('department_name','LIKE','%'.$row['department'].'%')->value('id');
                     $prhead['location']=$row['purchase_request'];
                     $prhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
-                    $prhead['pr_date']=date('Y-m-d',strtotime($this->transformDate($row['date_issued'])));
+                    $prhead['date_issued']=date('Y-m-d',strtotime($this->transformDate($row['date_issued'])));
                     $prhead['pr_no']=$pr_no;
                     $prhead['location']=$row['purchase_request'];
                     $prhead['site_pr']=$row['site_pr'];
                     $prhead['department_id']=$department_id;
                     $prhead['department_name']=$row['department'];
-                    $prhead['dept_code']=$row['department_code'];
+                    $prhead['dept_code']=$department_code;
                     $prhead['requestor']=$row['requestor'];
                     $prhead['urgency']=$row['urgency'];
                     $prhead['purpose']=$row['purpose'];
