@@ -417,9 +417,9 @@ class RFQController extends Controller
             foreach(json_decode($canvass_vendor_details) as $dv){
                 if(RFQOffers::where('id','=',$dv->rfq_offer_id)->exists()){
                     $update_vendor_offer = RFQOffers::find($dv->rfq_offer_id);
-                    $update_vendor_offer->offer = $dv->offer ?? '';
-                    $update_vendor_offer->unit_price = $dv->unit_price ?? 0;
-                    $update_vendor_offer->currency = $dv->offer_currency ?? 'PHP';
+                    $update_vendor_offer->offer = $dv->offer;
+                    $update_vendor_offer->unit_price = $dv->unit_price;
+                    $update_vendor_offer->currency = $dv->currency;
                     $update_vendor_offer->save();
                 }
             }
@@ -431,7 +431,7 @@ class RFQController extends Controller
                 'canvassed' => "1",
                 'canvassed_by' => $userid,
                 'canvassed_date' => date('Y-m-d H:i:s'),
-                'status' => "Saved",
+                
             ];
             $rfqvendor->update($data);
 
@@ -447,6 +447,8 @@ class RFQController extends Controller
                     RFQVendorTerms::create($new_rfq_terms);
                 }
             }
+
+            $update_status = RFQVendor::where('rfq_head_id','=', $rfq_head_id)->where('id','=', $rfq_vendor_id)->update(['status' => 'Saved']);
         }
 
         public function draft_vendor(Request $request){

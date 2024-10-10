@@ -268,7 +268,7 @@
 				var currency=document.getElementsByClassName("currency_")[o].value;
 					const vendor_o = {
 						rfq_offer_id:rfq_offer_id,
-						offers:offers,
+						offer:offers,
 						unit_price:unit_price,
 						currency:currency,
 					}
