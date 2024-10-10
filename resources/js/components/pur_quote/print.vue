@@ -26,6 +26,7 @@
 	// let order_no=ref([]);
 	// let rfq_order_no=ref([]);
 	let letters=ref([]);
+	let rfqvendorid=ref('');
 
 	const props = defineProps({
         id:{
@@ -40,6 +41,7 @@
 	const hideModal = ref(true)
 	const AdditionalVendorAlert = ref(false)
 	const AdditionalItemsAlert = ref(false)
+	const PrintAlert = ref(false)
 	const openAddItem = () => {
 		addItems.value = !addItems.value
 	}
@@ -51,6 +53,7 @@
 		showModal.value = !hideModal.value
 		AdditionalVendorAlert.value = !hideModal.value
 		AdditionalItemsAlert.value = !hideModal.value
+		PrintAlert.value = !hideModal.value
 		vendor_details.value=''
 		document.getElementById('newterms').style.backgroundColor = '';
 	}
@@ -256,6 +259,17 @@
 		}
 	}
 
+	const printDivBtn= (rfq_vendor_id) => {
+		var duedate =document.getElementById('duedate').value
+		if(duedate == ''){
+			document.getElementById("duedatealert").style.display="block"
+		}else{
+			document.getElementById("duedatealert").style.display="none"
+			rfqvendorid.value = rfq_vendor_id
+			PrintAlert.value = !PrintAlert.value
+		}
+	}
+
 	const printDiv = (rfq_vendor_id) => {
 		const formData= new FormData()
 
@@ -443,6 +457,12 @@
 												
 											</table>
 											<br>
+											<div class="bg-red-100 border-2 border-red-200 w-full p-2 text-red-500 my-1 mb-2 hidden"  id="duedatealert">
+												<div class="flex justify-start space-x-2">
+													<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
+													<span>Due date is required!</span>
+												</div>
+											</div>
 											<table class="table-bordesred w-full text-xs">
 												<tr>
 													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
@@ -574,7 +594,7 @@
 										<div class="row my-2 po_buttons" v-if="vendor == rvi.rfq_vendor_id"> 
 											<div class="col-lg-12 col-md-12">
 												<div class="flex justify-center space-x-2">
-													<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv(rvi.rfq_vendor_id)">Print</button>
+													<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDivBtn(rvi.rfq_vendor_id)">Print</button>
 												</div>
 											</div>
 										</div>
@@ -822,6 +842,47 @@
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
 									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalItems()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:PrintAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Confirmation!</h2>
+									<h5 class="leading-tight">Are you sure you want to print this?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="printDiv(rfqvendorid)">Yes</button>
 								</div>
 							</div>
 						</div>
