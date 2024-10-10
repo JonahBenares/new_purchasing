@@ -200,6 +200,9 @@ class RFQController extends Controller
             $count_pritems=$rfqitems->count();
             $currency=Config::get('constants.currency');
             $rfq_head = RFQHead::with('pr_head')->where('id',$rfq_head_id)->get();
+
+            $canvass_complete_rfq =RFQVendor::where('rfq_head_id',$rfq_head_id)->where('canvassed',1)->get();
+            $count_ccr=$canvass_complete_rfq->count();
             foreach($rfq_head AS $h){
                 $RFQHead = [
                     'pr_no'=>$h->pr_no,
@@ -275,6 +278,7 @@ class RFQController extends Controller
                 'count_pritems'=>$count_pritems,
                 'currency'=>$currency,
                 'letters'=>$letters,
+                'count_ccr'=>$count_ccr,
             ],200);
         }
 

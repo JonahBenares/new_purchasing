@@ -26,6 +26,7 @@
 	let currency=ref([]);
 	// let rfq_order_no=ref([]);
 	let letters=ref([]);
+	let count_ccr=ref(0);
 
 	const props = defineProps({
         id:{
@@ -88,6 +89,7 @@
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
 		currency.value = response.data.currency;
 		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
 
 		// for (var i = 0; i < rfq_vendor_terms.value.length; i++) {
 		// 	let letter = '';
@@ -652,7 +654,9 @@
 									</li>
 									<li class="!w-30">
 										<!-- <a href="" class="btn !bg-gray-200 !w-36">Print TE</a> -->
-										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36">Create AOQs</a>
+										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
+										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
+										<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
 									</li>
 								</ol>
 							</div>
