@@ -28,7 +28,9 @@
 	onMounted(async () => {
 		getprno()
 		getvendors()
-		// getPRDetails()
+		if(props.id != 0){
+			getPRDetails()
+		}
 	})
 
 	const getprno = async () => {
@@ -41,7 +43,7 @@
 			vendorlist.value=response.data
 	}
 
-	const getPRDetails = async () => {
+	const getPRDetails= async () => {
 		let id = pr_no.value
 		if(props.id != 0 && id == ''){
 			let response = await axios.get(`/api/get_pr_data/${props.id}`)
@@ -49,7 +51,7 @@
 			PRHead.value = response.data.PRHead
 			PRDetails.value = response.data.PRDetails
 			rfq_no.value = response.data.rfq_no
-		}else if(props.id == 0 && id != ''){
+		}else if(id != ''){
 			let response = await axios.get('/api/get_pr_data/'+id)
 			document.getElementById("display_details").style.display="block"
 			PRHead.value = response.data.PRHead
@@ -243,7 +245,7 @@
 								<!-- <input type="file" name="img[]" class="file-upload-default"> -->
 								<div class="input-group col-xs-12">
 									<select class="form-control file-upload-info" v-model="pr_no">
-                                        <option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }}</option>
+                                        <option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }} (Total RFQ:{{ (pr.count_pr_in_rfq != '') ? pr.count_pr_in_rfq : 0  }})</option>
                                     </select>
 									<span class="input-group-append">
 										<button class="btn btn-primary" type="button" @click="getPRDetails()">Select</button>

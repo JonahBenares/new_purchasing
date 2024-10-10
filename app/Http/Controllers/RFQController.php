@@ -49,7 +49,16 @@ class RFQController extends Controller
     }
 
     public function all_pr(){
-        $pr_list=PRHead::where('status','Saved')->orderBy('pr_no','ASC')->get()->unique('pr_no');
+        $prlist=PRHead::where('status','Saved')->orderBy('pr_no','ASC')->get()->unique('pr_no');
+        foreach($prlist AS $pr){
+            $pr_in_rfq = RFQHead::where('pr_head_id',$pr->id)->get();
+            $count_pr_in_rfq=$pr_in_rfq->count();
+            $pr_list[] = [
+                'id'=>$pr->id,
+                'pr_no'=>$pr->pr_no,
+                'count_pr_in_rfq' => $count_pr_in_rfq,
+            ];
+        }
         return response()->json($pr_list);
     }
 
@@ -308,28 +317,33 @@ class RFQController extends Controller
         }
 
         public function item_list_data($rfq_head_id){
-            $pritem_list =PRDetails::whereNotIn('id',RFQDetails::where('rfq_head_id',$rfq_head_id)->pluck('pr_details_id'))->where('status','Saved')->orderBy('item_description','ASC')->get();
+            $pr_head_id = RFQHead::where('id',$rfq_head_id)->value('pr_head_id');
+            $pritem_list =PRDetails::where('pr_head_id', $pr_head_id)->whereNotIn('id',RFQDetails::where('rfq_head_id',$rfq_head_id)->pluck('pr_details_id'))->where('status','Saved')->orderBy('item_description','ASC')->get();
             $pr_item_list=array();
                 foreach($pritem_list AS $pri){
-                    $pr_item_list[] = [
-                        'checkbox'=>0,
-                        'pr_details_id'=>$pri->id,
-                        'date_needed'=>$pri->date_needed,
-                        'item_description'=>$pri->item_description,
-                        'quantity'=>$pri->quantity,
-                        'uom'=>$pri->uom,
-                        'pn_no'=>$pri->pn_no,
-                        'wh_stocks'=>$pri->wh_stocks,
-                        // 'first_offer'=>'',
-                        // 'second_offer'=>'',
-                        // 'third_offer'=>'',
-                        // 'first_offer_up'=>'',
-                        // 'second_offer_up'=>'',
-                        // 'third_offer_up'=>'',
-                        // 'first_offer_currency'=>'',
-                        // 'second_offer_currency'=>'',
-                        // 'third_offer_currency'=>'',
-                    ];
+                    $deliver_qty = PrReportDetails::where('pr_details_id',$pri->id)->value('delivered_qty');
+                    $quantity = $pri->quantity - $deliver_qty;
+                    if( $quantity != 0){
+                        $pr_item_list[] = [
+                            'checkbox'=>0,
+                            'pr_details_id'=>$pri->id,
+                            'date_needed'=>$pri->date_needed,
+                            'item_description'=>$pri->item_description,
+                            'quantity'=>$quantity,
+                            'uom'=>$pri->uom,
+                            'pn_no'=>$pri->pn_no,
+                            'wh_stocks'=>$pri->wh_stocks,
+                            // 'first_offer'=>'',
+                            // 'second_offer'=>'',
+                            // 'third_offer'=>'',
+                            // 'first_offer_up'=>'',
+                            // 'second_offer_up'=>'',
+                            // 'third_offer_up'=>'',
+                            // 'first_offer_currency'=>'',
+                            // 'second_offer_currency'=>'',
+                            // 'third_offer_currency'=>'',
+                        ];
+                    }
                 }
             return response()->json($pr_item_list);
         }
