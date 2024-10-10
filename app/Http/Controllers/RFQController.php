@@ -417,9 +417,9 @@ class RFQController extends Controller
             foreach(json_decode($canvass_vendor_details) as $dv){
                 if(RFQOffers::where('id','=',$dv->rfq_offer_id)->exists()){
                     $update_vendor_offer = RFQOffers::find($dv->rfq_offer_id);
-                    $update_vendor_offer->offer = $dv->offer;
-                    $update_vendor_offer->unit_price = $dv->unit_price;
-                    $update_vendor_offer->currency = $dv->offer_currency;
+                    $update_vendor_offer->offer = $dv->offer ?? '';
+                    $update_vendor_offer->unit_price = $dv->unit_price ?? 0;
+                    $update_vendor_offer->currency = $dv->offer_currency ?? 'PHP';
                     $update_vendor_offer->save();
                 }
             }
