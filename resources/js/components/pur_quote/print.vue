@@ -18,8 +18,8 @@
 	let rfqvendor_terms=ref([]);
 	let due_date=ref('');
 	let vendor_details=ref('');
-	let noted_by=ref(6);
-	let approved_by=ref(4);
+	let noted_by=ref(3);
+	let approved_by=ref(1);
 	let checkbox=ref(0);
 	let count_pritems=ref(0);
 	let term=ref('');
@@ -668,8 +668,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="AdditionalVendor()">Yes</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeModal()">No</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalVendor()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -819,8 +819,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="AdditionalItems()">Yes</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeModal()">No</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalItems()">Yes</button>
 								</div>
 							</div>
 						</div>
