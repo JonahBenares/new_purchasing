@@ -20,8 +20,6 @@ class RFQOffers extends Model
         'unit_price',
         'currency',
         'remarks',
-        'canvassed_by',
-        'canvassed_date',
         'awarded_by',
         'status',
     ];

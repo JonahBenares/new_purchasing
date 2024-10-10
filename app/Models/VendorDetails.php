@@ -29,4 +29,8 @@ class VendorDetails extends Model
     public function vendor_head(){
         return $this->belongsTo(VendorHead::class, 'vendor_head_id');
     }
+
+    public function rfq_vendor(){
+        return $this->hasMany(RFQVendor::class);
+    }
 }

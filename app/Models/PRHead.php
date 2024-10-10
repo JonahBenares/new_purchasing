@@ -30,4 +30,8 @@ class PRHead extends Model
         'cancelled_date',
         'petty_cash'
     ];
+
+    public function rfq_head(){
+        return $this->hasMany(RFQHead::class);
+    }
 }

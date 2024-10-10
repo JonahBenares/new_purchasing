@@ -324,22 +324,25 @@ const routes = [
         }
     },
     {
-        path:'/pur_quote/new',
+        path:'/pur_quote/new/:id',
         component: pur_quoteNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_quote/view',
+        path:'/pur_quote/view/:id',
         component: pur_quoteView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_quote/print',
+        path:'/pur_quote/print/:id',
         component: pur_quotePrint,
+        props:true,
         meta:{
             requiresAuth:true
         }

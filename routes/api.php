@@ -65,6 +65,16 @@ Route::get('/pr_list', [RFQController::class,'all_pr']);
 Route::get('/vendor_list', [RFQController::class,'all_vendor']);
 Route::get('/get_pr_data/{pr_head_id}', [RFQController::class,'get_pr_data']);
 Route::post('/add_rfq',[RFQController::class,'add_rfq']);
+Route::get('/get_rfq_data/{rfq_head_id}', [RFQController::class,'get_rfq_data']);
+Route::post('/add_additional_vendor',[RFQController::class,'add_additional_vendor']);
+Route::get('/get_vendor_list/{rfq_head_id}', [RFQController::class,'vendor_list_data']);
+Route::post('/add_additional_items',[RFQController::class,'add_additional_items']);
+Route::get('/get_item_list/{rfq_head_id}', [RFQController::class,'item_list_data']);
+Route::post('/canvass_complete/{rfq_vendor_id}', [RFQController::class,'canvass_complete']);
+Route::post('/save_print_details',[RFQController::class,'save_print_details']);
+Route::post('/canvass_complete_vendor',[RFQController::class,'canvass_complete_vendor']);
+Route::post('/draft_vendor',[RFQController::class,'draft_vendor']);
+Route::get('/remove_terms/{rfq_vendor_terms_id}', [RFQController::class,'remove_terms']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::post('/import_pr',[PRController::class,'import_pr']);

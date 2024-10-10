@@ -17,4 +17,8 @@ class RFQHead extends Model
         'rfq_date',
         'user_id',
     ];
+
+    public function pr_head(){
+        return $this->belongsTo(PRHead::class, 'pr_head_id');
+    }
 }

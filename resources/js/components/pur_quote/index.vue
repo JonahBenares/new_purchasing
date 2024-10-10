@@ -99,6 +99,10 @@
 		rfq_list.value=response.data.rfqarray
 	}
 
+    const ViewRFQ = (id) => {
+		router.push('/pur_quote/view/'+id)
+	}
+
 </script>
 <template>
 	<navigation>
@@ -122,7 +126,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/pur_quote/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                            <a href="/pur_quote/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                 <span>Add New RFQ</span>
                             </a>
                         </div>
@@ -131,10 +135,10 @@
                                 <DataTable :data="rfq_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="10%"> RFQ Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> PR</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ Name</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="10%"> Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> Vendors</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
@@ -143,10 +147,23 @@
                                         </th>
                                     </tr>
                                 </thead>
+                                <template #column-4="props">
+                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc">
+                                        <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
+                                            <span class="text-white">{{ ven.vendor_name }}</span>
+                                        </li>
+                                        <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
+                                            <span class="text-white">{{ ven.vendor_name }}</span>
+                                        </li>
+                                        <li class="px-1" v-if="ven.canvassed == 0 && ven.status == null">
+                                            {{ ven.vendor_name }}
+                                        </li>
+                                    </ul>
+                                </template>
                                 <template #column-5="props">
-                                    <a href="/pur_quote/view" class="btn btn-xs btn-warning text-white p-1">
+                                    <button @click="ViewRFQ(props.rowData.id)" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                    </a>
+                                    </button>
                                 </template>
                                 </DataTable>
                                 <!-- <tbody>
