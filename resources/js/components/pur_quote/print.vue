@@ -291,6 +291,7 @@
 		formData.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 		axios.post(`/api/save_print_details`, formData).then(function () {
 			window.print();
+			GetRFQDetails()
 		});
 	}
 
