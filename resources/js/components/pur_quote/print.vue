@@ -13,7 +13,7 @@
 	let pritem_list=ref([]);
 	let vendorlist=ref([]);
 	let signatories=ref([]);
-	let vendor_terms=ref([]);
+	// let vendor_terms=ref([]);
 	let rfq_vendor_terms=ref([]);
 	let rfqvendor_terms=ref([]);
 	let due_date=ref('');
@@ -50,7 +50,7 @@
 		RFQVendors.value=response.data.rfq_vendor
 		RFQDetails.value=response.data.rfq_details
 		RFQOffers.value=response.data.rfq_offers
-		vendor_terms.value=response.data.vendor_terms
+		// vendor_terms.value=response.data.vendor_terms
 		signatories.value=response.data.signatories
 		count_pritems.value=response.data.count_pritems
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
@@ -216,50 +216,70 @@
 	// 	}
 	// }
 
-	const AddRFQTerms= (vendor_details_id,rfq_vendor_id) => {
-		var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+	const AddRFQTerms= (rfq_vendor_id) => {
+		// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
 		if(term.value!=''){
-			if(count_rfq_terms.length != 0){
-				rfq_vendor_terms.value.push({
-					terms:term.value,
-					rfq_vendor_id:rfq_vendor_id,
-					id:0,
-				});
-			}else{
-				vendor_terms.value.push({
-					terms:term.value,
-					vendor_details_id:vendor_details_id,
-					rfq_vendor_terms_id:0,
-				});
-			}
-			term.value=''
-			document.getElementById('newterms').placeholder=""
-			document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
+			// if(count_rfq_terms.length != 0){
+				// rfq_vendor_terms.value.push({
+				// 	terms:term.value,
+				// 	rfq_vendor_id:rfq_vendor_id,
+				// 	id:0,
+				// });
+			// }else{
+			// 	vendor_terms.value.push({
+			// 		terms:term.value,
+			// 		vendor_details_id:vendor_details_id,
+			// 		rfq_vendor_terms_id:0,
+			// 	});
+			// }
+			const formTerms= new FormData()
+			formTerms.append('rfq_vendor_id', rfq_vendor_id)
+			formTerms.append('terms', term.value)
+			axios.post("/api/add_additional_terms", formTerms).then(function () {
+				term.value=''
+				document.getElementById('newterms').placeholder=""
+				document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
+				GetRFQDetails()
+			});
 		}else{
 			document.getElementById('newterms').placeholder="Please fill in Terms."
 			document.getElementById('newterms').style.backgroundColor = '#FAA0A0';
 		}
 	}
 
-	const RemoveNewTerms= (order_no, terms_id) =>{
-		if(terms_id != 0 || terms_id != 'undefined'){
-			axios.get(`/api/remove_terms/${terms_id}`).then(function () {
-					vendor_terms.value.splice(order_no,1)
+	const UpdateRFQTerms= (loop, id) => {
+		const rfqterms = document.getElementById("rfqterms_"+loop).value;
+		if(rfqterms!=''){
+			const formRFQTerms= new FormData()
+			formRFQTerms.append('rfq_vendor_terms_id', id)
+			formRFQTerms.append('terms', rfqterms)
+			axios.post("/api/update_terms/", formRFQTerms).then(function (response) {
+				GetRFQDetails()
+				document.getElementById("rfqterms_"+loop).style.backgroundColor = '#FEFCE8';
+				document.getElementById("printbtn").disabled = false;
 			});
 		}else{
-			vendor_terms.value.splice(order_no,1)
+			document.getElementById("printbtn").disabled = true;
+			document.getElementById("rfqterms_"+loop).placeholder="Please fill in Terms."
+			document.getElementById("rfqterms_"+loop).style.backgroundColor = '#FAA0A0';
 		}
-		
 	}
 
+	// const RemoveNewTerms= (order_no, terms_id) =>{
+	// 	if(terms_id != 0 || terms_id != 'undefined'){
+	// 		axios.get(`/api/remove_terms/${terms_id}`).then(function () {
+	// 				vendor_terms.value.splice(order_no,1)
+	// 		});
+	// 	}else{
+	// 		vendor_terms.value.splice(order_no,1)
+	// 	}
+		
+	// }
+
 	const RemoveRFQVendorTerms = (order_no, terms_id) => {
-		if(terms_id != 0 || terms_id != 'undefined'){
-			axios.get(`/api/remove_terms/${terms_id}`).then(function () {
-				rfq_vendor_terms.value.splice(order_no,1)
-			});
-		}else{
+		axios.get(`/api/remove_terms/${terms_id}`).then(function () {
 			rfq_vendor_terms.value.splice(order_no,1)
-		}
+		});
 	}
 
 	const printDivBtn= (rfq_vendor_id) => {
@@ -283,30 +303,30 @@
 		formData.append('prepared_by', RFQHead.value.preparedby_id)
 		formData.append('noted_by', noted_by.value)
 		formData.append('approved_by',  approved_by.value)
-		var count_vendor_terms=document.getElementsByClassName('vendorterms');
-		var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
-		if(count_rfq_terms.length != 0){
-			for(var i=0;i<count_rfq_terms.length;i++){
-				var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
-				var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
-					const rfq_v_terms = {
-						rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
-						terms:terms,
-					}
-						rfqvendor_terms.value.push(rfq_v_terms)
-			}
-		}else{
-			for(var i=0;i<count_vendor_terms.length;i++){
-				var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
-				var terms=document.getElementsByClassName("vendorterms")[i].value;
-					const rfq_v_terms = {
-						rfq_vendor_terms_id:rfq_vendor_terms_id,
-						terms:terms,
-					}
-					rfqvendor_terms.value.push(rfq_v_terms)
-			}
-		}
-		formData.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
+		// var count_vendor_terms=document.getElementsByClassName('vendorterms');
+		// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+		// if(count_rfq_terms.length != 0){
+		// 	for(var i=0;i<count_rfq_terms.length;i++){
+		// 		var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
+		// 		var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
+		// 			const rfq_v_terms = {
+		// 				rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
+		// 				terms:terms,
+		// 			}
+		// 				rfqvendor_terms.value.push(rfq_v_terms)
+		// 	}
+		// }else{
+		// 	for(var i=0;i<count_vendor_terms.length;i++){
+		// 		var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
+		// 		var terms=document.getElementsByClassName("vendorterms")[i].value;
+		// 			const rfq_v_terms = {
+		// 				rfq_vendor_terms_id:rfq_vendor_terms_id,
+		// 				terms:terms,
+		// 			}
+		// 			rfqvendor_terms.value.push(rfq_v_terms)
+		// 	}
+		// }
+		// formData.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 		axios.post(`/api/save_print_details`, formData).then(function () {
 			window.print();
 			GetRFQDetails()
@@ -491,36 +511,18 @@
 													</td>
 													<td width="10%"></td>
 												</tr>
-												<span hidden>{{ v_order_no=1 }}</span>
-												<tr v-for="(vt, von) in vendor_terms" v-if="(rvi.count_rfq_terms == 0)"> 
-													<td width="10%"></td>
-													<td width="40%" colspan="2" >
-														<div v-if="vt.vendor_details_id == rvi.vendor_details_id">
-															<div class="flex justify-between space-x-1">
-																{{ letters[v_order_no-1] }}.
-																<input type="text" class="p-1 w-full bg-yellow-50 vendorterms" v-model="vt.terms">
-																<button class="btn btn-danger p-1" @click="RemoveNewTerms(von,vt.rfq_vendor_terms_id)">
-																	<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-																</button>
-															</div>
-															<span hidden>{{ v_order_no++ }}</span>
-															<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="rvi.rfq_vendor_id">
-															<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.vendor_details_id">
-															<input type="hidden" class="p-1 w-full bg-yellow-50 new_vendortermsid" v-model="vt.rfq_vendor_terms_id">
-														</div>
-													</td>
-													<td width="10%"></td>
-												</tr>
-												<tr v-for="(vt, order_no) in rfq_vendor_terms" v-else>
+												<span hidden>{{ orderno=1 }}</span>
+												<tr v-for="(vt, order_no) in rfq_vendor_terms">
 													<td width="10%"></td>
 													<td width="40%" colspan="2">
 														<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
 															<div class="flex justify-between space-x-1">
-																{{ letters[order_no] }}. 
-																<input type="text" class="p-1 w-full bg-yellow-50 rfqvendorterms" v-model="vt.terms">
+																{{ letters[orderno-1] }}. 
+																<input type="text" class="p-1 w-full bg-yellow-50 rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
 																<button class="btn btn-danger p-1" @click="RemoveRFQVendorTerms(order_no,vt.id)">
 																	<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 																</button>
+																<span hidden>{{ orderno++ }}</span>
 															</div>
 															<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
 															<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
@@ -598,7 +600,7 @@
 										<div class="row my-2 po_buttons" v-if="vendor == rvi.rfq_vendor_id"> 
 											<div class="col-lg-12 col-md-12">
 												<div class="flex justify-center space-x-2">
-													<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDivBtn(rvi.rfq_vendor_id)">Print</button>
+													<button type="submit" class="btn btn-primary mr-2 w-44" id="printbtn" @click="printDivBtn(rvi.rfq_vendor_id)">Print</button>
 												</div>
 											</div>
 										</div>

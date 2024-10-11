@@ -212,41 +212,67 @@
 	}
 
 	const AddRFQTerms= (vendor_details_id,rfq_vendor_id) => {
-		var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+		// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
 		if(term.value!=''){
-			if(count_rfq_terms.length != 0){
-				rfq_vendor_terms.value.push({
-					terms:term.value,
-					rfq_vendor_id:rfq_vendor_id,
-					id:0,
-				});
-			}else{
-				vendor_terms.value.push({
-					terms:term.value,
-					vendor_details_id:vendor_details_id,
-					rfq_vendor_terms_id:0,
-				});
-			}
-			term.value=''
-			document.getElementById('newterms').placeholder=""
-			document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
+			// if(count_rfq_terms.length != 0){
+			// 	rfq_vendor_terms.value.push({
+			// 		terms:term.value,
+			// 		rfq_vendor_id:rfq_vendor_id,
+			// 		id:0,
+			// 	});
+			// }else{
+			// 	vendor_terms.value.push({
+			// 		terms:term.value,
+			// 		vendor_details_id:vendor_details_id,
+			// 		rfq_vendor_terms_id:0,
+			// 	});
+			// }
+			// term.value=''
+			// document.getElementById('newterms').placeholder=""
+			// document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
+			const formTerms= new FormData()
+			formTerms.append('rfq_vendor_id', rfq_vendor_id)
+			formTerms.append('terms', term.value)
+			axios.post("/api/add_additional_terms", formTerms).then(function () {
+				term.value=''
+				document.getElementById('newterms').placeholder=""
+				document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
+				GetRFQDetails()
+				GetAdditionalItems()
+				GetAdditionalVendors()
+			});
 		}else{
 			document.getElementById('newterms').placeholder="Please fill in Terms."
 			document.getElementById('newterms').style.backgroundColor = '#FAA0A0';
 		}
 	}
 
-	const RemoveNewTerms= (order_no, terms_id) =>{
-		if(terms_id != 0 || terms_id != 'undefined'){
-			axios.get(`/api/remove_terms/${terms_id}`).then(function () {
-					vendor_terms.value.splice(order_no,1)
-					'/remove_terms/'+terms_id
+	const UpdateRFQTerms= (loop, id) => {
+		const rfqterms = document.getElementById("rfqterms_"+loop).value;
+		if(rfqterms!=''){
+			const formRFQTerms= new FormData()
+			formRFQTerms.append('rfq_vendor_terms_id', id)
+			formRFQTerms.append('terms', rfqterms)
+			axios.post("/api/update_terms/", formRFQTerms).then(function (response) {
+				GetRFQDetails()
+				document.getElementById("rfqterms_"+loop).style.backgroundColor = '#FEFCE8';
+				document.getElementById("canvasscompletebtn").disabled = false;
+				document.getElementById("draftbtn").disabled = false;
 			});
 		}else{
-			vendor_terms.value.splice(order_no,1)
+			document.getElementById("canvasscompletebtn").disabled = true;
+			document.getElementById("draftbtn").disabled = true;
+			document.getElementById("rfqterms_"+loop).placeholder="Please fill in Terms."
+			document.getElementById("rfqterms_"+loop).style.backgroundColor = '#FAA0A0';
 		}
-		
 	}
+
+	// const RemoveNewTerms= (order_no, terms_id) =>{
+	// 	axios.get(`/api/remove_terms/${terms_id}`).then(function () {
+	// 			vendor_terms.value.splice(order_no,1)
+	// 			'/remove_terms/'+terms_id
+	// 	});
+	// }
 
 	const RemoveRFQVendorTerms = (order_no, terms_id) => {
 		if(terms_id != 0 || terms_id != 'undefined'){
@@ -522,39 +548,21 @@
 														</td>
 														<td width="10%"></td>
 													</tr>
-													<span hidden>{{ v_order_no=1 }}</span>
-													<tr v-for="(vt, order_no) in vendor_terms" v-if="(rvi.count_rfq_terms == 0)">
-														<td width="10%"></td>
-														<td width="40%" colspan="2" >
-															<div v-if="vt.vendor_details_id == rvi.vendor_details_id">
-																<div class="flex justify-between space-x-1">
-																	{{ letters[v_order_no-1] }}.
-																	<input type="text" class="p-1 w-full bg-yellow-50 vendorterms" v-model="vt.terms">
-																	<button class="btn btn-danger p-1" @click="RemoveNewTerms(order_no,vt.rfq_vendor_terms_id)">
-																		<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-																	</button>
-																</div>
-																<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="rvi.rfq_vendor_id">
-																<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.vendor_details_id">
-																<input type="hidden" class="p-1 w-full bg-yellow-50 new_vendortermsid" v-model="vt.rfq_vendor_terms_id">
-																<span hidden>{{ v_order_no++ }}</span>
-															</div>
-														</td>
-														<td width="10%"></td>
-													</tr>
-													<tr v-for="(vt, order_no) in rfq_vendor_terms" v-else>
+													<span hidden>{{ orderno=1 }}</span>
+													<tr v-for="(vt, order_no) in rfq_vendor_terms">
 														<td width="10%"></td>
 														<td width="40%" colspan="2">
 															<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
 																<div class="flex justify-between space-x-1">
-																	{{ letters[order_no] }}. 
-																	<input type="text" class="p-1 w-full bg-yellow-50 rfqvendorterms" v-model="vt.terms">
+																	{{ letters[orderno-1] }}.
+																	<input type="text" class="p-1 w-full bg-yellow-50 rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
 																	<button class="btn btn-danger p-1" @click="RemoveRFQVendorTerms(order_no,vt.id)">
 																		<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 																	</button>
 																</div>
 																<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
 																<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
+																<span hidden>{{ orderno++ }}</span>
 															</div>
 														</td>
 														<td width="10%"></td>
@@ -617,8 +625,8 @@
 									<div class="row my-2 po_buttons"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 0">
-												<button type="submit" class="btn btn-primary" @click="CanvassComplete(rvi.rfq_vendor_id)">Canvass Complete</button>
-												<button type="submit" class="btn btn-warning text-white mr-2 w-" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
+												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)">Canvass Complete</button>
+												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 											</div>
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 1">
 												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>

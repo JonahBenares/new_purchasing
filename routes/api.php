@@ -74,6 +74,8 @@ Route::post('/canvass_complete/{rfq_vendor_id}', [RFQController::class,'canvass_
 Route::post('/save_print_details',[RFQController::class,'save_print_details']);
 Route::post('/canvass_complete_vendor',[RFQController::class,'canvass_complete_vendor']);
 Route::post('/draft_vendor',[RFQController::class,'draft_vendor']);
+Route::post('/add_additional_terms',[RFQController::class,'add_additional_terms']);
+Route::post('/update_terms', [RFQController::class,'update_rfq_terms']);
 Route::get('/remove_terms/{rfq_vendor_terms_id}', [RFQController::class,'remove_terms']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);

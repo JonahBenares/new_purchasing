@@ -159,6 +159,13 @@ class RFQController extends Controller
                 $rfq_v['created_at']=date('Y-m-d H:i:s');
                 $rfq_vendor_id=RFQVendor::insertGetId($rfq_v);
 
+                $vendorterms = VendorTerms::where('vendor_details_id',$rv->vendor_details_id)->get();
+                    foreach($vendorterms as $vt){
+                            $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
+                            $new_rfq_terms['terms']=$vt->terms;
+                            RFQVendorTerms::create($new_rfq_terms);
+                    }
+
                 foreach(json_decode($rfq_items) as $ri){
                     $rfq_i['rfq_head_id']=$rfq_head_id;
                     $rfq_i['rfq_vendor_id']=$rfq_vendor_id;
@@ -193,7 +200,7 @@ class RFQController extends Controller
             }
 
             $userid = Auth::id();
-            $vendor_terms = VendorTerms::orderBy('order_no','ASC')->get();
+            // $vendor_terms = VendorTerms::orderBy('order_no','ASC')->get();
             $rfq_vendor_terms = RFQVendorTerms::whereIn('rfq_vendor_id',RFQVendor::where('rfq_head_id',$rfq_head_id)->pluck('id'))->orderBy('id','ASC')->get();
             $signatories=User::where('id','!=',$userid)->orderBy('name','ASC')->get()->unique('name');
             $rfqitems =PRDetails::whereNotIn('id',RFQDetails::where('rfq_head_id',$rfq_head_id)->pluck('pr_details_id'))->get();
@@ -274,7 +281,7 @@ class RFQController extends Controller
                 'rfq_details'=>$RFQDetails,
                 'rfq_offers'=>$RFQOffers,
                 'rfq_vendor_terms'=>$rfq_vendor_terms,
-                'vendor_terms'=>$vendor_terms,
+                // 'vendor_terms'=>$vendor_terms,
                 'signatories'=>$signatories,
                 'count_pritems'=>$count_pritems,
                 'currency'=>$currency,
@@ -299,6 +306,13 @@ class RFQController extends Controller
             $rfq_add_vendor['vendor_identifier']=$request->input('vendor_identifier');
             $rfq_add_vendor['created_at']=date('Y-m-d H:i:s');
             $rfq_vendor_id=RFQVendor::insertGetId($rfq_add_vendor);
+
+            $vendorterms = VendorTerms::where('vendor_details_id',$request->input('vendor_details_id'))->get();
+            foreach($vendorterms as $vt){
+                    $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
+                    $new_rfq_terms['terms']=$vt->terms;
+                    RFQVendorTerms::create($new_rfq_terms);
+            }
             
             $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
             foreach($rfq_details AS $d){
@@ -394,18 +408,25 @@ class RFQController extends Controller
                 'approved_by'=>$request->input('approved_by'),
             ]);
 
-            $add_rfq_vendor_terms = $request->input('rfqvendorterms');
-            foreach(json_decode($add_rfq_vendor_terms) as $vt){
-                if(RFQVendorTerms::where('id','=',$vt->rfq_vendor_terms_id)->exists()){
-                    $update_rfq_terms = RFQVendorTerms::find($vt->rfq_vendor_terms_id);
-                    $update_rfq_terms->terms = $vt->terms;
-                    $update_rfq_terms->save();
-                } else {
-                    $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
-                    $new_rfq_terms['terms']=$vt->terms;
-                    RFQVendorTerms::create($new_rfq_terms);
-                }
-            }
+            // $add_rfq_vendor_terms = $request->input('rfqvendorterms');
+            // foreach(json_decode($add_rfq_vendor_terms) as $vt){
+            //     if(RFQVendorTerms::where('id','=',$vt->rfq_vendor_terms_id)->exists()){
+            //         $update_rfq_terms = RFQVendorTerms::find($vt->rfq_vendor_terms_id);
+            //         $update_rfq_terms->terms = $vt->terms;
+            //         $update_rfq_terms->save();
+            //     } else {
+            //         $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
+            //         $new_rfq_terms['terms']=$vt->terms;
+            //         RFQVendorTerms::create($new_rfq_terms);
+            //     }
+            // }
+        }
+
+        public function update_rfq_terms(Request $request){
+            $rfq_vendor_terms_id = $request->input('rfq_vendor_terms_id');
+            $update_rfq_terms=RFQVendorTerms::where('id',$rfq_vendor_terms_id)->update([
+                'terms'=>$request->input('terms'),
+            ]);
         }
 
         public function remove_terms($rfq_vendor_terms_id){
@@ -441,18 +462,18 @@ class RFQController extends Controller
             ];
             $rfqvendor->update($data);
 
-            $add_rfq_vendor_terms = $request->input('rfqvendorterms');
-            foreach(json_decode($add_rfq_vendor_terms) as $vt){
-                if(RFQVendorTerms::where('id','=',$vt->rfq_vendor_terms_id)->exists()){
-                    $update_rfq_terms = RFQVendorTerms::find($vt->rfq_vendor_terms_id);
-                    $update_rfq_terms->terms = $vt->terms;
-                    $update_rfq_terms->save();
-                } else {
-                    $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
-                    $new_rfq_terms['terms']=$vt->terms;
-                    RFQVendorTerms::create($new_rfq_terms);
-                }
-            }
+            // $add_rfq_vendor_terms = $request->input('rfqvendorterms');
+            // foreach(json_decode($add_rfq_vendor_terms) as $vt){
+            //     if(RFQVendorTerms::where('id','=',$vt->rfq_vendor_terms_id)->exists()){
+            //         $update_rfq_terms = RFQVendorTerms::find($vt->rfq_vendor_terms_id);
+            //         $update_rfq_terms->terms = $vt->terms;
+            //         $update_rfq_terms->save();
+            //     } else {
+            //         $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
+            //         $new_rfq_terms['terms']=$vt->terms;
+            //         RFQVendorTerms::create($new_rfq_terms);
+            //     }
+            // }
 
             $update_status = RFQVendor::where('rfq_head_id','=', $rfq_head_id)->where('id','=', $rfq_vendor_id)->update(['status' => 'Saved']);
         }
@@ -473,17 +494,17 @@ class RFQController extends Controller
             
             $update_status = RFQVendor::where('rfq_head_id','=', $rfq_head_id)->where('id','=', $rfq_vendor_id)->update(['status' => 'Draft']);
 
-            $add_rfq_vendor_terms = $request->input('rfqvendorterms');
-            foreach(json_decode($add_rfq_vendor_terms) as $vt){
-                if(RFQVendorTerms::where('id','=',$vt->rfq_vendor_terms_id)->exists()){
-                    $update_rfq_terms = RFQVendorTerms::find($vt->rfq_vendor_terms_id);
-                    $update_rfq_terms->terms = $vt->terms;
-                    $update_rfq_terms->save();
-                } else {
-                    $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
-                    $new_rfq_terms['terms']=$vt->terms;
-                    RFQVendorTerms::create($new_rfq_terms);
-                }
-            }
+            // $add_rfq_vendor_terms = $request->input('rfqvendorterms');
+            // foreach(json_decode($add_rfq_vendor_terms) as $vt){
+            //     if(RFQVendorTerms::where('id','=',$vt->rfq_vendor_terms_id)->exists()){
+            //         $update_rfq_terms = RFQVendorTerms::find($vt->rfq_vendor_terms_id);
+            //         $update_rfq_terms->terms = $vt->terms;
+            //         $update_rfq_terms->save();
+            //     } else {
+            //         $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
+            //         $new_rfq_terms['terms']=$vt->terms;
+            //         RFQVendorTerms::create($new_rfq_terms);
+            //     }
+            // }
         }
 }
