@@ -38,6 +38,7 @@
 
 	onMounted(async () => {
 		GetRFQDetails()
+		GetRFQTermsDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 	})
@@ -68,6 +69,11 @@
 
 		// 	rfq_order_no.value[i] = letter;
 		// }
+	}
+
+	const GetRFQTermsDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
 	}
 
 	const vendor =  ref(rfqvendorid);
@@ -237,9 +243,7 @@
 				term.value=''
 				document.getElementById('newterms').placeholder=""
 				document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
-				GetRFQDetails()
-				GetAdditionalItems()
-				GetAdditionalVendors()
+				GetRFQTermsDetails()
 			});
 		}else{
 			document.getElementById('newterms').placeholder="Please fill in Terms."
@@ -254,7 +258,7 @@
 			formRFQTerms.append('rfq_vendor_terms_id', id)
 			formRFQTerms.append('terms', rfqterms)
 			axios.post("/api/update_terms/", formRFQTerms).then(function (response) {
-				GetRFQDetails()
+				GetRFQTermsDetails()
 				document.getElementById("rfqterms_"+loop).style.backgroundColor = '#FEFCE8';
 				document.getElementById("canvasscompletebtn").disabled = false;
 				document.getElementById("draftbtn").disabled = false;

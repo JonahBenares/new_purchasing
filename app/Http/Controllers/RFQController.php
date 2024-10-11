@@ -422,6 +422,12 @@ class RFQController extends Controller
             // }
         }
 
+        public function add_additional_terms(Request $request){
+            $new_rfq_terms['rfq_vendor_id']=$request->input('rfq_vendor_id');
+            $new_rfq_terms['terms']=$request->input('terms');
+            RFQVendorTerms::create($new_rfq_terms);
+        }
+
         public function update_rfq_terms(Request $request){
             $rfq_vendor_terms_id = $request->input('rfq_vendor_terms_id');
             $update_rfq_terms=RFQVendorTerms::where('id',$rfq_vendor_terms_id)->update([

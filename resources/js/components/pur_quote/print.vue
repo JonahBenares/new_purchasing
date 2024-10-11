@@ -38,6 +38,7 @@
 
 	onMounted(async () => {
 		GetRFQDetails()
+		GetRFQTermsDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		// IncrementalLetters()
@@ -71,27 +72,9 @@
 		// }
 	}
 
-	const vendor =  ref(rfqvendorid)
-	const showModal = ref(false)
-	const addItems = ref(false)
-	const hideModal = ref(true)
-	const AdditionalVendorAlert = ref(false)
-	const AdditionalItemsAlert = ref(false)
-	const PrintAlert = ref(false)
-	const openAddItem = () => {
-		addItems.value = !addItems.value
-	}
-	const openModel = () => {
-		showModal.value = !showModal.value
-	}
-	const closeModal = () => {
-		addItems.value = !hideModal.value
-		showModal.value = !hideModal.value
-		AdditionalVendorAlert.value = !hideModal.value
-		AdditionalItemsAlert.value = !hideModal.value
-		PrintAlert.value = !hideModal.value
-		vendor_details.value=''
-		document.getElementById('newterms').style.backgroundColor = '';
+	const GetRFQTermsDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
 	}
 
 	const GetAdditionalItems = async () => {
@@ -216,7 +199,8 @@
 	// 	}
 	// }
 
-	const AddRFQTerms= (rfq_vendor_id) => {
+	const AddRFQTerms= (vendor_details_id,rfq_vendor_id) => {
+		// alert(vendor_details_id+'-'+rfq_vendor_id)
 		// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
 		if(term.value!=''){
 			// if(count_rfq_terms.length != 0){
@@ -235,11 +219,13 @@
 			const formTerms= new FormData()
 			formTerms.append('rfq_vendor_id', rfq_vendor_id)
 			formTerms.append('terms', term.value)
+			rfqvendorid.value=rfq_vendor_id
 			axios.post("/api/add_additional_terms", formTerms).then(function () {
 				term.value=''
 				document.getElementById('newterms').placeholder=""
 				document.getElementById('newterms').style.backgroundColor = '#FEFCE8';
-				GetRFQDetails()
+				GetRFQTermsDetails()
+			
 			});
 		}else{
 			document.getElementById('newterms').placeholder="Please fill in Terms."
@@ -254,7 +240,7 @@
 			formRFQTerms.append('rfq_vendor_terms_id', id)
 			formRFQTerms.append('terms', rfqterms)
 			axios.post("/api/update_terms/", formRFQTerms).then(function (response) {
-				GetRFQDetails()
+				GetRFQTermsDetails()
 				document.getElementById("rfqterms_"+loop).style.backgroundColor = '#FEFCE8';
 				document.getElementById("printbtn").disabled = false;
 			});
@@ -331,6 +317,29 @@
 			window.print();
 			GetRFQDetails()
 		});
+	}
+
+	const vendor =  ref(rfqvendorid)
+	const showModal = ref(false)
+	const addItems = ref(false)
+	const hideModal = ref(true)
+	const AdditionalVendorAlert = ref(false)
+	const AdditionalItemsAlert = ref(false)
+	const PrintAlert = ref(false)
+	const openAddItem = () => {
+		addItems.value = !addItems.value
+	}
+	const openModel = () => {
+		showModal.value = !showModal.value
+	}
+	const closeModal = () => {
+		addItems.value = !hideModal.value
+		showModal.value = !hideModal.value
+		AdditionalVendorAlert.value = !hideModal.value
+		AdditionalItemsAlert.value = !hideModal.value
+		PrintAlert.value = !hideModal.value
+		vendor_details.value=''
+		document.getElementById('newterms').style.backgroundColor = '';
 	}
 
 	const openEncodeOffer = () => {
