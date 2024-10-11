@@ -2,17 +2,18 @@
 
 namespace App\Imports;
 
-use App\Models\PRHead;
-use App\Models\PRDetails;
-use App\Models\PRSeries;
-use App\Models\PrReportDetails;
+use App\Models\JORHead;
+use App\Models\JORLaborDetails;
+use App\Models\JORMaterialDetails;
+use App\Models\JORSeries;
+use App\Models\JORNotes;
 use App\Models\Departments;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-class PRImport implements WithMappedCells, ToModel, WithHeadingRow
+class JORImport implements WithMappedCells, ToModel, WithHeadingRow
 {
     public $data;
     public $id;
@@ -33,12 +34,12 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
     public function mapping(): array
     {
         return [
-            'purchase_request'  => 'C7',
+            'jo_request'  => 'C7',
             'department' => 'I7',
-            'site_pr' => 'I8',
-            // 'department_code' => 'I8',
+            'department_code' => 'I8',
             'date_prepared' => 'C8',
             'date_issued' => 'C9',
+            'site_pr' => 'C10',
             'requestor' => 'I9',
             'urgency' => 'I10',
             'purpose' => 'C11',

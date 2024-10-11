@@ -21,7 +21,7 @@
 	let uom=ref('');
 	let pn_no=ref('');
 	let item_desc=ref('');
-	let wh_stocks=ref('0');
+	let wh_stocks=ref(0);
 	let date_needed=ref('');
 	let recom_date=ref('');
 	const pr_options = ref();
@@ -87,6 +87,14 @@
 		let response = await axios.get("/api/get_signatories");
 		signatories.value = response.data.employees;
 	}
+
+	const add = (arr, name) => {
+		const { length } = arr;
+		const id = length + 1;
+		const found = arr.some(el => el.uom === name);
+		if (!found) arr.push({ id, uom: name });
+		return arr;
+	}
 	const addItem= () => {
 		if(qty.value == ''){
 			// alert("Quantity must not be empty!")
@@ -117,7 +125,25 @@
 				date_needed:date_needed.value,
 				recom_date:recom_date.value,
 			}
-			item_list.value.push(items)
+			// console.log(item_list.value);
+			// item_list.value.push(items)
+			if(item_list.value.length==0){
+				item_list.value.push(items)
+			}else{
+				const ObjqtyToFind = items.qty;
+				const ObjuomToFind = items.uom;
+				const Objpn_noToFind = items.pn_no;
+				const Objitem_descToFind = items.item_desc;
+				const Objwh_stocksToFind = items.wh_stocks;
+				const Objdate_neededToFind = items.date_needed;
+				const Objrecom_dateToFind = items.recom_date;
+				if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind) || !item_list.value.find((o) => o.date_needed === Objdate_neededToFind) || !item_list.value.find((o) => o.recom_date === Objrecom_dateToFind)) {  
+					item_list.value.push(items);
+				}else{
+					error.value="Duplicate entry! This item already exists.";
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}
+			}
 			qty.value='';
 			uom.value='';
 			pn_no.value='';
@@ -284,7 +310,17 @@
 			const btn_pr = document.getElementById("btn_pr");
 			btn_pr.disabled = true;
 		}, function (err) {
-			error.value = err.response.data.message;
+			var substring="1048 Column 'department_id'"
+			if(err.response.data.message.includes(substring)==true){
+				error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+				document.getElementById('upload_pr').value=''
+				prFile.value=''
+				pr_options.value='';
+				const btn_pr = document.getElementById("btn_pr");
+				btn_pr.disabled = true;
+			}else{
+				error.value = err.response.data.message;
+			}
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}); 
     }
@@ -311,7 +347,7 @@
 		formData.append('pr_no', prhead.value.pr_no)
 		formData.append('site_pr', prhead.value.site_pr)
 		formData.append('date_prepared', prhead.value.date_prepared)
-		formData.append('pr_date', prhead.value.pr_date)
+		formData.append('date_issued', prhead.value.date_issued)
 		formData.append('department_id', prhead.value.department_id)
 		formData.append('urgency', prhead.value.urgency)
 		formData.append('process_code', prhead.value.process_code)
@@ -363,7 +399,7 @@
 		formData.append('pr_no', prhead.value.pr_no)
 		formData.append('site_pr', prhead.value.site_pr)
 		formData.append('date_prepared', prhead.value.date_prepared)
-		formData.append('pr_date', prhead.value.pr_date)
+		formData.append('date_issued', prhead.value.date_issued)
 		formData.append('department_id', prhead.value.department_id)
 		formData.append('urgency', prhead.value.urgency)
 		formData.append('process_code', prhead.value.process_code)
@@ -396,9 +432,9 @@
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
 			success.value='You have successfully draft new pr.'
 			warningAlert.value=!warningAlert.value
-			setTimeout(() => {
-				closeAlert()
-			}, 2000);
+			// setTimeout(() => {
+			// 	closeAlert()
+			// }, 2000);
 		}, function (err) {
 			console.log(err.response.data.message)
 			error.value = err.response.data.message;
@@ -464,7 +500,7 @@
 		formData.append('location', form.value.purchase_request)
 		formData.append('pr_no', form.value.pr_no)
 		formData.append('site_pr', form.value.site_pr)
-		formData.append('pr_date', form.value.pr_date)
+		formData.append('date_issued', form.value.date_issued)
 		formData.append('date_prepared', form.value.date_prepared)
 		formData.append('department_id', form.value.department)
 		formData.append('urgency', form.value.urgency)
@@ -486,6 +522,14 @@
 				success.value='You have successfully saved new pr.'
 				successAlert.value=!successAlert.value
 				prheadid.value=response.data;
+				if(form.value.petty_cash==0){
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
+				}else{
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
+					router.push('/pur_req/view/'+prheadid.value)
+				}
 			}, function (err) {
 				// error.value = err.response.data.message;
 				error.value=''
@@ -510,7 +554,7 @@
 		formData.append('location', form.value.purchase_request)
 		formData.append('pr_no', form.value.pr_no)
 		formData.append('site_pr', form.value.site_pr)
-		formData.append('pr_date', form.value.pr_date)
+		formData.append('date_issued', form.value.date_issued)
 		formData.append('date_prepared', form.value.date_prepared)
 		formData.append('department_id', form.value.department)
 		formData.append('urgency', form.value.urgency)
@@ -528,12 +572,15 @@
 		formData.append('prhead_id', prheadid.value)
 		formData.append('item_list', JSON.stringify(item_list.value))
 		axios.post(`/api/save_manual_draft`,formData).then(function (response) {
+			// console.log(response.data)
 			success.value='You have successfully saved new pr.'
 			warningAlert.value=!warningAlert.value
 			prheadid.value=response.data;
+			const btn_draft = document.getElementById("btn_draft");
+			btn_draft.disabled = true;
 			setTimeout(() => {
-				closeAlert()
-			}, 2000);
+				btn_draft.disabled = false;
+			}, 500);
 		}, function (err) {
 			error_pr.value=[]
 			// error_pr.value = err.response.data.message;
@@ -631,7 +678,7 @@
 								<div class="col-lg-2 col-md-2">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Issued</label>
-										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="prhead.pr_date">
+										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="prhead.date_issued">
 									</div>
 								</div>
 							</div>
@@ -885,7 +932,7 @@
 								<div class="col-lg-2 col-md-2">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Issued</label>
-										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="form.pr_date">
+										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="form.date_issued">
 									</div>
 								</div>
 							</div>
@@ -969,7 +1016,7 @@
 										</tr>
 										
 										<tr v-for="(i,index) in item_list">
-											<td class="p-1 text-center">{{ index + 4 }}</td>
+											<td class="p-1 text-center">{{ index+1 }}</td>
 											<td class="p-1 text-center">{{ i.qty }}</td>
 											<td class="p-1 text-center">{{ i.uom }}</td>
 											<td class="p-1">{{ i.pn_no }}</td>
@@ -1065,7 +1112,7 @@
 									<div class="flex justify-center space-x-2">
 										<!-- <button class="btn btn-light">Cancel</button> -->
 										<!-- <button type="button" class="btn btn-danger mr-2 w-36" @click="openDangerAlert()">Cancel</button> -->
-										<button type="button" class="btn btn-warning text-white mr-2 w-36" @click="onSaveDraftManual()">Save as Draft</button>
+										<button type="button" id="btn_draft" class="btn btn-warning text-white mr-2 w-36" @click="onSaveDraftManual()">Save as Draft</button>
 										<button type="button" class="btn btn-primary mr-2 w-44" @click="onSaveManual()">Save</button>
 										<!-- <a href="" class="btn btn-primary mr-2 w-52">Save & Print Petty Cash</a> -->
 									</div>
@@ -1180,15 +1227,16 @@
 								</div>
 							</div>
 						</div>
-						<!-- <br>
+						<br>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_req" class="btn !bg-gray-100 btn-sm !rounded-full w-full">PR List</a>
+									<!-- <a href="/pur_req" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</a> -->
+									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<a href="/pur_req/new/0" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
-						</div> -->
+						</div>
 					</div> 
 				</div>
 			</div>

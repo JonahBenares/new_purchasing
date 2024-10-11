@@ -10,7 +10,7 @@ class PRHead extends Model
     use HasFactory;
     protected $table = "pr_head";
     protected $fillable = [
-        'pr_date',
+        'date_issued',
         'location',
         'pr_no',
         'site_pr',
@@ -30,4 +30,8 @@ class PRHead extends Model
         'cancelled_date',
         'petty_cash'
     ];
+
+    public function rfq_head(){
+        return $this->hasMany(RFQHead::class);
+    }
 }

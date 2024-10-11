@@ -1,45 +1,109 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted, watch } from "vue"
     import { useRouter } from "vue-router"
-
+	const router = useRouter();
 	let item_list=ref([]);
 	let scope_list=ref([]);
 	let notes_list=ref([]);
 	let item_no=ref();
-	let qty=ref('');
+	let qty=ref(0);
 	let uom=ref('');
 	let pn_no=ref('');
 	let item_desc=ref('');
-	let wh_stocks=ref('');
+	let wh_stocks=ref(0);
 	let date_needed=ref('');
-	
 	let scope_item_no=ref();
 	let scope_work=ref('');
-	let scope_qty=ref('');
+	let scope_qty=ref(0);
 	let scope_uom=ref('');
-	let scope_unit_cost=ref('');
+	let scope_unit_cost=ref(0);
 	let scope_total_cost=ref('');
-
 	let notes_item_no=ref();
+	let processing_code=ref([]);
 	let notes=ref("");
 	const jo_options = ref();
-	// const jo_manual= ref(false)
-	// const jo_upload= ref(false)
-	// const hide_pr = ref(true)
-	// const open_manual = () => {
-	// 	jo_manual.value = !jo_manual.value
-	// 	jo_upload.value = !hide_pr.value
-	// }
-    // const open_upload = () => {
-	// 	jo_upload.value = !jo_upload.value
-	// 	jo_manual.value = !hide_pr.value
-	// }
-	// const close_both = () => {
-	// 	jo_manual.value = !hide_pr.value
-	// 	jo_upload.value = !hide_pr.value
-	// }
+	let jorFile=ref("");
+	let jorUrl=ref("");
+	let check_jor=ref(true)
+	onMounted(async () => {
+		getProcesscode()
+	})
+	const getProcesscode = async () => {
+		let response = await axios.get("/api/processing_code");
+		processing_code.value = response.data;
+	}
+	const getImportdata = async (id) => {
+		if(props.id!=0){
+			pr_head_id.value=props.id
+		}
+		let response = await axios.get('/api/get_import_data/'+id);
+		prhead.value = response.data.pr_head;
+		prdetails.value = response.data.pr_details;
+		if(prhead.value.petty_cash==1){
+			petty_cash.value = response.data.petty_cash;
+		}
+	}
+
+	const upload_jor = (event) => {
+		const btn_jor = document.getElementById("btn_jor");
+		btn_jor.disabled = false;
+		let file = event.target.files[0];
+		if(event.target.files.length===0){
+			jorFile.value='';
+			jorUrl.value='';
+			return;
+		}else if(file['size'] < 2111775){
+			jorFile.value = event.target.files[0];
+			error_inventory.value=''
+		}else{
+			jorUrl.value='';
+			error_inventory.value='File size cannot be bigger than 2 MB'
+			dangerAlerterrors.value = !dangerAlerterrors.value
+			btn_jor.disabled = true;
+		}
+	}
+	
+	watch(jorFile, (jorFile) => {
+		if(!(jorFile instanceof File)){
+			return;
+		}
+		let fileReader = new FileReader();
+		fileReader.readAsDataURL(jorFile)
+		fileReader.addEventListener("load", () => {
+			jorUrl.value=fileReader.result
+		})
+	})
+
+	const importSave = () => {
+		const formData= new FormData()
+		formData.append('upload_jor',jorFile.value)
+		axios.post("/api/import_pr",formData).then(function (response) {
+			pr_head_id.value=response.data.pr_head_id
+			getImportdata(pr_head_id.value)
+			// prhead.value=response.data.prhead
+			// prdetails.value=response.data.prdetails
+			// success.value='You have successfully imported new pr.'
+			// successAlert.value=!successAlert.value
+			jorFile.value=''
+			const btn_pr = document.getElementById("btn_pr");
+			btn_pr.disabled = true;
+		}, function (err) {
+			var substring="1048 Column 'department_id'"
+			if(err.response.data.message.includes(substring)==true){
+				error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+				document.getElementById('upload_pr').value=''
+				jorFile.value=''
+				pr_options.value='';
+				const btn_pr = document.getElementById("btn_pr");
+				btn_pr.disabled = true;
+			}else{
+				error.value = err.response.data.message;
+			}
+			dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+    }
 	const addItem= () => {
 		if(qty.value == ''){
 			// alert("Quantity must not be empty!")
@@ -259,9 +323,9 @@
 								<label class="text-gray-500 m-0" for="">Import JOR Excel File here or Manual encode below</label>
 								<input type="file" name="img[]" class="file-upload-default">
 								<div class="input-group col-xs-12">
-									<input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+									<input type="file" class="form-control file-upload-info" id="upload_pr" name="upload_pr" @change="upload_pr" placeholder="Upload Image">
 									<span class="input-group-append">
-										<button class="btn btn-primary" type="button" v-on:click="jo_options = 'jo_upload'">Upload</button>
+										<button class="btn btn-primary" :disabled="check_jor" id="btn_pr" @click="importSave()" v-on:click="jo_options = 'jo_upload'">Upload</button>
 									</span>
 								</div>
 								</div>
