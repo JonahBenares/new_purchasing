@@ -27,6 +27,7 @@
 	// let rfq_order_no=ref([]);
 	let letters=ref([]);
 	let count_ccr=ref(0);
+	let rfqvendorid=ref('');
 
 	const props = defineProps({
         id:{

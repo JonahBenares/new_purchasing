@@ -274,6 +274,7 @@
 	}
 
 	const printDiv = (rfq_vendor_id) => {
+		PrintAlert.value = !hideModal.value
 		const formData= new FormData()
 
 		var duedate =document.getElementById('duedate').value
