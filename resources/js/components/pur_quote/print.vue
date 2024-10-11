@@ -44,7 +44,34 @@
 		// ItemNo()
 	})
 
-	const vendor =  ref(true)
+	const GetRFQDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		RFQHead.value=response.data.head
+		RFQVendors.value=response.data.rfq_vendor
+		RFQDetails.value=response.data.rfq_details
+		RFQOffers.value=response.data.rfq_offers
+		vendor_terms.value=response.data.vendor_terms
+		signatories.value=response.data.signatories
+		count_pritems.value=response.data.count_pritems
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
+		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
+		rfqvendorid.value=response.data.rfqvendor_id
+
+		// for (var i = 0; i < rfq_vendor_terms.value.length; i++) {
+		// 	let letter = '';
+		// 	let num = i;
+
+		// 	do {
+		// 		letter = String.fromCharCode((num % 26) + 97) + letter; // ASCII 'a' = 97
+		// 		num = Math.floor(num / 26) - 1; // Adjust for zero-indexing
+		// 	} while (num >= 0);
+
+		// 	rfq_order_no.value[i] = letter;
+		// }
+	}
+
+	const vendor =  ref(rfqvendorid)
 	const showModal = ref(false)
 	const addItems = ref(false)
 	const hideModal = ref(true)
@@ -65,32 +92,6 @@
 		PrintAlert.value = !hideModal.value
 		vendor_details.value=''
 		document.getElementById('newterms').style.backgroundColor = '';
-	}
-
-	const GetRFQDetails = async () => {
-		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
-		RFQHead.value=response.data.head
-		RFQVendors.value=response.data.rfq_vendor
-		RFQDetails.value=response.data.rfq_details
-		RFQOffers.value=response.data.rfq_offers
-		vendor_terms.value=response.data.vendor_terms
-		signatories.value=response.data.signatories
-		count_pritems.value=response.data.count_pritems
-		rfq_vendor_terms.value=response.data.rfq_vendor_terms
-		letters.value=response.data.letters
-		count_ccr.value=response.data.count_ccr
-
-		// for (var i = 0; i < rfq_vendor_terms.value.length; i++) {
-		// 	let letter = '';
-		// 	let num = i;
-
-		// 	do {
-		// 		letter = String.fromCharCode((num % 26) + 97) + letter; // ASCII 'a' = 97
-		// 		num = Math.floor(num / 26) - 1; // Adjust for zero-indexing
-		// 	} while (num >= 0);
-
-		// 	rfq_order_no.value[i] = letter;
-		// }
 	}
 
 	const GetAdditionalItems = async () => {

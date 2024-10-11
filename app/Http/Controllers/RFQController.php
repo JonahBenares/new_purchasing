@@ -223,6 +223,7 @@ class RFQController extends Controller
             }
 
             $rfq_vendor = RFQVendor::with('vendor_details')->where('rfq_head_id',$rfq_head_id)->orderBy('vendor_name','ASC')->get();
+            $rfqvendorid=RFQVendor::where('rfq_head_id',$rfq_head_id)->first()->id;
                 foreach($rfq_vendor AS $v){
                     $rfq_vendorterms = RFQVendorTerms::where('rfq_vendor_id',$v->id)->orderBy('id','ASC')->get();
                     $count_rfq_terms=$rfq_vendorterms->count();
@@ -279,6 +280,7 @@ class RFQController extends Controller
                 'currency'=>$currency,
                 'letters'=>$letters,
                 'count_ccr'=>$count_ccr,
+                'rfqvendor_id'=>$rfqvendorid,
             ],200);
         }
 
