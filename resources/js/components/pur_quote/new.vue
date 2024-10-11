@@ -90,6 +90,7 @@
 					PRDetails.value[x].checkbox=1;
 					document.getElementById("AddVendorButton").style.display="block"
 				}else{
+					PRDetails.value[x].checkbox=0;
 					checkall.value=!allSelected
 					document.getElementById("AddVendorButton").style.display="none"
 				}
