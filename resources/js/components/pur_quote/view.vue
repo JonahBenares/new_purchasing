@@ -407,7 +407,7 @@
 							</div>
 							<div class="col-lg-4">
 								<div class="flex justify-end space-x-2">
-									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="(count_pritems != 0)">Add Items</button>
+									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="(count_pritems != 0 && count_ccr == 0)">Add Items</button>
 									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="ShowPrintView()">Show Print View</button>
 								</div>
 							</div>

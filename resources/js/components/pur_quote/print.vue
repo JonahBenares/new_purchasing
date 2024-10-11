@@ -27,6 +27,7 @@
 	// let rfq_order_no=ref([]);
 	let letters=ref([]);
 	let rfqvendorid=ref('');
+	let count_ccr=ref(0);
 
 	const props = defineProps({
         id:{
@@ -34,6 +35,14 @@
             default:''
         }
     })
+
+	onMounted(async () => {
+		GetRFQDetails()
+		GetAdditionalItems()
+		GetAdditionalVendors()
+		// IncrementalLetters()
+		// ItemNo()
+	})
 
 	const vendor =  ref(true)
 	const showModal = ref(false)
@@ -58,14 +67,6 @@
 		document.getElementById('newterms').style.backgroundColor = '';
 	}
 
-	onMounted(async () => {
-		GetRFQDetails()
-		GetAdditionalItems()
-		GetAdditionalVendors()
-		// IncrementalLetters()
-		// ItemNo()
-	})
-
 	const GetRFQDetails = async () => {
 		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
 		RFQHead.value=response.data.head
@@ -77,6 +78,7 @@
 		count_pritems.value=response.data.count_pritems
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
 		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
 
 		// for (var i = 0; i < rfq_vendor_terms.value.length; i++) {
 		// 	let letter = '';
@@ -360,7 +362,7 @@
 									</div>
 									<div class="col-lg-4">
 										<div class="flex justify-end space-x-2">
-											<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="(count_pritems != 0)">Add Items</button>
+											<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="(count_pritems != 0 && count_ccr == 0)">Add Items</button>
 											<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openEncodeOffer()">Encode Offer</button>
 										</div>
 									</div>
@@ -378,7 +380,7 @@
 								</div>
 								<div class="page-bg">
 									<div v-for="rvi in RFQVendors">
-										<div class="page" v-if="vendor == rvi.rfq_vendor_id">
+										<div class="page" v-if="(vendor == rvi.rfq_vendor_id)">
 										<div class="subpage">
 											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
 											<table class="table-bsordered w-full text-xs mb-2">

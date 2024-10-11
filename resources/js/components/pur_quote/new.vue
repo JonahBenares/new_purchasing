@@ -570,8 +570,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="SaveandProceed()">Yes</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="CancelSave()">No</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="CancelSave()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="SaveandProceed()">Yes</button>
 								</div>
 							</div>
 						</div>
