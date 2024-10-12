@@ -9,4 +9,8 @@ class JORSeries extends Model
 {
     use HasFactory;
     protected $table="jor_series";
+    protected $fillable=[
+        'year',
+        'series',
+    ];
 }

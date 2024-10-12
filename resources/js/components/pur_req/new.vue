@@ -88,13 +88,14 @@
 		signatories.value = response.data.employees;
 	}
 
-	const add = (arr, name) => {
-		const { length } = arr;
-		const id = length + 1;
-		const found = arr.some(el => el.uom === name);
-		if (!found) arr.push({ id, uom: name });
-		return arr;
-	}
+	// const add = (arr, name) => {
+	// 	const { length } = arr;
+	// 	const id = length + 1;
+	// 	const found = arr.some(el => el.quantity === name);
+	// 	if (!found) arr.push({ id, quantity: name });
+	// 	return arr;
+	// }
+
 	const addItem= () => {
 		if(qty.value == ''){
 			// alert("Quantity must not be empty!")
@@ -127,7 +128,7 @@
 			}
 			// console.log(item_list.value);
 			// item_list.value.push(items)
-			if(item_list.value.length==0){
+			if(item_list.value.length==0 && prdetails.value.length==0){
 				item_list.value.push(items)
 			}else{
 				const ObjqtyToFind = items.qty;
@@ -137,11 +138,30 @@
 				const Objwh_stocksToFind = items.wh_stocks;
 				const Objdate_neededToFind = items.date_needed;
 				const Objrecom_dateToFind = items.recom_date;
-				if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind) || !item_list.value.find((o) => o.date_needed === Objdate_neededToFind) || !item_list.value.find((o) => o.recom_date === Objrecom_dateToFind)) {  
-					item_list.value.push(items);
+				if(prdetails.value.length==0){
+					if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind) || !item_list.value.find((o) => o.date_needed === Objdate_neededToFind) || !item_list.value.find((o) => o.recom_date === Objrecom_dateToFind)) {  
+						item_list.value.push(items);
+					}else{
+						error.value="Duplicate entry! This item already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
 				}else{
-					error.value="Duplicate entry! This item already exists.";
-					dangerAlerterrors.value=!dangerAlerterrors.value
+					var newest= new Array(items);
+					// const objectKeysOfarr1 = Object.keys(prdetails.value);
+					// console.log(`objectKeysOfarr1: ${objectKeysOfarr1}`);
+					/**
+					output:
+					objectKeysOfarr1: 0,1,2,3,4
+					*/
+
+					// const filterObjectKeysOfprdetails = objectKeysOfarr1
+					// .filter(index => {
+					// 	// console.log(`prdetails.value[index].quantity: ${prdetails.value[index].quantity}`);
+					// 	// console.log(`newest[index].qty: ${newest[index].qty}`);
+					// 	// console.log(`prdetails.value[index].quantity === newest[index].qty: ${prdetails.value[index].quantity === newest[index].qty}`);
+					// 	return prdetails.value[index].quantity === newest[0].qty;
+					// });
+					// console.log(`filterObjectKeysOfprdetails.value: ${filterObjectKeysOfprdetails.value}`);
 				}
 			}
 			qty.value='';
@@ -335,6 +355,8 @@
 			var api='update_recomdate/'+id;
 		}
 		axios.post('/api/'+api,formData).then(function () {
+			recom_date_update.value=[]
+			getImportdata(pr_head_id.value)
 		}, function (err) {
 			error.value = err.response.data.message;
 		});
@@ -382,6 +404,8 @@
 					successAlert.value=!successAlert.value
 					router.push('/pur_req/view/'+prhead.value.id)
 				}
+				item_list.value=[]
+				getImportdata(pr_head_id.value)
 			}, function (err) {
 				error.value = err.response.data.message;
 				dangerAlerterrors.value=!dangerAlerterrors.value
@@ -432,11 +456,13 @@
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
 			success.value='You have successfully draft new pr.'
 			warningAlert.value=!warningAlert.value
+			item_list.value=[]
+			getImportdata(pr_head_id.value)
+			
 			// setTimeout(() => {
 			// 	closeAlert()
 			// }, 2000);
 		}, function (err) {
-			console.log(err.response.data.message)
 			error.value = err.response.data.message;
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}); 
@@ -519,8 +545,8 @@
 		formData.append('item_list', JSON.stringify(item_list.value))
 		if(item_list.value.length!=0){
 			axios.post(`/api/save_manual`,formData).then(function (response) {
-				success.value='You have successfully saved new pr.'
-				successAlert.value=!successAlert.value
+				// success.value='You have successfully saved new pr.'
+				// successAlert.value=!successAlert.value
 				prheadid.value=response.data;
 				if(form.value.petty_cash==0){
 					success.value='You have successfully saved new pr.'
@@ -771,7 +797,10 @@
 											<td class="p-1">{{details.wh_stocks}}</td>
 											<td class="p-1">{{details.date_needed}}</td>
 											<td class="p-1">
-												<input placeholder="Recom Date" type="text" v-model="recom_date_update[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-if="props.id==0">
+												<input placeholder="Recom Date" type="text" v-model="recom_date_update[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-if="props.id==0 && (details.recom_date==null || details.recom_date=='')">
+
+												<input @change="updateRecomdate(details.id)" placeholder="Recom Date" type="text" v-model="details.recom_date" class="w-full p-1" onfocus="(this.type='date')" v-else-if="props.id==0 && (details.recom_date!=null || details.recom_date!='')" readonly>
+
 												<input placeholder="Recom Date" type="text" v-model="details.recom_date" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-else>
 											</td>
 											<td class="text-center">

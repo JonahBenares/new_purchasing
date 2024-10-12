@@ -76,7 +76,6 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                     $prhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
                     $prhead['date_issued']=date('Y-m-d',strtotime($this->transformDate($row['date_issued'])));
                     $prhead['pr_no']=$pr_no;
-                    $prhead['location']=$row['purchase_request'];
                     $prhead['site_pr']=$row['site_pr'];
                     $prhead['department_id']=$department_id;
                     $prhead['department_name']=$row['department'];

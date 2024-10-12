@@ -202,7 +202,7 @@
 								<span class="text-sm text-gray-700">{{get_prhead.pr_no}}</span>
 							</div>
 							<div class="col-lg-6 col-sm-6 col-md-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
+								<span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
 								<span class="text-sm text-gray-700">{{get_prhead.site_pr}}</span>
 							</div>
 						</div>
@@ -320,8 +320,8 @@
 						<div class="row my-2 po_buttons" > 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-danger mr-2 w-36" @click="cancelAllpr('no')" v-if="get_prhead.status!='Cancelled' && get_prhead.status!='Closed'">Cancel</button>
-									<button type="submit" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
+									<button type="button" class="btn btn-danger mr-2 w-36" @click="cancelAllpr('no')" v-if="get_prhead.status!='Cancelled' && get_prhead.status!='Closed'">Cancel</button>
+									<button type="button" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
 								</div>
 							</div>
 						</div>

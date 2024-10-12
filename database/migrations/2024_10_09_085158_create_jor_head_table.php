@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('jor_head', function (Blueprint $table) {
             $table->id();
-            $table->string('jor_date')->nullable();
             $table->string('location')->nullable();
             $table->string('jor_no')->nullable();
             $table->string('site_jor')->nullable();

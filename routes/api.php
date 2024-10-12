@@ -8,6 +8,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PRController;
+use App\Http\Controllers\JORController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -79,3 +80,26 @@ Route::post('/insert_referred/{id}',[PRController::class,'insert_referred']);
 Route::post('/update_recomdate_view',[PRController::class,'update_recomdate_view']);
 Route::post('/cancel_prdetails/{pr_details_id}',[PRController::class,'cancel_prdetails']);
 Route::get('/cancel_allpr/{pr_head_id}',[PRController::class,'cancel_allpr']);
+
+Route::post('/import_jor',[JORController::class,'import_jor']);
+Route::get('/get_import_data_jor/{id}',[JORController::class,'get_import_data_jor']);
+Route::post('/generate_jorno',[JORController::class,'generate_jorno']);
+Route::get('/delete_jor_item/{id}',[JORController::class,'delete_jor_item']);
+Route::get('/delete_jor_material_item/{id}',[JORController::class,'delete_jor_material_item']);
+Route::get('/delete_jor_note_item/{id}',[JORController::class,'delete_jor_note_item']);
+Route::post('/update_jor_labor_recomdate/{id}',[JORController::class,'update_jor_labor_recomdate']);
+Route::post('/update_jor_labor_recomdate_view',[JORController::class,'update_jor_labor_recomdate_view']);
+Route::post('/update_jor_material_recomdate/{id}',[JORController::class,'update_jor_material_recomdate']);
+Route::post('/update_jor_material_recomdate_view',[JORController::class,'update_jor_material_recomdate_view']);
+Route::post('/save_jor_upload/{id}',[JORController::class,'save_jor_upload']);
+Route::post('/save_jor_upload_draft/{id}',[JORController::class,'save_jor_upload_draft']);
+Route::get('/cancel_jor/{jor_head_id}',[JORController::class,'cancel_jor']);
+Route::get('/create_jor',[JORController::class,'create_jor']);
+Route::post('/save_jor_manual',[JORController::class,'save_jor_manual']);
+Route::post('/save_jor_manual_draft',[JORController::class,'save_jor_manual_draft']);
+Route::get('/get_alljor',[JORController::class,'get_alljor']);
+Route::get('/get_jor_view_details/{jor_head_id}',[JORController::class,'get_jor_view_details']);
+Route::get('/cancel_alljor/{jor_head_id}',[JORController::class,'cancel_alljor']);
+Route::post('/cancel_jorlabordetails/{jor_labor_details_id}',[JORController::class,'cancel_jorlabordetails']);
+Route::post('/cancel_jormaterialdetails/{jor_material_details_id}',[JORController::class,'cancel_jormaterialdetails']);
+Route::get('/cancel_jornotes/{jor_notes_id}',[JORController::class,'cancel_jornotes']);
