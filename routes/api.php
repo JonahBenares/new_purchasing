@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RFQController;
 use App\Http\Controllers\PRController;
 use App\Http\Controllers\JORController;
 /*
@@ -60,6 +61,25 @@ Route::get('/check_vendor_name/{vendor_name}', [VendorController::class,'check_v
 Route::get('/no_terms_branch/{vendor_head_id}',[VendorController::class,'no_terms_branch']);
 Route::post('/add_all_terms',[VendorController::class,'add_all_terms']);
 
+Route::get('/get_all_rfq', [RFQController::class,'get_all_rfq']);
+Route::get('/pr_list', [RFQController::class,'all_pr']);
+Route::get('/vendor_list', [RFQController::class,'all_vendor']);
+Route::get('/get_pr_data/{pr_head_id}', [RFQController::class,'get_pr_data']);
+Route::post('/add_rfq',[RFQController::class,'add_rfq']);
+Route::get('/get_rfq_data/{rfq_head_id}', [RFQController::class,'get_rfq_data']);
+Route::post('/add_additional_vendor',[RFQController::class,'add_additional_vendor']);
+Route::get('/get_vendor_list/{rfq_head_id}', [RFQController::class,'vendor_list_data']);
+Route::post('/add_additional_items',[RFQController::class,'add_additional_items']);
+Route::get('/get_item_list/{rfq_head_id}', [RFQController::class,'item_list_data']);
+Route::post('/canvass_complete/{rfq_vendor_id}', [RFQController::class,'canvass_complete']);
+Route::post('/save_print_details',[RFQController::class,'save_print_details']);
+Route::post('/canvass_complete_vendor',[RFQController::class,'canvass_complete_vendor']);
+Route::post('/draft_vendor',[RFQController::class,'draft_vendor']);
+Route::post('/add_additional_terms',[RFQController::class,'add_additional_terms']);
+Route::post('/update_terms', [RFQController::class,'update_rfq_terms']);
+Route::get('/remove_terms/{rfq_vendor_terms_id}', [RFQController::class,'remove_terms']);
+
+Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::get('/create_pr',[PRController::class,'create_pr']);
 Route::get('/get_import_data/{id}',[PRController::class,'get_import_data']);

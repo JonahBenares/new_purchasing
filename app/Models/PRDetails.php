@@ -27,4 +27,8 @@ class PRDetails extends Model
         'cancelled_by',
         'cancelled_reason'
     ];
+
+    public function rfq_details(){
+        return $this->hasMany(rfq_details::class);
+    }
 }
