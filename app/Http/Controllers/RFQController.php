@@ -304,6 +304,7 @@ class RFQController extends Controller
             $rfq_add_vendor['vendor_details_id']=$request->input('vendor_details_id');
             $rfq_add_vendor['vendor_name']=$request->input('vendor_name');
             $rfq_add_vendor['vendor_identifier']=$request->input('vendor_identifier');
+            $rfq_add_vendor['due_date']=$request->input('due_date');
             $rfq_add_vendor['created_at']=date('Y-m-d H:i:s');
             $rfq_vendor_id=RFQVendor::insertGetId($rfq_add_vendor);
 
