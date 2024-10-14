@@ -174,7 +174,7 @@ class RFQController extends Controller
                     $rfq_i['created_at']=date('Y-m-d H:i:s');
                     $rfq_details_id=RFQDetails::insertGetId($rfq_i);
 
-                    $update_status = PrReportDetails::where('pr_details_id','=', $ri->pr_details_id)->update(['status' => 'ForCanvass']);
+                    $update_status = PrReportDetails::where('pr_details_id','=', $ri->pr_details_id)->update(['status' => 'For Canvass']);
 
                     for($x=0;$x<3;$x++){
                         RFQOffers::create([
@@ -386,7 +386,7 @@ class RFQController extends Controller
                         $rfq_i['created_at']=date('Y-m-d H:i:s');
                         $rfq_details_id=RFQDetails::insertGetId($rfq_i);
 
-                        $update_status = PrReportDetails::where('pr_details_id','=', $ai->pr_details_id)->update(['status' => 'ForCanvass']);
+                        $update_status = PrReportDetails::where('pr_details_id','=', $ai->pr_details_id)->update(['status' => 'For Canvass']);
 
                         for($x=0;$x<3;$x++){
                             RFQOffers::create([
