@@ -68,7 +68,7 @@ class PRDetailsImport implements ToModel, WithHeadingRow, WithMultipleSheets
                     $prreport['item_description']=$description;
                     $prreport['pr_qty']=$qty;
                     $prreport['uom']=$uom;
-                    $prreport['status']='pending for RFQ';
+                    $prreport['status']='Pending for RFQ';
                     PrReportDetails::create($prreport);
                 }
             }

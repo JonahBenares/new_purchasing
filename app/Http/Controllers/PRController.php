@@ -170,7 +170,7 @@ class PRController extends Controller
                             $prreport['item_description']=$il->item_desc;
                             $prreport['pr_qty']=$il->qty;
                             $prreport['uom']=$il->uom;
-                            $prreport['status']='pending for RFQ';
+                            $prreport['status']='Pending for RFQ';
                             PrReportDetails::create($prreport);
                         }
                     }
@@ -293,7 +293,7 @@ class PRController extends Controller
                             $prreport['item_description']=$il->item_desc;
                             $prreport['pr_qty']=$il->qty;
                             $prreport['uom']=$il->uom;
-                            $prreport['status']='pending for RFQ';
+                            $prreport['status']='Pending for RFQ';
                             PrReportDetails::create($prreport);
                         }
                     }
@@ -593,7 +593,7 @@ class PRController extends Controller
                     $prreport['item_description']=$il->item_desc;
                     $prreport['pr_qty']=$il->qty;
                     $prreport['uom']=$il->uom;
-                    $prreport['status']='pending for RFQ';
+                    $prreport['status']='Pending for RFQ';
                     if($request->prhead_id==0){ 
                         PrReportDetails::create($prreport);
                     }else{
@@ -751,7 +751,7 @@ class PRController extends Controller
                 $prreport['item_description']=$il->item_desc;
                 $prreport['pr_qty']=$il->qty;
                 $prreport['uom']=$il->uom;
-                $prreport['status']='pending for RFQ';
+                $prreport['status']='Pending for RFQ';
                 if($request->prhead_id==0){ 
                     PrReportDetails::create($prreport);
                 }else{
