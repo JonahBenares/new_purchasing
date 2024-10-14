@@ -50,6 +50,7 @@
 	const dangerAlerterrors = ref(false)
 	const successAlertCD = ref(false)
 	let jor_series=ref('0');
+	const loading = ref(false)
 	const props = defineProps({
 		id:{
 			type:String,
@@ -105,26 +106,44 @@
 	const importSave = () => {
 		const formData= new FormData()
 		formData.append('upload_jor',jorFile.value)
-		axios.post("/api/import_jor",formData).then(function (response) {
-			jor_head_id.value=response.data.jor_head_id
-			getImportdata(jor_head_id.value)
-			jorFile.value=''
-			const btn_jor = document.getElementById("btn_jor");
-			btn_jor.disabled = true;
-		}, function (err) {
-			var substring="1048 Column 'department_id'"
-			if(err.response.data.message.includes(substring)==true){
-				error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
-				document.getElementById('upload_jor').value=''
+		loading.value=true;
+		jo_options.value='';
+		try {
+			axios.post("/api/import_jor",formData).then(function (response) {
+				jor_head_id.value=response.data.jor_head_id
+				getImportdata(jor_head_id.value)
+				jo_options.value='jo_upload';
+				loading.value=false;
 				jorFile.value=''
-				jo_options.value='';
 				const btn_jor = document.getElementById("btn_jor");
 				btn_jor.disabled = true;
-			}else{
-				error.value = err.response.data.message;
-			}
+			}, function (err) {
+				loading.value=false;
+				var substring="1048 Column 'department_id'"
+				var substring1="floor(): Argument #1"
+				if(err.response.data.message.includes(substring)==true){
+					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+					document.getElementById('upload_jor').value=''
+					jorFile.value=''
+					jo_options.value='';
+					const btn_jor = document.getElementById("btn_jor");
+					btn_jor.disabled = true;
+				}else if(err.response.data.message.includes(substring1)==true){
+					error.value = 'Invalid file format. Please upload another file with correct format.';
+					document.getElementById('btn_jor').value=''
+					jorFile.value=''
+					jo_options.value='';
+					const btn_jor = document.getElementById("btn_jor");
+					btn_jor.disabled = true;
+				}else{
+					error.value = err.response.data.message;
+				}
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		} catch (error) {
+			error.value=error
 			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
+		} 
     }
 
 	const getImportdata = async (id) => {
@@ -755,7 +774,7 @@
 								<div class="input-group col-xs-12">
 									<input type="file" class="form-control file-upload-info" id="upload_jor" name="upload_jor" @change="upload_jor" placeholder="Upload Image">
 									<span class="input-group-append">
-										<button class="btn btn-primary" :disabled="check_jor" id="btn_jor" @click="importSave()" v-on:click="jo_options = 'jo_upload'">Upload</button>
+										<button class="btn btn-primary" :disabled="check_jor" id="btn_jor" @click="importSave()" v-on:click="jo_options = ''">Upload</button>
 									</span>
 								</div>
 								</div>
@@ -771,6 +790,7 @@
 								<button class="btn btn-primary btn-block" type="button" v-on:click="jo_options = 'jo_manual'" v-else>Manual JOR</button>
 							</div>
 						</div>
+						<div class="mt-[300px] font-bold text-base" v-if="loading"><center>Loading data, please wait...</center></div>
 						<div class="" id="upload" v-if="jo_options === 'jo_upload' || props.id!=0">
 							<hr class="border-dashed">
 							<p class="text-gray-500 font-bold text-lg" v-if="jorhead.status!='Draft'">From Uploaded File</p>
