@@ -118,6 +118,7 @@
 						dangerAlert_item.value = !hideAlert.value
 						success.value=''
 						error.value='Cannot be deleted, item already have transactions.'
+						cancel_reason.value=''
 						cancelAlert.value = !cancelAlert.value
 						setTimeout(() => {
 							closeAlert()
