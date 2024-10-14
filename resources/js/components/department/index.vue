@@ -114,6 +114,7 @@
 		axios.post("/api/add_department",formData).then(function () {
 			success.value='You have successfully added new department!'
 			form.value.department_name=''
+			form.value.department_code=''
 			successAlert.value = !successAlert.value
 			getDepartment()
 			// setTimeout(() => {
@@ -134,6 +135,7 @@
 		axios.post(`/api/update_department/${id}`,formData).then(function () {
 			success.value='You have successfully updated department!'
 			form.value.department_name=''
+			form.value.department_code=''
 			successAlert.value = !successAlert.value
 			getDepartment()
 			// setTimeout(() => {
