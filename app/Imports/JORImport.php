@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Config;
 class JORImport implements WithMappedCells, ToModel, WithHeadingRow
 {
     public $data;
@@ -56,6 +57,7 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
     public function model(array $row)
     {
         if(count($row)!=0){
+            $company=Config::get('constants.company');
             $department_id=Departments::where('department_name',$row['department'])->value('id');
             $department_code=Departments::where('department_name',$row['department'])->value('department_code');
             if($row['jo_request']!=''){
@@ -64,11 +66,11 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                 $series_rows = JORSeries::where('year',$year)->count();
                 if($series_rows==0){
                     $jor_series='0001';
-                    $jor_no = $department_code.$year_short."-".$jor_series;
+                    $jor_no = $department_code.$year_short."-".$jor_series."-".$company;
                 } else {
                     $max_series=JORSeries::where('year',$year)->max('series');
                     $jor_series=$max_series+1;
-                    $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000');
+                    $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000')."-".$company;
                 }
                 $series['year']=$year;
                 $series['series']=$jor_series;

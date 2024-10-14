@@ -18,6 +18,7 @@ use App\Models\RFQHead;
 use App\Models\RecomReportDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Config;
 class PRController extends Controller
 {
     public function import_pr(Request $request){
@@ -379,6 +380,7 @@ class PRController extends Controller
         $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         $department_code=Departments::where('id',$request->department)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
+        $company=Config::get('constants.company');
         if($series_rows==0){
             $max_series='1';
             $pr_series='0001';
@@ -386,9 +388,9 @@ class PRController extends Controller
         } else {
             $max_series=PRSeries::where('year',$year)->max('series');
             $pr_series=$max_series+1;
+            $exp=explode('-',$request->pr_no);
             if($request->props_id==0){
                 if($request->pr_no!='' && $request->pr_no!='undefined'){
-                    $exp=explode('-',$request->pr_no);
                     $pr_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
                 }else{
                     $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
@@ -400,7 +402,7 @@ class PRController extends Controller
         // $series['year']=$year;
         // $series['series']=$pr_series;
         // $pr_series=PRSeries::create($series);
-        return $pr_no;
+        return $pr_no."-".$company;
         // $exp=explode('-',$pr_no);
         // if(!PRSeries::where('year',$year)->where('series',$exp[1])->exists()){
         //     // if(!PRSeries::where('year',$year)->where('series',)->exists()){
