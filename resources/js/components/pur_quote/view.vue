@@ -39,6 +39,7 @@
 	onMounted(async () => {
 		GetRFQDetails()
 		GetRFQTermsDetails()
+		GetDraftCanvassDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 	})
@@ -76,6 +77,21 @@
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
 	}
 
+	const GetDraftCanvassDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		RFQHead.value=response.data.head
+		RFQVendors.value=response.data.rfq_vendor
+		RFQDetails.value=response.data.rfq_details
+		RFQOffers.value=response.data.rfq_offers
+		vendor_terms.value=response.data.vendor_terms
+		signatories.value=response.data.signatories
+		count_pritems.value=response.data.count_pritems
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
+		currency.value = response.data.currency
+		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
+	}
+
 	const vendor =  ref(rfqvendorid);
 	const showModal = ref(false)
 	const addItems = ref(false)
@@ -98,7 +114,7 @@
 	}
 
 	const closeModal = () => {
-		GetRFQDetails()
+		GetDraftCanvassDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		showModal.value = !hideModal.value
@@ -156,7 +172,7 @@
 			formVendor.append('vendor_name', vendor_name)
 			formVendor.append('vendor_identifier', identifier)
 			axios.post("/api/add_additional_vendor", formVendor).then(function () {
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -208,7 +224,7 @@
 			formItems.append('pr_no', RFQHead.value.pr_no)
 			formItems.append('additional_items', JSON.stringify(pritem_list.value))
 			axios.post("/api/add_additional_items", formItems).then(function () {
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -336,7 +352,7 @@
 			formCanvass.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 			axios.post("/api/canvass_complete_vendor", formCanvass).then(function () {
 				CanvassCompleteAlert.value = !CanvassCompleteAlert.value
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 			});
 	}
 
@@ -388,7 +404,7 @@
 			}
 			formOffers.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 			axios.post("/api/draft_vendor", formOffers).then(function () {
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 				DraftAlert.value = !DraftAlert.value
 			});
 	}
