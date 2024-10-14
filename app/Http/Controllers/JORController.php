@@ -407,27 +407,38 @@ class JORController extends Controller
         $data_head=$this->validate($request,
             [
                 'jor_no'=>'required|string',
-                'department_id'=>'required|integer'
+                'department_id'=>'required|integer',
+                'location'=>'required|string',
+                'date_prepared'=>'required|string',
+                'requestor'=>'required|string',
+                'purpose'=>'required|string',
+                'general_description'=>'required|string'
+
             ],
             [
-               'department_id.required'=> 'The department field is required.'
+               'department_id.required'=> 'The department field is required.',
+               'location.required'=> 'The location field is required.',
+               'date_prepared.required'=> 'The date prepared field is required.',
+               'requestor.required'=> 'The requestor field is required.',
+               'purpose.required'=> 'The purpose field is required.',
+               'general_description.required'=> 'The general description field is required.',
             ]
         );
-        $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+        // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
         $data_head['site_jor']=($request->site_jor!='undefined' && $request->site_jor!='null' && $request->site_jor!='') ? $request->site_jor : '';
         $data_head['duration']=($request->duration!='undefined' && $request->duration!='null' && $request->duration!='') ? $request->duration : '';
         $data_head['completion_date']=($request->completion_date!='undefined' && $request->completion_date!='null' && $request->completion_date!='') ? $request->completion_date : '';
         $data_head['delivery_date']=($request->delivery_date!='undefined' && $request->delivery_date!='null' && $request->delivery_date!='') ? $request->delivery_date : '';
-        $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+        // $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
         $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
         $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
-        $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
+        // $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+        // $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';
         $data_head['status']='Saved';
-        $data_head['general_description']=($request->general_description!='undefined' && $request->general_description!='null' && $request->general_description!='') ? $request->general_description : '';
+        // $data_head['general_description']=($request->general_description!='undefined' && $request->general_description!='null' && $request->general_description!='') ? $request->general_description : '';
         $data_head['project_activity']=($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '';
         $data_head['user_id']=Auth::id();
         if($request->jorhead_id==0){

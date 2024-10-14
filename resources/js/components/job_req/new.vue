@@ -687,6 +687,21 @@
 				if (err.response.data.errors.department_id) {
 					error_pr.value.push(err.response.data.errors.department_id[0])
 				}
+				if (err.response.data.errors.location) {
+					error_pr.value.push(err.response.data.errors.location[0])
+				}
+				if (err.response.data.errors.date_prepared) {
+					error_pr.value.push(err.response.data.errors.date_prepared[0])
+				}
+				if (err.response.data.errors.requestor) {
+					error_pr.value.push(err.response.data.errors.requestor[0])
+				}
+				if (err.response.data.errors.purpose) {
+					error_pr.value.push(err.response.data.errors.purpose[0])
+				}
+				if (err.response.data.errors.general_description) {
+					error_pr.value.push(err.response.data.errors.general_description[0])
+				}
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
 		}else{
@@ -1371,7 +1386,8 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/job_req/new/0" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a :href="'/job_quote/new/'+jor_head_id" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
+									<a :href="'/job_quote/new/'+jor_head_id" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" v-if="jorheadid==0">Proceed</a>
+									<a :href="'/job_quote/new/'+jorheadid" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" v-else>Proceed</a>
 								</div>
 							</div>
 						</div>

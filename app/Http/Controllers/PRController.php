@@ -448,23 +448,33 @@ class PRController extends Controller
         $data_head=$this->validate($request,
             [
                 'pr_no'=>'required|string',
-                'department_id'=>'required|integer'
+                'department_id'=>'required|integer',
+                'location'=>'required|string',
+                'date_prepared'=>'required|string',
+                'requestor'=>'required|string',
+                'enduse'=>'required|string',
+                'purpose'=>'required|string',
             ],
             [
-               'department_id.required'=> 'The department field is required.'
+               'department_id.required'=> 'The department field is required.',
+               'location.required'=> 'The location field is required.',
+               'date_prepared.required'=> 'The date prepared field is required.',
+               'requestor.required'=> 'The requestor field is required.',
+               'enduse.required'=> 'The enduse field is required.',
+               'purpose.required'=> 'The purpose field is required.',
             ]
         );
-        $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+        // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
         $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
         $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
-        $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+        // $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
         $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
         $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
-        $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
-        $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
+        // $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+        // $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
+        // $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';
         $data_head['status']=$status;
         $data_head['petty_cash']=$request->petty_cash;
