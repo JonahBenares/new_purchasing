@@ -651,34 +651,53 @@
 							<p class="text-gray-500 font-bold text-lg" v-if="prhead.status!='Draft'">From Uploaded File</p>
 							<p class="text-gray-500 font-bold text-lg" v-else>DRAFT</p>
 							<div class="row">
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purchase Request</label>
 										<input type="text" class="form-control" placeholder="Purchase Request" v-model="prhead.location">
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">PR No</label>
 										<input type="text" class="form-control" placeholder="PR No" v-model="prhead.pr_no" readonly>
 									</div>
 								</div>
-								<div class="col-lg-2 col-md-2">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Site PR No</label>
 										<input type="text" class="form-control" placeholder="Site PR No" v-model="prhead.site_pr">
 									</div>
 								</div>
-								<div class="col-lg-2 col-md-2">
+								
+							</div>
+							<div class="row">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="prhead.date_prepared">
 									</div>
 								</div>
-								<div class="col-lg-2 col-md-2">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Issued</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="prhead.date_issued">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Urgency</label>
+										<input type="text" class="form-control" placeholder="" v-model="prhead.urgency">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Process Code</label>
+										<!-- <input type="text" class="form-control" placeholder="" v-model="prhead.process_code"> -->
+										<select class="form-control" v-model="prhead.process_code">
+											<option value=''>--Select Process Code--</option>
+											<option :value="pro" v-for="pro in processing_code" :key="pro">{{ pro }}</option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -693,43 +712,26 @@
 										<!-- <input type="text" class="form-control" placeholder="Department" value="IT Department"> -->
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
-									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Urgency</label>
-										<input type="text" class="form-control" placeholder="" v-model="prhead.urgency">
-									</div>
-								</div>
-								<div class="col-lg-3 col-md-3">
-									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Process Code</label>
-										<!-- <input type="text" class="form-control" placeholder="" v-model="prhead.process_code"> -->
-										<select class="form-control" v-model="prhead.process_code">
-											<option value=''>--Select Process Code--</option>
-											<option :value="pro" v-for="pro in processing_code" :key="pro">{{ pro }}</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-4 col-md-4">
+								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
 										<input type="text" class="form-control" placeholder="Requestor" v-model="prhead.requestor">
 									</div>
 								</div>
-								<div class="col-lg-4 col-md-4">
+							</div>
+							<div class="row">
+								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">End-Use</label>
 										<input type="text" class="form-control" placeholder="End-Use" v-model="prhead.enduse">
 									</div>
 								</div>
-								<div class="col-lg-4 col-md-4">
+								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purpose</label>
 										<input type="text" class="form-control" placeholder="Purpose" v-model="prhead.purpose">
 									</div>
 								</div>
-							<!-- </div> -->
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
@@ -905,34 +907,52 @@
 							<hr class="border-dashed">
 							<p class="text-gray-500 font-bold text-lg">Add Manual PR</p>
 							<div class="row">
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purchase Request</label>
 										<input type="text" class="form-control" placeholder="Purchase Request" v-model="form.purchase_request">
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">PR No</label>
 										<input type="text" class="form-control" placeholder="PR No" v-model="form.pr_no" readonly>
 									</div>
 								</div>
-								<div class="col-lg-2 col-md-2">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Site PR No</label>
 										<input type="text" class="form-control" placeholder="Site PR No" v-model="form.site_pr">
 									</div>
 								</div>
-								<div class="col-lg-2 col-md-2">
+							</div>
+							<div class="row">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="form.date_prepared">
 									</div>
 								</div>
-								<div class="col-lg-2 col-md-2">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Issued</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Issued" v-model="form.date_issued">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Urgency</label>
+										<input type="text" class="form-control" placeholder="Urgency" v-model="form.urgency" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Process Code</label>
+										<!-- <input type="text" class="form-control" placeholder="Process Code"> -->
+										<select class="form-control" v-model="form.process_code">
+											<option value=''>--Select Process Code--</option>
+											<option :value="pro" v-for="pro in processing_code" :key="pro">{{ pro }}</option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -946,37 +966,21 @@
 										</select>
 									</div>
 								</div>
-								<div class="col-lg-3 col-md-3">
-									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Urgency</label>
-										<input type="text" class="form-control" placeholder="Urgency" v-model="form.urgency" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
-									</div>
-								</div>
-								<div class="col-lg-3 col-md-3">
-									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Process Code</label>
-										<!-- <input type="text" class="form-control" placeholder="Process Code"> -->
-										<select class="form-control" v-model="form.process_code">
-											<option value=''>--Select Process Code--</option>
-											<option :value="pro" v-for="pro in processing_code" :key="pro">{{ pro }}</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-4 col-md-4">
+								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
 										<input type="text" class="form-control" placeholder="Requestor" v-model="form.requestor">
 									</div>
 								</div>
-								<div class="col-lg-4 col-md-4">
+							</div>
+							<div class="row">
+								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">End-Use</label>
 										<input type="text" class="form-control" placeholder="End-Use" v-model="form.enduse">
 									</div>
 								</div>
-								<div class="col-lg-4 col-md-4">
+								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purpose</label>
 										<input type="text" class="form-control" placeholder="Purpose" v-model="form.purpose">

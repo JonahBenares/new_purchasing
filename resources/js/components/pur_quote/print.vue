@@ -1,5 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
+	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon} from '@heroicons/vue/24/solid'
 	import axios from 'axios';
 	import {onMounted, ref} from "vue";
@@ -411,8 +412,15 @@
 								</div>
 								<div class="page-bg">
 									<div v-for="rvi in RFQVendors">
-										<div class="page" v-if="(vendor == rvi.rfq_vendor_id)">
+										<div class="bg-white !mx-auto w-[21cm] print:!w-full" v-if="(vendor == rvi.rfq_vendor_id)">
 										<div class="subpage">
+											<div class="hidden print:block">
+												<printheader ></printheader>
+												<div class="flex justify-center mt-1">
+													<span class="uppercase">Request for Quotation</span>
+												</div>
+												<hr class="print:block border-dashed mt-2">
+											</div>
 											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
 											<table class="table-bsordered w-full text-xs mb-2">
 												<tr>
@@ -450,7 +458,7 @@
 														<td class="p-1 align-top text-center">{{ item_no+1 }}</td>
 														<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 														<td class="p-1 align-top itemdesc_">{{ rd.item_description }}</td>
-														<span hidden>{{ item_no++ }}</span>
+														<span hidden>{{ item_no++ }}</span> 
 														<td class="align-top p-0" v-if="rvi.canvassed == 1">
 															<div v-for="ro in RFQOffers">
 																<div class="border-b p-1 w-full h-14 !align-top" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ ro.offer }}</div>
@@ -463,51 +471,45 @@
 														</td>
 														<td class="align-top p-0" v-if="rvi.canvassed == 1">
 															<div v-for="ro in RFQOffers">
-																<!-- <div v-if="ro.rfq_details_id == rd.rfq_details_id"> -->
-																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2) : '' }}</div>
-																	<!-- <div class="border-b p-1 w-full h-7 !align-top text-center" >{{ ro.offer_currency }}</div> -->
-																<!-- </div> -->
-															</div>
-														</td>
-														
-														<td class="align-top" v-else>
-															<div class="border-b p-1 w-full h-14 !align-top"></div>
-															<div class="border-b p-1 w-full h-14 !align-top"></div>
-															<div class=" p-1 w-full h-14 !align-top"></div>
-														</td>
-														<!-- <td class="align-top p-0" v-if="rvi.canvassed == 1">
-															<div v-for="ro in RFQOffers">
-																<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ ro.offer_currency }}</div>
+																<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2) : '' }}</div>
 															</div>
 														</td>
 														<td class="align-top" v-else>
 															<div class="border-b p-1 w-full h-14 !align-top"></div>
 															<div class="border-b p-1 w-full h-14 !align-top"></div>
 															<div class=" p-1 w-full h-14 !align-top"></div>
-														</td> -->
+														</td>
 													</tr>
 												</tbody>
-												
+<!-- 												
+												<tbody v-for="rd in RFQDetails">
+													<tr v-if="rd.rfq_vendor_id == rvi.rfq_vendor_id">
+														<td class="p-1 align-top text-center" rowspan="4">1</td>
+														<td class="p-1 align-top text-center" rowspan="8"  v-if="ro.rfq_details_id == rd.rfq_details_id && rd.rfq_details_id == ro.rfq_details_id">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
+														<td class="p-1 align-top text-left" rowspan="4">{{ rd.item_description }}</td>
+													</tr>
+													<tr v-for="ro in RFQOffers">
+														<td v-if="ro.rfq_details_id == rd.rfq_details_id && rd.rfq_details_id == ro.rfq_details_id">{{ ro.offer }}</td>
+														<td v-if="ro.rfq_details_id == rd.rfq_details_id && rd.rfq_details_id == ro.rfq_details_id">{{ ro.unit_price }}</td>
+													</tr>
+												</tbody> -->
+
 											</table>
 											<br>
-											<div class="bg-red-100 border-2 border-red-200 w-full p-2 text-red-500 my-1 mb-2 hidden"  id="duedatealert">
+											<div class="bg-red-100 border-2 border-red-200 w-full p-1  px-2 text-red-500 my-1 mb-2 hidden"  id="duedatealert">
 												<div class="flex justify-start space-x-2">
 													<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
-													<span>Due date is required!</span>
+													<span class="text-sm">Due date is required!</span>
 												</div>
 											</div>
 											<table class="table-bordesred w-full text-xs">
 												<tr>
 													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
 													<td colspan="4" v-if="(rvi.canvassed == 1)">1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
-													
 												</tr>
 												<tr>
 													<td colspan="4">2. Please Fill - Up :</td>
 												</tr>
-												<!-- <td class="p-0" colspan="2">
-													<input type="text" class="p-1 w-full bg-yellow-50" v-model="all_term_desc">
-												</td> -->
 												<tbody v-if="(rvi.canvassed==0)">
 												<tr>
 													<td width="10%"></td>
@@ -526,7 +528,7 @@
 													<td width="40%" colspan="2">
 														<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
 															<div class="flex justify-between space-x-1">
-																{{ letters[orderno-1] }}. 
+																<span class="pt-1">{{ letters[orderno-1] }}. </span>
 																<input type="text" class="p-1 w-full bg-yellow-50 rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
 																<button class="btn btn-danger p-1" @click="RemoveRFQVendorTerms(order_no,vt.id)">
 																	<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
@@ -548,7 +550,6 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												
 											</table>
 											<br>
 											<br>
