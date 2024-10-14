@@ -39,6 +39,7 @@
 	onMounted(async () => {
 		GetRFQDetails()
 		GetRFQTermsDetails()
+		GetPerVendorDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		// IncrementalLetters()
@@ -70,6 +71,21 @@
 
 		// 	rfq_order_no.value[i] = letter;
 		// }
+	}
+
+	const GetPerVendorDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		RFQHead.value=response.data.head
+		RFQVendors.value=response.data.rfq_vendor
+		RFQDetails.value=response.data.rfq_details
+		RFQOffers.value=response.data.rfq_offers
+		vendor_terms.value=response.data.vendor_terms
+		signatories.value=response.data.signatories
+		count_pritems.value=response.data.count_pritems
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
+		currency.value = response.data.currency
+		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
 	}
 
 	const GetRFQTermsDetails = async () => {
@@ -113,7 +129,7 @@
 			formVendor.append('vendor_name', vendor_name)
 			formVendor.append('vendor_identifier', identifier)
 			axios.post("/api/add_additional_vendor", formVendor).then(function () {
-				GetRFQDetails()
+				GetPerVendorDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -133,7 +149,7 @@
 			formItems.append('pr_no', RFQHead.value.pr_no)
 			formItems.append('additional_items', JSON.stringify(pritem_list.value))
 			axios.post("/api/add_additional_items", formItems).then(function () {
-				GetRFQDetails()
+				GetPerVendorDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -315,7 +331,7 @@
 		// formData.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 		axios.post(`/api/save_print_details`, formData).then(function () {
 			window.print();
-			GetRFQDetails()
+			GetPerVendorDetails()
 		});
 	}
 
