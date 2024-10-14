@@ -100,7 +100,7 @@
 	}
 
     const ViewRFQ = (id) => {
-		router.push('/pur_quote/view/'+id)
+		router.push('/pur_quote/print/'+id)
 	}
 
 </script>

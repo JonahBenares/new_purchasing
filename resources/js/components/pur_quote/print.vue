@@ -16,7 +16,7 @@
 	// let vendor_terms=ref([]);
 	let rfq_vendor_terms=ref([]);
 	let rfqvendor_terms=ref([]);
-	let due_date=ref('');
+	// let due_date=ref('');
 	let vendor_details=ref('');
 	let noted_by=ref(3);
 	let approved_by=ref(1);
@@ -514,7 +514,7 @@
 											<table class="table-bordesred w-full text-xs">
 												<tr>
 													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
-													<td colspan="4" v-if="(rvi.canvassed == 1)">1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
+													<td colspan="4" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
 													
 												</tr>
 												<tr>
