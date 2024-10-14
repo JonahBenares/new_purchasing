@@ -50,7 +50,7 @@
 		RFQVendors.value=response.data.rfq_vendor
 		RFQDetails.value=response.data.rfq_details
 		RFQOffers.value=response.data.rfq_offers
-		vendor_terms.value=response.data.vendor_terms
+		// vendor_terms.value=response.data.vendor_terms
 		signatories.value=response.data.signatories
 		count_pritems.value=response.data.count_pritems
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
@@ -83,7 +83,7 @@
 		RFQVendors.value=response.data.rfq_vendor
 		RFQDetails.value=response.data.rfq_details
 		RFQOffers.value=response.data.rfq_offers
-		vendor_terms.value=response.data.vendor_terms
+		// vendor_terms.value=response.data.vendor_terms
 		signatories.value=response.data.signatories
 		count_pritems.value=response.data.count_pritems
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
