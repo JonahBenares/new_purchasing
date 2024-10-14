@@ -693,8 +693,8 @@
 							<div class="row">
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Purchase Request</label>
-										<input type="text" class="form-control" placeholder="Purchase Request" v-model="prhead.location">
+										<label class="text-gray-500 m-0" for="">Location</label>
+										<input type="text" class="form-control" placeholder="Location" v-model="prhead.location">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
@@ -950,8 +950,8 @@
 							<div class="row">
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Purchase Request</label>
-										<input type="text" class="form-control" placeholder="Purchase Request" v-model="form.purchase_request">
+										<label class="text-gray-500 m-0" for="">Location</label>
+										<input type="text" class="form-control" placeholder="Location" v-model="form.purchase_request">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
