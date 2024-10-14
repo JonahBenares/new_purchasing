@@ -521,7 +521,10 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">Are you sure you want to cancel this {{ label }}?</h5>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this {{ label }}?<br>
+										If yes, please state your reason.
+									</h5>
 									<label v-if="label=='scope'">Cancel Reason: </label>
 									<label v-else-if="label=='item'">Cancel Reason: </label>
 									<textarea name="" id="labor_check" class="form-control !border" rows="3" v-model="cancel_labor_reason"  v-if="label=='scope'"></textarea>
