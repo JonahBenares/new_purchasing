@@ -25,7 +25,7 @@ class RFQController extends Controller
         $x=0;
         $rfqarray=array();
         foreach($all_rfq AS $ar){
-            $all_vendors = RFQVendor::where('rfq_head_id',$ar->id)->orderby('vendor_name', 'ASC')->get();
+            $all_vendors = RFQVendor::with('vendor_details')->where('rfq_head_id',$ar->id)->orderby('vendor_name', 'ASC')->get();
             // $vendor_name=[];
             // foreach($all_vendors as $av){
             //    $vendor_name[]=$av->vendor_name;
