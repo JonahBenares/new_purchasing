@@ -490,8 +490,8 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<!-- <a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save and Proceed</a> -->
-									<button type="submit" id="SaveandProceedBtn" @click="SaveandProceedBtn()" class="btn btn-primary mr-2 w-44" disabled>Save and Proceed</button>
 									<button type="submit" @click="closeModal()" class="btn btn-danger mr-2 w-44">Close</button>
+									<button type="submit" id="SaveandProceedBtn" @click="SaveandProceedBtn()" class="btn btn-primary mr-2 w-44" disabled>Save and Proceed</button>
 								</div>
 							</div>
 						</div>
