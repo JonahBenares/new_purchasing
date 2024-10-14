@@ -40,6 +40,7 @@
 	let processing_code=ref([]);
 	let petty_cash=ref([]);
 	let pr_series=ref('0');
+	const loading = ref(false)
 	const props = defineProps({
 		id:{
 			type:String,
@@ -314,30 +315,47 @@
 	const importSave = () => {
 		const formData= new FormData()
 		formData.append('upload_pr',prFile.value)
-		axios.post("/api/import_pr",formData).then(function (response) {
-			pr_head_id.value=response.data.pr_head_id
-			getImportdata(pr_head_id.value)
-			// prhead.value=response.data.prhead
-			// prdetails.value=response.data.prdetails
-			// success.value='You have successfully imported new pr.'
-			// successAlert.value=!successAlert.value
-			prFile.value=''
-			const btn_pr = document.getElementById("btn_pr");
-			btn_pr.disabled = true;
-		}, function (err) {
-			var substring="1048 Column 'department_id'"
-			if(err.response.data.message.includes(substring)==true){
-				error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
-				document.getElementById('upload_pr').value=''
+		loading.value=true;
+		pr_options.value='';
+		try {
+			axios.post("/api/import_pr",formData).then(function (response) {
+				pr_head_id.value=response.data.pr_head_id
+				getImportdata(pr_head_id.value)
+				// prhead.value=response.data.prhead
+				// prdetails.value=response.data.prdetails
+				// success.value='You have successfully imported new pr.'
+				// successAlert.value=!successAlert.value
+				pr_options.value='pr_upload';
+				loading.value=false;
 				prFile.value=''
-				pr_options.value='';
 				const btn_pr = document.getElementById("btn_pr");
 				btn_pr.disabled = true;
-			}else{
-				error.value = err.response.data.message;
-			}
-			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
+			}, function (err) {
+				loading.value=false;
+				var substring="1048 Column 'department_id'"
+				var substring1="floor(): Argument #1"
+				if(err.response.data.message.includes(substring)==true){
+					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+					document.getElementById('upload_pr').value=''
+					prFile.value=''
+					pr_options.value='';
+					const btn_pr = document.getElementById("btn_pr");
+					btn_pr.disabled = true;
+				}else if(err.response.data.message.includes(substring1)==true){
+					error.value = 'Invalid file format. Please upload another file with correct format.';
+					document.getElementById('upload_pr').value=''
+					prFile.value=''
+					pr_options.value='';
+					const btn_pr = document.getElementById("btn_pr");
+					btn_pr.disabled = true;
+				}else{
+					error.value = err.response.data.message;
+				}
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		} catch (error) {
+
+		} 
     }
 	
 	const updateRecomdate = (id) => {
@@ -649,7 +667,7 @@
 								<div class="input-group col-xs-12">
 									<input type="file" class="form-control file-upload-info" id="upload_pr" name="upload_pr" @change="upload_pr" placeholder="Upload Image">
 									<span class="input-group-append">
-										<button class="btn btn-primary" :disabled="check_pr" id="btn_pr" @click="importSave()" v-on:click="pr_options = 'pr_upload'">Upload</button>
+										<button class="btn btn-primary" :disabled="check_pr" id="btn_pr" @click="importSave()" v-on:click="pr_options = ''">Upload</button>
 										<!-- <button class="btn btn-primary" type="button" :disabled="check_pr" id="btn_pr" v-on:click="pr_options = 'pr_upload'">Upload</button> -->
 									</span>
 								</div>
@@ -666,6 +684,7 @@
 								<button class="btn btn-primary btn-block" type="button" v-on:click="pr_options = 'pr_manual'" v-else>Manual PR</button>
 							</div>
 						</div>
+						<div class="mt-[300px] font-bold text-base" v-if="loading"><center>Loading data, please wait...</center></div>
 						<div class="" id="upload" v-if="pr_options === 'pr_upload'  || props.id!=0">
 							<hr class="border-dashed">
 							<!-- <div v-for="head in prhead"> -->
