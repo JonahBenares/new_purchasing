@@ -798,8 +798,8 @@
 							<div class="row">
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Job Order Request</label>
-										<input type="text" class="form-control" placeholder="Job Order Request" v-model="jorhead.location">
+										<label class="text-gray-500 m-0" for="">Location</label>
+										<input type="text" class="form-control" placeholder="Location" v-model="jorhead.location">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
@@ -1094,8 +1094,8 @@
 							<div class="row">
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Job Order Request</label>
-										<input type="text" class="form-control" placeholder="Job Order Request" v-model="form.jo_request">
+										<label class="text-gray-500 m-0" for="">Location</label>
+										<input type="text" class="form-control" placeholder="Location" v-model="form.jo_request">
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
@@ -1213,7 +1213,7 @@
 											<td class="p-0 align-top"><textarea class="w-full p-1 resize" v-model="scope_work" id="scope_check"></textarea></td>
 											<td class="p-0 align-top"><input type="text" class="w-full p-1 text-center" id="scope_qty_check" placeholder="00" v-model="scope_qty" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"></td>
 											<td class="p-0 align-top"><input type="text" id="scope_uom_check" class="w-full p-1 text-center" placeholder="lot" v-model="scope_uom"></td>
-											<td class="p-0 align-top"><input type="text" id="scope_unit_cost_check" class="w-full p-1 text-center" placeholder="00" v-model="scope_unit_cost"></td>
+											<td class="p-0 align-top"><input type="number" min="0" id="scope_unit_cost_check" class="w-full p-1 text-center" placeholder="00" v-model="scope_unit_cost"></td>
 											<td class="p-0 align-top"><input type="text" class="w-full p-1 text-center" placeholder="00" :value="scope_qty * scope_unit_cost" readonly disabled></td>
 											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="scope_recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="text-center">

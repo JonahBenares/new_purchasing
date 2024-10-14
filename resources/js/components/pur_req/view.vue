@@ -195,7 +195,7 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-sm-6 col-md-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
+								<span class="text-sm text-gray-700 font-bold pr-1">Location: </span>
 								<span class="text-sm text-gray-700">{{get_prhead.location}}</span>
 							</div>
 							<div class="col-lg-6 col-sm-6 col-md-6">
