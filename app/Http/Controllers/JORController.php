@@ -15,6 +15,7 @@ use App\Models\JORMaterialDetails;
 use App\Models\JORSeries;
 use App\Models\JORNotes;
 use App\Models\Departments;
+use Config;
 class JORController extends Controller
 {
     public function import_jor(Request $request){
@@ -54,6 +55,7 @@ class JORController extends Controller
         $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         $department_code=Departments::where('id',$request->department)->value('department_code');
         $series_rows = JORSeries::where('year',$year)->count();
+        $company=Config::get('constants.company');
         if($series_rows==0){
             $max_series='1';
             $jor_series='0001';
@@ -61,9 +63,9 @@ class JORController extends Controller
         } else {
             $max_series=JORSeries::where('year',$year)->max('series');
             $jor_series=$max_series+1;
+            $exp=explode('-',$request->jor_no);
             if($request->props_id==0){
                 if($request->jor_no!='' && $request->jor_no!='undefined'){
-                    $exp=explode('-',$request->jor_no);
                     $jor_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
                 }else{
                     $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000');
@@ -72,7 +74,7 @@ class JORController extends Controller
                 $jor_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
             }
         }
-        return $jor_no;
+        return $jor_no."-".$company;
     }
 
     public function delete_jor_item($id){
