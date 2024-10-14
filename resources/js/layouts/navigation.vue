@@ -503,7 +503,7 @@
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
                                         <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li>
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li> -->
                                         <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
                                     </ul>
@@ -670,7 +670,7 @@
                                 <div class="!hidden"  :class="{ show:jobDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_req/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_req/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_req">Show List</a></li>
                                     </ul>
                                 </div>
@@ -695,7 +695,7 @@
                                 <div class="!hidden"  :class="{ show:jobRfqDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_quote/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_quote/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_quote">Show List</a></li>
                                     </ul>
                                 </div>

@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Config;
 class JORImport implements WithMappedCells, ToModel, WithHeadingRow
 {
     public $data;
@@ -35,15 +36,16 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
     {
         return [
             'jo_request'  => 'C7',
-            'department' => 'I7',
-            'department_code' => 'I8',
             'date_prepared' => 'C8',
-            'date_issued' => 'C9',
-            'site_pr' => 'C10',
-            'requestor' => 'I9',
-            'urgency' => 'I10',
-            'purpose' => 'C11',
-            'enduse' => 'C12',
+            'department' => 'C9',
+            'jo_no' => 'C10',
+            'requestor' => 'C11',
+            'purpose' => 'C12',
+            'duration' => 'I7',
+            'completion_date' => 'I8',
+            'delivery_date' => 'I9',
+            'urgency_no' => 'I10',
+            'general_description' => 'B13',
         ];
     }
 
@@ -55,45 +57,46 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
     public function model(array $row)
     {
         if(count($row)!=0){
+            $company=Config::get('constants.company');
             $department_id=Departments::where('department_name',$row['department'])->value('id');
             $department_code=Departments::where('department_name',$row['department'])->value('department_code');
-            if($row['purchase_request']!=''){
+            if($row['jo_request']!=''){
                 $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                 $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
-                $series_rows = PRSeries::where('year',$year)->count();
+                $series_rows = JORSeries::where('year',$year)->count();
                 if($series_rows==0){
-                    $pr_series='0001';
-                    $pr_no = $department_code.$year_short."-".$pr_series;
+                    $jor_series='0001';
+                    $jor_no = $department_code.$year_short."-".$jor_series."-".$company;
                 } else {
-                    $max_series=PRSeries::where('year',$year)->max('series');
-                    $pr_series=$max_series+1;
-                    $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+                    $max_series=JORSeries::where('year',$year)->max('series');
+                    $jor_series=$max_series+1;
+                    $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000')."-".$company;
                 }
                 $series['year']=$year;
-                $series['series']=$pr_series;
-                $pr_series=PRSeries::create($series);
-                if($pr_series){
-                    $prhead['location']=$row['purchase_request'];
-                    $prhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
-                    $prhead['date_issued']=date('Y-m-d',strtotime($this->transformDate($row['date_issued'])));
-                    $prhead['pr_no']=$pr_no;
-                    $prhead['location']=$row['purchase_request'];
-                    $prhead['site_pr']=$row['site_pr'];
-                    $prhead['department_id']=$department_id;
-                    $prhead['department_name']=$row['department'];
-                    $prhead['dept_code']=$department_code;
-                    $prhead['requestor']=$row['requestor'];
-                    $prhead['urgency']=$row['urgency'];
-                    $prhead['purpose']=$row['purpose'];
-                    $prhead['enduse']=$row['enduse'];
-                    $prhead['petty_cash']=0;
-                    $prhead['process_code']='';
-                    $prhead['user_id']= $this->user_id;
-                    $prhead['method']='Upload';
-                    $prhead['status']='Draft';
-                    $pr_head_id=PRHead::create($prhead);
-                    $this->data = $prhead;
-                    $this->id = $pr_head_id->id;
+                $series['series']=$jor_series;
+                $jor_series_insert=JORSeries::create($series);
+                if($jor_series_insert){
+                    $jorhead['general_description']=$row['general_description'];
+                    $jorhead['location']=$row['jo_request'];
+                    $jorhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
+                    $jorhead['duration']=$row['duration'];
+                    $jorhead['completion_date']=date('Y-m-d',strtotime($this->transformDate($row['completion_date'])));
+                    $jorhead['delivery_date']=date('Y-m-d',strtotime($this->transformDate($row['delivery_date'])));
+                    $jorhead['jor_no']=$jor_no;
+                    $jorhead['site_jor']=$row['jo_no'];
+                    $jorhead['department_id']=$department_id;
+                    $jorhead['department_name']=$row['department'];
+                    $jorhead['dept_code']=$department_code;
+                    $jorhead['requestor']=$row['requestor'];
+                    $jorhead['urgency']=$row['urgency_no'];
+                    $jorhead['purpose']=$row['purpose'];
+                    $jorhead['process_code']='';
+                    $jorhead['user_id']= $this->user_id;
+                    $jorhead['method']='Upload';
+                    $jorhead['status']='Draft';
+                    $jor_head_id=JORHead::create($jorhead);
+                    $this->data = $jorhead;
+                    $this->id = $jor_head_id->id;
                 }
             }
         }

@@ -114,6 +114,7 @@
 		axios.post("/api/add_department",formData).then(function () {
 			success.value='You have successfully added new department!'
 			form.value.department_name=''
+			form.value.department_code=''
 			successAlert.value = !successAlert.value
 			getDepartment()
 			// setTimeout(() => {
@@ -134,6 +135,7 @@
 		axios.post(`/api/update_department/${id}`,formData).then(function () {
 			success.value='You have successfully updated department!'
 			form.value.department_name=''
+			form.value.department_code=''
 			successAlert.value = !successAlert.value
 			getDepartment()
 			// setTimeout(() => {
@@ -326,8 +328,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">{{button}}</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeModal()">Close</button>
+									<button class="btn  btn-sm !rounded-full w-full"  @click="closeModal()">Close</button>
+									<button class="btn !bg-gray-100 !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="closeAlert()">{{button}}</button>
 								</div>
 							</div>
 						</div>

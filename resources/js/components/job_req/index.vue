@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon, MagnifyingGlassIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -17,19 +17,14 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
-    const data = [
-        ['EIC24-1005-CNPR', '<div class="text-center">2024-01-01</div>', '<div class="text-center">2024-01-10</div>', 'Electrical/EIC', '<div class="text-center">1</div>', 'Rey D. Argawanon', '<div class="flex justify-center"><span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">Pending</span></div>' , ''],
-        ['FLM24-2019-CNPR', '<div class="text-center">2024-02-03</div>', '<div class="text-center">2024-02-20</div>', 'Fuel and Lube Management', '<div class="text-center">1</div>', 'Fleur de Liz Ambong / Rey D. Argawanon', '<div class="flex justify-center"><span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">Pending</span></div>' , ''],
-        ['HAS24-2034-CNPR', '<div class="text-center">2024-03-04</div>', '<div class="text-center">2024-03-15</div>', 'Safety', '<div class="text-center">1</div>', 'Joselito Panes/Ricky Madeja', '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-        ['Admin24-2033-CNPR', '<div class="text-center">2024-05-03</div>', '<div class="text-center">2024-05-23</div>', 'Admin', '<div class="text-center">1</div>', 'Iris J. Sixto', '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-        ['SPE/Operation24-2032-CNPR', '<div class="text-center">2024-06-03</div>', '<div class="text-center">2024-07-03</div>', 'Admin', '<div class="text-center">1</div>', 'Iris J. Sixto', '<div class="flex justify-center"><span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1">Draft</span></div>' , ''],
-        ['MAI22-2256-CNPR', '<div class="text-center">2024-07-05</div>', '<div class="text-center">2024-08-11</div>', 'Maintenance', '<div class="text-center">1</div>', 'Ruel B. Beato', '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-        ['ITB22-2102-CNPR', '<div class="text-center">2024-08-06</div>', '<div class="text-center">2024-09-12</div>', 'IT Department - BCD', '<div class="text-center">1</div>', 'Jason Flor', '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-        ['FLM22-2043-CNPR', '<div class="text-center">2024-09-07</div>', '<div class="text-center">2024-10-13</div>', 'Fuel and Lube Management', '<div class="text-center">1</div>', 'Fleur de Liz Ambong / Rey D. Argawanon','<div class="flex justify-center"><span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1">Draft</span></div>' , ''],
-        ['LAB22-2797-CNPR', '<div class="text-center">2024-10-08</div>', '<div class="text-center">2024-11-15</div>', 'Laboratory and Chemical', '<div class="text-center">1</div>', 'Beverly Ampog', '<div class="flex justify-center"><span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1">Draft</span></div>' , ''],
-        ['MAI22-2257-CNPR', '<div class="text-center">2024-11-09</div>', '<div class="text-center">2024-12-16</div>', 'Maintenance', '<div class="text-center">1</div>', 'Godfrey S. E. Samano', '<div class="flex justify-center"><span class="badge bg-red-500 text-white !rounded-xl px-2 p-1">Cancelled</span></div>' , ''],
-        ['HRB22-2067-CNPR', '<div class="text-center">2024-12-10</div>', '<div class="text-center">2024-12-29</div>', 'HR', '<div class="text-center">1</div>', 'Joemar De Los Santos', '<div class="flex justify-center"><span class="badge bg-red-500 text-white !rounded-xl px-2 p-1">Cancelled</span></div>' , ''],
-    ];
+    let get_alljor=ref([]);
+    onMounted(async () => {
+		getallJOR()
+	})
+	const getallJOR = async () => {
+		let response = await axios.get("/api/get_alljor");
+		get_alljor.value = response.data.jorall;
+	}
 
     const options = {
 		// dom: 'Bftip',
@@ -128,7 +123,7 @@
                             </a>
                         </div>
                         <div class="pt-3">
-                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !text-sm !border nowrap">
+                            <DataTable :data="get_alljor" :options="options" class="display table table-bordered table-hover !text-sm !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> JO No</th>
@@ -145,8 +140,19 @@
                                         </th>
                                     </tr>
                                 </thead>
+                                <template #column-6="props">
+                                    <div class="flex justify-center">
+                                        <span class="badge bg-green-500 text-white !rounded-xl px-2 p-1" v-if="props.rowData.status=='Saved'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Draft'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-red-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Cancelled'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Closed'">{{props.rowData.status}}</span>
+                                    </div>
+                                </template>
                                 <template #column-7="props">
-                                    <a href="/job_req/view" class="btn btn-xs btn-warning text-white text-white p-1">
+                                    <a :href="'/job_req/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="props.rowData.status!='Draft'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/job_req/new/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else>
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>

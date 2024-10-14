@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Config;
 class PRImport implements WithMappedCells, ToModel, WithHeadingRow
 {
     public $data;
@@ -60,13 +61,14 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                 $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                 $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
                 $series_rows = PRSeries::where('year',$year)->count();
+                $company=Config::get('constants.company');
                 if($series_rows==0){
                     $pr_series='0001';
-                    $pr_no = $department_code.$year_short."-".$pr_series;
+                    $pr_no = $department_code.$year_short."-".$pr_series."-".$company;
                 } else {
                     $max_series=PRSeries::where('year',$year)->max('series');
                     $pr_series=$max_series+1;
-                    $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000');
+                    $pr_no = $department_code.$year_short."-".Str::padLeft($pr_series, 4,'000')."-".$company;
                 }
                 $series['year']=$year;
                 $series['series']=$pr_series;
@@ -76,7 +78,6 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                     $prhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
                     $prhead['date_issued']=date('Y-m-d',strtotime($this->transformDate($row['date_issued'])));
                     $prhead['pr_no']=$pr_no;
-                    $prhead['location']=$row['purchase_request'];
                     $prhead['site_pr']=$row['site_pr'];
                     $prhead['department_id']=$department_id;
                     $prhead['department_name']=$row['department'];

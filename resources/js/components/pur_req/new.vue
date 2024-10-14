@@ -40,6 +40,7 @@
 	let processing_code=ref([]);
 	let petty_cash=ref([]);
 	let pr_series=ref('0');
+	const loading = ref(false)
 	const props = defineProps({
 		id:{
 			type:String,
@@ -88,13 +89,14 @@
 		signatories.value = response.data.employees;
 	}
 
-	const add = (arr, name) => {
-		const { length } = arr;
-		const id = length + 1;
-		const found = arr.some(el => el.uom === name);
-		if (!found) arr.push({ id, uom: name });
-		return arr;
-	}
+	// const add = (arr, name) => {
+	// 	const { length } = arr;
+	// 	const id = length + 1;
+	// 	const found = arr.some(el => el.quantity === name);
+	// 	if (!found) arr.push({ id, quantity: name });
+	// 	return arr;
+	// }
+
 	const addItem= () => {
 		if(qty.value == ''){
 			// alert("Quantity must not be empty!")
@@ -127,7 +129,7 @@
 			}
 			// console.log(item_list.value);
 			// item_list.value.push(items)
-			if(item_list.value.length==0){
+			if(item_list.value.length==0 && prdetails.value.length==0){
 				item_list.value.push(items)
 			}else{
 				const ObjqtyToFind = items.qty;
@@ -137,11 +139,25 @@
 				const Objwh_stocksToFind = items.wh_stocks;
 				const Objdate_neededToFind = items.date_needed;
 				const Objrecom_dateToFind = items.recom_date;
-				if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind) || !item_list.value.find((o) => o.date_needed === Objdate_neededToFind) || !item_list.value.find((o) => o.recom_date === Objrecom_dateToFind)) {  
-					item_list.value.push(items);
+				if(prdetails.value.length==0){
+					if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind)) {  
+						item_list.value.push(items);
+					}else{
+						error.value="Duplicate entry! This item already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
 				}else{
-					error.value="Duplicate entry! This item already exists.";
-					dangerAlerterrors.value=!dangerAlerterrors.value
+					for(var x=0; x<prdetails.value.length; x++){
+						if((prdetails.value[x].quantity == items.qty && prdetails.value[x].uom == items.uom && prdetails.value[x].pn_no == items.pn_no &&  prdetails.value[x].item_description == items.item_desc && prdetails.value[x].wh_stocks == items.wh_stocks) || (item_list.value.find((o) => o.qty === ObjqtyToFind) && item_list.value.find((o) => o.uom === ObjuomToFind) && item_list.value.find((o) => o.pn_no === Objpn_noToFind) && item_list.value.find((o) => o.item_desc === Objitem_descToFind) && item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind))){
+							var checker = true; 
+						}
+					}
+					if (checker==undefined) {  
+						item_list.value.push(items);
+					}else{
+						error.value="Duplicate entry! This item already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
 				}
 			}
 			qty.value='';
@@ -299,30 +315,47 @@
 	const importSave = () => {
 		const formData= new FormData()
 		formData.append('upload_pr',prFile.value)
-		axios.post("/api/import_pr",formData).then(function (response) {
-			pr_head_id.value=response.data.pr_head_id
-			getImportdata(pr_head_id.value)
-			// prhead.value=response.data.prhead
-			// prdetails.value=response.data.prdetails
-			// success.value='You have successfully imported new pr.'
-			// successAlert.value=!successAlert.value
-			prFile.value=''
-			const btn_pr = document.getElementById("btn_pr");
-			btn_pr.disabled = true;
-		}, function (err) {
-			var substring="1048 Column 'department_id'"
-			if(err.response.data.message.includes(substring)==true){
-				error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
-				document.getElementById('upload_pr').value=''
+		loading.value=true;
+		pr_options.value='';
+		try {
+			axios.post("/api/import_pr",formData).then(function (response) {
+				pr_head_id.value=response.data.pr_head_id
+				getImportdata(pr_head_id.value)
+				// prhead.value=response.data.prhead
+				// prdetails.value=response.data.prdetails
+				// success.value='You have successfully imported new pr.'
+				// successAlert.value=!successAlert.value
+				pr_options.value='pr_upload';
+				loading.value=false;
 				prFile.value=''
-				pr_options.value='';
 				const btn_pr = document.getElementById("btn_pr");
 				btn_pr.disabled = true;
-			}else{
-				error.value = err.response.data.message;
-			}
-			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
+			}, function (err) {
+				loading.value=false;
+				var substring="1048 Column 'department_id'"
+				var substring1="floor(): Argument #1"
+				if(err.response.data.message.includes(substring)==true){
+					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+					document.getElementById('upload_pr').value=''
+					prFile.value=''
+					pr_options.value='';
+					const btn_pr = document.getElementById("btn_pr");
+					btn_pr.disabled = true;
+				}else if(err.response.data.message.includes(substring1)==true){
+					error.value = 'Invalid file format. Please upload another file with correct format.';
+					document.getElementById('upload_pr').value=''
+					prFile.value=''
+					pr_options.value='';
+					const btn_pr = document.getElementById("btn_pr");
+					btn_pr.disabled = true;
+				}else{
+					error.value = err.response.data.message;
+				}
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		} catch (error) {
+
+		} 
     }
 	
 	const updateRecomdate = (id) => {
@@ -335,6 +368,8 @@
 			var api='update_recomdate/'+id;
 		}
 		axios.post('/api/'+api,formData).then(function () {
+			recom_date_update.value=[]
+			getImportdata(pr_head_id.value)
 		}, function (err) {
 			error.value = err.response.data.message;
 		});
@@ -382,6 +417,8 @@
 					successAlert.value=!successAlert.value
 					router.push('/pur_req/view/'+prhead.value.id)
 				}
+				item_list.value=[]
+				getImportdata(pr_head_id.value)
 			}, function (err) {
 				error.value = err.response.data.message;
 				dangerAlerterrors.value=!dangerAlerterrors.value
@@ -432,11 +469,13 @@
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
 			success.value='You have successfully draft new pr.'
 			warningAlert.value=!warningAlert.value
+			item_list.value=[]
+			getImportdata(pr_head_id.value)
+			
 			// setTimeout(() => {
 			// 	closeAlert()
 			// }, 2000);
 		}, function (err) {
-			console.log(err.response.data.message)
 			error.value = err.response.data.message;
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}); 
@@ -519,8 +558,8 @@
 		formData.append('item_list', JSON.stringify(item_list.value))
 		if(item_list.value.length!=0){
 			axios.post(`/api/save_manual`,formData).then(function (response) {
-				success.value='You have successfully saved new pr.'
-				successAlert.value=!successAlert.value
+				// success.value='You have successfully saved new pr.'
+				// successAlert.value=!successAlert.value
 				prheadid.value=response.data;
 				if(form.value.petty_cash==0){
 					success.value='You have successfully saved new pr.'
@@ -539,6 +578,21 @@
 				}
 				if (err.response.data.errors.department_id) {
 					error_pr.value.push(err.response.data.errors.department_id[0])
+				}
+				if (err.response.data.errors.location) {
+					error_pr.value.push(err.response.data.errors.location[0])
+				}
+				if (err.response.data.errors.date_prepared) {
+					error_pr.value.push(err.response.data.errors.date_prepared[0])
+				}
+				if (err.response.data.errors.requestor) {
+					error_pr.value.push(err.response.data.errors.requestor[0])
+				}
+				if (err.response.data.errors.enduse) {
+					error_pr.value.push(err.response.data.errors.enduse[0])
+				}
+				if (err.response.data.errors.purpose) {
+					error_pr.value.push(err.response.data.errors.purpose[0])
 				}
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
@@ -628,7 +682,7 @@
 								<div class="input-group col-xs-12">
 									<input type="file" class="form-control file-upload-info" id="upload_pr" name="upload_pr" @change="upload_pr" placeholder="Upload Image">
 									<span class="input-group-append">
-										<button class="btn btn-primary" :disabled="check_pr" id="btn_pr" @click="importSave()" v-on:click="pr_options = 'pr_upload'">Upload</button>
+										<button class="btn btn-primary" :disabled="check_pr" id="btn_pr" @click="importSave()" v-on:click="pr_options = ''">Upload</button>
 										<!-- <button class="btn btn-primary" type="button" :disabled="check_pr" id="btn_pr" v-on:click="pr_options = 'pr_upload'">Upload</button> -->
 									</span>
 								</div>
@@ -645,6 +699,7 @@
 								<button class="btn btn-primary btn-block" type="button" v-on:click="pr_options = 'pr_manual'" v-else>Manual PR</button>
 							</div>
 						</div>
+						<div class="mt-[300px] font-bold text-base" v-if="loading"><center>Loading data, please wait...</center></div>
 						<div class="" id="upload" v-if="pr_options === 'pr_upload'  || props.id!=0">
 							<hr class="border-dashed">
 							<!-- <div v-for="head in prhead"> -->
@@ -653,8 +708,8 @@
 							<div class="row">
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Purchase Request</label>
-										<input type="text" class="form-control" placeholder="Purchase Request" v-model="prhead.location">
+										<label class="text-gray-500 m-0" for="">Location</label>
+										<input type="text" class="form-control" placeholder="Location" v-model="prhead.location">
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4">
@@ -773,7 +828,10 @@
 											<td class="p-1">{{details.wh_stocks}}</td>
 											<td class="p-1">{{details.date_needed}}</td>
 											<td class="p-1">
-												<input placeholder="Recom Date" type="text" v-model="recom_date_update[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-if="props.id==0">
+												<input placeholder="Recom Date" type="text" v-model="recom_date_update[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-if="props.id==0 && (details.recom_date==null || details.recom_date=='')">
+
+												<input @change="updateRecomdate(details.id)" placeholder="Recom Date" type="text" v-model="details.recom_date" class="w-full p-1" onfocus="(this.type='date')" v-else-if="props.id==0 && (details.recom_date!=null || details.recom_date!='')" readonly>
+
 												<input placeholder="Recom Date" type="text" v-model="details.recom_date" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-else>
 											</td>
 											<td class="text-center">
@@ -909,8 +967,8 @@
 							<div class="row">
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Purchase Request</label>
-										<input type="text" class="form-control" placeholder="Purchase Request" v-model="form.purchase_request">
+										<label class="text-gray-500 m-0" for="">Location</label>
+										<input type="text" class="form-control" placeholder="Location" v-model="form.purchase_request">
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4">
@@ -1163,7 +1221,8 @@
 								<div class="flex justify-center space-x-2">
 
 									<a href="/pur_req/new/0" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
-									<a :href="'/pur_quote/new/'+pr_head_id" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
+									<a :href="'/pur_quote/new/'+pr_head_id" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" v-if="prheadid==0">Proceed</a>
+									<a :href="'/pur_quote/new/'+prheadid" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" v-else>Proceed</a>
 								</div>
 							</div>
 						</div>

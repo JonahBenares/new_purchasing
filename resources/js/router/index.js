@@ -501,15 +501,17 @@ const routes = [
         }
     },
     {
-        path:'/job_req/new',
+        path:'/job_req/new/:id',
         component: job_reqNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/job_req/view',
+        path:'/job_req/view/:id',
         component: job_reqView,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -523,8 +525,9 @@ const routes = [
         }
     },
     {
-        path:'/job_quote/new',
+        path:'/job_quote/new/:id',
         component: job_quoteNew,
+        props:true,
         meta:{
             requiresAuth:true
         }

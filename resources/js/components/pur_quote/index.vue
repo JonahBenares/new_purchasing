@@ -100,7 +100,7 @@
 	}
 
     const ViewRFQ = (id) => {
-		router.push('/pur_quote/view/'+id)
+		router.push('/pur_quote/print/'+id)
 	}
 
 </script>
@@ -150,13 +150,13 @@
                                 <template #column-4="props">
                                     <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc">
                                         <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
-                                            <span class="text-white">{{ ven.vendor_name }}</span>
+                                            <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li>
                                         <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
-                                            <span class="text-white">{{ ven.vendor_name }}</span>
+                                            <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li>
                                         <li class="px-1" v-if="ven.canvassed == 0 && ven.status == null">
-                                            {{ ven.vendor_name }}
+                                            {{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})
                                         </li>
                                     </ul>
                                 </template>

@@ -17,7 +17,7 @@
 	// let vendor_terms=ref([]);
 	let rfq_vendor_terms=ref([]);
 	let rfqvendor_terms=ref([]);
-	let due_date=ref('');
+	// let due_date=ref('');
 	let vendor_details=ref('');
 	let noted_by=ref(3);
 	let approved_by=ref(1);
@@ -40,6 +40,7 @@
 	onMounted(async () => {
 		GetRFQDetails()
 		GetRFQTermsDetails()
+		GetPerVendorDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		// IncrementalLetters()
@@ -71,6 +72,20 @@
 
 		// 	rfq_order_no.value[i] = letter;
 		// }
+	}
+
+	const GetPerVendorDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		RFQHead.value=response.data.head
+		RFQVendors.value=response.data.rfq_vendor
+		RFQDetails.value=response.data.rfq_details
+		RFQOffers.value=response.data.rfq_offers
+		// vendor_terms.value=response.data.vendor_terms
+		signatories.value=response.data.signatories
+		count_pritems.value=response.data.count_pritems
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
+		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
 	}
 
 	const GetRFQTermsDetails = async () => {
@@ -114,7 +129,7 @@
 			formVendor.append('vendor_name', vendor_name)
 			formVendor.append('vendor_identifier', identifier)
 			axios.post("/api/add_additional_vendor", formVendor).then(function () {
-				GetRFQDetails()
+				GetPerVendorDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -134,7 +149,7 @@
 			formItems.append('pr_no', RFQHead.value.pr_no)
 			formItems.append('additional_items', JSON.stringify(pritem_list.value))
 			axios.post("/api/add_additional_items", formItems).then(function () {
-				GetRFQDetails()
+				GetPerVendorDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -316,7 +331,7 @@
 		// formData.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 		axios.post(`/api/save_print_details`, formData).then(function () {
 			window.print();
-			GetRFQDetails()
+			GetPerVendorDetails()
 		});
 	}
 
@@ -505,7 +520,7 @@
 											<table class="table-bordesred w-full text-xs">
 												<tr>
 													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
-													<td colspan="4" v-if="(rvi.canvassed == 1)">1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
+													<td colspan="4" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
 												</tr>
 												<tr>
 													<td colspan="4">2. Please Fill - Up :</td>
@@ -542,8 +557,8 @@
 													<td width="10%"></td>
 												</tr>
 												</tbody>
-												<tbody v-else>
-													<tr v-for="(vt, index) in rfq_vendor_terms">
+												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
+													<tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>

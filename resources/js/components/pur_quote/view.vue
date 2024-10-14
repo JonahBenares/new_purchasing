@@ -28,6 +28,7 @@
 	let letters=ref([]);
 	let count_ccr=ref(0);
 	let rfqvendorid=ref('');
+	let due_date=ref('');
 
 	const props = defineProps({
         id:{
@@ -39,6 +40,7 @@
 	onMounted(async () => {
 		GetRFQDetails()
 		GetRFQTermsDetails()
+		GetDraftCanvassDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 	})
@@ -49,7 +51,7 @@
 		RFQVendors.value=response.data.rfq_vendor
 		RFQDetails.value=response.data.rfq_details
 		RFQOffers.value=response.data.rfq_offers
-		vendor_terms.value=response.data.vendor_terms
+		// vendor_terms.value=response.data.vendor_terms
 		signatories.value=response.data.signatories
 		count_pritems.value=response.data.count_pritems
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
@@ -76,6 +78,21 @@
 		rfq_vendor_terms.value=response.data.rfq_vendor_terms
 	}
 
+	const GetDraftCanvassDetails = async () => {
+		let response = await axios.get(`/api/get_rfq_data/${props.id}`)
+		RFQHead.value=response.data.head
+		RFQVendors.value=response.data.rfq_vendor
+		RFQDetails.value=response.data.rfq_details
+		RFQOffers.value=response.data.rfq_offers
+		// vendor_terms.value=response.data.vendor_terms
+		signatories.value=response.data.signatories
+		count_pritems.value=response.data.count_pritems
+		rfq_vendor_terms.value=response.data.rfq_vendor_terms
+		currency.value = response.data.currency
+		letters.value=response.data.letters
+		count_ccr.value=response.data.count_ccr
+	}
+
 	const vendor =  ref(rfqvendorid);
 	const showModal = ref(false)
 	const addItems = ref(false)
@@ -98,7 +115,7 @@
 	}
 
 	const closeModal = () => {
-		GetRFQDetails()
+		GetDraftCanvassDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		showModal.value = !hideModal.value
@@ -131,12 +148,17 @@
 	}
 
 	const AdditionalVendorBtn= () => {
-		if(vendor_details.value == ''){
+		if(due_date.value == ''){
+			document.getElementById('duedate_').placeholder="Please fill in Due date."
+			document.getElementById('duedate_').style.backgroundColor = '#FAA0A0';
+		}else if(vendor_details.value == ''){
 			document.getElementById("vendor_alert").style.display="block"
+			document.getElementById('duedate_').style.backgroundColor = '';
 			// document.getElementById('vendor_alert').style.backgroundColor = '#FAA0A0';
 		}else{
 			AdditionalVendorAlert.value = !AdditionalVendorAlert.value
 			document.getElementById("vendor_alert").style.display="none"
+			document.getElementById('duedate_').style.backgroundColor = '';
 			// document.getElementById('vendor_alert').style.backgroundColor = '';
 		}
 	}
@@ -152,11 +174,12 @@
 
 			formVendor.append('rfq_head_id', props.id)
 			formVendor.append('pr_no', RFQHead.value.pr_no)
+			formVendor.append('due_date', due_date.value)
 			formVendor.append('vendor_details_id', vendor_details_id)
 			formVendor.append('vendor_name', vendor_name)
 			formVendor.append('vendor_identifier', identifier)
 			axios.post("/api/add_additional_vendor", formVendor).then(function () {
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -208,7 +231,7 @@
 			formItems.append('pr_no', RFQHead.value.pr_no)
 			formItems.append('additional_items', JSON.stringify(pritem_list.value))
 			axios.post("/api/add_additional_items", formItems).then(function () {
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
@@ -279,13 +302,30 @@
 	// }
 
 	const RemoveRFQVendorTerms = (order_no, terms_id) => {
-		if(terms_id != 0 || terms_id != 'undefined'){
+		// if(terms_id != 0 || terms_id != 'undefined'){
 			axios.get(`/api/remove_terms/${terms_id}`).then(function () {
 				rfq_vendor_terms.value.splice(order_no,1)
 			});
-		}else{
-			rfq_vendor_terms.value.splice(order_no,1)
-		}
+		// }else{
+		// 	rfq_vendor_terms.value.splice(order_no,1)
+		// }
+	}
+
+	const CanvassCompleteBtn = () => {
+		var count_offers=document.getElementsByClassName('offers_');
+		var not_empty_offers = 0;
+			for(var x=0;x<count_offers.length;x++){
+				var offers = document.getElementsByClassName('offers_')[x].value
+				if(offers != "") {
+					not_empty_offers++;
+				}
+			}
+
+			if(not_empty_offers>=1){
+				document.getElementById("canvasscompletebtn").disabled = false;
+			}else{
+				document.getElementById("canvasscompletebtn").disabled = true;
+			}
 	}
 
 	const CanvassComplete = (rfq_vendor_id) => {
@@ -310,33 +350,33 @@
 			}
 			formCanvass.append('vendor_offers', JSON.stringify(vendoroffers.value))
 
-			var count_vendor_terms=document.getElementsByClassName('vendorterms');
-			var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
-			if(count_rfq_terms.length != 0){
-				for(var i=0;i<count_rfq_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
-							terms:terms,
-						}
-							rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}else{
-				for(var i=0;i<count_vendor_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("vendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id,
-							terms:terms,
-						}
-						rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}
-			formCanvass.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
+			// var count_vendor_terms=document.getElementsByClassName('vendorterms');
+			// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+			// if(count_rfq_terms.length != 0){
+			// 	for(var i=0;i<count_rfq_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
+			// 				terms:terms,
+			// 			}
+			// 				rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }else{
+			// 	for(var i=0;i<count_vendor_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("vendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id,
+			// 				terms:terms,
+			// 			}
+			// 			rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }
+			// formCanvass.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 			axios.post("/api/canvass_complete_vendor", formCanvass).then(function () {
 				CanvassCompleteAlert.value = !CanvassCompleteAlert.value
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 			});
 	}
 
@@ -362,33 +402,33 @@
 			}
 			formOffers.append('vendor_offers', JSON.stringify(vendoroffers.value))
 
-			var count_vendor_terms=document.getElementsByClassName('vendorterms');
-			var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+			// var count_vendor_terms=document.getElementsByClassName('vendorterms');
+			// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
 			
-			if(count_rfq_terms.length != 0){
-				for(var i=0;i<count_rfq_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
-							terms:terms,
-						}
-							rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}else{
-				for(var i=0;i<count_vendor_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("vendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id,
-							terms:terms,
-						}
-						rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}
-			formOffers.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
+			// if(count_rfq_terms.length != 0){
+			// 	for(var i=0;i<count_rfq_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
+			// 				terms:terms,
+			// 			}
+			// 				rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }else{
+			// 	for(var i=0;i<count_vendor_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("vendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id,
+			// 				terms:terms,
+			// 			}
+			// 			rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }
+			// formOffers.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 			axios.post("/api/draft_vendor", formOffers).then(function () {
-				GetRFQDetails()
+				GetDraftCanvassDetails()
 				DraftAlert.value = !DraftAlert.value
 			});
 	}
@@ -496,8 +536,8 @@
 														<td class="p-1 align-top item_desc">{{ rd.item_description }}</td>
 														<span hidden>{{ item_no++ }}</span>
 													<td class="align-top">
-														<div v-for="ro in RFQOffers">
-															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 0" v-model="ro.offer"></textarea>
+														<div v-for="(ro, o) in RFQOffers">
+															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ o" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 0" v-model="ro.offer" @change="CanvassCompleteBtn"></textarea>
 															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 1" v-model="ro.offer" readonly></textarea>
 															<input type="hidden" class="offerid_" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
 														</div>
@@ -572,8 +612,8 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												<tbody v-else>
-													<tr v-for="(vt, index) in rfq_vendor_terms">
+												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
+													<tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>
@@ -629,7 +669,7 @@
 									<div class="row my-2 po_buttons"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 0">
-												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)">Canvass Complete</button>
+												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" disabled>Canvass Complete</button>
 												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 											</div>
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 1">
@@ -948,6 +988,12 @@
 								<div class="flex justify-start space-x-2">
 									<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
 									<span>Please select vendor!</span>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Due Date</label>
+									<input type="text" class="p-2 border w-full text-sm" placeholder="Due Date"  onfocus="(this.type='date')" v-model="due_date" id="duedate_">
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-3">

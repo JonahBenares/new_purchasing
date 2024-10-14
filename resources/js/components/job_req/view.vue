@@ -1,11 +1,13 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
-
+	let error=ref('');
+	let success=ref('');
 	const dangerAlert = ref(false)
 	const dangerAlert_item = ref(false)
+	const successAlert = ref(false)
 	const dangerAlert_item1 = ref(false)
 	const dangerAlert_item2 = ref(false)
 	const dangerAlert_item3 = ref(false)
@@ -13,6 +15,33 @@
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	let get_jorhead=ref([]);
+	let get_jorlabordetails=ref([]);
+	let get_jormaterialdetails=ref([]);
+	let get_jornotes=ref([]);
+	let jor_labor_details_id_view=ref("")
+	let jor_material_details_id_view=ref("")
+	let jor_note_details_id_view=ref("")
+	let jor_head_id_view=ref("")
+	let cancel_labor_reason=ref("")
+	let cancel_material_reason=ref("")
+	let label=ref("")
+	const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+    onMounted(async () => {
+		getJOR()
+	})
+	const getJOR = async () => {
+		let response = await axios.get(`/api/get_jor_view_details/${props.id}`);
+		get_jorhead.value=response.data.jorhead
+		get_jorlabordetails.value=response.data.jorlabordetails
+		get_jormaterialdetails.value=response.data.jomaterialdetails
+		get_jornotes.value=response.data.jornotes
+	}
 	const opendangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -35,6 +64,7 @@
 		modalEdit.value = !modalEdit.value
 	}
 	const closeAlert = () => {
+		successAlert.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
 		dangerAlert_item.value = !hideAlert.value
 		dangerAlert_item1.value = !hideAlert.value
@@ -75,6 +105,115 @@
 	const printDiv = () => {
 		window.print();
 	}
+
+	const updateRecomdate = (id,identifier) => {
+		const formData= new FormData()
+		if(identifier=='Labors'){
+			formData.append('recom_date', JSON.stringify(get_jorlabordetails.value))
+			var api='update_jor_labor_recomdate_view';
+		}else if(identifier=='Materials'){
+			formData.append('recom_date', JSON.stringify(get_jormaterialdetails.value))
+			var api='update_jor_material_recomdate_view';
+		}
+		axios.post('/api/'+api,formData).then(function () {
+		}, function (err) {
+			error.value = err.response.data.message;
+		});
+	}
+
+	const cancelJorLabordetails = (option, id) => {
+		if(option=='yes'){
+			if(cancel_labor_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_reason', cancel_labor_reason.value)
+				axios.post(`/api/cancel_jorlabordetails/`+id,formData).then(function (response) {
+					label.value='scope'
+					dangerAlert_item.value = !hideAlert.value
+					success.value='Successfully cancelled scope!'
+					successAlert.value = !successAlert.value
+					cancel_labor_reason.value=''
+					document.getElementById('labor_check').placeholder=""
+					document.getElementById('labor_check').style.backgroundColor = '#FFFFFF';
+					setTimeout(() => {
+						closeAlert()
+						getJOR()
+					}, 2000);
+				})
+			}else{
+				document.getElementById('labor_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('labor_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			label.value='scope'
+			jor_labor_details_id_view.value=id
+			dangerAlert_item.value = !dangerAlert_item.value
+		}
+	}
+
+	const cancelJorMaterialdetails = (option, id) => {
+		if(option=='yes'){
+			if(cancel_material_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_reason', cancel_material_reason.value)
+				axios.post(`/api/cancel_jormaterialdetails/`+id,formData).then(function (response) {
+					label.value='item'
+					dangerAlert_item.value = !hideAlert.value
+					success.value='Successfully cancelled item!'
+					successAlert.value = !successAlert.value
+					cancel_material_reason.value=''
+					document.getElementById('material_check').placeholder=""
+					document.getElementById('material_check').style.backgroundColor = '#FFFFFF';
+					setTimeout(() => {
+						closeAlert()
+						getJOR()
+					}, 2000);
+				})
+			}else{
+				document.getElementById('material_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('material_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			label.value='item'
+			jor_material_details_id_view.value=id
+			dangerAlert_item.value = !dangerAlert_item.value
+		}
+	}
+
+	const cancelJorNotes = (option, id) => {
+		if(option=='yes'){
+			axios.get(`/api/cancel_jornotes/`+id).then(function (response) {
+				label.value='note'
+				dangerAlert_item.value = !hideAlert.value
+				success.value='Successfully cancelled note!'
+				successAlert.value = !successAlert.value
+				setTimeout(() => {
+					closeAlert()
+					getJOR()
+				}, 2000);
+			})
+		}else{
+			label.value='note'
+			jor_note_details_id_view.value=id
+			dangerAlert_item.value = !dangerAlert_item.value
+		}
+	}
+
+	const cancelAlljor = (option) => {
+		if(option=='yes'){
+			axios.get(`/api/cancel_alljor/${props.id}`).then(function (response) {
+				dangerAlert.value = !hideAlert.value
+				success.value='Successfully cancelled JOR!'
+				successAlert.value = !successAlert.value
+				setTimeout(() => {
+					closeAlert()
+					getJOR()
+				}, 2000);
+			})
+		}else{
+			jor_head_id_view.value=props.id
+			dangerAlert.value = !dangerAlert.value
+		}
+	}
 </script>
 <template>
 	<navigation>
@@ -97,58 +236,79 @@
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
+					<div class="py-2 px-2 bg-red-500" v-if="get_jorhead.status=='Cancelled'">
+						<span class="font-bold text-white">CANCELLED</span>
+					</div>
 				<div class="card-body">
 					<hr class="border-dashed mt-0">
 					<div class="pt-1" id="printable">
+						<div class="print:block hidden print:flex print:justify-center h-full" v-if="get_jorhead.status=='Cancelled'">
+							<img src="../../../images/bg_cancelled.png" alt="" class="absolute h-[420px] align-center opacity-100">
+						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Job Order Request: </span>
-								<span class="text-sm text-gray-700">Bacolod</span>
+								<span class="text-sm text-gray-700 font-bold pr-1">Location: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.location}}</span>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
-								<span class="text-sm text-gray-700">01/16/24</span>
+								<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.date_prepared}}</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">JO Number: </span>
-								<span class="text-sm text-gray-700">JO-BCD24-1209</span>
+								<span class="text-sm text-gray-700 font-bold pr-1">JOR Number: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.jor_no}}</span>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">New JO Number: </span>
-								<span class="text-sm text-gray-700">JO-CENPRI24-1002</span>
+								<span class="text-sm text-gray-700 font-bold pr-1">Site JOR Number: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.site_jor}}</span>
 							</div>
 						</div>
-
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Duration: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.duration}}</span>
+							</div>
+							<div class="col-lg-4 col-sm-4 col-md-4">
+								<span class="text-sm text-gray-700 font-bold pr-1">Completion Date: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.completion_date}}</span>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2">
+								<span class="text-sm text-gray-700 font-bold pr-1">Delivery Date: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.delivery_date}}</span>
+							</div>
+						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
-								<span class="text-sm text-gray-700">IT Department</span>
+								<span class="text-sm text-gray-700">{{get_jorhead.department_name}}</span>
 							</div>
 							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
-								<span class="text-sm text-gray-700">0912</span>
+								<span class="text-sm text-gray-700">{{get_jorhead.process_code}}</span>
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-2">
 								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
-								<span class="text-sm text-gray-700">X</span>
+								<span class="text-sm text-gray-700">{{get_jorhead.urgency}}</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
-								<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
-								<span class="text-sm text-gray-700">IT Department</span>
-							</div>
-							<div class="col-lg-12">
 								<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
-								<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+								<span class="text-sm text-gray-700">{{get_jorhead.purpose}}</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
 								<span class="text-sm text-gray-700 font-bold pr-1">Project/Activity: </span>
-								<span class="text-sm text-gray-700">Sample Project</span>
+								<span class="text-sm text-gray-700">{{get_jorhead.project_activity}}</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<span class="text-sm text-gray-700 font-bold pr-1">General Description: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.general_description}}</span>
 							</div>
 						</div>
 						<div class="row">
@@ -166,30 +326,19 @@
 											<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 										</td>
 									</tr>
-									<tr id="scope">
-										<td class="p-1 text-center align-top">1</td>
-										<td class="p-1 align-top">
-											Supply of manpower/labor, tools, equipment and technical expertise for the following:
-											<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-											<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-											<br>3. Repair and replacement of parts as seen upon inspection.
-											<br>4. Setting of internal parts and mounting of the governor.
-											<br>5. Calibration and bench testing for:
-											<br>5.1. Speed Setting and Indicator
-											<br>5.2. Speed Droop Setting and Indicator
-											<br>5.3. Load Limit Setting and Indicator
-											<br>6. Functional test of shut-down solenoid valve
-											<br>7. Testing and Commissioning
-											<br>8. Submission of inspection, service, commissioning and bench testing reports.
-											<br>9. Other works necessary for job completion.
+									<tr v-for="(jl,index) in get_jorlabordetails" id="scope">
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ index + 1 }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top' : 'p-1 align-top'">{{ jl.scope_of_work }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.quantity }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.uom }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.unit_cost }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.unit_cost * jl.quantity  }}</td>
+										<td class="p-1" :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">
+											<input type="date" class="w-full" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')"  v-if="jl.status!='Cancelled'">
+											<input type="date" class="w-full" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')" readonly v-else>
 										</td>
-										<td class="p-1 align-top text-center">23</td>
-										<td class="p-1 align-top text-center">lot</td>
-										<td class="p-1 align-top text-center">54</td>
-										<td class="p-1 align-top text-center">545</td>
-										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-danger p-1"  @click="opendangerAlert_item3()">
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 text-center' : 'text-center'">
+											<button class="btn btn-danger p-1" @click="cancelJorLabordetails('no',jl.id)"  v-if="jl.status!='Cancelled'">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
@@ -216,48 +365,21 @@
 											</span>
 										</td>
 									</tr>
-									<tr id="item1">
-										<td class="p-1 text-center">1</td>
-										<td class="p-1 text-center">5</td>
-										<td class="p-1 text-center">pc/s</td>
-										<td class="p-1">PN-0991-001</td>
-										<td class="p-1">Monitor</td>
-										<td class="p-1"></td>
-										<td class="p-1">08/25/24</td>
-										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item()">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
-											</button>
+									<tr v-for="(jm,indexed) in get_jormaterialdetails" id="item1">
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ indexed + 1 }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ jm.quantity }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ jm.uom }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.pn_no }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.item_description }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.wh_stocks }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.date_needed }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">
+											<input type="date" class="w-full" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')"  v-if="jm.status!='Cancelled'">
+											<input type="date" class="w-full" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')" readonly v-else>
 										</td>
-									</tr>
-									<tr id="item2">
-										<td class="p-1 text-center">1</td>
-										<td class="p-1 text-center">5</td>
-										<td class="p-1 text-center">pc/s</td>
-										<td class="p-1">PN-0991-222</td>
-										<td class="p-1">Mouse</td>
-										<td class="p-1"></td>
-										<td class="p-1">08/25/24</td>
-										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item1()">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
-											</button>
-										</td>
-									</tr>
-									<tr id="item3">
-										<td class="p-1 text-center">1</td>
-										<td class="p-1 text-center">5</td>
-										<td class="p-1 text-center">pc/s</td>
-										<td class="p-1">PN-0991-333</td>
-										<td class="p-1">Keyboard</td>
-										<td class="p-1"></td>
-										<td class="p-1">08/25/24</td>
-										<td class="p-1"><input type="date" class="w-full"></td>
-										<td class="text-center po_buttons">
-											<button class="btn btn-xs btn-danger p-1" @click="opendangerAlert_item2()">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 text-center' : 'text-center'">
+											<button class="btn btn-danger p-1" @click="cancelJorMaterialdetails('no',jm.id)" v-if="jm.status!='Cancelled'">
+												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
 									</tr>
@@ -275,13 +397,11 @@
 											<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></Bars3Icon>
 										</td>
 									</tr>
-									<tr id="notes">
-										<td class="p-1 text-center align-top">1</td>
-										<td class="p-1 align-top">
-											Governor Specifications: Make: Woodward Model: UG 40 Governor RPM: 487 - 1120 Designation Number: G8530 410 Serial Number: 1178418
-										</td>
-										<td class="text-center po_buttons" >
-											<button class="btn btn-danger p-1"  @click="opendangerAlert_item4()">
+									<tr v-for="(jn,indexer) in get_jornotes" id="notes">
+										<td :class="(jn.status=='Cancelled') ? 'bg-red-100 p-1 text-center align-top' : 'p-1 text-center align-top'">{{ indexer + 1 }}</td>
+										<td :class="(jn.status=='Cancelled') ? 'bg-red-100 p-1 align-top' : 'p-1 align-top'">{{ jn.notes }}</td>
+										<td :class="(jn.status=='Cancelled') ? 'bg-red-100 text-center' : 'text-center'">
+											<button class="btn btn-danger p-1" @click="cancelJorNotes('no',jn.id)" v-if="jn.status!='Cancelled'">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</td>
@@ -294,8 +414,8 @@
 						<div class="row my-2 po_buttons" > 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button type="submit" class="btn btn-danger mr-2 w-36" @click="opendangerAlert()">Cancel</button>
-									<button type="submit" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
+									<button type="button" class="btn btn-danger mr-2 w-36" @click="cancelAlljor('no')" v-if="get_jorhead.status!='Cancelled'">Cancel</button>
+									<button type="button" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
 								</div>
 							</div>
 						</div>
@@ -304,6 +424,38 @@
 				</div>
 			</div>
 		</div>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 		<Transition
             enter-active-class="transition ease-out !duration-1000"
             enter-from-class="opacity-0 scale-95"
@@ -337,7 +489,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="cancelAlljor('yes')">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -369,7 +521,14 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">Are you sure you want to remove this Item?</h5>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this {{ label }}?<br>
+										If yes, please state your reason.
+									</h5>
+									<label v-if="label=='scope'">Cancel Reason: </label>
+									<label v-else-if="label=='item'">Cancel Reason: </label>
+									<textarea name="" id="labor_check" class="form-control !border" rows="3" v-model="cancel_labor_reason"  v-if="label=='scope'"></textarea>
+									<textarea name="" id="material_check" class="form-control !border" rows="3" v-model="cancel_material_reason"  v-else-if="label=='item'"></textarea>
 								</div>
 							</div>
 						</div>
@@ -378,7 +537,9 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="removeItem1(index)">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelJorLabordetails('yes',jor_labor_details_id_view)" v-if="label=='scope'">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelJorMaterialdetails('yes',jor_material_details_id_view)" v-else-if="label=='item'">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelJorNotes('yes',jor_note_details_id_view)" v-else-if="label=='note'">Yes</button>
 								</div>
 							</div>
 						</div>

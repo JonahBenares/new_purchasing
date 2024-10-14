@@ -25,7 +25,7 @@ class RFQController extends Controller
         $x=0;
         $rfqarray=array();
         foreach($all_rfq AS $ar){
-            $all_vendors = RFQVendor::where('rfq_head_id',$ar->id)->orderby('vendor_name', 'ASC')->get();
+            $all_vendors = RFQVendor::with('vendor_details')->where('rfq_head_id',$ar->id)->orderby('vendor_name', 'ASC')->get();
             // $vendor_name=[];
             // foreach($all_vendors as $av){
             //    $vendor_name[]=$av->vendor_name;
@@ -79,13 +79,14 @@ class RFQController extends Controller
     public function get_pr_data($pr_head_id){
         $curr_year = date('Y');
         $curr_mo = date('m');
+        $company=Config::get('constants.company');
         if(RFQSeries::where('year', '=', $curr_year)->exists()) {
             $rfq = RFQSeries::where('year', '=', $curr_year)->max('series') + 1;
             $max_value = str_pad($rfq,4,"0",STR_PAD_LEFT);;
         } else {
             $max_value = '0001';
         }
-        $rfq_no = 'RFQ-'.$curr_year.'-'.$max_value;
+        $rfq_no = 'RFQ-'.$curr_year.'-'.$max_value."-".$company;
 
         $head = PRHead::where('id',$pr_head_id)->where('status','Saved')->get();
         $userid = Auth::id();
@@ -173,6 +174,8 @@ class RFQController extends Controller
                     $rfq_i['pr_no']=$request->input('pr_no');
                     $rfq_i['created_at']=date('Y-m-d H:i:s');
                     $rfq_details_id=RFQDetails::insertGetId($rfq_i);
+
+                    $update_status = PrReportDetails::where('pr_details_id','=', $ri->pr_details_id)->update(['status' => 'For Canvass']);
 
                     for($x=0;$x<3;$x++){
                         RFQOffers::create([
@@ -304,6 +307,7 @@ class RFQController extends Controller
             $rfq_add_vendor['vendor_details_id']=$request->input('vendor_details_id');
             $rfq_add_vendor['vendor_name']=$request->input('vendor_name');
             $rfq_add_vendor['vendor_identifier']=$request->input('vendor_identifier');
+            $rfq_add_vendor['due_date']=$request->input('due_date');
             $rfq_add_vendor['created_at']=date('Y-m-d H:i:s');
             $rfq_vendor_id=RFQVendor::insertGetId($rfq_add_vendor);
 
@@ -382,6 +386,8 @@ class RFQController extends Controller
                         $rfq_i['pr_no']=$request->input('pr_no');
                         $rfq_i['created_at']=date('Y-m-d H:i:s');
                         $rfq_details_id=RFQDetails::insertGetId($rfq_i);
+
+                        $update_status = PrReportDetails::where('pr_details_id','=', $ai->pr_details_id)->update(['status' => 'For Canvass']);
 
                         for($x=0;$x<3;$x++){
                             RFQOffers::create([

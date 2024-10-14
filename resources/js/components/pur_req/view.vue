@@ -100,29 +100,37 @@
 
 	const cancelPrdetails = (option, id) => {
 		if(option=='yes'){
-			const formData= new FormData()
-			formData.append('cancel_reason', cancel_reason.value)
-			axios.post(`/api/cancel_prdetails/`+id,formData).then(function (response) {
-				if(response.data!='error'){
-					dangerAlert_item.value = !hideAlert.value
-					success.value='Successfully cancelled item!'
-					successAlert.value = !successAlert.value
-					cancel_reason.value=''
-					setTimeout(() => {
-						closeAlert()
-						getPR()
-					}, 2000);
-				}else{
-					dangerAlert_item.value = !hideAlert.value
-					success.value=''
-					error.value='Cannot be deleted, item already have transactions.'
-					cancelAlert.value = !cancelAlert.value
-					setTimeout(() => {
-						closeAlert()
-						getPR()
-					}, 3000);
-				}
-			})
+			if(cancel_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_reason', cancel_reason.value)
+				axios.post(`/api/cancel_prdetails/`+id,formData).then(function (response) {
+					if(response.data!='error'){
+						dangerAlert_item.value = !hideAlert.value
+						success.value='Successfully cancelled item!'
+						successAlert.value = !successAlert.value
+						cancel_reason.value=''
+						document.getElementById('cancel_check').placeholder=""
+						document.getElementById('cancel_check').style.backgroundColor = '#FFFFFF';
+						setTimeout(() => {
+							closeAlert()
+							getPR()
+						}, 2000);
+					}else{
+						dangerAlert_item.value = !hideAlert.value
+						success.value=''
+						error.value='Cannot be deleted, item already have transactions.'
+						cancel_reason.value=''
+						cancelAlert.value = !cancelAlert.value
+						setTimeout(() => {
+							closeAlert()
+							getPR()
+						}, 3000);
+					}
+				})
+			}else{
+				document.getElementById('cancel_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('cancel_check').style.backgroundColor = '#FAA0A0';
+			}
 		}else{
 			pr_details_id_view.value=id
 			dangerAlert_item.value = !dangerAlert_item.value
@@ -436,9 +444,12 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">Are you sure you want to cancel this item?</h5>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this item?<br>
+										If yes, please state your reason.
+									</h5>
 									<label>Cancel Reason: </label>
-									<textarea name="" id="" class="form-control !border" rows="3" v-model="cancel_reason"></textarea>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3" v-model="cancel_reason"></textarea>
 								</div>
 							</div>
 						</div>
