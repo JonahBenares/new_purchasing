@@ -28,6 +28,7 @@
 	let letters=ref([]);
 	let count_ccr=ref(0);
 	let rfqvendorid=ref('');
+	let due_date=ref('');
 
 	const props = defineProps({
         id:{
@@ -147,12 +148,17 @@
 	}
 
 	const AdditionalVendorBtn= () => {
-		if(vendor_details.value == ''){
+		if(due_date.value == ''){
+			document.getElementById('duedate_').placeholder="Please fill in Due date."
+			document.getElementById('duedate_').style.backgroundColor = '#FAA0A0';
+		}else if(vendor_details.value == ''){
 			document.getElementById("vendor_alert").style.display="block"
+			document.getElementById('duedate_').style.backgroundColor = '';
 			// document.getElementById('vendor_alert').style.backgroundColor = '#FAA0A0';
 		}else{
 			AdditionalVendorAlert.value = !AdditionalVendorAlert.value
 			document.getElementById("vendor_alert").style.display="none"
+			document.getElementById('duedate_').style.backgroundColor = '';
 			// document.getElementById('vendor_alert').style.backgroundColor = '';
 		}
 	}
@@ -168,6 +174,7 @@
 
 			formVendor.append('rfq_head_id', props.id)
 			formVendor.append('pr_no', RFQHead.value.pr_no)
+			formVendor.append('due_date', due_date.value)
 			formVendor.append('vendor_details_id', vendor_details_id)
 			formVendor.append('vendor_name', vendor_name)
 			formVendor.append('vendor_identifier', identifier)
@@ -964,6 +971,12 @@
 								<div class="flex justify-start space-x-2">
 									<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
 									<span>Please select vendor!</span>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Due Date</label>
+									<input type="text" class="p-2 border w-full text-sm" placeholder="Due Date"  onfocus="(this.type='date')" v-model="due_date" id="duedate_">
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-3">
