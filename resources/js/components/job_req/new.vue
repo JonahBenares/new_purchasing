@@ -161,12 +161,43 @@
 				date_needed:date_needed.value,
 				recom_date:recom_date.value,
 			}
-			item_list.value.push(items)
+			// item_list.value.push(items)
+			if(item_list.value.length==0 && jormaterialdetails.value.length==0){
+				item_list.value.push(items)
+			}else{
+				const ObjqtyToFind = items.qty;
+				const ObjuomToFind = items.uom;
+				const Objpn_noToFind = items.pn_no;
+				const Objitem_descToFind = items.item_desc;
+				const Objwh_stocksToFind = items.wh_stocks;
+				const Objdate_neededToFind = items.date_needed;
+				const Objrecom_dateToFind = items.recom_date;
+				if(jormaterialdetails.value.length==0){
+					if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind)) {  
+						item_list.value.push(items);
+					}else{
+						error.value="Duplicate entry! This item already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
+				}else{
+					for(var x=0; x<jormaterialdetails.value.length; x++){
+						if(((jormaterialdetails.value[x].quantity == items.qty && jormaterialdetails.value[x].uom == items.uom) && jormaterialdetails.value[x].pn_no == items.pn_no &&  jormaterialdetails.value[x].item_description == items.item_desc && jormaterialdetails.value[x].wh_stocks == items.wh_stocks) || (item_list.value.find((o) => o.qty === ObjqtyToFind) && item_list.value.find((o) => o.uom === ObjuomToFind) && item_list.value.find((o) => o.pn_no === Objpn_noToFind) && item_list.value.find((o) => o.item_desc === Objitem_descToFind) && item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind))){
+							var checker = true; 
+						}
+					}
+					if (checker==undefined) {  
+						item_list.value.push(items);
+					}else{
+						error.value="Duplicate entry! This item already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
+				}
+			}
 			qty.value='';
 			uom.value='';
 			pn_no.value='';
 			item_desc.value='';
-			wh_stocks.value='';
+			wh_stocks.value=0;
 			date_needed.value='';
 			recom_date.value='';
 			document.getElementById('qty_check').placeholder=""
@@ -231,18 +262,45 @@
 			if(scope_list.value.length==0 && jorlabordetails.value.length==0){
 				scope_list.value.push(scope)
 			}else{
-				if(!scope_list.value.every(el=>el.scope_work===scope.scope_work)){
-					scope_list.value.push(scope)
+				if(jorlabordetails.value.length==0){
+					for(var x=0; x<scope_list.value.length; x++){
+						if(scope_list.value[x].scope_qty == scope.scope_qty && scope_list.value[x].scope_uom == scope.scope_uom && scope_list.value[x].scope_work == scope.scope_work && scope_list.value[x].scope_unit_cost == scope.scope_unit_cost){
+							var checker = true; 
+						}
+					}
+					if (checker==undefined) {  
+						scope_list.value.push(scope);
+					}else{
+						error.value="Duplicate entry! This scope already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
 				}else{
-					error.value="Duplicate entry! This item already exists.";
-					dangerAlerterrors.value=!dangerAlerterrors.value
+					const ObjqtyToFind = scope.scope_qty;
+					const Objscope_uomToFind = scope.scope_uom;
+					const Objscope_workToFind = scope.scope_work;
+					const Objunit_costToFind = scope.scope_unit_cost;
+					for(var x=0; x<jorlabordetails.value.length; x++){
+						var text1=jorlabordetails.value[x].scope_of_work
+						var text2=scope.scope_work
+						text1 = text1.replace(/\s+/g, ' '); // Replace multiple spaces with a single space
+						text2 = text2.replace(/\s+/g, ' ');
+						if((text1 === text2 && jorlabordetails.value[x].quantity == scope.scope_qty && jorlabordetails.value[x].uom == scope.scope_uom && jorlabordetails.value[x].unit_cost == scope.scope_unit_cost) || (scope_list.value.find((o) => o.scope_qty === ObjqtyToFind) && scope_list.value.find((o) => o.scope_uom === Objscope_uomToFind) && scope_list.value.find((o) => o.scope_work === Objscope_workToFind) && scope_list.value.find((o) => o.scope_unit_cost === Objunit_costToFind))){
+							var checker = true; 
+						}
+					}
+					if (checker==undefined) {  
+						scope_list.value.push(scope);
+					}else{
+						error.value="Duplicate entry! This scope already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
 				}
 			}
-			scope_qty.value='';
+			scope_qty.value=0;
 			scope_uom.value='';
 			scope_work.value='';
-			scope_unit_cost.value='';
-			scope_total_cost.value='';
+			scope_unit_cost.value=0;
+			scope_total_cost.value=0;
 			scope_recom_date.value='';
 			document.getElementById('scope_check').placeholder=""
 			document.getElementById('scope_check').style.backgroundColor = '#FFFFFF';

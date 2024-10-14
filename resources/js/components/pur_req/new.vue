@@ -139,29 +139,24 @@
 				const Objdate_neededToFind = items.date_needed;
 				const Objrecom_dateToFind = items.recom_date;
 				if(prdetails.value.length==0){
-					if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind) || !item_list.value.find((o) => o.date_needed === Objdate_neededToFind) || !item_list.value.find((o) => o.recom_date === Objrecom_dateToFind)) {  
+					if (!item_list.value.find((o) => o.qty === ObjqtyToFind) || !item_list.value.find((o) => o.uom === ObjuomToFind) || !item_list.value.find((o) => o.pn_no === Objpn_noToFind) || !item_list.value.find((o) => o.item_desc === Objitem_descToFind) || !item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind)) {  
 						item_list.value.push(items);
 					}else{
 						error.value="Duplicate entry! This item already exists.";
 						dangerAlerterrors.value=!dangerAlerterrors.value
 					}
 				}else{
-					var newest= new Array(items);
-					// const objectKeysOfarr1 = Object.keys(prdetails.value);
-					// console.log(`objectKeysOfarr1: ${objectKeysOfarr1}`);
-					/**
-					output:
-					objectKeysOfarr1: 0,1,2,3,4
-					*/
-
-					// const filterObjectKeysOfprdetails = objectKeysOfarr1
-					// .filter(index => {
-					// 	// console.log(`prdetails.value[index].quantity: ${prdetails.value[index].quantity}`);
-					// 	// console.log(`newest[index].qty: ${newest[index].qty}`);
-					// 	// console.log(`prdetails.value[index].quantity === newest[index].qty: ${prdetails.value[index].quantity === newest[index].qty}`);
-					// 	return prdetails.value[index].quantity === newest[0].qty;
-					// });
-					// console.log(`filterObjectKeysOfprdetails.value: ${filterObjectKeysOfprdetails.value}`);
+					for(var x=0; x<prdetails.value.length; x++){
+						if((prdetails.value[x].quantity == items.qty && prdetails.value[x].uom == items.uom && prdetails.value[x].pn_no == items.pn_no &&  prdetails.value[x].item_description == items.item_desc && prdetails.value[x].wh_stocks == items.wh_stocks) || (item_list.value.find((o) => o.qty === ObjqtyToFind) && item_list.value.find((o) => o.uom === ObjuomToFind) && item_list.value.find((o) => o.pn_no === Objpn_noToFind) && item_list.value.find((o) => o.item_desc === Objitem_descToFind) && item_list.value.find((o) => o.wh_stocks === Objwh_stocksToFind))){
+							var checker = true; 
+						}
+					}
+					if (checker==undefined) {  
+						item_list.value.push(items);
+					}else{
+						error.value="Duplicate entry! This item already exists.";
+						dangerAlerterrors.value=!dangerAlerterrors.value
+					}
 				}
 			}
 			qty.value='';
