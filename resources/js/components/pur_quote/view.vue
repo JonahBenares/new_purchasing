@@ -295,13 +295,13 @@
 	// }
 
 	const RemoveRFQVendorTerms = (order_no, terms_id) => {
-		if(terms_id != 0 || terms_id != 'undefined'){
+		// if(terms_id != 0 || terms_id != 'undefined'){
 			axios.get(`/api/remove_terms/${terms_id}`).then(function () {
 				rfq_vendor_terms.value.splice(order_no,1)
 			});
-		}else{
-			rfq_vendor_terms.value.splice(order_no,1)
-		}
+		// }else{
+		// 	rfq_vendor_terms.value.splice(order_no,1)
+		// }
 	}
 
 	const CanvassComplete = (rfq_vendor_id) => {
@@ -326,30 +326,30 @@
 			}
 			formCanvass.append('vendor_offers', JSON.stringify(vendoroffers.value))
 
-			var count_vendor_terms=document.getElementsByClassName('vendorterms');
-			var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
-			if(count_rfq_terms.length != 0){
-				for(var i=0;i<count_rfq_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
-							terms:terms,
-						}
-							rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}else{
-				for(var i=0;i<count_vendor_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("vendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id,
-							terms:terms,
-						}
-						rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}
-			formCanvass.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
+			// var count_vendor_terms=document.getElementsByClassName('vendorterms');
+			// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+			// if(count_rfq_terms.length != 0){
+			// 	for(var i=0;i<count_rfq_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
+			// 				terms:terms,
+			// 			}
+			// 				rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }else{
+			// 	for(var i=0;i<count_vendor_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("vendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id,
+			// 				terms:terms,
+			// 			}
+			// 			rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }
+			// formCanvass.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 			axios.post("/api/canvass_complete_vendor", formCanvass).then(function () {
 				CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 				GetDraftCanvassDetails()
@@ -378,31 +378,31 @@
 			}
 			formOffers.append('vendor_offers', JSON.stringify(vendoroffers.value))
 
-			var count_vendor_terms=document.getElementsByClassName('vendorterms');
-			var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
+			// var count_vendor_terms=document.getElementsByClassName('vendorterms');
+			// var count_rfq_terms=document.getElementsByClassName('rfqvendorterms');
 			
-			if(count_rfq_terms.length != 0){
-				for(var i=0;i<count_rfq_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
-							terms:terms,
-						}
-							rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}else{
-				for(var i=0;i<count_vendor_terms.length;i++){
-					var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
-					var terms=document.getElementsByClassName("vendorterms")[i].value;
-						const rfq_v_terms = {
-							rfq_vendor_terms_id:rfq_vendor_terms_id,
-							terms:terms,
-						}
-						rfqvendor_terms.value.push(rfq_v_terms)
-				}
-			}
-			formOffers.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
+			// if(count_rfq_terms.length != 0){
+			// 	for(var i=0;i<count_rfq_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("rfqvendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id ?? 0,
+			// 				terms:terms,
+			// 			}
+			// 				rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }else{
+			// 	for(var i=0;i<count_vendor_terms.length;i++){
+			// 		var rfq_vendor_terms_id=document.getElementsByClassName("new_vendortermsid")[i].value;
+			// 		var terms=document.getElementsByClassName("vendorterms")[i].value;
+			// 			const rfq_v_terms = {
+			// 				rfq_vendor_terms_id:rfq_vendor_terms_id,
+			// 				terms:terms,
+			// 			}
+			// 			rfqvendor_terms.value.push(rfq_v_terms)
+			// 	}
+			// }
+			// formOffers.append('rfqvendorterms', JSON.stringify(rfqvendor_terms.value))
 			axios.post("/api/draft_vendor", formOffers).then(function () {
 				GetDraftCanvassDetails()
 				DraftAlert.value = !DraftAlert.value
