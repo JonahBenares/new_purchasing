@@ -79,13 +79,14 @@ class RFQController extends Controller
     public function get_pr_data($pr_head_id){
         $curr_year = date('Y');
         $curr_mo = date('m');
+        $company=Config::get('constants.company');
         if(RFQSeries::where('year', '=', $curr_year)->exists()) {
             $rfq = RFQSeries::where('year', '=', $curr_year)->max('series') + 1;
             $max_value = str_pad($rfq,4,"0",STR_PAD_LEFT);;
         } else {
             $max_value = '0001';
         }
-        $rfq_no = 'RFQ-'.$curr_year.'-'.$max_value;
+        $rfq_no = 'RFQ-'.$curr_year.'-'.$max_value."-".$company;
 
         $head = PRHead::where('id',$pr_head_id)->where('status','Saved')->get();
         $userid = Auth::id();
