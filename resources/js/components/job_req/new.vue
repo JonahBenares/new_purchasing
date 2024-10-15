@@ -408,6 +408,7 @@
 		successAlertCD.value = !hideAlert.value
 		successAlert.value = !hideAlert.value
 		dangerAlerterrors.value = !hideAlert.value
+		dangerAlert.value = !hideAlert.value
 		warningAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
 		dangerAlert_item.value = !hideAlert.value

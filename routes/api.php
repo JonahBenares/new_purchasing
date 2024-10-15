@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RFQController;
 use App\Http\Controllers\PRController;
 use App\Http\Controllers\JORController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -123,3 +124,16 @@ Route::get('/cancel_alljor/{jor_head_id}',[JORController::class,'cancel_alljor']
 Route::post('/cancel_jorlabordetails/{jor_labor_details_id}',[JORController::class,'cancel_jorlabordetails']);
 Route::post('/cancel_jormaterialdetails/{jor_material_details_id}',[JORController::class,'cancel_jormaterialdetails']);
 Route::get('/cancel_jornotes/{jor_notes_id}',[JORController::class,'cancel_jornotes']);
+
+Route::get('/get_all_todo', [DashboardController::class,'get_all_todo']);
+Route::get('/create_todo',[DashboardController::class,'create_todo']);
+Route::post('/add_todo',[DashboardController::class,'add_todo']);
+Route::get('/get_all_reminder', [DashboardController::class,'get_all_reminder']);
+Route::get('/create_reminder',[DashboardController::class,'create_reminder']);
+Route::post('/add_reminder',[DashboardController::class,'add_reminder']);
+Route::get('/get_todo',[DashboardController::class,'get_todo']);
+Route::get('/get_reminder',[DashboardController::class,'get_reminder']);
+Route::get('/complete_todo/{id}',[DashboardController::class,'complete_todo']);
+Route::get('/complete_reminder/{id}',[DashboardController::class,'complete_reminder']);
+Route::post('/complete_all_todo',[DashboardController::class,'complete_all_todo']);
+Route::post('/complete_all_reminder',[DashboardController::class,'complete_all_reminder']);
