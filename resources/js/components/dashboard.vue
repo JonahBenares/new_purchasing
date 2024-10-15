@@ -515,10 +515,10 @@
 					<hr class="mt-0">
 					<div class="modal_s_items ">
 						<div class="row">
-							<div class="col-lg-6 col-md-3">
+							<div class="col-lg-12 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Description</label>
-									<input type="text" class="form-control" placeholder="Description" v-model="form.todo_description">
+									<textarea class="form-control" placeholder="Description" v-model="form.todo_description" rows="3"></textarea>
 								</div>
 							</div>
 						</div>
