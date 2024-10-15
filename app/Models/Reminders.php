@@ -12,6 +12,10 @@ class Reminders extends Model
     protected $fillable=[
         'reminder_due_date',
         'reminder_desc',
-        'status'
+        'status',
+        'assigned_to',
+        'employee_name',
+        'date_finished',
+        'user_id',
     ];
 }

@@ -11,6 +11,8 @@ class ThingsTodo extends Model
     protected $table="things_todo";
     protected $fillable=[
         'todo_description',
-        'status'
+        'status',
+        'date_finished',
+        'user_id',
     ];
 }

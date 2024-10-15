@@ -27,12 +27,19 @@
 	const allSelectedreminder=ref(false)
 	const selected_todo=ref([])
 	const selected_reminder=ref([])
+	const employees=ref([])
 	onMounted(async () => {
 		todoForm()
 		getTodo()
 		reminderForm()
 		getReminder()
+		getEmployees()
 	})
+	const getEmployees = async () => {
+		let response = await axios.get("/api/get_signatories");
+		employees.value = response.data.employees;
+	}
+
 	const openNew = () => {
 		modalNew.value = !modalNew.value
 	}
@@ -96,10 +103,12 @@
 
 	const onSaveReminder = () => {
 		const formData= new FormData()
+		formData.append('assigned_to', reminderform.value.assigned_to)
 		formData.append('reminder_due_date', reminderform.value.reminder_due_date)
 		formData.append('reminder_desc', reminderform.value.reminder_desc)
 		axios.post("/api/add_reminder",formData).then(function () {
 			success.value='You have successfully added new reminder!'
+			reminderform.value.assigned_to=0
 			reminderform.value.reminder_due_date=''
 			reminderform.value.reminder_desc=''
 			successAlert.value = !successAlert.value
@@ -476,12 +485,14 @@
 						<div>
 							<table class="w-full table-bordered">
 								<tr class="bg-gray-100">
+									<td class="p-1 text-bold text-center" width="15%">Assigned To</td>
 									<td class="p-1 text-bold text-center" width="15%">Due Date</td>
 									<td class="p-1 text-bold">Description</td>
 									<td class="p-1 text-center text-bold" width="10%">Days Left</td>
 									<td width="2%" class="p-q text-center"><input type="checkbox"  @click="selectAllreminder('no')" v-model="allSelectedreminder"></td>
 								</tr>
 								<tr v-for="r in reminder_list">
+									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{r.employee_name}}</td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{r.reminder_due_date}}</td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100' : 'p-1'">{{r.reminder_desc}}</td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 text-center' : 'p-1 text-center'" width="20%">{{ (r.reminder_due_date!='' ) ? daysRemaining(r.reminder_due_date) : 0}} Day/s </td>
@@ -555,6 +566,15 @@
 					<hr class="mt-0">
 					<div class="modal_s_items ">
 						<div class="row">
+							<div class="col-lg-6 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Assign To</label>
+									<select class="form-control" v-model="reminderform.assigned_to">
+										<option value=''>--Select Employee--</option>
+										<option :value="emp.id" v-for="emp in employees" :key="emp.id">{{ emp.name }}</option>
+									</select>
+								</div>
+							</div>
 							<div class="col-lg-6 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Due Date</label>
