@@ -97,11 +97,22 @@
 	const showModal = ref(false)
 	const addItems = ref(false)
 	const addVendorModal = ref(false)
-	const hideModal = ref(true)
 	const DraftAlert = ref(false)
 	const CanvassCompleteAlert = ref(false)
 	const AdditionalVendorAlert = ref(false)
 	const AdditionalItemsAlert = ref(false)
+	const hideModal = ref(true)
+	const successAlert = ref(false)
+	const hideAlert = ref(true)
+	const openSuccessAlert = () => {
+			successAlert.value = !successAlert.value
+			chooseVendor.value = !hideModal.value
+		}
+	const chooseVendor = ref(false)
+	
+	const openChooseVendor = () => {
+			chooseVendor.value = !chooseVendor.value
+		}
 	const openModel = () => {
 		showModal.value = !showModal.value
 	}
@@ -113,7 +124,12 @@
 	const openVendorModel = () => {
 		addVendorModal.value = !addVendorModal.value
 	}
-
+	const closeModal2 = () => {
+		chooseVendor.value = !hideModal.value
+	}
+	const closeAlert = () => {
+		successAlert.value = !hideModal.value
+	}
 	const closeModal = () => {
 		GetDraftCanvassDetails()
 		GetAdditionalItems()
@@ -707,9 +723,9 @@
 										</li>
 									</li>
 									<li class="!w-30">
-										<!-- <a href="" class="btn !bg-gray-200 !w-36">Print TE</a> -->
-										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
-										<a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
+										<!-- <a href="" class="btn !bg-gray-200 !w-36">Pasdrint TE</a> -->
+										<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
+										<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
 										<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
 									</li>
 								</ol>
@@ -1133,6 +1149,189 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:chooseVendor }">
+				<div @click="closeModal2()" class="w-full h-full fixed"></div>
+				<div class="modal__content w-8/12 mb-5">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Choose Vendor and please fill out the following fields</span>
+							<a href="#" class="text-gray-600" @click="closeModal2()">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items">
+						<div class="row">
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
+								<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+							</div>
+							<div class="col-lg-3">
+								<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
+								<span class="text-sm text-gray-700">AOQ-1009-1001</span>
+							</div>
+							<div class="col-lg-3">
+								<span class="text-sm text-gray-700 font-bold pr-1">Requested By: </span>
+								<span class="text-sm text-gray-700">Henne Tanan</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
+								<span class="text-sm text-gray-700">IT Department</span>
+							</div>
+							<div class="col-lg-3">
+								<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
+								<span class="text-sm text-gray-700">05/16/24</span>
+							</div>
+							<div class="col-lg-3">
+								<span class="text-sm text-gray-700 font-bold pr-1">Date Needed: </span>
+								<span class="text-sm text-gray-700">05/16/24</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<span class="text-sm text-gray-700 font-bold pr-1">End-Use:</span>
+								<span class="text-sm text-gray-700">February 16, 2024</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
+								<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12">
+								<table class="w-full table-bordered text-sm" >
+									<tr class="bg-gray-100">
+										<td class="p-1" width="2%"><input type="checkbox" name="check"></td>
+										<td class="p-1">Vendor</td>
+									</tr>
+									<tr >
+										<td class="p-1"><input type="checkbox" name="check"></td>
+										<td class="p-1">Vendor</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<br>
+						<hr>
+						<div class="modal_s_items">
+							<div class="row">
+								<div class="col-lg-4 col-md-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Date Needed</label>
+										<input type="date" class="form-control" placeholder="" >
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Prepared by</label>
+										<select class="form-control" placeholder="" >
+											<option value="">--Select Employee--</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Received and Checked by</label>
+										<select class="form-control" placeholder="" >
+											<option value="">--Select Employee--</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Award Recommended by</label>
+										<select class="form-control" placeholder="" >
+											<option value="">--Select Employee--</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Recommending Approval</label>
+										<select class="form-control" placeholder="" >
+											<option value="">--Select Employee--</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Aprroved by</label>
+										<select class="form-control" placeholder="" >
+											<option value="">--Select Employee--</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<hr>
+						</div> 
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-primary mr-2 w-44" @click="openSuccessAlert()">Save</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">You have successfully saved the offers.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
+									<a href="/pur_aoq/print_te" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Create AOQ</a>
 								</div>
 							</div>
 						</div>

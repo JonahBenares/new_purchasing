@@ -45,10 +45,15 @@
 						<div class="row">							
 							<div class="col-lg-6 offset-lg-3 col-md-3">
 								<div class="form-group">
-								<label class="text-gray-500 m-0" for="">Choose RFQ Number</label>
+								<label class="text-gray-500 m-0" for="">Choose PR and RFQ Number</label>
 								<input type="file" name="img[]" class="file-upload-default">
 								<div class="input-group col-xs-12">
 									<select class="form-control file-upload-info">
+                                        <option value="">-Select PR-</option>
+                                        <option value="">PR-CENPRI-1001</option>
+                                    </select>
+									<select class="form-control file-upload-info">
+										<option value="">-Select RFQ-</option>
                                         <option value="">RFQ-CENPRI-1001</option>
                                     </select>
 									<span class="input-group-append">
@@ -61,67 +66,123 @@
 						<hr class="border-dashed">
 						<div v-show="pr_det">
 							<div class="row">
-								<div class="col-lg-4">
-									<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
-									<span class="text-sm text-gray-700">RFQ-CENPRI-1001</span>
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
+									<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
 								</div>
-								<div class="col-lg-4">
-									<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
+									<span class="text-sm text-gray-700">AOQ-1009-1001</span>
+								</div>
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
+									<span class="text-sm text-gray-700">05/16/24</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
+									<span class="text-sm text-gray-700">IT Department</span>
+								</div>
+								
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+									<span class="text-sm text-gray-700">RFQ-988-2882</span>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">End-Use:</span>
 									<span class="text-sm text-gray-700">February 16, 2024</span>
+								</div>
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Requested By: </span>
+									<span class="text-sm text-gray-700">Henne Tanan</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
-									<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
-									<span class="text-sm text-gray-700">rfq_it001</span>
+									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
+									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
 								</div>
 							</div>
 							<br>
 							<div class="row">
 								<div class="col-lg-12">
-									<table class="w-full table-bordered !text-xs mb-3">
+									<table class="w-full table-bordered text-sm" >
 										<tr class="bg-gray-100">
-											<td class="p-1 uppercase text-center" width="7%">Qty</td>
-											<td class="p-1 uppercase text-center" width="7%">UOM</td>
-											<td class="p-1 uppercase" width="20%">PN No.</td>
-											<td class="p-1 uppercase" width="">Item Description</td>
-											<td class="p-1 uppercase" width="40%">Vendors</td>
+											<td class="p-1" width="2%"><input type="checkbox" name="check"></td>
+											<td class="p-1">Vendor</td>
 										</tr>
-										<tr>
-											<td class="p-1 text-center">5</td>
-											<td class="p-1 text-center">pc/s</td>
-											<td class="p-1">PN-0991-001</td>
-											<td class="p-1">Monitor</td>
-											<td class="p-1" rowspan="3">
-												<ul class="m-0 !text-xs !list-disc">
-													<li>Lectrix Solutions Electrical Supplies & Services Cebu</li>
-													<li>MF Computer Solutions, Inc.</li>
-													<li>Nexus Industrial Prime Solutions Corp.</li>
-												</ul>
-											</td>
-										</tr>
-										<tr>
-											<td class="p-1 text-center">5</td>
-											<td class="p-1 text-center">pc/s</td>
-											<td class="p-1">PN-0991-222</td>
-											<td class="p-1">Mouse</td>
-										</tr>
-										<tr>
-											<td class="p-1 text-center">5</td>
-											<td class="p-1 text-center">pc/s</td>
-											<td class="p-1">PN-0991-333</td>
-											<td class="p-1">Keyboard</td>
+										<tr >
+											<td class="p-1"><input type="checkbox" name="check"></td>
+											<td class="p-1">Vendor</td>
 										</tr>
 									</table>
 								</div>
 							</div>
+							<br>
+							<hr>
+							<div class="modal_s_items">
+								<div class="row">
+									<div class="col-lg-4 col-md-4">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Date Needed</label>
+											<input type="date" class="form-control" placeholder="" >
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Prepared by</label>
+											<select class="form-control" placeholder="" >
+												<option value="">--Select Employee--</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Received and Checked by</label>
+											<select class="form-control" placeholder="" >
+												<option value="">--Select Employee--</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Award Recommended by</label>
+											<select class="form-control" placeholder="" >
+												<option value="">--Select Employee--</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Recommending Approval</label>
+											<select class="form-control" placeholder="" >
+												<option value="">--Select Employee--</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label class="text-gray-500 m-0" for="">Aprroved by</label>
+											<select class="form-control" placeholder="" >
+												<option value="">--Select Employee--</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<hr>
+							</div> 
 						
 							<br>
 							<div class="row my-2"> 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
-										<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Print for TE</a>
-										<a href="/pur_aoq/new_second" class="btn btn-primary mr-2 w-44">Proceed to Award</a>
+										<a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Create AOQ</a>
 									</div>
 								</div>
 							</div>

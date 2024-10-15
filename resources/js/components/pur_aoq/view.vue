@@ -11,11 +11,13 @@
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
     const openSuccessAlert = () => {
 		successAlert.value = !successAlert.value
+		chooseVendor.value = !hideModal.value
 	}
 
 	const openWarningAlert = () => {
@@ -31,8 +33,14 @@
 
 
 	const showAddVendor = ref(false)
+	const chooseVendor = ref(false)
 	const showPreview = ref(false)
 	const hideModal = ref(true)
+	
+
+	const openChooseVendor = () => {
+		chooseVendor.value = !chooseVendor.value
+	}
 	const openAddVendor = () => {
 		showAddVendor.value = !showAddVendor.value
 	}
@@ -42,6 +50,7 @@
 	const closeModal = () => {
 		showAddVendor.value = !hideModal.value
 		showPreview.value = !hideModal.value
+		chooseVendor.value = !hideModal.value
 	}
 
 </script>
@@ -65,9 +74,7 @@
         </div>
 		<div class="bg-yellow-400 text-white px-3 py-2 font-bold">Done TE</div>
 		<div class="row">
-			
 			<div class="col-12 grid-margin stretch-card">
-				
 				<div class="card">
 				<div class="card-body">
 					<!-- <span class="pt-2">
@@ -116,8 +123,6 @@
 									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
 								</div>
 							</div>
-
-
 							<div class="second_one" v-if="vendor === 'vendor_2'">
 								<br>
 								<div class="row">
@@ -443,54 +448,6 @@
 												<td class="!border-0" colspan="4"><br></td>
 											</tr>
 										</table>
-										<br>
-										<table class="!text-xs" width="100%">
-											<tr>
-												<td width="19%" class="text-center">Prepared by:</td>
-												<td></td>
-												<td width="19%" class="text-center">Received and Checked by</td>
-												<td></td>
-												<td width="19%" class="text-center">Award Recommended by</td>
-												<td></td>
-												<td width="19%" class="text-center">Recommending Approval</td>
-												<td></td>
-												<td width="19%" class="text-center">Aprroved by</td>
-											</tr>
-											<tr>
-												<td class=""><br></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-											</tr>
-											<tr>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-											</tr>
-											
-										</table>
-										<br>
 									</div>
 								</div>
 								<br>
@@ -511,7 +468,6 @@
 									</div>
 								</div>
 							</div>
-							
 							<div class="second_one" v-else-if="vendor === 'vendor_3'">
 								<br>
 								<div class="row">
@@ -838,54 +794,6 @@
 												<td class="!border-0" colspan="4"><br></td>
 											</tr>
 										</table>
-										<br>
-										<table class="!text-xs" width="100%">
-											<tr>
-												<td width="19%" class="text-center">Prepared by:</td>
-												<td></td>
-												<td width="19%" class="text-center">Received and Checked by</td>
-												<td></td>
-												<td width="19%" class="text-center">Award Recommended by</td>
-												<td></td>
-												<td width="19%" class="text-center">Recommending Approval</td>
-												<td></td>
-												<td width="19%" class="text-center">Aprroved by</td>
-											</tr>
-											<tr>
-												<td class=""><br></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-											</tr>
-											<tr>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-											</tr>
-											
-										</table>
-										<br>
 									</div>
 								</div>
 								<br>
@@ -899,7 +807,8 @@
 											<div class="flex justify-between space-x-1">
 												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
 												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_2'">Back</button>
-												<button type="submit" class="btn btn-primary w-26" @click="openSuccessAlert()">Save AOQ</button>
+												<button type="submit" class="btn btn-primary w-26" @click="openChooseVendor()">Save AOQ</button> 
+												<!-- @click="openSuccessAlert()" -->
 											</div>
 											
 										</div>
@@ -1234,54 +1143,7 @@
 										</table>
 									</div>
 								</div>
-								<br>
-								<table class="!text-xs" width="100%">
-									<tr>
-										<td width="19%" class="text-center">Prepared by:</td>
-										<td></td>
-										<td width="19%" class="text-center">Received and Checked by</td>
-										<td></td>
-										<td width="19%" class="text-center">Award Recommended by</td>
-										<td></td>
-										<td width="19%" class="text-center">Recommending Approval</td>
-										<td></td>
-										<td width="19%" class="text-center">Aprroved by</td>
-									</tr>
-									<tr>
-										<td class=""><br></td>
-										<td></td>
-										<td class=""></td>
-										<td></td>
-										<td class=""></td>
-										<td></td>
-										<td class=""></td>
-										<td></td>
-										<td class=""></td>
-									</tr>
-									<tr>
-										<td class="border-b text-center pb-1">
-											Employee Name
-										</td>
-										<td></td>
-										<td class="border-b text-center pb-1">
-											Employee Name
-										</td>
-										<td></td>
-										<td class="border-b text-center pb-1">
-											Employee Name
-										</td>
-										<td></td>
-										<td class="border-b text-center pb-1">
-											Employee Name
-										</td>
-										<td></td>
-										<td class="border-b text-center pb-1">
-											Employee Name
-										</td>
-									</tr>
-									
-								</table>
-								<br>
+								
 								<div class="row my-2"> 
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-between space-x-2">
@@ -1314,12 +1176,12 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal pt-4 px-3" :class="{ show:showAddVendor }">
-				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div @click="closeModal()" class="w-full h-full fixed"></div>
 				<div class="modal__content w-8/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Add Vendor</span>
-							<a href="#" class="text-gray-600" @click="closeModal">
+							<a href="#" class="text-gray-600" @click="closeModal()">
 								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
 							</a>
 						</div>
@@ -1460,12 +1322,12 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal pt-4 px-3" :class="{ show:showPreview }">
-				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div @click="closeModal()" class="w-full h-full fixed"></div>
 				<div class="modal__content w-10/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Preview AOQ</span>
-							<a href="#" class="text-gray-600" @click="closeModal">
+							<a href="#" class="text-gray-600" @click="closeModal()">
 								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
 							</a>
 						</div>
@@ -2249,7 +2111,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -2290,7 +2152,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:warningAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -2316,6 +2178,104 @@
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<a href="/pur_req/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:chooseVendor }">
+				<div @click="closeModal()" class="w-full h-full fixed"></div>
+				<div class="modal__content w-8/12 mb-5">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Before saving AOQ please fill out the following fields.</span>
+							<a href="#" class="text-gray-600" @click="closeModal()">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items">
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Date Needed</label>
+									<input type="date" class="form-control" placeholder="" >
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Prepared by</label>
+									<select class="form-control" placeholder="" >
+										<option value="">--Select Employee--</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Received and Checked by</label>
+									<select class="form-control" placeholder="" >
+										<option value="">--Select Employee--</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Award Recommended by</label>
+									<select class="form-control" placeholder="" >
+										<option value="">--Select Employee--</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Recommending Approval</label>
+									<select class="form-control" placeholder="" >
+										<option value="">--Select Employee--</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Aprroved by</label>
+									<select class="form-control" placeholder="" >
+										<option value="">--Select Employee--</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="row">
+							<div class="col-lg-12">
+								<table class="w-full table-bordered text-sm" >
+									<tr class="bg-gray-50">
+										<td class="p-1" width="2%"><input type="checkbox" name="check"></td>
+										<td class="p-1">Vendor</td>
+									</tr>
+									<tr >
+										<td class="p-1"><input type="checkbox" name="check"></td>
+										<td class="p-1">Vendor</td>
+									</tr>
+								</table>
+							</div>
+						</div> -->
+						<hr>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-primary mr-2 w-44" @click="openSuccessAlert()">Save</button>
 								</div>
 							</div>
 						</div>
