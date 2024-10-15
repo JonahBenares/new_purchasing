@@ -357,7 +357,7 @@
         >
 			<div class="modal pt-4 px-3" :class="{ show:showModal }">
 				<div @click="closeModal" class="w-full h-full fixed"></div>
-				<div class="modal__content w-6/12">
+				<div class="modal__content w-8/12">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Add Vendor</span>
@@ -490,8 +490,8 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<!-- <a href="/pur_quote/print" class="btn btn-primary mr-2 w-44">Save and Proceed</a> -->
-									<button type="submit" id="SaveandProceedBtn" @click="SaveandProceedBtn()" class="btn btn-primary mr-2 w-44" disabled>Save and Proceed</button>
 									<button type="submit" @click="closeModal()" class="btn btn-danger mr-2 w-44">Close</button>
+									<button type="submit" id="SaveandProceedBtn" @click="SaveandProceedBtn()" class="btn btn-primary mr-2 w-44" disabled>Save and Proceed</button>
 								</div>
 							</div>
 						</div>

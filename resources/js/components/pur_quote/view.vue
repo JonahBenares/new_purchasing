@@ -311,6 +311,23 @@
 		// }
 	}
 
+	const CanvassCompleteBtn = () => {
+		var count_offers=document.getElementsByClassName('offers_');
+		var not_empty_offers = 0;
+			for(var x=0;x<count_offers.length;x++){
+				var offers = document.getElementsByClassName('offers_')[x].value
+				if(offers != "") {
+					not_empty_offers++;
+				}
+			}
+
+			if(not_empty_offers>=1){
+				document.getElementById("canvasscompletebtn").disabled = false;
+			}else{
+				document.getElementById("canvasscompletebtn").disabled = true;
+			}
+	}
+
 	const CanvassComplete = (rfq_vendor_id) => {
 		const formCanvass= new FormData()
 			formCanvass.append('rfq_head_id', props.id)
@@ -519,8 +536,8 @@
 														<td class="p-1 align-top item_desc">{{ rd.item_description }}</td>
 														<span hidden>{{ item_no++ }}</span>
 													<td class="align-top">
-														<div v-for="ro in RFQOffers">
-															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 0" v-model="ro.offer"></textarea>
+														<div v-for="(ro, o) in RFQOffers">
+															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ o" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 0" v-model="ro.offer" @change="CanvassCompleteBtn"></textarea>
 															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 1" v-model="ro.offer" readonly></textarea>
 															<input type="hidden" class="offerid_" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
 														</div>
@@ -652,7 +669,7 @@
 									<div class="row my-2 po_buttons"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 0">
-												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)">Canvass Complete</button>
+												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" disabled>Canvass Complete</button>
 												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 											</div>
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 1">

@@ -8,6 +8,7 @@
 	})
     let credentials=ref([])
     const userDrop = ref(false);
+    const templatesDrop = ref(false);
     const notif = ref(false);
     
     const menu = ref(false);
@@ -361,7 +362,7 @@
                 </div>  
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <ul class="navbar-nav mr-lg-4 w-100">
+                <ul class="navbar-nav  w-100">
                 <li class="nav-item nav-search d-none d-lg-block w-100">
                     <div class="input-group">
                     <div class="input-group-prepend">
@@ -419,61 +420,30 @@
                     </a>
                     </div> -->
                 </li>
-                <li class="nav-item dropdown mr-4">
-                    <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="#" data-toggle="dropdown">
-                    <i class="mdi mdi-bell mx-0"></i>
-                    <!-- <span class="count"></span> -->
+                <li class="nav-item dropdown mr-0 ">
+                    <a class="nav-link dropdown-toggle text-base !flex" href="#" data-toggle="dropdown" id="templateDropdown" @click="templatesDrop = !templatesDrop">
+                        Download Templates
                     </a>
-                    <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                    <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                    <a class="dropdown-item">
-                        <div class="item-thumbnail">
-                        <div class="item-icon bg-success">
-                            <i class="mdi mdi-information mx-0"></i>
+                    <Transition
+						enter-active-class="transition ease-out duration-200"
+						enter-from-class="opacity-0"
+						enter-to-class="opacity-100 "
+						leave-active-class="transition ease-in duration-200"
+						leave-from-class="opacity-100 "
+						leave-to-class="opacity-0"
+					>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" v-show="templatesDrop">
+                            <a class="dropdown-item"> PR Template </a>
+                            <a class="dropdown-item"> JOR Template </a>
                         </div>
-                        </div>
-                        <div class="item-content">
-                        <h6 class="font-weight-normal">Application Error</h6>
-                        <p class="font-weight-light small-text mb-0 text-muted">
-                            Just now
-                        </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item">
-                        <div class="item-thumbnail">
-                        <div class="item-icon bg-warning">
-                            <i class="mdi mdi-settings mx-0"></i>
-                        </div>
-                        </div>
-                        <div class="item-content">
-                        <h6 class="font-weight-normal">Settings</h6>
-                        <p class="font-weight-light small-text mb-0 text-muted">
-                            Private message
-                        </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item">
-                        <div class="item-thumbnail">
-                        <div class="item-icon bg-info">
-                            <i class="mdi mdi-account-box mx-0"></i>
-                        </div>
-                        </div>
-                        <div class="item-content">
-                        <h6 class="font-weight-normal">New user registration</h6>
-                        <p class="font-weight-light small-text mb-0 text-muted">
-                            2 days ago
-                        </p>
-                        </div>
-                    </a>
-                    </div> -->
+                    </Transition>
                 </li>
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle !flex" href="#" data-toggle="dropdown" id="profileDropdown" @click="userDrop = !userDrop">
-                      
-                            <span>
-                                <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
-                            </span>
-                            <span class="nav-profile-name">{{ credentials.name }}</span>
+                        <span>
+                            <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
+                        </span>
+                        <span class="nav-profile-name">{{ credentials.name }}</span>
                     </a>
                     <Transition
 						enter-active-class="transition ease-out duration-200"

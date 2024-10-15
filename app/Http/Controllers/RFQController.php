@@ -79,13 +79,14 @@ class RFQController extends Controller
     public function get_pr_data($pr_head_id){
         $curr_year = date('Y');
         $curr_mo = date('m');
+        $company=Config::get('constants.company');
         if(RFQSeries::where('year', '=', $curr_year)->exists()) {
             $rfq = RFQSeries::where('year', '=', $curr_year)->max('series') + 1;
             $max_value = str_pad($rfq,4,"0",STR_PAD_LEFT);;
         } else {
             $max_value = '0001';
         }
-        $rfq_no = 'RFQ-'.$curr_year.'-'.$max_value;
+        $rfq_no = 'RFQ-'.$curr_year.'-'.$max_value."-".$company;
 
         $head = PRHead::where('id',$pr_head_id)->where('status','Saved')->get();
         $userid = Auth::id();
@@ -173,6 +174,8 @@ class RFQController extends Controller
                     $rfq_i['pr_no']=$request->input('pr_no');
                     $rfq_i['created_at']=date('Y-m-d H:i:s');
                     $rfq_details_id=RFQDetails::insertGetId($rfq_i);
+
+                    $update_status = PrReportDetails::where('pr_details_id','=', $ri->pr_details_id)->update(['status' => 'For Canvass']);
 
                     for($x=0;$x<3;$x++){
                         RFQOffers::create([
@@ -383,6 +386,8 @@ class RFQController extends Controller
                         $rfq_i['pr_no']=$request->input('pr_no');
                         $rfq_i['created_at']=date('Y-m-d H:i:s');
                         $rfq_details_id=RFQDetails::insertGetId($rfq_i);
+
+                        $update_status = PrReportDetails::where('pr_details_id','=', $ai->pr_details_id)->update(['status' => 'For Canvass']);
 
                         for($x=0;$x<3;$x++){
                             RFQOffers::create([
