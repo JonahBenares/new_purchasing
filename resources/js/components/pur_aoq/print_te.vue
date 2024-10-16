@@ -762,24 +762,24 @@
 						</tr>
 						<tr>
 							<td></td>
-							<td class="border-b">
-								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							<td class="border-b text-center">
+								Employee Name
 							</td>
 							<td></td>
-							<td class="border-b">
-								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							<td class="border-b text-center">
+								Employee Name
 							</td>
 							<td></td>
-							<td class="border-b">
-								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							<td class="border-b text-center">
+								Employee Name
 							</td>
 							<td></td>
-							<td class="border-b">
-								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							<td class="border-b text-center">
+								Employee Name
 							</td>
 							<td></td>
-							<td class="border-b">
-								<input type="text" class="text-center w-full bg-yellow-50 py-1">
+							<td class="border-b text-center">
+								Employee Name
 							</td>
 							<td></td>
 						</tr>
