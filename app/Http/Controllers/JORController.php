@@ -15,6 +15,7 @@ use App\Models\JORMaterialDetails;
 use App\Models\JORSeries;
 use App\Models\JORNotes;
 use App\Models\Departments;
+use App\Models\User;
 use Config;
 class JORController extends Controller
 {
@@ -838,5 +839,27 @@ class JORController extends Controller
             'cancelled_date'=>date('Y-m-d H:i:s'),
             'cancelled_by'=>Auth::id(),
         ]);
+    }
+
+    public function cancelled_labor_data($jorhead_id,$jorlabordetails_id){
+        $laborcancelled = JORLaborDetails::where('id',$jorlabordetails_id)->where('jor_head_id',$jorhead_id)->where('status','Cancelled')->first();
+        $labor_cancelled=($laborcancelled->cancelled_by!='' && $laborcancelled->cancelled_by!=null) ? $laborcancelled->cancelled_by : 0 ;
+        $cancelled_by_labor= User::where('id',$labor_cancelled)->value('name');
+        return response()->json([
+            'cancelled'=>$laborcancelled,
+            'cancelled_by'=>$cancelled_by_labor,
+            'identifier'=>'Scope of work',
+        ],200);
+    }
+
+    public function cancelled_material_data($jorhead_id,$jormaterialdetails_id){
+        $materialcancelled = JORMaterialDetails::where('id',$jormaterialdetails_id)->where('jor_head_id',$jorhead_id)->where('status','Cancelled')->first();
+        $material_cancelled=($materialcancelled->cancelled_by!='' && $materialcancelled->cancelled_by!=null) ? $materialcancelled->cancelled_by : 0;
+        $cancelled_by_material= User::where('id',$material_cancelled)->value('name');
+        return response()->json([
+            'cancelled'=>$materialcancelled,
+            'cancelled_by'=>$cancelled_by_material,
+            'identifier'=>'Item',
+        ],200);
     }
 }

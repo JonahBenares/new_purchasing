@@ -864,4 +864,17 @@ class PRController extends Controller
             return 'error';
         }
     }
+
+    public function referred_cancelled_data($prhead_id,$prdetails_id){
+        $referred_cancelled = PRDetails::where('id',$prdetails_id)->where('pr_head_id',$prhead_id)->where(function ($q) {
+            $q->where('status','Cancelled')->Orwhere('status','Referred');
+        })->first();
+        $referred_by= User::where('id',$referred_cancelled->referred_by)->value('name');
+        $cancelled_by= User::where('id',$referred_cancelled->cancelled_by)->value('name');
+        return response()->json([
+            'referred_cancelled'=>$referred_cancelled,
+            'referred_by'=>$referred_by,
+            'cancelled_by'=>$cancelled_by,
+        ],200);
+    }
 }

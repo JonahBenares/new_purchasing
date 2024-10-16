@@ -101,6 +101,7 @@ Route::post('/insert_referred/{id}',[PRController::class,'insert_referred']);
 Route::post('/update_recomdate_view',[PRController::class,'update_recomdate_view']);
 Route::post('/cancel_prdetails/{pr_details_id}',[PRController::class,'cancel_prdetails']);
 Route::get('/cancel_allpr/{pr_head_id}',[PRController::class,'cancel_allpr']);
+Route::get('/referred_cancelled_data/{prhead_id}/{prdetails_id}',[PRController::class,'referred_cancelled_data']);
 
 Route::post('/import_jor',[JORController::class,'import_jor']);
 Route::get('/get_import_data_jor/{id}',[JORController::class,'get_import_data_jor']);
@@ -124,6 +125,8 @@ Route::get('/cancel_alljor/{jor_head_id}',[JORController::class,'cancel_alljor']
 Route::post('/cancel_jorlabordetails/{jor_labor_details_id}',[JORController::class,'cancel_jorlabordetails']);
 Route::post('/cancel_jormaterialdetails/{jor_material_details_id}',[JORController::class,'cancel_jormaterialdetails']);
 Route::get('/cancel_jornotes/{jor_notes_id}',[JORController::class,'cancel_jornotes']);
+Route::get('/cancelled_labor_data/{jorhead_id}/{jorlabordetails_id}',[JORController::class,'cancelled_labor_data']);
+Route::get('/cancelled_material_data/{jorhead_id}/{jormaterialdetails_id}',[JORController::class,'cancelled_material_data']);
 
 Route::get('/get_all_todo', [DashboardController::class,'get_all_todo']);
 Route::get('/create_todo',[DashboardController::class,'create_todo']);

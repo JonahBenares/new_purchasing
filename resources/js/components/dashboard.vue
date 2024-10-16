@@ -493,9 +493,9 @@
 									<td width="2%" class="p-q text-center"><input type="checkbox"  @click="selectAllreminder('no')" v-model="allSelectedreminder"></td>
 								</tr>
 								<tr v-for="r in reminder_list">
-									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{moment(r.created_at).format('MMM. D, YYYY')}}</td>
+									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{moment(r.created_at).format('MMM. DD, YYYY')}}</td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{r.employee_name}}</td>
-									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{moment(r.reminder_due_date).format('MMM. D, YYYY')}}</td>
+									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'" width="15%">{{moment(r.reminder_due_date).format('MMM. DD, YYYY')}}</td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100' : 'p-1'">{{r.reminder_desc}}</td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 text-center' : 'p-1 text-center'" width="20%">{{ (r.reminder_due_date!='' ) ? daysRemaining(r.reminder_due_date) : 0}} Day/s </td>
 									<td :class="(daysRemaining(r.reminder_due_date)<0) ? 'bg-red-100 text-center' : 'p-1 text-center'" width="2%"><input type="checkbox" v-model="selected_reminder" v-on:click="selectreminder" :value="r.id" @click="checkCompletereminder(r.id,'no')"></td>

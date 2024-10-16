@@ -4,6 +4,7 @@
 	import{Bars3Icon, PlusIcon, XMarkIcon, ArrowUpOnSquareStackIcon, CheckIcon, EyeIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
+	import moment from 'moment'
 	let error=ref('');
 	let success=ref('');
 	const dangerAlert = ref(false)
@@ -25,6 +26,9 @@
 	let pr_details_id_view=ref("")
 	let pr_head_id_view=ref("")
 	let cancel_reason=ref("")
+	let referred_cancelled=ref([]);
+	let referred_by=ref("")
+	let cancelled_by=ref("")
 	const props = defineProps({
 		id:{
 			type:String,
@@ -68,29 +72,55 @@
 		modalRefered.value = !modalRefered.value
 		prdetails_id.value=id
 	}
-	const openViewComments = () => {
+	const openViewComments= async (prhead_id,prdetails_id) => {
+		let response = await axios.get(`/api/referred_cancelled_data/`+prhead_id+'/'+prdetails_id);
+		referred_cancelled.value=response.data.referred_cancelled
+		referred_by.value=response.data.referred_by
+		cancelled_by.value=response.data.cancelled_by
 		viewComments.value = !viewComments.value
 	}
 	const insertRefered = (id) => {
-		const formData= new FormData()
-		formData.append('referred_date', referred_date.value)
-		formData.append('referred_reason', comment.value)
-		axios.post(`/api/insert_referred/${id}`,formData).then(function () {
-			success.value='You have successfully referred the item!'
-			successAlert.value = !successAlert.value
-			referred_date.value=''
-			comment.value=''
-			closeModal()
-			setTimeout(() => {
-				closeAlert()
+		if(referred_date.value!='' && comment.value!=''){
+			const formData= new FormData()
+			formData.append('referred_date', referred_date.value)
+			formData.append('referred_reason', comment.value)
+			axios.post(`/api/insert_referred/${id}`,formData).then(function () {
+				success.value='You have successfully referred the item!'
+				successAlert.value = !successAlert.value
+				referred_date.value=''
+				comment.value=''
+				document.getElementById('referredate_check').placeholder=""
+				document.getElementById('referredate_check').style.backgroundColor = '#FFFFFF';
+				document.getElementById('comment_check').placeholder=""
+				document.getElementById('comment_check').style.backgroundColor = '#FFFFFF';
+				closeModal()
+				setTimeout(() => {
+					closeAlert()
+					getPR()
+				}, 2000);
+			}, function (err) {
+				error.value = err.response.data.message;
+				dangerAlert.value = !dangerAlert.value
+				closeModal()
 				getPR()
-			}, 2000);
-		}, function (err) {
-			error.value = err.response.data.message;
-			dangerAlert.value = !dangerAlert.value
-			closeModal()
-			getPR()
-		});
+			});
+		}else{
+			if(referred_date.value==''){
+				document.getElementById('referredate_check').placeholder="Referred date must not be empty!"
+				document.getElementById('referredate_check').style.backgroundColor = '#FAA0A0';
+			}else if(referred_date.value!=''){
+				document.getElementById('referredate_check').placeholder=""
+				document.getElementById('referredate_check').style.backgroundColor = '#FFFFFF';
+			}
+			
+			if(comment.value==''){
+				document.getElementById('comment_check').placeholder="Comment must not be empty!"
+				document.getElementById('comment_check').style.backgroundColor = '#FAA0A0';
+			}else if(comment.value!=''){
+				document.getElementById('comment_check').placeholder="Comment"
+				document.getElementById('comment_check').style.backgroundColor = '#FFFFFF';
+			}
+		}
 	}
 
 	const updateRecomdate = (id) => {
@@ -278,17 +308,17 @@
 											</td>
 											<td :class="(pd.status=='Cancelled') ? 'bg-red-100 text-center po_buttons p-0' : (pd.status=='Referred') ? 'bg-orange-200 text-center po_buttons p-0' : 'text-center po_buttons p-0'">
 												<div class="space-x-1" v-if="pd.status=='Cancelled'">
-													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments()">
+													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments(pd.pr_head_id,pd.id)">
 														<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></EyeIcon>
 													</button>
 												</div>
 												<div class="space-x-1" v-else-if="pd.status=='Referred'">
-													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments()">
+													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments(pd.pr_head_id,pd.id)">
 														<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></EyeIcon>
 													</button>
-													<!-- <button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
+													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
-													</button> -->
+													</button>
 												</div>
 												<div class="space-x-1" v-else-if="pd.status!='Referred'">
 													<button class="btn btn-xs btn-info p-1" @click="openModalReferred(pd.id)" title="Refer">
@@ -502,11 +532,11 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Referred Date</label>
-									<input type="date" class="form-control" placeholder="Reffered Date" v-model="referred_date">
+									<input type="date" id="referredate_check" class="form-control" placeholder="Reffered Date" v-model="referred_date">
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Comment</label>
-									<textarea class="form-control" placeholder="Comment" rows="3" v-model="comment"></textarea>
+									<textarea class="form-control" id="comment_check" placeholder="Comment" rows="3" v-model="comment"></textarea>
 								</div>
 							</div>
 						</div>
@@ -533,7 +563,8 @@
 			<div class="modal pt-4 px-3" :class="{ show:viewComments }">
 				<div @click="closeModal()" class="w-full h-full fixed"></div>
 				<!-- Reffered here -->
-				<div class="modal__content w-6/12">
+				
+				<div class="modal__content w-6/12" v-if="(referred_cancelled.referred_by!=null && referred_cancelled.referred_by!='') || referred_cancelled.status!='Cancelled'">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold text-orange-500">Referred</span>
@@ -547,11 +578,14 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="flex justify-start space-x-1">
-									<label class="text-gray-500 m-0 text-sm" for="">Referred Date: 02/11/24</label>
+									<label class="text-gray-500 m-0 text-sm" for="">Referred Date: {{moment(referred_cancelled.referred_date).format('MMM. DD, YYYY')}}</label>
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Comment:</label>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+									<p>{{referred_cancelled.referred_reason}}</p>
+								</div>
+								<div class="form-group">
+									<label class="text-gray-500 text-sm" for="">Referred By: {{referred_by}}</label>
 								</div>
 							</div>
 						</div>
@@ -559,7 +593,7 @@
 				</div>
 				<!-- Reffered here -->
 				 <!-- cancel here -->
-				<div class="modal__content w-6/12">
+				<div class="modal__content w-6/12" v-if="referred_cancelled.status=='Cancelled'">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold text-red-500">Cancelled</span>
@@ -573,11 +607,14 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="flex justify-start space-x-1">
-									<label class="text-gray-500 m-0 text-sm" for="">Date Cancelled: 02/11/24</label>
+									<label class="text-gray-500 m-0 text-sm" for="">Date Cancelled: {{moment(referred_cancelled.cancelled_date).format('MMM. DD, YYYY')}}</label>
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Cancel Reason:</label>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+									<p>{{referred_cancelled.cancelled_reason}}</p>
+								</div>
+								<div class="form-group">
+									<label class="text-gray-500 m-0 text-sm" for="">Cancelled By: {{cancelled_by}}</label>
 								</div>
 							</div>
 						</div>

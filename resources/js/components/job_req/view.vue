@@ -4,6 +4,7 @@
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, EyeIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
+	import moment from 'moment'
 	let error=ref('');
 	let success=ref('');
 	const dangerAlert = ref(false)
@@ -28,6 +29,9 @@
 	let cancel_labor_reason=ref("")
 	let cancel_material_reason=ref("")
 	let label=ref("")
+	let cancelled_data=ref([]);
+	let cancelled_by=ref("")
+	let identifier=ref("")
 	const props = defineProps({
 		id:{
 			type:String,
@@ -74,9 +78,22 @@
 		dangerAlert_item3.value = !hideAlert.value
 		dangerAlert_item4.value = !hideAlert.value
 	}
-	const openViewComments = () => {
+	const openViewComments1 = async (jorhead_id,jorlabordetails_id) => {
+		let response = await axios.get(`/api/cancelled_labor_data/`+jorhead_id+'/'+jorlabordetails_id);
+		cancelled_data.value=response.data.cancelled
+		cancelled_by.value=response.data.cancelled_by
+		identifier.value=response.data.identifier
 		viewComments.value = !viewComments.value
 	}
+
+	const openViewComments2 = async (jorhead_id,jormaterialdetails_id) => {
+		let response = await axios.get(`/api/cancelled_material_data/`+jorhead_id+'/'+jormaterialdetails_id);
+		cancelled_data.value=response.data.cancelled
+		cancelled_by.value=response.data.cancelled_by
+		identifier.value=response.data.identifier
+		viewComments.value = !viewComments.value
+	}
+
 	const closeModal = () => {
 		viewComments.value = !hideAlert.value
 	}
@@ -358,7 +375,7 @@
 												</button>
 											</div>
 											<div v-else>
-												<button class="btn btn-warning text-white p-1" @click="openViewComments()"  >
+												<button class="btn btn-warning text-white p-1" @click="openViewComments1(jl.jor_head_id,jl.id)"  >
 													<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
 												</button>
 											</div>
@@ -405,7 +422,7 @@
 												</button>
 											</div>
 											<div v-else>
-												<button class="btn btn-warning text-white p-1" @click="openViewComments()"  >
+												<button class="btn btn-warning text-white p-1" @click="openViewComments2(jm.jor_head_id,jm.id)"  >
 													<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
 												</button>
 											</div>
@@ -426,9 +443,9 @@
 										</td>
 									</tr>
 									<tr v-for="(jn,indexer) in get_jornotes" id="notes">
-										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500bg-red-100 p-1 text-center align-top' : 'p-1 print:!bg-transparent text-center align-top'">{{ indexer + 1 }}</td>
-										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500bg-red-100 p-1 align-top' : 'p-1 print:!bg-transparent align-top'">{{ jn.notes }}</td>
-										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500bg-red-100 text-center po_buttons'  : 'text-center po_buttons'">
+										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500 bg-red-100 p-1 text-center align-top' : 'p-1 print:!bg-transparent text-center align-top'">{{ indexer + 1 }}</td>
+										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500 bg-red-100 p-1 align-top' : 'p-1 print:!bg-transparent align-top'">{{ jn.notes }}</td>
+										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500 bg-red-100 text-center po_buttons'  : 'text-center po_buttons'">
 											<button class="btn btn-danger p-1" @click="cancelJorNotes('no',jn.id)" v-if="jn.status!='Cancelled'">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
@@ -549,9 +566,12 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">
+									<h5 class="leading-tight" v-if="label!='note'">
 										Are you sure you want to cancel this {{ label }}?<br>
 										If yes, please state your reason.
+									</h5>
+									<h5 class="leading-tight" v-else>
+										Are you sure you want to cancel this {{ label }}?<br>
 									</h5>
 									<label v-if="label=='scope'">Cancel Reason: </label>
 									<label v-else-if="label=='item'">Cancel Reason: </label>
@@ -753,7 +773,7 @@
 				<div class="modal__content w-6/12">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
-							<span class="font-bold text-red-500">Cancelled</span>
+							<span class="font-bold text-red-500">Cancelled {{ identifier }}</span>
 							<a href="#" class="text-gray-600" @click="closeModal()">
 								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
 							</a>
@@ -764,11 +784,14 @@
 						<div class="row">
 							<div class="col-lg-12 col-md-3">
 								<div class="flex justify-start space-x-1">
-									<label class="text-gray-500 m-0 text-sm" for="">Date Cancelled: 02/11/24</label>
+									<label class="text-gray-500 m-0 text-sm" for="">Date Cancelled: {{moment(cancelled_data.cancelled_date).format('MMM. DD, YYYY')}}</label>
 								</div>
 								<div class="form-group">
 									<label class="text-gray-500 m-0" for="">Cancel Reason:</label>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+									<p>{{ cancelled_data.cancelled_reason }}</p>
+								</div>
+								<div class="flex justify-start space-x-1">
+									<label class="text-gray-500 m-0 text-sm" for="">Cancelled By: {{cancelled_by}}</label>
 								</div>
 							</div>
 						</div>
