@@ -1,5 +1,5 @@
 /.phpunit.cache
-/storage/*.key
+# /storage/*.key
 .env.backup
 .env.production
 .phpunit.result.cache
