@@ -8,6 +8,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RFQController;
+use App\Http\Controllers\AOQController;
 use App\Http\Controllers\PRController;
 use App\Http\Controllers\JORController;
 /*
@@ -78,6 +79,10 @@ Route::post('/draft_vendor',[RFQController::class,'draft_vendor']);
 Route::post('/add_additional_terms',[RFQController::class,'add_additional_terms']);
 Route::post('/update_terms', [RFQController::class,'update_rfq_terms']);
 Route::get('/remove_terms/{rfq_vendor_terms_id}', [RFQController::class,'remove_terms']);
+
+Route::get('/get_all_aoq', [AOQController::class,'get_all_aoq']);
+Route::get('/get_rfq_data/{rfq_head_id}', [AOQController::class,'get_rfq_data']);
+Route::get('/get_aoq_data/{aoq_head_id}', [AOQController::class,'get_aoq_data']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::post('/import_pr',[PRController::class,'import_pr']);

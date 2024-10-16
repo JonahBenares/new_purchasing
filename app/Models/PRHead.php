@@ -34,4 +34,8 @@ class PRHead extends Model
     public function rfq_head(){
         return $this->hasMany(RFQHead::class);
     }
+
+    public function aoq_head(){
+        return $this->hasMany(aoq_head::class);
+    }
 }

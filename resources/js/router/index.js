@@ -366,8 +366,9 @@ const routes = [
     },
 
     {
-        path:'/pur_aoq/view',
+        path:'/pur_aoq/view/:id',
         component: pur_aoqView,
+        props:true,
         meta:{
             requiresAuth:true
         }

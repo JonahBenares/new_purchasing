@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-		<div class="bg-yellow-400 text-white px-3 py-2 font-bold">Done TE</div>
+		<div class="bg-yellow-400 text-white px-3 py-2 font-bold">For TE</div>
 		<div class="row">
 			
 			<div class="col-12 grid-margin stretch-card">
