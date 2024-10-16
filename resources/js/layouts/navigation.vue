@@ -15,6 +15,7 @@
     const masterfileDrop = ref(false);
     const prDrop = ref(false);
     const rfqDrop = ref(false);
+    const aoqDrop = ref(false);
     const poDrop = ref(false);
     const drDrop = ref(false);
     const rfdDrop = ref(false);
@@ -35,7 +36,8 @@
 	const openMaster = () => {
 		masterfileDrop.value = !masterfileDrop.value
 		prDrop.value = !hideDrop.value
-        rfqDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value        
+		aoqDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
@@ -54,6 +56,7 @@
 		prDrop.value = !prDrop.value
         masterfileDrop.value = !hideDrop.value
         rfqDrop.value = !hideDrop.value
+		aoqDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
         drDrop.value = !hideDrop.value
         rfdDrop.value = !hideDrop.value
@@ -70,6 +73,26 @@
 	}
     const openRFQ = () => {
 		rfqDrop.value = !rfqDrop.value
+		aoqDrop.value = !hideDrop.value
+        prDrop.value = !hideDrop.value
+        masterfileDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
+	}
+    const openAOQ = () => {
+		aoqDrop.value = !aoqDrop.value
+		rfqDrop.value = !hideDrop.value
         prDrop.value = !hideDrop.value
         masterfileDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
@@ -88,6 +111,7 @@
 	}
     const openPO = () => {
         poDrop.value = !poDrop.value
+        aoqDrop.value = !hideDrop.value
 		rfqDrop.value = !hideDrop.value
         prDrop.value = !hideDrop.value
         masterfileDrop.value = !hideDrop.value
@@ -106,6 +130,7 @@
 	}
     const openDR = () => {
         drDrop.value = !drDrop.value
+        aoqDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
 		rfqDrop.value = !hideDrop.value
         prDrop.value = !hideDrop.value
@@ -124,6 +149,7 @@
 	}
     const openRFD = () => {
         rfdDrop.value = !rfdDrop.value
+        aoqDrop.value = !hideDrop.value
         drDrop.value = !hideDrop.value
         poDrop.value = !hideDrop.value
 		rfqDrop.value = !hideDrop.value
@@ -142,6 +168,7 @@
 	}
     const openJobReq = () => {
         jobDrop.value = !jobDrop.value
+        aoqDrop.value = !hideDrop.value
 		masterfileDrop.value = !hideDrop.value
 		prDrop.value = !hideDrop.value
         rfqDrop.value = !hideDrop.value
@@ -160,6 +187,7 @@
 	}
     const openJobQuote = () => {
         jobRfqDrop.value = !jobRfqDrop.value
+        aoqDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
 		masterfileDrop.value = !hideDrop.value
 		prDrop.value = !hideDrop.value
@@ -179,6 +207,7 @@
 	}
     const openJobIssue = () => {
         joiDrop.value = !joiDrop.value
+        aoqDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
 		masterfileDrop.value = !hideDrop.value
@@ -197,6 +226,7 @@
 	}
     const openJobRFD = () => {
         jobRfdDrop.value = !jobRfdDrop.value
+        aoqDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
@@ -215,6 +245,7 @@
 	}
     const openJobDR = () => {
         jobDrDrop.value = !jobDrDrop.value
+        aoqDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
         jobRfqDrop.value = !hideDrop.value
@@ -233,6 +264,7 @@
 	}
     const openJobReport = () => {
         jobReportDrop.value = !jobReportDrop.value 
+        aoqDrop.value = !hideDrop.value
         jobDrDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
         joiDrop.value = !hideDrop.value
@@ -251,6 +283,7 @@
 	}
     const weeklyPORecomOpen = () => {
         weeklyPORecomDrop.value = !weeklyPORecomDrop.value 
+        aoqDrop.value = !hideDrop.value
         jobReportDrop.value = !hideDrop.value 
         jobDrDrop.value = !hideDrop.value
         jobRfdDrop.value = !hideDrop.value
@@ -268,7 +301,8 @@
         monthlyJORRecomDrop.value = !hideDrop.value 
 	}
     const weeklyJORRecomOpen = () => {
-        weeklyJORRecomDrop.value = !weeklyJORRecomDrop.value 
+        weeklyJORRecomDrop.value = !weeklyJORRecomDrop.value
+        aoqDrop.value = !hideDrop.value
         weeklyPORecomDrop.value = !hideDrop.value 
         jobReportDrop.value = !hideDrop.value 
         jobDrDrop.value = !hideDrop.value
@@ -288,6 +322,7 @@
 
     const monthlyPORecomOpen = () => {
         monthlyPORecomDrop.value = !monthlyPORecomDrop.value 
+        aoqDrop.value = !hideDrop.value
         weeklyJORRecomDrop.value = !hideDrop.value 
         weeklyPORecomDrop.value = !hideDrop.value 
         jobReportDrop.value = !hideDrop.value 
@@ -307,6 +342,7 @@
 
     const monthlyJORRecomOpen = () => {
         monthlyJORRecomDrop.value = !monthlyJORRecomDrop.value 
+        aoqDrop.value = !hideDrop.value
         monthlyPORecomDrop.value = !hideDrop.value 
         weeklyJORRecomDrop.value = !hideDrop.value 
         weeklyPORecomDrop.value = !hideDrop.value 
@@ -564,13 +600,30 @@
                             </Transition>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link !text-gray-600" href="/pur_aoq">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openAOQ()" >
                                 <i class="mdi mdi-home menu-icon !text-gray-600">
                                     <Square3Stack3DIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></Square3Stack3DIcon>
                                 </i>
                                 <span class="menu-title">Abstract of Quotation</span>
                             </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-250"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-100"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:aoqDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_aoq/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_aoq">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
                         </li>
+                        <!-- aoqDrop.value = !hideDrop.value -->
                         <li class="nav-item">
                             <a class="nav-link !text-gray-600 cursor-pointer" @click="openPO()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
