@@ -433,7 +433,7 @@
 						leave-to-class="opacity-0"
 					>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" v-show="templatesDrop">
-                            <a class="dropdown-item"> PR Template </a>
+                            <a href="../../../../storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a>
                             <a class="dropdown-item"> JOR Template </a>
                         </div>
                     </Transition>
