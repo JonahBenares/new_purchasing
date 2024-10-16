@@ -1,6 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
+	import printheader from '@/layouts/print_header.vue';
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, EyeIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	let error=ref('');
@@ -15,6 +16,7 @@
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	const viewComments = ref(false)
 	let get_jorhead=ref([]);
 	let get_jorlabordetails=ref([]);
 	let get_jormaterialdetails=ref([]);
@@ -72,7 +74,12 @@
 		dangerAlert_item3.value = !hideAlert.value
 		dangerAlert_item4.value = !hideAlert.value
 	}
-
+	const openViewComments = () => {
+		viewComments.value = !viewComments.value
+	}
+	const closeModal = () => {
+		viewComments.value = !hideAlert.value
+	}
 	const removeItem1 = () => {
 		const item1 = document.getElementById("item1");
 		dangerAlert_item.value = !hideAlert.value
@@ -242,6 +249,13 @@
 				<div class="card-body">
 					<hr class="border-dashed mt-0">
 					<div class="pt-1" id="printable">
+						<div class="hidden print:block">
+							<printheader ></printheader>
+							<div class="flex justify-center mt-1">
+								<span class="uppercase">Job Order</span>
+							</div>
+							<hr class="print:block border-dashed mt-2">
+						</div>
 						<div class="print:block hidden print:flex print:justify-center h-full" v-if="get_jorhead.status=='Cancelled'">
 							<img src="../../../images/bg_cancelled.png" alt="" class="absolute h-[420px] align-center opacity-100">
 						</div>
@@ -249,10 +263,14 @@
 							<div class="col-lg-6 col-md-6 col-sm-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Location: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.location}}</span>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6">
+							</div>							
+							<div class="col-lg-4 col-md-4 col-sm-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.date_prepared}}</span>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2">
+								<span class="text-sm text-gray-700 font-bold pr-1">Duration: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.duration}}</span>
 							</div>
 						</div>
 						<div class="row">
@@ -260,38 +278,34 @@
 								<span class="text-sm text-gray-700 font-bold pr-1">JOR Number: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.jor_no}}</span>
 							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Site JOR Number: </span>
-								<span class="text-sm text-gray-700">{{get_jorhead.site_jor}}</span>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Duration: </span>
-								<span class="text-sm text-gray-700">{{get_jorhead.duration}}</span>
-							</div>
 							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Completion Date: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.completion_date}}</span>
 							</div>
-							<div class="col-lg-2 col-md-2 col-sm-2">
+							<div class="col-lg-2 col-sm-2 col-md-2">
+								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.process_code}}</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Site JOR Number: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.site_jor}}</span>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Delivery Date: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.delivery_date}}</span>
-							</div>
+							</div>							
+							<div class="col-lg-2 col-md-2 col-sm-2">
+								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.urgency}}</span>
+							</div>							
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.department_name}}</span>
-							</div>
-							<div class="col-lg-4 col-sm-4 col-md-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
-								<span class="text-sm text-gray-700">{{get_jorhead.process_code}}</span>
-							</div>
-							<div class="col-lg-2 col-md-2 col-sm-2">
-								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
-								<span class="text-sm text-gray-700">{{get_jorhead.urgency}}</span>
-							</div>
+							</div>							
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
@@ -314,7 +328,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="w-full table-bordered !text-xs mt-3">
-									<tr class="bg-gray-100">
+									<tr class="bg-gray-100 print:bg-transparent">
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase" width="">Scope Of Works</td>
 										<td class="p-1 uppercase text-center" width="10%">Qty</td>
@@ -327,20 +341,27 @@
 										</td>
 									</tr>
 									<tr v-for="(jl,index) in get_jorlabordetails" id="scope">
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ index + 1 }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top' : 'p-1 align-top'">{{ jl.scope_of_work }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.quantity }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.uom }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.unit_cost }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center' : 'p-1 align-top text-center'">{{ jl.unit_cost * jl.quantity  }}</td>
-										<td class="p-1" :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">
-											<input type="date" class="w-full" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')"  v-if="jl.status!='Cancelled'">
-											<input type="date" class="w-full" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')" readonly v-else>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ index + 1 }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top print:!bg-transparent print:!text-red-500' : 'p-1 align-top'">{{ jl.scope_of_work }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.quantity }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.uom }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost * jl.quantity  }}</td>
+										<td class="p-1" :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">
+											<input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')"  v-if="jl.status!='Cancelled'">
+											<input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')" readonly v-else>
 										</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 text-center' : 'text-center'">
-											<button class="btn btn-danger p-1" @click="cancelJorLabordetails('no',jl.id)"  v-if="jl.status!='Cancelled'">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 text-center po_buttons' : 'text-center po_buttons'">
+											<div v-if="jl.status!='Cancelled'">
+												<button class="btn btn-danger p-1" @click="cancelJorLabordetails('no',jl.id)"  >
+													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+												</button>
+											</div>
+											<div v-else>
+												<button class="btn btn-warning text-white p-1" @click="openViewComments()"  >
+													<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+												</button>
+											</div>
 										</td>
 									</tr>
 								</table>
@@ -350,7 +371,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="w-full table-bordered !text-xs mt-3">
-									<tr class="bg-gray-100">
+									<tr class="bg-gray-100 print:bg-transparent">
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="7%">Qty</td>
 										<td class="p-1 uppercase text-center" width="7%">UOM</td>
@@ -366,21 +387,28 @@
 										</td>
 									</tr>
 									<tr v-for="(jm,indexed) in get_jormaterialdetails" id="item1">
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ indexed + 1 }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ jm.quantity }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center' : 'p-1 text-center'">{{ jm.uom }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.pn_no }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.item_description }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.wh_stocks }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">{{ jm.date_needed }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1' : 'p-1'">
-											<input type="date" class="w-full" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')"  v-if="jm.status!='Cancelled'">
-											<input type="date" class="w-full" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')" readonly v-else>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500' : 'p-1 text-center print:!bg-transparent'">{{ indexed + 1 }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500' : 'p-1 text-center print:!bg-transparent'">{{ jm.quantity }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500' : 'p-1 text-center print:!bg-transparent'">{{ jm.uom }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.pn_no }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.item_description }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.wh_stocks }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.date_needed }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">
+											<input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')"  v-if="jm.status!='Cancelled'">
+											<input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')" readonly v-else>
 										</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 text-center' : 'text-center'">
-											<button class="btn btn-danger p-1" @click="cancelJorMaterialdetails('no',jm.id)" v-if="jm.status!='Cancelled'">
-												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-											</button>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 text-center po_buttons' : 'text-center po_buttons'">
+											<div v-if="jm.status!='Cancelled'">
+												<button class="btn btn-danger p-1" @click="cancelJorMaterialdetails('no',jm.id)">
+													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+												</button>
+											</div>
+											<div v-else>
+												<button class="btn btn-warning text-white p-1" @click="openViewComments()"  >
+													<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+												</button>
+											</div>
 										</td>
 									</tr>
 								</table>
@@ -390,7 +418,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="w-full table-bordered !text-xs mt-3">
-									<tr class="bg-gray-100">
+									<tr class="bg-gray-100 print:bg-transparent">
 										<td class="p-1 uppercase text-center" width="1%">#</td>
 										<td class="p-1 uppercase" width="">Notes</td>
 										<td class="p-1 space-x-auto uppercase text-center po_buttons" align="center" width="1%">
@@ -398,9 +426,9 @@
 										</td>
 									</tr>
 									<tr v-for="(jn,indexer) in get_jornotes" id="notes">
-										<td :class="(jn.status=='Cancelled') ? 'bg-red-100 p-1 text-center align-top' : 'p-1 text-center align-top'">{{ indexer + 1 }}</td>
-										<td :class="(jn.status=='Cancelled') ? 'bg-red-100 p-1 align-top' : 'p-1 align-top'">{{ jn.notes }}</td>
-										<td :class="(jn.status=='Cancelled') ? 'bg-red-100 text-center' : 'text-center'">
+										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500bg-red-100 p-1 text-center align-top' : 'p-1 print:!bg-transparent text-center align-top'">{{ indexer + 1 }}</td>
+										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500bg-red-100 p-1 align-top' : 'p-1 print:!bg-transparent align-top'">{{ jn.notes }}</td>
+										<td :class="(jn.status=='Cancelled') ? 'print:!bg-transparent print:!text-red-500bg-red-100 text-center po_buttons'  : 'text-center po_buttons'">
 											<button class="btn btn-danger p-1" @click="cancelJorNotes('no',jn.id)" v-if="jn.status!='Cancelled'">
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
@@ -433,7 +461,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -465,7 +493,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -506,7 +534,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -556,7 +584,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item1 }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -597,7 +625,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item2 }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -638,7 +666,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item3 }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -679,7 +707,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item4 }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -709,6 +737,44 @@
 						</div>
 					</div> 
 				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:viewComments }">
+				<div @click="closeModal()" class="w-full h-full fixed"></div>
+				 <!-- cancel here -->
+				<div class="modal__content w-6/12">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold text-red-500">Cancelled</span>
+							<a href="#" class="text-gray-600" @click="closeModal()">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="flex justify-start space-x-1">
+									<label class="text-gray-500 m-0 text-sm" for="">Date Cancelled: 02/11/24</label>
+								</div>
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Cancel Reason:</label>
+									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+				 <!-- cancel here -->
 			</div>
 		</Transition>
 	</navigation>

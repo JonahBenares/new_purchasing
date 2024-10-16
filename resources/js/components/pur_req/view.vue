@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, ArrowUpOnSquareStackIcon, CheckIcon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, ArrowUpOnSquareStackIcon, CheckIcon, EyeIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	let error=ref('');
@@ -13,6 +13,7 @@
     const cancelAlert = ref(false)
 	const hideAlert = ref(true)
 	const modalRefered = ref(false)
+	const viewComments = ref(false)
 	let get_prhead=ref([]);
 	let get_prdetails=ref([]);
 	let prepared_by=ref('');
@@ -58,6 +59,7 @@
 	}
 	const closeModal = () => {
 		modalRefered.value = !hideAlert.value
+		viewComments.value = !hideAlert.value
 	}
 	const printDiv = () => {
 		window.print();
@@ -66,7 +68,9 @@
 		modalRefered.value = !modalRefered.value
 		prdetails_id.value=id
 	}
-
+	const openViewComments = () => {
+		viewComments.value = !viewComments.value
+	}
 	const insertRefered = (id) => {
 		const formData= new FormData()
 		formData.append('referred_date', referred_date.value)
@@ -273,11 +277,18 @@
 												<input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)" readonly v-else>
 											</td>
 											<td :class="(pd.status=='Cancelled') ? 'bg-red-100 text-center po_buttons p-0' : (pd.status=='Referred') ? 'bg-orange-200 text-center po_buttons p-0' : 'text-center po_buttons p-0'">
-												<div class="space-x-1" v-if="pd.status=='Cancelled'"></div>
-												<div class="space-x-1" v-else-if="pd.status=='Referred'">
-													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
-														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+												<div class="space-x-1" v-if="pd.status=='Cancelled'">
+													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments()">
+														<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></EyeIcon>
 													</button>
+												</div>
+												<div class="space-x-1" v-else-if="pd.status=='Referred'">
+													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments()">
+														<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></EyeIcon>
+													</button>
+													<!-- <button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
+														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
+													</button> -->
 												</div>
 												<div class="space-x-1" v-else-if="pd.status!='Referred'">
 													<button class="btn btn-xs btn-info p-1" @click="openModalReferred(pd.id)" title="Refer">
@@ -315,7 +326,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -347,7 +358,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -388,7 +399,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:cancelAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -429,7 +440,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -475,12 +486,12 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal pt-4 px-3" :class="{ show:modalRefered }">
-				<div @click="closeModal" class="w-full h-full fixed"></div>
+				<div @click="closeModal()" class="w-full h-full fixed"></div>
 				<div class="modal__content w-6/12">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Referred</span>
-							<a href="#" class="text-gray-600" @click="closeModal">
+							<a href="#" class="text-gray-600" @click="closeModal()">
 								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
 							</a>
 						</div>
@@ -509,6 +520,70 @@
 						</div>
 					</div> 
 				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:viewComments }">
+				<div @click="closeModal()" class="w-full h-full fixed"></div>
+				<!-- Reffered here -->
+				<div class="modal__content w-6/12">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold text-orange-500">Referred</span>
+							<a href="#" class="text-gray-600" @click="closeModal()">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="flex justify-start space-x-1">
+									<label class="text-gray-500 m-0 text-sm" for="">Referred Date: 02/11/24</label>
+								</div>
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Comment:</label>
+									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+				<!-- Reffered here -->
+				 <!-- cancel here -->
+				<div class="modal__content w-6/12">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold text-red-500">Cancelled</span>
+							<a href="#" class="text-gray-600" @click="closeModal()">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items ">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="flex justify-start space-x-1">
+									<label class="text-gray-500 m-0 text-sm" for="">Date Cancelled: 02/11/24</label>
+								</div>
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Cancel Reason:</label>
+									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+				 <!-- cancel here -->
 			</div>
 		</Transition>
 	</navigation>

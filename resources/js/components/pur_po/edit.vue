@@ -1,5 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
+	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
@@ -128,8 +129,18 @@
 				<div class="card">
 				<div class="card-body">
 					<div class="pt-1" id="printable">
-						<span class="font-bold uppercase text-lg text-center text-yellow-500">CHANGE ORDER FORM</span>
-						<hr class="block border-dashed">
+						<span class="font-bold uppercase text-lg text-center text-yellow-500 print:hidden">CHANGE ORDER FORM</span>
+						<hr class="block border-dashed print:hidden">
+						<div class="hidden print:block">
+								<printheader ></printheader>
+								<div class="flex justify-center mt-1">
+									<span class="uppercase leading_none">Purchase Order</span>
+								</div>
+								<div class="flex justify-center">
+									<span class="uppercase text-xs leading_none text-yellow-500">Change Order Form</span>
+								</div>
+								<hr class="print:block border-dashed mt-2">
+							</div>
 						<div>
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8 ">
