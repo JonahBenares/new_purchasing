@@ -135,7 +135,7 @@
                                 <DataTable :data="rfq_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="10%"> RFQ Date</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="12%"> RFQ Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> PR</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> RFQ Name</th>
@@ -148,7 +148,7 @@
                                     </tr>
                                 </thead>
                                 <template #column-4="props">
-                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc">
+                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc text-sm">
                                         <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
                                             <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li>
