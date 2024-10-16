@@ -457,7 +457,7 @@
 						</span>
 					</div>
 					<div>
-						<table class="w-full table-bordered">
+						<table class="w-full table-bordered text-xs">
 							<tr class="bg-gray-100">
 								<td class="p-1 text-bold">Description</td>
 								<td width="2%"><input type="checkbox"  @click="selectAll('no')" v-model="allSelected"></td>
@@ -483,7 +483,7 @@
 							</span>
 						</div>
 						<div>
-							<table class="w-full table-bordered">
+							<table class="w-full table-bordered text-xs">
 								<tr class="bg-gray-100">
 									<td class="p-1 text-bold text-center" width="15%">Date Created</td>
 									<td class="p-1 text-bold text-center" width="15%">Assigned To</td>
