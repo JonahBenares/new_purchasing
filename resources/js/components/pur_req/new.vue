@@ -647,6 +647,22 @@
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}); 
     }
+	const isNumber = (evt)=> {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode == 46) {
+			//Check if the text already contains the . character
+			if (evt.target.value.indexOf('.') === -1) {
+				return true;
+			} else {
+				evt.preventDefault();
+			}
+		} else {
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+				evt.preventDefault();
+		}
+		return true;
+    }
 </script>
 <template>
 	<navigation>
@@ -806,11 +822,11 @@
 										</tr>
 										<tr>
 											<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
-											<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center" id="check_qty"></td>
+											<td class=""><input placeholder="Qty" type="number" step="any" v-model="qty" min="0" @keypress="isNumber($event)" class="w-full p-1 text-center" id="check_qty"></td>
 											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center" id="check_uom"></td>
 											<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
 											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1" id="check_description"></td>
-											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" ></td>
+											<td class=""><input placeholder="WH Stock" type="number" step="any" v-model="wh_stocks" class="w-full p-1" @keypress="isNumber($event)" ></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="text-center">
@@ -1063,11 +1079,11 @@
 										</tr>
 										<tr>
 											<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
-											<td class=""><input placeholder="Qty" type="text" v-model="qty" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="w-full p-1 text-center" id="check_qty"></td>
+											<td class=""><input placeholder="Qty" type="number" step="any" v-model="qty" min="0" @keypress="isNumber($event)" class="w-full p-1 text-center" id="check_qty"></td>
 											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center" id="check_uom"></td>
 											<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
 											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1" id="check_description"></td>
-											<td class=""><input placeholder="WH Stock" type="text" v-model="wh_stocks" class="w-full p-1" min="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"></td>
+											<td class=""><input placeholder="WH Stock" type="number" step="any" v-model="wh_stocks" class="w-full p-1" min="0" @keypress="isNumber($event)"></td>
 											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
 											<td class="text-center">

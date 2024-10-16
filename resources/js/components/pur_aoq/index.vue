@@ -133,6 +133,11 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
+                        <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
+                            <a href="/pur_aoq/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                                <span>Add New AOQ</span>
+                            </a>
+                        </div>
                         <div class=" pt-3">
                             <DataTable :data="aoq_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>

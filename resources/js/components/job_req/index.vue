@@ -118,7 +118,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/job_req/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                            <a href="/job_req/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                 <span>Add New JO</span>
                             </a>
                         </div>
