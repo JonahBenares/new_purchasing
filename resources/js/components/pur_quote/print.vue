@@ -449,8 +449,8 @@
 												<tr>
 													<td class="">PR No:</td>
 													<td class="" width="50%">{{ RFQHead.pr_no }}</td>
-													<td class="" width="10%">RFQ Name:</td>
-													<td class="" colspan="3">{{ RFQHead.rfq_name }}</td>
+													<td class="print:hidden" width="10%">RFQ Name:</td>
+													<td class="print:hidden" colspan="3">{{ RFQHead.rfq_name }}</td>
 												</tr>
 												<tr>
 													<td class="">Supplier: </td>
@@ -520,7 +520,7 @@
 											<table class="table-bordesred w-full text-xs">
 												<tr>
 													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
-													<td colspan="4" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
+													<td colspan="4" id="duedate" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
 												</tr>
 												<tr>
 													<td colspan="4">2. Please Fill - Up :</td>
