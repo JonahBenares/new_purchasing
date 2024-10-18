@@ -1,0 +1,109 @@
+<template>
+	<div class="table-container">
+	  <table class="table-bordered">
+		<thead>
+		  <tr>
+			<th rowspan="2">#</th>
+			<th rowspan="2">ITEM DESCRIPTION</th>
+			<th rowspan="2">QTY</th>
+			<th rowspan="2">UOM</th>
+			<th colspan="3" v-for="vendor in vendors" :key="vendor.name">{{ vendor.name }}</th>
+		  </tr>
+		  <tr>
+			<template v-for="vendor in vendors" :key="vendor.name">
+				<th>asd</th>
+				<th>asd</th>
+				<th>asd</th>
+			</template>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr v-for="(item, index) in items" :key="index">
+			<td>{{ index + 1 }}</td>
+			<td>{{ item.description }}</td>
+			<td>{{ item.qty }}</td>
+			<td>{{ item.uom }}</td>
+  
+			<template v-for="vendor in vendors" :key="vendor.name">
+			  <td>{{ getOffer(item, vendor).offer }}</td>
+			  <td>{{ getOffer(item, vendor).unitPrice }}</td>
+			  <td>{{ getOffer(item, vendor).amount }}</td>
+			</template>
+		  </tr>
+		</tbody>
+	  </table>
+	</div>
+  </template>
+  
+  <script>
+  export default {
+	data() {
+	  return {
+		vendors: [
+		  { name: 'Nexus Industrial Prime Solutions Corp.' },
+		  { name: 'MF Computer Solutions, Inc.' },
+		  { name: 'Nexus Industrial Prime Solutions Corp. (Alt)' }
+		],
+		items: [
+		  {
+			description: 'Monitor',
+			qty: 5,
+			uom: 'pc/s',
+			offers: {
+			  'Nexus Industrial Prime Solutions Corp.': { offer: 'sample 1', unitPrice: 'Php 100.00', amount: 'Php 500.00' },
+			  'MF Computer Solutions, Inc.': { offer: 'sample 1', unitPrice: 'Php 100.00', amount: 'Php 500.00' },
+			  'Nexus Industrial Prime Solutions Corp. (Alt)': { offer: 'sample 1', unitPrice: 'Php 100.00', amount: 'Php 500.00' }
+			}
+		  },
+		  {
+			description: 'Mouse',
+			qty: 5,
+			uom: 'pc/s',
+			offers: {
+			  'Nexus Industrial Prime Solutions Corp.': { offer: 'sample 1', unitPrice: 'Php 150.00', amount: 'Php 750.00' },
+			  'MF Computer Solutions, Inc.': { offer: 'sample 1', unitPrice: 'Php 150.00', amount: 'Php 750.00' },
+			  'Nexus Industrial Prime Solutions Corp. (Alt)': { offer: 'sample 1', unitPrice: 'Php 150.00', amount: 'Php 750.00' }
+			}
+		  },
+		  {
+			description: 'Keyboard',
+			qty: 5,
+			uom: 'pc/s',
+			offers: {
+			  'Nexus Industrial Prime Solutions Corp.': { offer: 'sample 1', unitPrice: 'Php 100.00', amount: 'Php 500.00' },
+			  'MF Computer Solutions, Inc.': { offer: 'sample 1', unitPrice: 'Php 100.00', amount: 'Php 500.00' },
+			  'Nexus Industrial Prime Solutions Corp. (Alt)': { offer: 'sample 1', unitPrice: 'Php 100.00', amount: 'Php 500.00' }
+			}
+		  }
+		]
+	  };
+	},
+	methods: {
+	  getOffer(item, vendor) {
+		return item.offers[vendor.name] || { offer: '-', unitPrice: '-', amount: '-' };
+	  }
+	}
+  };
+  </script>
+  
+  <style scoped>
+  .table-container {
+	overflow-x: auto;
+  }
+  
+  table {
+	width: 100%;
+	border-collapse: collapse;
+  }
+  
+  th, td {
+	padding: 8px;
+	text-align: center;
+  }
+  
+  thead th {
+	background-color: #f4f4f4;
+  }
+  
+  </style>
+  
