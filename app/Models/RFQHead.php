@@ -16,6 +16,7 @@ class RFQHead extends Model
         'rfq_no',
         'rfq_date',
         'user_id',
+        'status'
     ];
 
     public function pr_head(){

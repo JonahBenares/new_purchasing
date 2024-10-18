@@ -12,6 +12,8 @@ use App\Models\PrReportDetails;
 use App\Models\Departments;
 use App\Models\PettyCash;
 use App\Models\User;
+use App\Models\AOQHead;
+use App\Models\POHead;
 use App\Models\PoDetails;
 use App\Models\RFQDetails;
 use App\Models\RFQHead;
@@ -791,6 +793,7 @@ class PRController extends Controller
 
     public function get_view_details(Request $request, $pr_head_id){
         $prhead=PRHead::where('id',$pr_head_id)->first();
+        $cancelled_by=User::where('id',$prhead->cancelled_by)->value('name');
         $prdetails=PRDetails::where('pr_head_id',$pr_head_id)->get();
         $pettycash=PettyCash::where('pr_head_id',$pr_head_id)->get();
         $prepared_by='';
@@ -803,6 +806,7 @@ class PRController extends Controller
         }
         return response()->json([
             'prhead'=>$prhead,
+            'cancelled_by_all'=>$cancelled_by,
             'prdetails'=>$prdetails,
             'prepared_by'=>$prepared_by,
             'recommended_by'=>$recommended_by,
@@ -822,7 +826,7 @@ class PRController extends Controller
     }
 
     public function cancel_prdetails(Request $request, $pr_details_id){
-        if(!RfqDetails::where('pr_details_id',$pr_details_id)->exists() && !PoDetails::where('pr_details_id',$pr_details_id)->exists() && !RecomReportDetails::where('pr_details_id',$pr_details_id)->exists()){
+        if(PoDetails::where('pr_details_id',$pr_details_id)->where('status','Cancelled')->exists() && PrReportDetails::where('pr_details_id',$pr_details_id)->where('po_qty','!=','0')->orWhere('dpo_qty','!=','0')->orWhere('rpo_qty','!=','0')->exists()){
             $update_prdetails=PRDetails::where('id',$pr_details_id)->update([
                 'status'=>'Cancelled',
                 'cancelled_date'=>date('Y-m-d H:i:s'),
@@ -833,6 +837,24 @@ class PRController extends Controller
                 $update_prreport=PrReportDetails::where('pr_details_id',$pr_details_id)->update([
                     'status'=>'Cancelled'
                 ]);
+                $update_prreport=RFQDetails::where('pr_details_id',$pr_details_id)->update([
+                    'status'=>'Cancelled'
+                ]);
+            }
+        }else if(!PoDetails::where('pr_details_id',$pr_details_id)->exists() && !PrReportDetails::where('pr_details_id',$pr_details_id)->where('po_qty','!=','0')->orWhere('dpo_qty','!=','0')->orWhere('rpo_qty','!=','0')->exists()){
+            $update_prdetails=PRDetails::where('id',$pr_details_id)->update([
+                'status'=>'Cancelled',
+                'cancelled_date'=>date('Y-m-d H:i:s'),
+                'cancelled_reason'=>$request->cancel_reason,
+                'cancelled_by'=>Auth::id(),
+            ]);
+            if($update_prdetails){
+                $update_prreport=PrReportDetails::where('pr_details_id',$pr_details_id)->update([
+                    'status'=>'Cancelled'
+                ]);
+                $update_rfqdetails=RFQDetails::where('pr_details_id',$pr_details_id)->update([
+                    'status'=>'Cancelled'
+                ]);
             }
         }else{
             return 'error';
@@ -840,21 +862,89 @@ class PRController extends Controller
     }
 
     public function cancel_allpr(Request $request, $pr_head_id){
-        if(!RfqHead::where('pr_head_id',$pr_head_id)->exists() && !PrReportDetails::where('po_qty','!=','0')->Orwhere('dpo_qty','!=','0')->Orwhere('rpo_qty','!=','0')->exists() && !PettyCash::where('pr_head_id',$pr_head_id)->exists()){
+        $pr_no=PRHead::where('id',$pr_head_id)->value('pr_no');
+        if(POHead::where('pr_no',$pr_no)->where('status','Cancelled')->exists()){
             $update_prhead=PRHead::where('id',$pr_head_id)->first();
             $updatehead['status']='Cancelled';
             $updatehead['cancelled_by']=Auth::id();
             $updatehead['cancelled_date']=date('Y-m-d H:i:s');
             $update_prhead->update($updatehead);
             if($update_prhead){
-                $update_prdetails=PRDetails::where('pr_head_id',$pr_head_id)->update([
-                    'status'=>'Cancelled',
-                    'cancelled_by'=>Auth::id(),
-                ]);
-                if($update_prdetails){
-                    $prdetails=PRDetails::where('pr_head_id',$pr_head_id)->get();
-                    foreach($prdetails AS $pd){
-                        $update_prreport=PrReportDetails::where('pr_details_id',$pd->id)->update([
+                if(RFQHead::where('pr_head_id',$pr_head_id)->exists()){
+                    $update_rfqhead=RFQHead::where('pr_head_id',$pr_head_id)->first();
+                    $updaterfqhead['status']='Cancelled';
+                    $update_rfqhead->update($updaterfqhead);
+                    if(AOQHead::where('rfq_head_id',$update_rfqhead->id)->exists()){
+                        $update_aoqhead=AOQHead::where('rfq_head_id',$update_rfqhead->id)->first();
+                        $updateaoqhead['status']='Cancelled';
+                        $update_aoqhead->update($updateaoqhead);
+                    }
+                }
+                $prdetails_loop=PRDetails::where('pr_head_id',$pr_head_id)->get();
+                foreach($prdetails_loop AS $pl){
+                    $cancelled_date=PRDetails::where('id',$pl->id)->value('cancelled_date');
+                    if($cancelled_date!='' && $cancelled_date!=null){
+                        $update_prdetails=PRDetails::where('id',$pl->id)->update([
+                            'status'=>'Cancelled',
+                        ]);
+                    }else{
+                        $update_prdetails=PRDetails::where('id',$pl->id)->update([
+                            'status'=>'Cancelled',
+                            'cancelled_date'=>date('Y-m-d H:i:s'),
+                            'cancelled_by'=>Auth::id(),
+                            'cancelled_reason'=>'Cancelled PR',
+                        ]);
+                    }
+                    if($update_prdetails){
+                        // $prdetails=PRDetails::where('id',$pl->id)->get();
+                        // foreach($prdetails AS $pd){
+                            $update_prreport=PrReportDetails::where('pr_details_id',$pl->id)->update([
+                                'status'=>'Cancelled'
+                            ]);
+                            $update_rfqdetails=RFQDetails::where('pr_details_id',$pl->id)->update([
+                                'status'=>'Cancelled'
+                            ]);
+                        // }
+                    }
+                }
+            }
+        }else if(!POHead::where('pr_no',$pr_no)->exists()){
+            $update_prhead=PRHead::where('id',$pr_head_id)->first();
+            $updatehead['status']='Cancelled';
+            $updatehead['cancelled_by']=Auth::id();
+            $updatehead['cancelled_date']=date('Y-m-d H:i:s');
+            $update_prhead->update($updatehead);
+            if($update_prhead){
+                if(RFQHead::where('pr_head_id',$pr_head_id)->exists()){
+                    $update_rfqhead=RFQHead::where('pr_head_id',$pr_head_id)->first();
+                    $updaterfqhead['status']='Cancelled';
+                    $update_rfqhead->update($updaterfqhead);
+                    if(AOQHead::where('rfq_head_id',$update_rfqhead->id)->exists()){
+                        $update_aoqhead=AOQHead::where('rfq_head_id',$update_rfqhead->id)->first();
+                        $updateaoqhead['status']='Cancelled';
+                        $update_aoqhead->update($updateaoqhead);
+                    }
+                }
+                $prdetails_loop=PRDetails::where('pr_head_id',$pr_head_id)->get();
+                foreach($prdetails_loop AS $pl){
+                    $cancelled_date=PRDetails::where('id',$pl->id)->value('cancelled_date');
+                    if($cancelled_date!='' && $cancelled_date!=null){
+                        $update_prdetails=PRDetails::where('id',$pl->id)->update([
+                            'status'=>'Cancelled',
+                        ]);
+                    }else{
+                        $update_prdetails=PRDetails::where('id',$pl->id)->update([
+                            'status'=>'Cancelled',
+                            'cancelled_date'=>date('Y-m-d H:i:s'),
+                            'cancelled_by'=>Auth::id(),
+                            'cancelled_reason'=>'Cancelled PR',
+                        ]);
+                    }
+                    if($update_prdetails){
+                        $update_prreport=PrReportDetails::where('pr_details_id',$pl->id)->update([
+                            'status'=>'Cancelled'
+                        ]);
+                        $update_rfqdetails=RFQDetails::where('pr_details_id',$pl->id)->update([
                             'status'=>'Cancelled'
                         ]);
                     }

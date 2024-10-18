@@ -14,6 +14,7 @@ class RFQDetails extends Model
         'rfq_vendor_id',
         'pr_details_id',
         'pr_no',
+        'status',
     ];
 
     public function rfq_vendor(){
