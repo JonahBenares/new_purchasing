@@ -29,6 +29,7 @@
 	let referred_cancelled=ref([]);
 	let referred_by=ref("")
 	let cancelled_by=ref("")
+	let cancelled_by_all=ref("")
 	const props = defineProps({
 		id:{
 			type:String,
@@ -41,19 +42,11 @@
 	const getPR = async () => {
 		let response = await axios.get(`/api/get_view_details/${props.id}`);
 		get_prhead.value=response.data.prhead
+		cancelled_by_all.value=response.data.cancelled_by_all
 		get_prdetails.value=response.data.prdetails
 		prepared_by.value=response.data.prepared_by
 		approved_by.value=response.data.approved_by
 		recommended_by.value=response.data.recommended_by
-	}
-	const opendangerAlert = () => {
-		dangerAlert.value = !dangerAlert.value
-	}
-	const opendangerAlert_item = () => {
-		dangerAlert_item.value = !dangerAlert_item.value
-	}
-    const openDangerAlert = () => {
-		modalEdit.value = !modalEdit.value
 	}
 	const closeAlert = () => {
 		successAlert.value = !hideAlert.value
@@ -94,9 +87,9 @@
 				document.getElementById('comment_check').placeholder=""
 				document.getElementById('comment_check').style.backgroundColor = '#FFFFFF';
 				closeModal()
+				getPR()
 				setTimeout(() => {
 					closeAlert()
-					getPR()
 				}, 2000);
 			}, function (err) {
 				error.value = err.response.data.message;
@@ -145,9 +138,9 @@
 						cancel_reason.value=''
 						document.getElementById('cancel_check').placeholder=""
 						document.getElementById('cancel_check').style.backgroundColor = '#FFFFFF';
+						getPR()
 						setTimeout(() => {
 							closeAlert()
-							getPR()
 						}, 2000);
 					}else{
 						dangerAlert_item.value = !hideAlert.value
@@ -155,10 +148,10 @@
 						error.value='Cannot be deleted, item already have transactions.'
 						cancel_reason.value=''
 						cancelAlert.value = !cancelAlert.value
+						getPR()
 						setTimeout(() => {
 							closeAlert()
-							getPR()
-						}, 3000);
+						}, 2000);
 					}
 				})
 			}else{
@@ -178,19 +171,19 @@
 					dangerAlert.value = !hideAlert.value
 					success.value='Successfully cancelled PR!'
 					successAlert.value = !successAlert.value
+					getPR()
 					setTimeout(() => {
 						closeAlert()
-						getPR()
 					}, 2000);
 				}else{
 					dangerAlert.value = !hideAlert.value
 					success.value=''
 					error.value='Cannot be deleted, this PR already have transactions.'
 					cancelAlert.value = !cancelAlert.value
+					getPR()
 					setTimeout(() => {
 						closeAlert()
-						getPR()
-					}, 3000);
+					}, 2000);
 				}
 			})
 		}else{
@@ -222,7 +215,7 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card print:h-screen">
 					<div class="py-2 px-2 bg-red-500" v-if="get_prhead.status=='Cancelled'">
-						<span class="font-bold text-white">CANCELLED</span>
+						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by_all }}  || Cancelled Date: {{moment().format('MMM. DD,YYYY')}} </span>
 					</div>
 					<div class="card-body">
 						<div class="pt-1 " id="printable">
@@ -304,7 +297,8 @@
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">{{ pd.date_needed }}</td>
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">
 												<input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)"  v-if="pd.status!='Cancelled'">
-												<input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)" readonly v-else>
+												<span v-else>{{ pd.recom_date }}</span>
+												<!-- <input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)" readonly v-else> -->
 											</td>
 											<td :class="(pd.status=='Cancelled') ? 'bg-red-100 text-center po_buttons p-0' : (pd.status=='Referred') ? 'bg-orange-200 text-center po_buttons p-0' : 'text-center po_buttons p-0'">
 												<div class="space-x-1" v-if="pd.status=='Cancelled'">

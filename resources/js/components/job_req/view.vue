@@ -32,6 +32,7 @@
 	let cancelled_data=ref([]);
 	let cancelled_by=ref("")
 	let identifier=ref("")
+	let cancelled_by_all=ref("")
 	const props = defineProps({
 		id:{
 			type:String,
@@ -44,6 +45,7 @@
 	const getJOR = async () => {
 		let response = await axios.get(`/api/get_jor_view_details/${props.id}`);
 		get_jorhead.value=response.data.jorhead
+		cancelled_by_all.value=response.data.cancelled_by_all
 		get_jorlabordetails.value=response.data.jorlabordetails
 		get_jormaterialdetails.value=response.data.jomaterialdetails
 		get_jornotes.value=response.data.jornotes
@@ -158,9 +160,9 @@
 					cancel_labor_reason.value=''
 					document.getElementById('labor_check').placeholder=""
 					document.getElementById('labor_check').style.backgroundColor = '#FFFFFF';
+					getJOR()
 					setTimeout(() => {
 						closeAlert()
-						getJOR()
 					}, 2000);
 				})
 			}else{
@@ -187,9 +189,9 @@
 					cancel_material_reason.value=''
 					document.getElementById('material_check').placeholder=""
 					document.getElementById('material_check').style.backgroundColor = '#FFFFFF';
+					getJOR()
 					setTimeout(() => {
 						closeAlert()
-						getJOR()
 					}, 2000);
 				})
 			}else{
@@ -210,9 +212,9 @@
 				dangerAlert_item.value = !hideAlert.value
 				success.value='Successfully cancelled note!'
 				successAlert.value = !successAlert.value
+				getJOR()
 				setTimeout(() => {
 					closeAlert()
-					getJOR()
 				}, 2000);
 			})
 		}else{
@@ -228,9 +230,9 @@
 				dangerAlert.value = !hideAlert.value
 				success.value='Successfully cancelled JOR!'
 				successAlert.value = !successAlert.value
+				getJOR()
 				setTimeout(() => {
 					closeAlert()
-					getJOR()
 				}, 2000);
 			})
 		}else{
@@ -261,7 +263,7 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
 					<div class="py-2 px-2 bg-red-500" v-if="get_jorhead.status=='Cancelled'">
-						<span class="font-bold text-white">CANCELLED</span>
+						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by_all }}  || Cancelled Date: {{moment().format('MMM. DD,YYYY')}}</span>
 					</div>
 				<div class="card-body">
 					<hr class="border-dashed mt-0">
@@ -366,7 +368,8 @@
 										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost * jl.quantity  }}</td>
 										<td class="p-1" :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">
 											<input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')"  v-if="jl.status!='Cancelled'">
-											<input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')" readonly v-else>
+											<span v-else>{{ jl.recom_date }}</span>
+											<!-- <input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')" readonly v-else> -->
 										</td>
 										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 text-center po_buttons' : 'text-center po_buttons'">
 											<div v-if="jl.status!='Cancelled'">
@@ -413,7 +416,8 @@
 										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.date_needed }}</td>
 										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">
 											<input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')"  v-if="jm.status!='Cancelled'">
-											<input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')" readonly v-else>
+											<!-- <input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')" readonly v-else> -->
+											 <span v-else>{{ jm.recom_date }}</span>
 										</td>
 										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 text-center po_buttons' : 'text-center po_buttons'">
 											<div v-if="jm.status!='Cancelled'">

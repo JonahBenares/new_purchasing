@@ -777,6 +777,7 @@ class JORController extends Controller
 
     public function get_jor_view_details(Request $request, $jor_head_id){
         $jorhead=JORHead::where('id',$jor_head_id)->first();
+        $cancelled_by=User::where('id',$jorhead->cancelled_by)->value('name');
         $jorlabordetails=JORLaborDetails::where('jor_head_id',$jor_head_id)->get();
         $jomaterialdetails=JORMaterialDetails::where('jor_head_id',$jor_head_id)->get();
         $jornotes=JORNotes::where('jor_head_id',$jor_head_id)->get();
@@ -785,6 +786,7 @@ class JORController extends Controller
             'jorlabordetails'=>$jorlabordetails,
             'jomaterialdetails'=>$jomaterialdetails,
             'jornotes'=>$jornotes,
+            'cancelled_by_all'=>$cancelled_by,
         ],200);
     }
 
@@ -795,23 +797,54 @@ class JORController extends Controller
         $updatehead['cancelled_date']=date('Y-m-d H:i:s');
         $update_jorhead->update($updatehead);
         if($update_jorhead){
-            $update_jorlabordetails=JORLaborDetails::where('jor_head_id',$jor_head_id)->update([
-                'status'=>'Cancelled',
-                'cancelled_by'=>Auth::id(),
-                'cancelled_date'=>date('Y-m-d H:i:s'),
-                'cancelled_reason'=>'Cancelled PR',
-            ]);
-            $update_jormaterialdetails=JORMaterialDetails::where('jor_head_id',$jor_head_id)->update([
-                'status'=>'Cancelled',
-                'cancelled_by'=>Auth::id(),
-                'cancelled_date'=>date('Y-m-d H:i:s'),
-                'cancelled_reason'=>'Cancelled PR',
-            ]);
-            $update_jornotes=JORNotes::where('jor_head_id',$jor_head_id)->update([
-                'status'=>'Cancelled',
-                'cancelled_by'=>Auth::id(),
-                'cancelled_date'=>date('Y-m-d H:i:s'),
-            ]);
+            $labordetails_loop=JORLaborDetails::where('jor_head_id',$jor_head_id)->get();
+            $materialdetails_loop=JORMaterialDetails::where('jor_head_id',$jor_head_id)->get();
+            $notedetails_loop=JORNotes::where('jor_head_id',$jor_head_id)->get();
+            foreach($labordetails_loop AS $lab){
+                $cancelled_labor_date=JORLaborDetails::where('id',$lab->id)->value('cancelled_date');
+                if($cancelled_labor_date!='' && $cancelled_labor_date!=null){
+                    $update_jorlabordetails=JORLaborDetails::where('id',$lab->id)->update([
+                        'status'=>'Cancelled',
+                    ]);
+                }else{
+                    $update_jorlabordetails=JORLaborDetails::where('id',$lab->id)->update([
+                        'status'=>'Cancelled',
+                        'cancelled_by'=>Auth::id(),
+                        'cancelled_date'=>date('Y-m-d H:i:s'),
+                        'cancelled_reason'=>'Cancelled JOR',
+                    ]);
+                }
+            }
+
+            foreach($materialdetails_loop AS $ml){
+                $cancelled_material_date=JORMaterialDetails::where('id',$ml->id)->value('cancelled_date');
+                if($cancelled_material_date!='' && $cancelled_material_date!=null){
+                    $update_jormaterialdetails=JORMaterialDetails::where('id',$ml->id)->update([
+                        'status'=>'Cancelled',
+                    ]);
+                }else{
+                    $update_jormaterialdetails=JORMaterialDetails::where('id',$ml->id)->update([
+                        'status'=>'Cancelled',
+                        'cancelled_by'=>Auth::id(),
+                        'cancelled_date'=>date('Y-m-d H:i:s'),
+                        'cancelled_reason'=>'Cancelled JOR',
+                    ]);
+                }
+            }
+            foreach($notedetails_loop AS $nl){
+                $cancelled_notes_date=JORNotes::where('id',$nl->id)->value('cancelled_date');
+                if($cancelled_notes_date!='' && $cancelled_notes_date!=null){
+                    $update_jornotes=JORNotes::where('id',$nl->id)->update([
+                        'status'=>'Cancelled',
+                    ]);
+                }else{
+                    $update_jornotes=JORNotes::where('id',$nl->id)->update([
+                        'status'=>'Cancelled',
+                        'cancelled_by'=>Auth::id(),
+                        'cancelled_date'=>date('Y-m-d H:i:s'),
+                    ]);
+                }
+            }
         }
     }
 
