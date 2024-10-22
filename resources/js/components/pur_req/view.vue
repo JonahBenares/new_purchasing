@@ -327,7 +327,41 @@
 									</table>
 								</div>
 							</div>
-							<br>
+							<hr class="border-dashed">
+							<div class="row mt-4 mb-4" v-if="get_prhead.petty_cash=='1'">
+								<div class="col-lg-12">
+									<table class="w-full text-xs">
+										<tr>
+											<td class="text-center" width="20%">Prepared by</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Recommending Approval</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Approved by</td>
+										</tr>
+										<tr>
+											<td class="text-center border-b"><br></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+										</tr>
+										<tr>
+											<td class="text-center p-0">{{ prepared_by }}</td>
+											<td></td>
+											<td class="text-center p-0">{{ recommended_by }}</td>
+											<td></td>
+											<td class="text-center p-0">{{ approved_by }}</td>
+										</tr>
+										<tr>
+											<td class="text-center"><br><br></td>
+											<td></td>
+											<td class="text-center"></td>
+											<td></td>
+											<td class="text-center"></td>
+										</tr>
+									</table>
+								</div>
+							</div>
 							<div class="row my-2 po_buttons" > 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
