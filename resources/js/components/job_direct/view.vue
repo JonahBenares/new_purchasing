@@ -1,15 +1,28 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
+	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
-
+    const dangerAlert = ref(false)
+	const dangerAlert_item = ref(false)
 	const drawer_dr = ref(false)
 	const drawer_rfd = ref(false)
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
+	const hideAlert = ref(true)
+    const openDangerPO = () => {
+		dangerAlert.value = !dangerAlert.value
+	}
+    const openDangerItem = () => {
+		dangerAlert_item.value = !dangerAlert_item.value
+	}
+    const closeAlert = () => {
+		dangerAlert_item.value = !hideAlert.value
+		dangerAlert.value = !hideAlert.value
+	}
 	const openDrawerDR = () => {
 		drawer_dr.value = !drawer_dr.value
 	}
@@ -52,27 +65,34 @@
                     <div class="card-body">
                         <hr class="border-dashed mt-0">
                         <div class="pt-1" id="printable">
+                            <div class="hidden print:block">
+								<printheader ></printheader>
+								<div class="flex justify-center mt-1">
+									<span class="uppercase">Job Order</span>
+								</div>
+								<hr class="print:block border-dashed mt-2">
+							</div>
                             <div>
                                 <div class="row">
-									<div class="col-lg-1 col-sm-1 col-md-1 ">
+									<div class="col-lg-1 col-sm-1 col-md-1">
 										<span class="text-sm">TO:</span>
 									</div>
-									<div class="col-lg-11 col-sm-11 col-md-11 ">
+									<div class="col-lg-11 col-sm-11 col-md-11">
 										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
 										<p class="m-0">Beverly Marie Dy</p>
 										<p class="m-0">Taculing Road, Bacolod City 6100</p>
 										<p class="m-0">(034) 434 9823 / 704-2063</p>
 									</div>
 								</div>
-								<hr class="border-dashed">
+								<hr class="border-dashed print:block">
 								<div class="row">
-									<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
@@ -80,13 +100,13 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
@@ -94,13 +114,13 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
@@ -128,22 +148,32 @@
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1" colspan="3">
-															<span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
-															technical expertise for the following:</span>
-															<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-															<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-															<br>3. Repair and replacement of parts as seen upon inspection.
-															<br>4. Setting of internal parts and mounting of the governor.
-															<br>5. Calibration and bench testing for:
-															<br>5.1. Speed Setting and Indicator
-															<br>5.2. Speed Droop Setting and Indicator
-															<br>5.3. Load Limit Setting and Indicator
-															<br>6. Functional test of shut-down solenoid valve
-															<br>7. Testing and Commissioning
-															<br>8. Submission of inspection, service, commissioning and bench testing reports.
-															<br>9. Other works necessary for job completion.
+                                                            <div class="flex justify-between space-x-2">
+                                                                <div class="w-full">
+                                                                    <span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
+                                                                    technical expertise for the following:</span>
+                                                                    <br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
+                                                                    <br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
+                                                                    <br>3. Repair and replacement of parts as seen upon inspection.
+                                                                    <br>4. Setting of internal parts and mounting of the governor.
+                                                                    <br>5. Calibration and bench testing for:
+                                                                    <br>5.1. Speed Setting and Indicator
+                                                                    <br>5.2. Speed Droop Setting and Indicator
+                                                                    <br>5.3. Load Limit Setting and Indicator
+                                                                    <br>6. Functional test of shut-down solenoid valve
+                                                                    <br>7. Testing and Commissioning
+                                                                    <br>8. Submission of inspection, service, commissioning and bench testing reports.
+                                                                    <br>9. Other works necessary for job completion.
+                                                                </div>
+                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+															
 														</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1 text-center">
+                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+                                                        </td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -158,16 +188,38 @@
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">1</td>
-														<td class="border-y-none p-1" colspan="2">Monitor</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1" colspan="2">
+                                                            <div class="flex justify-between space-x-2">
+                                                                <div class="w-full">
+                                                                    Monitor
+                                                                </div>
+                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+														<td class="border-y-none p-1 text-center">
+                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+                                                        </td>
 														<td class="border-y-none p-1 text-center">lot</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
 													</tr>
 													<tr class="">
 														<td class="border-y-none p-1 text-center">2</td>
-														<td class="border-y-none p-1" colspan="2">Mouse</td>
-														<td class="border-y-none p-1 text-center">5</td>
+														<td class="border-y-none p-1" colspan="2">
+                                                            <div class="flex justify-between space-x-2">
+                                                                <div class="w-full">
+                                                                    Mouse
+                                                                </div>
+                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+														<td class="border-y-none p-1 text-center">
+                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+                                                        </td>
 														<td class="border-y-none p-1 text-center">pc</td>
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
@@ -192,7 +244,7 @@
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" value="200.00"></td>
 													</tr>
 													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Material</td>
+														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
 														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
 													</tr>
 													
@@ -223,7 +275,7 @@
 									</div>
                                     
                                     <div class="row mt-2">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6  col-sm-6 col-md-6">
                                             <table class="table-bordsered !text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
@@ -269,7 +321,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6  col-sm-6 col-md-6">
                                             <table class="table-bordsered !text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Other Instructions</td>
@@ -284,10 +336,10 @@
                                                 </tr>
                                                 <tr>
 													<td colspan="2" class="p-1">Sample Notes</td>
-													<td class="p-0 align-top" width="1">
-														<!-- <button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+													<td class="p-0 align-top po_buttons" width="1">
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-														</button> -->
+														</button>
 													</td>
 												</tr>
                                             </table>
@@ -323,6 +375,7 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <br>
                                     <div class="row mt-4 mb-4">
                                         <div class="col-lg-12">
                                             <table class="w-full text-xs">
@@ -373,19 +426,29 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="row my-2 po_buttons"> 
+                                    <hr	class="border-dashed">
+                                    <div class="po_buttons text-xs">
+                                        <span class="w-full block">Internal Comment:</span>
+                                        <span class="w-full block">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. </span>
                                         <hr	class="border-dashed">
+                                    </div>
+                                    
+                                    <div class="row my-2 po_buttons" > 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
-                                                <div class="flex justify-between">
-                                                    <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
-                                                    <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
-                                                        <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                    </button>
+                                                <div class="flex justify-start space-x-1">
+                                                    <button type="submit" class="btn btn-danger w-36"  @click="openDangerPO()">Cancel PO</button>
+                                                    <div class="flex justify-between">
+                                                        <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise JOI</a>
+                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
+                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
                                                     <div class="flex justify-between">
                                                         <a href="/job_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
+                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD 2</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
@@ -396,8 +459,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    
-                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print PO</button>
+                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print JOI</button>
                                                 </div>
                                                 
                                             </div>
@@ -518,5 +580,143 @@
                 </div>
             </div>
         </Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-[500px] p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this scope/item?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this PO?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this PO?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 	</navigation>
 </template>

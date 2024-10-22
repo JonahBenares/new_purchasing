@@ -456,7 +456,7 @@
 							</button>
 						</span>
 					</div>
-					<div>
+					<div class="h-[400px] hover:overflow-y-scroll overflow-y-hidden">
 						<table class="w-full table-bordered text-xs">
 							<tr class="bg-gray-100">
 								<td class="p-1 text-bold">Description</td>
@@ -482,7 +482,7 @@
 								</button>
 							</span>
 						</div>
-						<div>
+						<div class="h-[400px] hover:overflow-y-scroll overflow-y-hidden" >
 							<table class="w-full table-bordered text-xs">
 								<tr class="bg-gray-100">
 									<td class="p-1 text-bold text-center" width="15%">Date Created</td>
