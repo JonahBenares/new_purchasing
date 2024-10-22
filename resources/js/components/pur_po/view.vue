@@ -6,11 +6,23 @@
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
-
+    const dangerAlert = ref(false)
+	const dangerAlert_item = ref(false)
 	const drawer_dr = ref(false)
 	const drawer_rfd = ref(false)
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
+	const hideAlert = ref(true)
+    const openDangerPO = () => {
+		dangerAlert.value = !dangerAlert.value
+	}
+    const openDangerItem = () => {
+		dangerAlert_item.value = !dangerAlert_item.value
+	}
+    const closeAlert = () => {
+		dangerAlert_item.value = !hideAlert.value
+		dangerAlert.value = !hideAlert.value
+	}
 	const openDrawerDR = () => {
 		drawer_dr.value = !drawer_dr.value
 	}
@@ -116,7 +128,14 @@
                                                         <td class="border-y-none p-1 text-center">1</td>
                                                         <td class="border-y-none p-1 text-center">5</td>
                                                         <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Monitor</td>
+                                                        <td class="border-y-none p-1" colspan="2">
+                                                            <div class="flex justify-between space-x-1">
+                                                                <span class="w-full">Monitor</span>
+                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
                                                         <td class="border-y-none p-1 text-right">100.00</td>
                                                         <td class="border-y-none p-1 text-right">500.00</td>
                                                     </tr>
@@ -124,7 +143,14 @@
                                                         <td class="border-y-none p-1 text-center">2</td>
                                                         <td class="border-y-none p-1 text-center">5</td>
                                                         <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Mouse</td>
+                                                        <td class="border-y-none p-1" colspan="2">
+                                                            <div class="flex justify-between space-x-1">
+                                                                <span class="w-full">Mouse</span>
+                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
                                                         <td class="border-y-none p-1 text-right">100.00</td>
                                                         <td class="border-y-none p-1 text-right">500.00</td>
                                                     </tr>
@@ -132,7 +158,14 @@
                                                         <td class="border-y-none p-1 text-center">3</td>
                                                         <td class="border-y-none p-1 text-center">5</td>
                                                         <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">Keyboard</td>
+                                                        <td class="border-y-none p-1" colspan="2">
+                                                            <div class="flex justify-between space-x-1">
+                                                                <span class="w-full">Keyboard</span>
+                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
                                                         <td class="border-y-none p-1 text-right">100.00</td>
                                                         <td class="border-y-none p-1 text-right">500.00</td>
                                                     </tr>
@@ -312,11 +345,15 @@
                                     <div class="row my-2 po_buttons"> 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
-                                                <div class="flex justify-between">
-                                                    <a href="/pur_po/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
-                                                    <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
-                                                        <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                    </button>
+                                                <div class="flex justify-between space-x-1">
+                                                    <button type="submit" class="btn btn-danger w-36"  @click="openDangerPO()">Cancel PO</button>
+                                                    <div class="flex justify-between">
+                                                        <a href="/pur_po/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
+                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
+                                                        </button>
+                                                    </div>
+                                                    
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
                                                     <div class="flex justify-between">
@@ -331,7 +368,6 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    
                                                     <button type="submit" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
@@ -456,5 +492,97 @@
                 </div>
             </div>
         </Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_item }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this item?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this PO?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 	</navigation>
 </template>
