@@ -366,7 +366,7 @@ const routes = [
     },
 
     {
-        path:'/pur_aoq/view/:id',
+        path:'/pur_aoq/view/:id/:aoq_details_id',
         component: pur_aoqView,
         props:true,
         meta:{
@@ -375,8 +375,9 @@ const routes = [
     },
 
     {
-        path:'/pur_aoq/print_te',
+        path:'/pur_aoq/print_te/:id',
         component: pur_aoqPrintTe,
+        props:true,
         meta:{
             requiresAuth:true
         }

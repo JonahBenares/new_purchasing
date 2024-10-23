@@ -335,6 +335,13 @@
 		});
 	}
 
+	const printCanvassComplete = () => {
+		window.print();
+	}
+
+
+
+
 	const vendor =  ref(rfqvendorid)
 	const showModal = ref(false)
 	const addItems = ref(false)
@@ -520,7 +527,7 @@
 											<table class="table-bordesred w-full text-xs">
 												<tr>
 													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
-													<td colspan="4" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
+													<td colspan="4" id="duedate" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
 												</tr>
 												<tr>
 													<td colspan="4">2. Please Fill - Up :</td>
@@ -625,7 +632,9 @@
 										<div class="row my-2 po_buttons" v-if="vendor == rvi.rfq_vendor_id"> 
 											<div class="col-lg-12 col-md-12">
 												<div class="flex justify-center space-x-2">
-													<button type="submit" class="btn btn-primary mr-2 w-44" id="printbtn" @click="printDivBtn(rvi.rfq_vendor_id)">Print</button>
+
+													<button type="submit" class="btn btn-primary mr-2 w-44" id="printbtn" @click="printDivBtn(rvi.rfq_vendor_id)" v-if="(rvi.canvassed==0)">Print</button>
+													<button type="submit" class="btn btn-primary mr-2 w-44" id="printbtn" @click="printCanvassComplete()" v-else>Print</button>
 												</div>
 											</div>
 										</div>
@@ -804,7 +813,8 @@
 											<td class="p-1 uppercase text-center" width="5%">
 												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
 											</td>
-											<td class="p-1 uppercase text-center" width="7%">Qty</td>
+											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
+											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>
 											<td class="p-1 uppercase" width="20%">PN No.</td>
 											<td class="p-1 uppercase" width="">Item Description</td>
@@ -816,6 +826,7 @@
 												<input type="checkbox" class='checkboxes' v-model="pri.checkbox" :checked="checkall" :true-value="1" :false-value="0" @change="CountCheckbox">
 											</td>
 											<td class="p-1 text-center">{{ parseFloat(pri.quantity).toFixed(2) }}</td>
+											<td class="p-1 text-center">{{ parseFloat(pri.remaining_qty).toFixed(2) }}</td>
 											<td class="p-1 text-center">{{ pri.uom }}</td>
 											<td class="p-1">{{ pri.pn_no }}</td>
 											<td class="p-1">{{ pri.item_description }}</td>

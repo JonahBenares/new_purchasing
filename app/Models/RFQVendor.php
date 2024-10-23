@@ -29,7 +29,19 @@ class RFQVendor extends Model
         return $this->belongsTo(VendorDetails::class, 'vendor_details_id');
     }
 
+    public function rfq_head(){
+        return $this->belongsTo(RFQHead::class, 'rfq_head_id');
+    }
+
     public function rfq_details(){
         return $this->hasMany(RFQDetails::class);
+    }
+
+    public function rfq_offers(){
+        return $this->hasMany(RFQOffers::class);
+    }
+
+    public function aoq_details(){
+        return $this->hasMany(AOQDetails::class);
     }
 }

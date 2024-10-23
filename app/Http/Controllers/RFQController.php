@@ -109,14 +109,15 @@ class RFQController extends Controller
         $details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','Saved')->orderBy('item_description','ASC')->get();
             foreach($details AS $d){
                 $deliver_qty = PrReportDetails::where('pr_details_id',$d->id)->value('delivered_qty');
-                $quantity = $d->quantity - $deliver_qty;
-                if( $quantity != 0){
+                $remaining_qty = $d->quantity - $deliver_qty;
+                if($remaining_qty != 0){
                     $PRDetails[] = [
                         'checkbox'=>0,
                         'pr_details_id'=>$d->id,
                         'date_needed'=>$d->date_needed,
                         'item_description'=>$d->item_description,
-                        'quantity'=>$quantity,
+                        'quantity'=>$d->quantity,
+                        'remaining_qty'=>$remaining_qty,
                         'uom'=>$d->uom,
                         'pn_no'=>$d->pn_no,
                         'wh_stocks'=>$d->wh_stocks,
@@ -172,6 +173,7 @@ class RFQController extends Controller
                     $rfq_i['rfq_vendor_id']=$rfq_vendor_id;
                     $rfq_i['pr_details_id']=$ri->pr_details_id;
                     $rfq_i['pr_no']=$request->input('pr_no');
+                    $rfq_i['remaining_qty']=$ri->remaining_qty;
                     $rfq_i['created_at']=date('Y-m-d H:i:s');
                     $rfq_details_id=RFQDetails::insertGetId($rfq_i);
 
@@ -179,11 +181,13 @@ class RFQController extends Controller
 
                     for($x=0;$x<3;$x++){
                         RFQOffers::create([
+                            'offer_no'=>$x+1,
                             'rfq_head_id'=>$rfq_head_id,
                             'rfq_vendor_id'=>$rfq_vendor_id,
                             'rfq_details_id'=>$rfq_details_id,
                             'pr_details_id'=>$ri->pr_details_id,
                             'pr_no'=>$request->input('pr_no'),
+                            'remaining_qty'=>$ri->remaining_qty,
                             'uom'=>$ri->uom,
                         ]);
                     }
@@ -263,6 +267,7 @@ class RFQController extends Controller
                         'rfq_details_id'=>$d->id,
                         'rfq_vendor_id'=>$d->rfq_vendor_id,
                         'quantity'=>$d->pr_details->quantity,
+                        'remaining_qty'=>$d->remaining_qty,
                         'item_description'=>$d->pr_details->item_description,
                     ];
 
@@ -320,20 +325,27 @@ class RFQController extends Controller
             
             $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
             foreach($rfq_details AS $d){
+                $deliver_qty = PrReportDetails::where('pr_details_id',$d->pr_details_id)->value('delivered_qty');
+                $remaining_qty = $d->pr_details->quantity - $deliver_qty;
+
                 $rfq_i['rfq_head_id']=$rfq_head_id;
                 $rfq_i['rfq_vendor_id']=$rfq_vendor_id;
                 $rfq_i['pr_details_id']=$d->pr_details_id;
                 $rfq_i['pr_no']=$request->input('pr_no');
+                $rfq_i['remaining_qty']=$remaining_qty;
                 $rfq_i['created_at']=date('Y-m-d H:i:s');
                 $rfq_details_id=RFQDetails::insertGetId($rfq_i);
 
+                
                 for($x=0;$x<3;$x++){
                     RFQOffers::create([
+                        'offer_no'=>$x+1,
                         'rfq_head_id'=>$rfq_head_id,
                         'rfq_vendor_id'=>$rfq_vendor_id,
                         'rfq_details_id'=>$rfq_details_id,
                         'pr_details_id'=>$d->pr_details_id,
                         'pr_no'=>$request->input('pr_no'),
+                        'remaining_qty'=>$remaining_qty,
                         'uom'=>$d->uom,
                     ]);
                 }
@@ -346,14 +358,15 @@ class RFQController extends Controller
             $pr_item_list=array();
                 foreach($pritem_list AS $pri){
                     $deliver_qty = PrReportDetails::where('pr_details_id',$pri->id)->value('delivered_qty');
-                    $quantity = $pri->quantity - $deliver_qty;
-                    if( $quantity != 0){
+                    $remaining_qty = $pri->quantity - $deliver_qty;
+                    if($remaining_qty != 0){
                         $pr_item_list[] = [
                             'checkbox'=>0,
                             'pr_details_id'=>$pri->id,
                             'date_needed'=>$pri->date_needed,
                             'item_description'=>$pri->item_description,
-                            'quantity'=>$quantity,
+                            'quantity'=>$pri->quantity,
+                            'remaining_qty'=>$remaining_qty,
                             'uom'=>$pri->uom,
                             'pn_no'=>$pri->pn_no,
                             'wh_stocks'=>$pri->wh_stocks,
@@ -384,18 +397,21 @@ class RFQController extends Controller
                         $rfq_i['rfq_vendor_id']=$rv->id;
                         $rfq_i['pr_details_id']=$ai->pr_details_id;
                         $rfq_i['pr_no']=$request->input('pr_no');
+                        $rfq_i['remaining_qty']=$ai->remaining_qty;
                         $rfq_i['created_at']=date('Y-m-d H:i:s');
                         $rfq_details_id=RFQDetails::insertGetId($rfq_i);
 
                         $update_status = PrReportDetails::where('pr_details_id','=', $ai->pr_details_id)->update(['status' => 'For Canvass']);
-
+                        
                         for($x=0;$x<3;$x++){
                             RFQOffers::create([
+                                'offer_no'=>$x+1,
                                 'rfq_head_id'=>$rfq_head_id,
                                 'rfq_vendor_id'=>$rv->id,
                                 'rfq_details_id'=>$rfq_details_id,
                                 'pr_details_id'=>$ai->pr_details_id,
                                 'pr_no'=>$request->input('pr_no'),
+                                'remaining_qty'=>$ai->remaining_qty,
                                 'uom'=>$ai->uom,
                             ]);
                         }

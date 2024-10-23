@@ -101,13 +101,11 @@
 		aoq_list.value=response.data.aoqarray
 	}
 
-    const ViewAOQ = (id,status) => {
-        if(status == 'For TE'){
-            router.push('/pur_aoq/print_te/'+id)
-        }else if(status == 'Done TE'){
-            router.push('/pur_aoq/view/'+id)
+    const ViewAOQ = (id,aoq_details_id,status,aoq_status) => {
+        if(status != 'Cancelled' && aoq_status == 'Done TE'){
+            router.push('/pur_aoq/view/'+id+'/'+aoq_details_id)
         }else{
-            router.push('/pur_aoq/awarded/'+id)
+            router.push('/pur_aoq/print_te/'+id)
         }
 		
 	}
@@ -164,17 +162,18 @@
                                         <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
                                             <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li> -->
-                                        <li class="px-1" v-if="ven.canvassed == 0 && ven.status == null">
-                                            {{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})
+                                        <li :class="(ven.count_awarded == 1) ? 'px-1 bg-lime-500' : 'px-1'">
+                                            {{ ven.vendor_name }} ({{ ven.identifier }})
                                         </li>
                                     </ul>
                                 </template>
                                 <template #column-6="props">
-                                    <span class="bg-blue-500 px-1 text-white" v-if="props.rowData.aoq_status == 'For TE'">{{ props.rowData.aoq_status }}</span>
+                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.aoq_status == 'For TE'">{{ props.rowData.aoq_status }}</span>
+                                    <span class="bg-blue-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Done TE'">{{ props.rowData.aoq_status }}</span>
                                     <span class="bg-lime-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Awarded'">{{ props.rowData.aoq_status }}</span>
                                 </template>
                                 <template #column-7="props">
-                                    <button @click="ViewAOQ(props.rowData.id, props.rowData.aoq_status)" class="btn btn-xs btn-warning text-white p-1">
+                                    <button @click="ViewAOQ(props.rowData.id, props.rowData.aoq_details_id, props.rowData.status, props.rowData.aoq_status)" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </button>
                                 </template>

@@ -118,6 +118,7 @@
 					selected_items.value.push({
 						pr_details_id:PRDetails.value[x].pr_details_id,
 						quantity:PRDetails.value[x].quantity,
+						remaining_qty:PRDetails.value[x].remaining_qty,
 						uom:PRDetails.value[x].uom,
 						pn_no:PRDetails.value[x].pn_no,
 						item_description:PRDetails.value[x].item_description,
@@ -310,7 +311,8 @@
 											<td class="p-1 uppercase text-center" width="5%">
 												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
 											</td>
-											<td class="p-1 uppercase text-center" width="7%">Qty</td>
+											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
+											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>
 											<td class="p-1 uppercase" width="20%">PN No.</td>
 											<td class="p-1 uppercase" width="">Item Description</td>
@@ -323,6 +325,7 @@
 											</td>
 											<input type="hidden" v-model="d.pr_details_id">
 											<td class="p-1 text-center">{{ parseFloat(d.quantity).toFixed(2) }}</td>
+											<td class="p-1 text-center">{{ parseFloat(d.remaining_qty).toFixed(2) }}</td>
 											<td class="p-1 text-center">{{ d.uom }}</td>
 											<td class="p-1">{{ d.pn_no }}</td>
 											<td class="p-1">{{ d.item_description }}</td>
@@ -392,7 +395,8 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered !text-xs mb-3">
 									<tr class="bg-gray-100">
-										<td class="p-1 uppercase text-center" width="7%">Qty</td>
+										<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
+										<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
 										<td class="p-1 uppercase text-center" width="7%">UOM</td>
 										<td class="p-1 uppercase" width="20%">PN No.</td>
 										<td class="p-1 uppercase" width="">Item Description</td>
@@ -402,6 +406,7 @@
 									<tr v-for="d in selected_items">
 										<input type="hidden" v-model="d.pr_details_id">
 										<td class="p-1 text-center">{{ parseFloat(d.quantity).toFixed(2) }}</td>
+										<td class="p-1 text-center">{{ parseFloat(d.remaining_qty).toFixed(2) }}</td>
 										<td class="p-1 text-center">{{ d.uom }}</td>
 										<td class="p-1">{{ d.pn_no }}</td>
 										<td class="p-1">{{ d.item_description }}</td>

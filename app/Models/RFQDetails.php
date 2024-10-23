@@ -14,6 +14,7 @@ class RFQDetails extends Model
         'rfq_vendor_id',
         'pr_details_id',
         'pr_no',
+        'remaining_qty',
     ];
 
     public function rfq_vendor(){
@@ -22,5 +23,9 @@ class RFQDetails extends Model
 
     public function pr_details(){
         return $this->belongsTo(PRDetails::class, 'pr_details_id');
+    }
+
+    public function rfq_offers(){
+        return $this->hasMany(RFQOffers::class);
     }
 }

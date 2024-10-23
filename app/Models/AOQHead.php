@@ -29,7 +29,7 @@ class AOQHead extends Model
         return $this->hasMany(AOQDetails::class);
     }
 
-    public function pr_head(){
-        return $this->belongsTo(PRHead::class, 'pr_no');
+    public function rfq_head(){
+        return $this->belongsTo(RFQHead::class, 'rfq_head_id');
     }
 }

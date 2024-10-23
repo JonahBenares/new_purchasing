@@ -17,4 +17,8 @@ class AOQDetails extends Model
     public function aoq_head(){
         return $this->belongsTo(AOQHead::class, 'aoq_head_id');
     }
+
+    public function rfq_vendor(){
+        return $this->belongsTo(RFQVendor::class, 'rfq_vendor_id');
+    }
 }
