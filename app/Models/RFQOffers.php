@@ -15,7 +15,9 @@ class RFQOffers extends Model
         'rfq_details_id',
         'pr_details_id',
         'pr_no',
+        'offer_no',
         'offer',
+        'remaining_qty',
         'uom',
         'unit_price',
         'currency',
@@ -23,4 +25,12 @@ class RFQOffers extends Model
         'awarded_by',
         'status',
     ];
+
+    public function rfq_details(){
+        return $this->belongsTo(RFQDetails::class, 'rfq_details_id');
+    }
+
+    public function rfq_vendor(){
+        return $this->belongsTo(RFQVendor::class, 'rfq_vendor_id');
+    }
 }

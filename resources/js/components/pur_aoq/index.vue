@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon , MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import {onMounted, ref} from "vue";
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -17,21 +17,7 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
-    const data = [
-        ['<p class="m-0 text-center">2024-02-04</p>', 'SPE/Operation24-2032-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li> <li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li> <li class="leading-none">SGS Hardware Corporation</li> </ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">AOQ</span>' ,'<a href="/pur_aoq/print_te" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
-
-        ['<p class="m-0 text-center">2024-02-04</p>', 'Admin24-2033-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', 'Admin', 'Special Projects/Operation', 'Iris J. Sixto', '<span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">AOQ</span>','<a href="/pur_aoq/print_te" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
-
-        ['<p class="m-0 text-center">2024-02-04</p>', 'HAS24-2034-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">Bacolod Paint Marketing</span></li> <li class="leading-none">Sugarland Hardware Corp.</li> <li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li> </ul>', 'Safety', 'Fire Hydrant System', 'Joselito Panes/Ricky Madeja', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
-
-        ['<p class="m-0 text-center">2024-02-04</p>', 'FLM24-2019-CNPR', '<ul class="list-disc m-0"><li class="leading-none bg-green-500 p-1"><span class="!text-white">New China Enterprise Inc.</span></li></ul>', 'Fuel and Lube Management', 'Fire Hydrant System', 'JFleur de Liz Ambong / Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],
-
-        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],    
-
-        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none bg-green-500 p-1"><span class="!text-white">United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Awarded</span>','<a href="/pur_aoq/awarded" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],   
-        
-        ['<p class="m-0 text-center">2024-01-09</p>', 'EIC24-1005-CNPR', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none p-1"><span>United Bearing Industrial Corp</span></li></ul>', 'Electrical/EIC', 'Fire Hydrant System', 'Rey D. Argawanon', '<span class="badge bg-blue-500 text-white !rounded-xl px-2 p-1">For TE</span>','<a href="/pur_aoq/view" class="btn btn-xs btn-warning text-white p-1"><EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>View</a>'],   
-    ];
+    const router = useRouter();
     
     // 
     const options = {
@@ -47,7 +33,7 @@
 				title:'Abstract of Quotation List',
 				extend: 'copy',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5],
+					columns: [ 0, 1, 2, 3, 4, 5, 6, 7],
 					orthogonal: null,
                     
 				}
@@ -56,7 +42,7 @@
 				title:'Abstract of Quotation List',
 				extend: 'excel',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5], 
+					columns: [ 0, 1, 2, 3, 4, 5, 6, 7], 
 					orthogonal: 'export',
                     format: {
                         body: function (data, row, column, node) {
@@ -92,7 +78,7 @@
 				title:'Abstract of Quotation List',
 				extend: 'print',
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4, 5],
+					columns: [ 0, 1, 2, 3, 4, 5, 6, 7],
 					orthogonal: null
 				}
 			},
@@ -102,6 +88,27 @@
 		]
 		// buttons: ['copy','excel','csv','pageLength']
 	};
+
+    
+    let aoq_list=ref([]);
+
+    onMounted(async () => {
+		getAOQ()
+	})
+
+    const getAOQ = async (page = 1) => {
+		let response = await axios.get(`/api/get_all_aoq?page=${page}`);
+		aoq_list.value=response.data.aoqarray
+	}
+
+    const ViewAOQ = (id,aoq_details_id,status,aoq_status) => {
+        if(status != 'Cancelled' && aoq_status == 'Done TE'){
+            router.push('/pur_aoq/view/'+id+'/'+aoq_details_id)
+        }else{
+            router.push('/pur_aoq/print_te/'+id)
+        }
+		
+	}
 </script>
 <template>
 	<navigation>
@@ -130,7 +137,7 @@
                             </a>
                         </div>
                         <div class=" pt-3">
-                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                            <DataTable :data="aoq_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" > AOQ Date</th>
@@ -141,12 +148,35 @@
                                         <th class="!text-xs bg-gray-100 uppercase" > Requestor</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Status</th>
                                         <th class="!text-xs bg-gray-100 uppercase"  align="center"> 
-                                            <span class="text-center  px-auto">
+                                            <!-- <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
-                                            </span>
+                                            </span> -->
                                         </th>
                                     </tr>
                                 </thead>
+                                <template #column-2="props">
+                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc">
+                                        <!-- <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
+                                            <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
+                                        </li>
+                                        <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
+                                            <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
+                                        </li> -->
+                                        <li :class="(ven.count_awarded == 1) ? 'px-1 bg-lime-500' : 'px-1'">
+                                            {{ ven.vendor_name }} ({{ ven.identifier }})
+                                        </li>
+                                    </ul>
+                                </template>
+                                <template #column-6="props">
+                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.aoq_status == 'For TE'">{{ props.rowData.aoq_status }}</span>
+                                    <span class="bg-blue-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Done TE'">{{ props.rowData.aoq_status }}</span>
+                                    <span class="bg-lime-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Awarded'">{{ props.rowData.aoq_status }}</span>
+                                </template>
+                                <template #column-7="props">
+                                    <button @click="ViewAOQ(props.rowData.id, props.rowData.aoq_details_id, props.rowData.status, props.rowData.aoq_status)" class="btn btn-xs btn-warning text-white p-1">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </button>
+                                </template>
                                 <!-- <template #column-6="props">
                                     <span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">AOQ</span>
                                 </template> -->

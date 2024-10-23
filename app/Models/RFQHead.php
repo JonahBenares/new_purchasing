@@ -22,4 +22,12 @@ class RFQHead extends Model
     public function pr_head(){
         return $this->belongsTo(PRHead::class, 'pr_head_id');
     }
+
+    public function rfq_vendor(){
+        return $this->hasMany(RFQVendor::class);
+    }
+
+    public function aoq_head(){
+        return $this->hasMany(AOQHead::class);
+    }
 }
