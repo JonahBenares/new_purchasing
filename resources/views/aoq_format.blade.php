@@ -146,23 +146,17 @@
 							</td>
 							@foreach($aoq_vendor_data AS $av)
 							<td colspan="5" class="p-0 !border-0">
-								<!-- <table class="w-full">
+								<table class="w-full">
 									<tr>
 										<td class="!border-0 text-start font-bold">Terms and Conditions</td>
 									</tr>
-									@php
-										$termno = 1;
-									@endphp
 									@foreach($all_terms AS $at)
 										@if($av['rfq_vendor_id']==$at['rfq_vendor_id'])
-										<td class="!border-0 text-start" >{{ $termno }} {{ $at['terms'] }}</td>
+										<td class="!border-0 text-start" >{{ $at['terms'] }}</td>
 										@endif
 									@endforeach
 									</tr>
-									@php
-										$termno++;
-									@endphp
-								</table> -->
+								</table>
 							</td>
 							@endforeach
 						</tr>

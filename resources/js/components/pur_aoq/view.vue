@@ -104,6 +104,7 @@
 			formOffers.append('awarded', award ?? 0)
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_awarded/", formOffers)
+			getAOQDoneTEDetails()
 			// axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -115,6 +116,7 @@
 			formOffers.append('rfq_offer_id', rfq_offer_id)
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_comments/", formOffers)
+			getAOQDoneTEDetails()
 			// axios.post("/api/update_offers_comments/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -218,6 +220,7 @@
             </div>
         </div>
 		<div class="bg-yellow-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'For TE')">For Technical Evaluation</div>
+		<div class="bg-blue-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Done TE')">Done Technical Evaluation</div>
 		<div class="bg-lime-500 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Awarded')">Awarded</div>
 		<div class="bg-red-500 text-white px-3 py-2 font-bold" v-if="(head.status == 'Cancelled')">Cancelled</div>
 		<div class="row">
@@ -503,7 +506,7 @@
 													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<td colspan="2" :class="(fo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ fo.currency }}</span>
 													<span>{{  parseFloat(fo.unit_price * ai.quantity).toFixed(2) }}</span>
@@ -529,7 +532,7 @@
 													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<td :class="(so.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ so.currency }}</span>
 													<span>{{  parseFloat(so.unit_price * ai.quantity).toFixed(2) }}</span>
@@ -554,7 +557,7 @@
 													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price * ai.quantity).toFixed(2) }}</span>

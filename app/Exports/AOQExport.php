@@ -49,12 +49,11 @@ class AOQExport implements FromView
             $letters[] = chr($startAscii + $i);
         }
         $rfq_head_id = AOQHead::where('id',$this->aoq_head_id)->value('rfq_head_id');
-        $all_terms =RFQVendorTerms::whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->orderBy('id','ASC')->get();
         $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
         foreach($aoq_details AS $ad){
-            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ad->pr_details_id)->min('unit_price');
+            // $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ad->pr_details_id)->min('unit_price');
             $vendor_data[] = [
-                'rfq_vendor_id'=>$ad->rfq_vendor->id,
+                'rfq_vendor_id'=>$ad->rfq_vendor_id,
                 'vendor_name'=>$ad->rfq_vendor->vendor_name,
                 'vendor_identifier'=>$ad->rfq_vendor->vendor_identifier,
                 'contact_person'=>VendorDetails::where('id',$ad->rfq_vendor->vendor_details_id)->value('contact_person'),
@@ -71,9 +70,18 @@ class AOQExport implements FromView
             }
         }
 
+        $allterms =RFQVendorTerms::whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->orderBy('id','ASC')->get();
+        foreach($allterms AS $at){
+            $all_terms[] = [
+                'terms_id'=>$at->id,
+                'rfq_vendor_id'=>$at->rfq_vendor_id,
+                'terms'=>$at->terms,
+            ];
+        }
+
         $aoq_items = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
         foreach($aoq_items AS $ai){
-            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->min('unit_price');
+            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
             $items_data[] = [
                 'rfq_details_id'=>$ai->id,
                 'pr_details_id'=>$ai->pr_details_id,

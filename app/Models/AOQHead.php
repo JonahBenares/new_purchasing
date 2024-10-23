@@ -8,12 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AOQHead extends Model
 {
     use HasFactory;
-<<<<<<< HEAD
-    protected $table='aoq_head';
-    protected $fillable = [
-        'status'
-    ];
-=======
     protected $table = "aoq_head";
     protected $fillable = [
         'rfq_head_id',
@@ -41,5 +35,4 @@ class AOQHead extends Model
     public function rfq_head(){
         return $this->belongsTo(RFQHead::class, 'rfq_head_id');
     }
->>>>>>> glenn_aoq_functionality
 }

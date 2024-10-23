@@ -14,11 +14,8 @@ class RFQDetails extends Model
         'rfq_vendor_id',
         'pr_details_id',
         'pr_no',
-<<<<<<< HEAD
         'status',
-=======
         'remaining_qty',
->>>>>>> glenn_aoq_functionality
     ];
 
     public function rfq_vendor(){

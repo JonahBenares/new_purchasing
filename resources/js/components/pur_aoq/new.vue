@@ -18,7 +18,7 @@
 	let received_by=ref('');
 	let award_recommended_by=ref('');
 	let recommended_by=ref('');
-	let approved_by=ref('');
+	let approved_by=ref(6);
 
 	onMounted(async () => {
 		getprno()
@@ -111,42 +111,42 @@
 		if(date_needed.value == ''){
 			document.getElementById('dateneeded_').style.backgroundColor = '#FAA0A0';
 			document.getElementById("DateNeededAlert").style.display="block"
-		}else if(received_by.value == ''){
-			document.getElementById("DateNeededAlert").style.display="none"
-			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('receivedby_').style.backgroundColor = '#FAA0A0';
-			document.getElementById("DropdownAlert").style.display="block"
-		}else if(award_recommended_by.value == ''){
-			document.getElementById("DateNeededAlert").style.display="none"
-			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('awardrecommendedby_').style.backgroundColor = '#FAA0A0';
-			document.getElementById("DropdownAlert").style.display="block"
+		// }else if(received_by.value == ''){
+		// 	document.getElementById("DateNeededAlert").style.display="none"
+		// 	document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('receivedby_').style.backgroundColor = '#FAA0A0';
+		// 	document.getElementById("DropdownAlert").style.display="block"
+		// }else if(award_recommended_by.value == ''){
+		// 	document.getElementById("DateNeededAlert").style.display="none"
+		// 	document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
+		// 	document.getElementById('awardrecommendedby_').style.backgroundColor = '#FAA0A0';
+		// 	document.getElementById("DropdownAlert").style.display="block"
 		}else if(recommended_by.value == ''){
 			document.getElementById("DateNeededAlert").style.display="none"
 			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('recommendedby_').style.backgroundColor = '#FAA0A0';
 			document.getElementById("DropdownAlert").style.display="block"
 		}else if(approved_by.value == ''){
 			document.getElementById("DateNeededAlert").style.display="none"
 			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('approvedby_').style.backgroundColor = '#FAA0A0';
 			document.getElementById("DropdownAlert").style.display="block"
 		}else{
 			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById("DropdownAlert").style.display="none"
@@ -163,7 +163,7 @@
 		formAOQHead.append('aoq_date', head.value.aoq_date)
 		formAOQHead.append('date_needed', date_needed.value)
 		formAOQHead.append('prepared_by', head.value.prepared_by)
-		formAOQHead.append('received_by', received_by.value)
+		formAOQHead.append('received_by', head.value.requestor_id)
 		formAOQHead.append('award_recommended_by', award_recommended_by.value)
 		formAOQHead.append('recommended_by', recommended_by.value)
 		formAOQHead.append('approved_by', approved_by.value)
@@ -335,10 +335,12 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label class="text-gray-500 m-0" for="">Received and Checked by</label>
-											<select class="p-2 border w-full bg-yellow-50 text-sm" v-model="received_by" id= "receivedby_">
+											<!-- <select class="p-2 border w-full bg-yellow-50 text-sm" v-model="received_by" id= "receivedby_">
 												<option value="">--Select Employee--</option>
 												<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
-											</select>
+											</select> -->
+											<input type="text" class="form-control" v-model="head.requestor" readonly>
+											<input type="hidden" class="form-control" v-model="head.requestor_id">
 										</div>
 									</div>
 								</div>
