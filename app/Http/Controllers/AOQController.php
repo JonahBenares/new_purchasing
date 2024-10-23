@@ -371,6 +371,8 @@ class AOQController extends Controller
         $max_id = AOQDetails::where('aoq_head_id',$aoq_head_id)->max('id');
         $previous = AOQDetails::where('aoq_head_id',$aoq_head_id)->where('id', '<', $aoq_details_id)->orderBy('id', 'desc')->first();
         $next = AOQDetails::where('aoq_head_id',$aoq_head_id)->where('id', '>', $aoq_details_id)->orderBy('id')->first();
+        $awarded_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('awarded',1)->get();
+        $count_awarded =$awarded_offers->count();
         foreach($aoq_head AS $ah){
             $head_data = [
                 'aoq_head_id'=>$ah->id,
@@ -399,6 +401,7 @@ class AOQController extends Controller
                 'vendor_identifier'=>$vd->vendor_identifier,
                 'contact_person'=>$vd->vendor_details->contact_person,
                 'phone'=>$vd->vendor_details->phone,
+                'count_awarded'=>$count_awarded,
             ];
 
             $vendor_terms = RFQVendorTerms::where('rfq_vendor_id',$vd->id)->get();
@@ -449,6 +452,7 @@ class AOQController extends Controller
             'max_id'=>$max_id,
             'previous'=>$previous,
             'next'=>$next,
+            'count_awarded'=>$count_awarded,
         ],200);
     }
 

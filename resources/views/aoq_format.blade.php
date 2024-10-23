@@ -144,7 +144,7 @@
 									</tr>
 								</table>
 							</td>
-							@foreach($aoq_vendor_data AS $av)
+							<!-- @foreach($aoq_vendor_data AS $av)
 							<td colspan="5" class="p-0 !border-0">
 								<table class="w-full">
 									<tr>
@@ -158,7 +158,7 @@
 									</tr>
 								</table>
 							</td>
-							@endforeach
+							@endforeach -->
 						</tr>
 						<tr>
 							<td><br></td>

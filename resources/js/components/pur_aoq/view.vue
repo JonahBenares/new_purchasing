@@ -18,6 +18,7 @@
 	let next=ref([]);
 	let max_id=ref('');
 	let latest_aoq_details_id=ref('');
+	let count_awarded=ref(0);
 
 	let previewhead=ref([]);
 	let aoq_vendor=ref([]);
@@ -42,6 +43,7 @@
 	onMounted(async () => {
 		getAOQDoneTEDetails()
 		getAOQPreviewDetails()
+		ReloadAwarded()
 	})
 
 	const getAOQDoneTEDetails = async (aoq_details_id) => {
@@ -57,6 +59,7 @@
 			previous.value = response.data.previous
 			next.value = response.data.next
 			latest_aoq_details_id.value = aoq_details_id
+			count_awarded.value = response.data.count_awarded
 		}else{
 			let response = await axios.get(`/api/aoq_donete_details/${props.id}/${props.aoq_details_id}`)
 			head.value = response.data.aoq_head_data
@@ -69,6 +72,20 @@
 			previous.value = response.data.previous
 			next.value = response.data.next
 			latest_aoq_details_id.value = props.aoq_details_id
+			count_awarded.value = response.data.count_awarded
+		}
+
+	}
+
+	const ReloadAwarded = async (aoq_details_id) => {
+		let response = await axios.get(`/api/aoq_donete_details/${props.id}/${aoq_details_id}`)
+		aoq_offers.value = response.data.aoq_offers_data
+		count_awarded.value = response.data.count_awarded
+
+		if(count_awarded.value != 0){
+			document.getElementById("saveaoqbtn").disabled = false;
+		}else{
+			document.getElementById("saveaoqbtn").disabled = true;
 		}
 	}
 
@@ -104,7 +121,7 @@
 			formOffers.append('awarded', award ?? 0)
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_awarded/", formOffers)
-			getAOQDoneTEDetails()
+			ReloadAwarded(latest_aoq_details_id)
 			// axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -116,7 +133,7 @@
 			formOffers.append('rfq_offer_id', rfq_offer_id)
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_comments/", formOffers)
-			getAOQDoneTEDetails()
+			ReloadAwarded(latest_aoq_details_id)
 			// axios.post("/api/update_offers_comments/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -387,8 +404,9 @@
 											<div class="flex justify-between space-x-1" v-if="(head.status != 'Awarded')">
 												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openDraftAlert()">Save as Draft</button>
 												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_aoq_details_id != props.aoq_details_id)">Back</button>
-												<button v-if="(max_id == latest_aoq_details_id)" type="submit" @click="openSaveAlert()" class="btn btn-primary w-26">Save AOQ</button> 
-												<button v-else @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
+												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded == 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26" disabled>Save AOQ</button> 
+												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded != 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26">Save AOQ</button> 
+												<button v-if="(max_id != latest_aoq_details_id)" @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
 											</div>
 											<div class="flex justify-between space-x-1" v-else>
 												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_aoq_details_id != props.aoq_details_id)">Back</button>
