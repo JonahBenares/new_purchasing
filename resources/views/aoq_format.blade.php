@@ -146,7 +146,7 @@
 							</td>
 							@foreach($aoq_vendor_data AS $av)
 							<td colspan="5" class="p-0 !border-0">
-								<table class="w-full">
+								<!-- <table class="w-full">
 									<tr>
 										<td class="!border-0 text-start font-bold">Terms and Conditions</td>
 									</tr>
@@ -162,7 +162,7 @@
 									@php
 										$termno++;
 									@endphp
-								</table>
+								</table> -->
 							</td>
 							@endforeach
 						</tr>

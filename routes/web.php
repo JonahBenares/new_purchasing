@@ -17,7 +17,7 @@ use App\Http\Controllers\AOQController;
 Route::get('/', function () {
     return view('welcome');
 });
-// Route::get('/export-aoq/{aoq_head_id}', [AOQController::class, 'export_aoq']);
+Route::get('/export-aoq/{aoq_head_id}', [AOQController::class, 'export_aoq']);
 
 
 Route::get('/{pathMatch}', function(){
