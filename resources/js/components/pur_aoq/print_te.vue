@@ -75,35 +75,33 @@
 
 	const SaveAdditionalVendor = () => {
 		AddVendorAlert.value = !hideModal.value
-		
-		// const formAdditional= new FormData()
-		// 	let ven = vendor_details.value
-		// 	const v = ven.split("_")
-		// 	let rfq_vendor_id= v[0]
+		const formAdditional= new FormData()
+			let ven = vendor_details.value
+			const v = ven.split("_")
+			let rfq_vendor_id= v[0]
 
+			formAdditional.append('aoq_head_id', props.id)
+			formAdditional.append('rfq_vendor_id', rfq_vendor_id)
 
-		// 	formAdditional.append('aoq_head_id', props.id)
-		// 	formAdditional.append('rfq_vendor_id', rfq_vendor_id)
-
-		// 	var count_offers=document.getElementsByClassName('offers_');
-		// 	for(var o=0;o<count_offers.length;o++){
-		// 		var rfq_offer_id =document.getElementsByClassName("offerid_")[o].value;
-		// 		var offers =document.getElementsByClassName("offers_")[o].value;
-		// 		var unit_price=document.getElementsByClassName("unitprice_")[o].value;
-		// 		var currency=document.getElementsByClassName("currency_")[o].value;
-		// 			const vendor_o = {
-		// 				rfq_offer_id:rfq_offer_id,
-		// 				offer:offers,
-		// 				unit_price:unit_price,
-		// 				currency:currency,
-		// 			}
-		// 			vendoroffers.value.push(vendor_o)
-		// 	}
-		// 	formAdditional.append('itemoffers', JSON.stringify(itemoffers.value))
-		// 	axios.post("/api/add_additional_vendor", formAdditional).then(function () {
-			// closeModal()
-		// 		getAOQHeadDetails()
-		// 	});
+			var count_offers=document.getElementsByClassName('offers_');
+			for(var o=0;o<count_offers.length;o++){
+				var rfq_offer_id =document.getElementsByClassName("offerid_")[o].value;
+				var offers =document.getElementsByClassName("offers_")[o].value;
+				var unit_price=document.getElementsByClassName("unitprice_")[o].value;
+				var currency=document.getElementsByClassName("currency_")[o].value;
+					const vendor_o = {
+						rfq_offer_id:rfq_offer_id,
+						offer:offers,
+						unit_price:unit_price,
+						currency:currency,
+					}
+					vendoroffers.value.push(vendor_o)
+			}
+			formAdditional.append('itemoffers', JSON.stringify(itemoffers.value))
+			axios.post("/api/add_aoq_vendor", formAdditional).then(function () {
+			closeModal()
+				getAOQHeadDetails()
+			});
 	}
 
 	

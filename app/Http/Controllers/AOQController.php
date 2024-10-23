@@ -317,6 +317,8 @@ class AOQController extends Controller
         return response()->json($itemoffers);
     }
 
+
+
     public function aoq_donete_details($aoq_head_id,$aoq_details_id, $start = 'a', $count = 26){
         $letters = [];
         $startAscii = ord($start);
@@ -444,7 +446,12 @@ class AOQController extends Controller
     }
 
     public function cancel_aoq($aoq_head_id){
-        $update_status = AOQHead::where('id','=', $aoq_head_id)->update(['status' => 'Cancelled']);
+        $userid = Auth::id();
+        $update_status = AOQHead::where('id','=', $aoq_head_id)->update([
+            'status' => 'Cancelled',
+            'cancelled_by' => $userid,
+            'cancelled_date' => date('Y-m-d H:i:s'),
+        ]);
     }
 
     public function export_aoq($aoq_head_id){
