@@ -18,7 +18,7 @@
 	let received_by=ref('');
 	let award_recommended_by=ref('');
 	let recommended_by=ref('');
-	let approved_by=ref('');
+	let approved_by=ref(6);
 
 	onMounted(async () => {
 		getprno()
@@ -43,10 +43,10 @@
 			document.getElementById("display_aoq_head").style.display="none"
 
 			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
+			// document.getElementById('receivedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('awardrecommendedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
-			document.getElementById('approved_by').style.backgroundColor = '#FEFCE8';
+			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
 			document.getElementById("DateNeededAlert").style.display="none"
 			document.getElementById("DropdownAlert").style.display="none"
 		}else{
@@ -335,10 +335,12 @@
 									<div class="col-lg-4">
 										<div class="form-group">
 											<label class="text-gray-500 m-0" for="">Received and Checked by</label>
-											<select class="p-2 border w-full bg-yellow-50 text-sm" v-model="received_by" id= "receivedby_">
+											<!-- <select class="p-2 border w-full bg-yellow-50 text-sm" v-model="received_by" id= "receivedby_">
 												<option value="">--Select Employee--</option>
 												<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
-											</select>
+											</select> -->
+											<input type="text" class="form-control" v-model="head.requestor" readonly>
+											<input type="hidden" class="form-control" v-model="head.requestor_id">
 										</div>
 									</div>
 								</div>
