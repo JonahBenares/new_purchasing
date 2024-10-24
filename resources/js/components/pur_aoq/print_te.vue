@@ -434,7 +434,7 @@
 						<button type="submit" @click="openAddVendor()" class="btn btn-info w-26" v-if="count_rfq_vendors != 0">Add Vendor</button>
 						<!-- <button type="button" @click="ExportAOQ()" class="btn btn-primary mr-2 w-44">Save and Export</button> -->
 						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
-						<button type="submit" @click="DoneTEAlert()" class="btn btn-success w-26" v-if="count_rfq_vendors != 0">Done TE & Proceed</button>
+						<button type="submit" @click="DoneTEAlert()" class="btn btn-success w-26">Done TE & Proceed</button>
 						
 					</div>
 				</div>

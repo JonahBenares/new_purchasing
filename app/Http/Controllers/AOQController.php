@@ -224,7 +224,7 @@ class AOQController extends Controller
             ];
         }
 
-        $rfq_vendors = RFQVendor::whereNotIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
+        $rfq_vendors = RFQVendor::where('rfq_head_id',$rfq_head_id)->whereNotIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
         $count_rfq_vendors =$rfq_vendors->count();
 
         $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
