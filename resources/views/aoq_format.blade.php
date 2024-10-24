@@ -125,7 +125,7 @@
                             @endphp
                             @endforeach
 							<tr>
-							<td colspan="4" class="p-0 !border-0">
+							{{-- <td colspan="4" class="p-0 !border-0">
 								<table class="w-full">
 									<tr>
 										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
@@ -143,7 +143,7 @@
 										<td class="!border-0"></td>
 									</tr>
 								</table>
-							</td>
+							</td> --}}
 							<!-- @foreach($aoq_vendor_data AS $av)
 							<td colspan="5" class="p-0 !border-0">
 								<table class="w-full">
