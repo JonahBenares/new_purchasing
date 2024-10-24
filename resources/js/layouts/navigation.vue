@@ -509,7 +509,7 @@
         <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas " id="sidebar">
-                <div class="h-[39rem] hover:overflow-y-scroll  overflow-y-hidden">
+                <div class="h-svh hover:overflow-y-scroll  overflow-y-hidden  !mb-5">
                     <ul class="nav ">
                         <li class="nav-item">
                             <a class="nav-link !text-gray-600" href="/dashboard">
@@ -528,22 +528,22 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                                <div class="!hidden"  :class="{ show:masterfileDrop }">
-                                    <ul class="nav flex-column sub-menu">
-                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
-                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
-                                    </ul>
-                                </div>
+                            <div class="!hidden"  :class="{ show:masterfileDrop }">
+                                <ul class="nav flex-column sub-menu">
+                                    <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>
+                                    <!-- <li class="nav-item list-none"> <a class="nav-link" href="/company">Company</a></li> -->
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/vendor">Vendors</a></li>
+                                    <li class="nav-item list-none"> <a class="nav-link" href="/employee">Employee</a></li>
+                                </ul>
+                            </div>
                             </Transition>
                         </li>
                         <li class="nav-item py-2 text-xs uppercase font-bold !text-gray-600 bg-gray-50 px-4">
@@ -558,10 +558,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -583,10 +583,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -607,10 +607,10 @@
                                 <span class="menu-title">Abstract of Quotation</span>
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -633,10 +633,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -660,10 +660,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -685,10 +685,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -713,10 +713,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -738,10 +738,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -771,10 +771,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -798,10 +798,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -823,10 +823,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -851,10 +851,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -875,10 +875,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -902,10 +902,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
@@ -927,10 +927,10 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-250"
+                                enter-active-class="transition ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-100"
+                                leave-active-class="transition ease-in duration-500"
                                 leave-from-class="opacity-100 h-full"
                                 leave-to-class="opacity-0 h-1/2"
                             >
