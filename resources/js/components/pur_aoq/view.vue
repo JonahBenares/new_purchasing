@@ -78,9 +78,22 @@
 	}
 
 	const ReloadAwarded = async (aoq_details_id) => {
-		let response = await axios.get(`/api/aoq_donete_details/${props.id}/${aoq_details_id}`)
+		if(aoq_details_id != undefined){
+			var details_id = aoq_details_id
+		}else{
+			var details_id = props.aoq_details_id
+		}
+		let response = await axios.get(`/api/aoq_donete_details/${props.id}/${details_id}`)
+		aoq_items.value = response.data.aoq_items_data
+		vendordets.value = response.data.aoq_vendor_data
 		aoq_offers.value = response.data.aoq_offers_data
+		letters.value=response.data.letters
+		vendor_terms.value = response.data.vendor_terms
 		count_awarded.value = response.data.count_awarded
+		latest_aoq_details_id.value = details_id
+		max_id.value = response.data.max_id
+		previous.value = response.data.previous
+		next.value = response.data.next
 
 		if(count_awarded.value != 0){
 			document.getElementById("saveaoqbtn").disabled = false;
@@ -353,7 +366,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded' && ao.unit_price != 0)">
-																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @blur="UpdateOffersAwarded(i,ao.rfq_offer_id,ai.pr_details_id,latest_aoq_details_id)">
+																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @click="UpdateOffersAwarded(i,ao.rfq_offer_id,ai.pr_details_id,latest_aoq_details_id)">
 															</td>
 															<td class="p-1 align-top text-center" width="3%" v-else>
 																<!-- <input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disbaled> -->
