@@ -18,6 +18,7 @@
 	let next=ref([]);
 	let max_id=ref('');
 	let latest_aoq_details_id=ref('');
+	let count_awarded=ref(0);
 
 	let previewhead=ref([]);
 	let aoq_vendor=ref([]);
@@ -42,6 +43,7 @@
 	onMounted(async () => {
 		getAOQDoneTEDetails()
 		getAOQPreviewDetails()
+		ReloadAwarded()
 	})
 
 	const getAOQDoneTEDetails = async (aoq_details_id) => {
@@ -57,6 +59,7 @@
 			previous.value = response.data.previous
 			next.value = response.data.next
 			latest_aoq_details_id.value = aoq_details_id
+			count_awarded.value = response.data.count_awarded
 		}else{
 			let response = await axios.get(`/api/aoq_donete_details/${props.id}/${props.aoq_details_id}`)
 			head.value = response.data.aoq_head_data
@@ -69,6 +72,20 @@
 			previous.value = response.data.previous
 			next.value = response.data.next
 			latest_aoq_details_id.value = props.aoq_details_id
+			count_awarded.value = response.data.count_awarded
+		}
+
+	}
+
+	const ReloadAwarded = async (aoq_details_id) => {
+		let response = await axios.get(`/api/aoq_donete_details/${props.id}/${aoq_details_id}`)
+		aoq_offers.value = response.data.aoq_offers_data
+		count_awarded.value = response.data.count_awarded
+
+		if(count_awarded.value != 0){
+			document.getElementById("saveaoqbtn").disabled = false;
+		}else{
+			document.getElementById("saveaoqbtn").disabled = true;
 		}
 	}
 
@@ -104,6 +121,7 @@
 			formOffers.append('awarded', award ?? 0)
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_awarded/", formOffers)
+			ReloadAwarded(latest_aoq_details_id)
 			// axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -115,6 +133,7 @@
 			formOffers.append('rfq_offer_id', rfq_offer_id)
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_comments/", formOffers)
+			ReloadAwarded(latest_aoq_details_id)
 			// axios.post("/api/update_offers_comments/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -218,6 +237,7 @@
             </div>
         </div>
 		<div class="bg-yellow-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'For TE')">For Technical Evaluation</div>
+		<div class="bg-blue-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Done TE')">Done Technical Evaluation</div>
 		<div class="bg-lime-500 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Awarded')">Awarded</div>
 		<div class="bg-red-500 text-white px-3 py-2 font-bold" v-if="(head.status == 'Cancelled')">Cancelled</div>
 		<div class="row">
@@ -384,8 +404,9 @@
 											<div class="flex justify-between space-x-1" v-if="(head.status != 'Awarded')">
 												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openDraftAlert()">Save as Draft</button>
 												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_aoq_details_id != props.aoq_details_id)">Back</button>
-												<button v-if="(max_id == latest_aoq_details_id)" type="submit" @click="openSaveAlert()" class="btn btn-primary w-26">Save AOQ</button> 
-												<button v-else @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
+												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded == 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26" disabled>Save AOQ</button> 
+												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded != 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26">Save AOQ</button> 
+												<button v-if="(max_id != latest_aoq_details_id)" @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
 											</div>
 											<div class="flex justify-between space-x-1" v-else>
 												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_aoq_details_id != props.aoq_details_id)">Back</button>
@@ -503,7 +524,7 @@
 													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<td colspan="2" :class="(fo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ fo.currency }}</span>
 													<span>{{  parseFloat(fo.unit_price * ai.quantity).toFixed(2) }}</span>
@@ -529,7 +550,7 @@
 													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<td :class="(so.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ so.currency }}</span>
 													<span>{{  parseFloat(so.unit_price * ai.quantity).toFixed(2) }}</span>
@@ -554,7 +575,7 @@
 													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price * ai.quantity).toFixed(2) }}</span>

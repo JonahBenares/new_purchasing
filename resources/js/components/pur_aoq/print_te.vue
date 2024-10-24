@@ -20,18 +20,10 @@
 	let pr_items_data=ref('');
 	let letters=ref([]);
 	let itemoffers=ref([]);
+	let vendor_aoq_items=ref([]);
 	let currency=ref([]);
 	let count_rfq_vendors=ref(0);
-
-	let first_offer=ref('');
-	let second_offer=ref('');
-	let third_offer=ref('');
-	let first_up=ref('');
-	let second_up=ref('');
-	let third_up=ref('');
-	let first_c=ref('PHP');
-	let second_c=ref('PHP');
-	let third_c=ref('PHP');
+	let aoq_details_id=ref(0);
 
 	const props = defineProps({
         id:{
@@ -47,6 +39,7 @@
 	const getAOQHeadDetails = async () => {
 		let response = await axios.get(`/api/aoq_head_details/${props.id}`)
 		head.value = response.data.aoq_head_data
+		aoq_details_id.value = response.data.aoq_details_id
 		aoq_vendor.value = response.data.aoq_vendor_data
 		aoq_items.value = response.data.aoq_items_data
 		// aoq_offers.value = response.data.aoq_offers_data
@@ -68,7 +61,8 @@
 		let rfq_vendor_id= v[0]
 		
 		let response = await axios.get('/api/vendor_offers/'+rfq_vendor_id+'/'+head.value.rfq_head_id)
-		itemoffers.value = response.data
+		vendor_aoq_items.value = response.data.vendor_aoq_items
+		itemoffers.value = response.data.itemoffers
 		document.getElementById("display_offers").style.display="block"
 		document.getElementById("addnewvendor").disabled = false;
 	}
@@ -83,20 +77,20 @@
 			formAdditional.append('aoq_head_id', props.id)
 			formAdditional.append('rfq_vendor_id', rfq_vendor_id)
 
-			var count_offers=document.getElementsByClassName('offers_');
-			for(var o=0;o<count_offers.length;o++){
-				var rfq_offer_id =document.getElementsByClassName("offerid_")[o].value;
-				var offers =document.getElementsByClassName("offers_")[o].value;
-				var unit_price=document.getElementsByClassName("unitprice_")[o].value;
-				var currency=document.getElementsByClassName("currency_")[o].value;
-					const vendor_o = {
-						rfq_offer_id:rfq_offer_id,
-						offer:offers,
-						unit_price:unit_price,
-						currency:currency,
-					}
-					vendoroffers.value.push(vendor_o)
-			}
+			// var count_offers=document.getElementsByClassName('offers_');
+			// for(var o=0;o<count_offers.length;o++){
+			// 	var rfq_offer_id =document.getElementsByClassName("offerid_")[o].value;
+			// 	var offers =document.getElementsByClassName("offers_")[o].value;
+			// 	var unit_price=document.getElementsByClassName("unitprice_")[o].value;
+			// 	var currency=document.getElementsByClassName("currency_")[o].value;
+			// 		const vendor_o = {
+			// 			rfq_offer_id:rfq_offer_id,
+			// 			offer:offers,
+			// 			unit_price:unit_price,
+			// 			currency:currency,
+			// 		}
+			// 		vendoroffers.value.push(vendor_o)
+			// }
 			formAdditional.append('itemoffers', JSON.stringify(itemoffers.value))
 			axios.post("/api/add_aoq_vendor", formAdditional).then(function () {
 			closeModal()
@@ -130,6 +124,7 @@
 	const showModal = ref(false)
 	const cancelAlert = ref(false)
 	const AddVendorAlert = ref(false)
+	const donetealert = ref(false)
 	const printbutton = ref(false)
 	const signatories = ref(false)
 	const showAddVendor = ref(false)
@@ -142,6 +137,17 @@
 		showAddVendor.value = !hideModal.value
 		cancelAlert.value = !hideModal.value
 		AddVendorAlert.value = !hideModal.value
+		donetealert.value = !hideModal.value
+	}
+
+	const DoneTEAlert = () => {
+		donetealert.value = !donetealert.value
+	}
+
+	const DoneTE = () => {
+		axios.post(`/api/done_te_aoq/${props.id}`).then(function () {
+			router.push('/pur_aoq/view/'+props.id+'/'+aoq_details_id.value)
+		});
 	}
 
 	const CancelAlert = () => {
@@ -162,12 +168,15 @@
 		AddVendorAlert.value = !AddVendorAlert.value
 	}
 
+
+
 	
 	
 </script>
 <template>
 	<navigation>
 		<div class="bg-yellow-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'For TE')">For Technical Evaluation</div>
+		<div class="bg-blue-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Done TE')">Done Technical Evaluation</div>
 		<div class="bg-lime-500 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Awarded')">Awarded</div>
 		<div class="bg-red-500 text-white px-3 py-2 font-bold" v-if="(head.status == 'Cancelled')">Cancelled</div>
 		<div class="bg-white p-4 ">
@@ -302,7 +311,8 @@
 													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td class="p-1 align-top" colspan="2">
+											<!-- <td class="p-1 align-top" colspan="2"> -->
+											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price * ai.quantity).toFixed(2) }}</span>
@@ -416,14 +426,16 @@
 			</div>
 			<br>
 			<div class="row">
-				<div class="col-lg-12" v-if="(head.status != 'Cancelled' && head.aoq_status != 'Awarded')">
+				<div class="col-lg-12" v-if="(head.status != 'Cancelled' && head.aoq_status != 'Awarded' && head.aoq_status != 'Done TE')">
 					<div class="flex justify-center space-x-1">
 						<!-- <a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Save and Export</a> -->
 						<!-- <a href="#" class="btn btn-primary mr-2 w-44">Export</a> -->
 						<button type="button" @click="CancelAlert()" class="btn btn-danger mr-2 w-36">Cancel</button>
 						<button type="submit" @click="openAddVendor()" class="btn btn-info w-26" v-if="count_rfq_vendors != 0">Add Vendor</button>
 						<!-- <button type="button" @click="ExportAOQ()" class="btn btn-primary mr-2 w-44">Save and Export</button> -->
-						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Save and Export</a>
+						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
+						<button type="submit" @click="DoneTEAlert()" class="btn btn-success w-26" v-if="count_rfq_vendors != 0">Done TE & Proceed</button>
+						
 					</div>
 				</div>
 				<div class="col-lg-12" v-else>
@@ -472,65 +484,29 @@
 										<td class="p-1" width="35%">Brand/Offer</td>
 										<td class="p-1 text-center" width="15%">Unit Price</td>
 									</tr>
-									<tr v-for="(pri, itemno) in pr_items_data">
+									<tr v-for="(vai, itemno) in vendor_aoq_items">
 										<td class="p-1 align-top text-center">{{ itemno + 1 }}</td>
-										<td class="p-1 align-top text-center">{{ parseFloat(pri.quantity).toFixed(2) }}</td>
-										<td class="p-1 align-top text-center">{{ parseFloat(pri.remaining_qty).toFixed(2) }}</td>
-										<td class="p-1 align-top">{{ pri.item_description }}</td>
-										<td class="align-top" >
-										<template v-for="(io, o) in itemoffers">
-											<div v-if="io.rfq_details_id == pri.rfq_details_id">
-												<!-- <template v-if="io.rfq_details_id == pri.rfq_details_id"> -->
-												<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ o"  v-model="io.offer"></textarea>
-												<!-- <input type="text" class="offerid_" v-model="oi.rfq_offer_id" > -->
-												<!-- <input type="hidden" class="offerid_" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" > -->
-												<!-- </template> -->
+										<td class="p-1 align-top text-center">{{ parseFloat(vai.quantity).toFixed(2) }}</td>
+										<td class="p-1 align-top text-center">{{ parseFloat(vai.remaining_qty).toFixed(2) }}</td>
+										<td class="p-1 align-top">{{ vai.item_description }}</td>
+										<td class="align-top">
+											<div v-for="(io, o) in itemoffers">
+												<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ o" v-model="io.offer" v-if="io.rfq_details_id == vai.rfq_details_id"></textarea>
+												<input type="hidden" class="offerid_" v-if="io.rfq_details_id == vai.rfq_details_id" v-model="io.rfq_offer_id" >
 											</div>
-										</template>
 										</td>
 										<td class="align-top">
-											<div class="!h-14 border-b" v-for="(io, o) in itemoffers">
-												<!-- <template v-if="io.rfq_details_id == pri.rfq_details_id"> -->
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" v-model="io.unit_price">
+										<div  v-for="io in itemoffers">
+											<div class="!h-14 border-b" v-if="io.rfq_details_id == vai.rfq_details_id">
+												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" v-model="io.unit_price" >
 												<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="io.offer_currency">
 													<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 												</select>
-												<!-- <input type="text" class="offerid_" v-model="oi.rfq_offer_id" > -->
-												<!-- </template> -->
+												<input type="hidden" class="offerid_" v-if="io.rfq_details_id == vai.rfq_details_id" v-model="io.rfq_offer_id" >
 											</div>
+										</div>
 										</td>
 									</tr>
-									<!-- <tr v-for="(pri, itemno) in pr_items_data" v-else>
-										<td class="p-1 align-top text-center">{{ itemno + 1 }}</td>
-										<td class="p-1 align-top text-center">{{ parseFloat(pri.quantity).toFixed(2) }}</td>
-										<td class="p-1 align-top text-center">{{ parseFloat(pri.remaining_qty).toFixed(2) }}</td>
-										<td class="p-1 align-top">{{ pri.item_description }}</td>
-										<td class="align-top">
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ itemno" v-model = "first_offer" @change="AddBtn"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ itemno" v-model = "second_offer" @change="AddBtn"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ itemno" v-model = "third_offer" @change="AddBtn"></textarea>
-										</td>
-										<td class="align-top">
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" v-model = "first_up">
-												<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="first_c">
-													<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" v-model = "second_up">
-												<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="second_c">
-													<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00" v-model = "third_up">
-												<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="third_c">
-													<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-												</select>
-											</div>
-										</td>
-									</tr> -->
 								</table>
 							</div>
 						</div>
@@ -621,6 +597,48 @@
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
 									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="SaveAdditionalVendor()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Transition>
+
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:donetealert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Confirmation!</h2>
+									<h5 class="leading-tight">Are you sure you want to proceed?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="DoneTE()">Yes</button>
 								</div>
 							</div>
 						</div>

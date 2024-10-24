@@ -96,6 +96,7 @@ Route::post('/save_aoq/{aoq_head_id}',[AOQController::class,'save_aoq']);
 // Route::get('/export-aoq/{aoq_head_id}', [AOQController::class, 'export_aoq']);
 Route::get('/vendor_offers/{rfq_vendor_id}/{rfq_head_id}',[AOQController::class,'vendor_offers']);
 Route::post('/add_aoq_vendor',[AOQController::class,'add_aoq_vendor']);
+Route::post('/done_te_aoq/{aoq_head_id}',[AOQController::class,'done_te_aoq']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::post('/import_pr',[PRController::class,'import_pr']);
