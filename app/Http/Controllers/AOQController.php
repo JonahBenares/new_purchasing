@@ -479,6 +479,9 @@ class AOQController extends Controller
             'status'=>'Saved'
         ]);
 
+        $pr_no= AOQHead::where('id',$aoq_head_id)->value('pr_no');
+        $update_pr_status = PrReportDetails::whereIn('pr_details_id',RFQDetails::where('pr_no',$pr_no)->pluck('pr_details_id'))->update(['status' => 'Awarded']);
+
     }
 
     public function done_te_aoq($aoq_head_id){
