@@ -242,6 +242,9 @@ class RFQController extends Controller
                     $rfq_vendorterms = RFQVendorTerms::where('rfq_vendor_id',$v->id)->orderBy('id','ASC')->get();
                     $count_rfq_terms=$rfq_vendorterms->count();
 
+                    $vendor_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('rfq_vendor_id',$v->id)->where('offer','!=','')->get();
+                    $count_vendor_offers=$vendor_offers->count();
+
                     $RFQVendor[] = [
                         'rfq_vendor_id'=>$v->id,
                         'vendor_details_id'=>$v->vendor_details_id,
@@ -258,6 +261,7 @@ class RFQController extends Controller
                         'approved_by_id'=>$v->approved_by,
                         'approved_by_name'=>User::where('id',$v->approved_by)->value('name'),
                         'count_rfq_terms'=>$count_rfq_terms,
+                        'count_vendor_offers'=>$count_vendor_offers,
                     ];
                 }
 
