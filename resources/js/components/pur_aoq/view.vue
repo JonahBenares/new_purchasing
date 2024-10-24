@@ -352,12 +352,13 @@
 																	<span>{{ parseFloat(ao.unit_price *  ai.quantity).toFixed(2) }}</span>
 																</div>
 															</td>
-															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded')">
+															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded' && ao.unit_price != 0)">
 																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @blur="UpdateOffersAwarded(i,ao.rfq_offer_id,ai.pr_details_id,latest_aoq_details_id)">
 															</td>
 															<td class="p-1 align-top text-center" width="3%" v-else>
-																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disabled>
+																<!-- <input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disbaled> -->
 															</td>
+															
 															<td class="p-1 align-top" width="10%" v-if="(head.status != 'Awarded')">
 																<textarea placeholder="Comments" class="w-full" :id="'comments_'+ i" v-model = "ao.comments" @blur="UpdateOffersComments(i,ao.rfq_offer_id,latest_aoq_details_id)"></textarea>
 															</td>
