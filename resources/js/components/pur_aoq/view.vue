@@ -124,6 +124,7 @@
 			// ReloadAwarded(latest_aoq_details_id)
 			axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
 				ReloadAwarded(latest_aoq_details_id)
+				getAOQPreviewDetails()
 			});
 	}
 
@@ -134,6 +135,7 @@
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_comments/", formOffers)
 			ReloadAwarded(latest_aoq_details_id)
+			getAOQPreviewDetails()
 			// axios.post("/api/update_offers_comments/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
