@@ -305,7 +305,7 @@
 											<td class="p-1">
 												{{ to.offer }}
 											</td>
-											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
+											<td :class="(ai.min_price == to.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
