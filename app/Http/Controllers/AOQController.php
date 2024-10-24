@@ -35,6 +35,7 @@ class AOQController extends Controller
             $purpose= PRHead::where('id',$pr_head_id)->value('purpose');
             $requestor= PRHead::where('id',$pr_head_id)->value('requestor');
             $allvendors = RFQVendor::with('vendor_details')->whereIn('id',AOQDetails::where('aoq_head_id',$aa->id)->pluck('rfq_vendor_id'))->orderby('vendor_name', 'ASC')->get();
+            $all_vendors=[];
             foreach($allvendors AS $av){
                 $awarded_vendor = RFQOffers::where('rfq_vendor_id',$av->id)->where('awarded',1)->get();
                 $count_awarded_vendor=$awarded_vendor->count();
