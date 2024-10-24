@@ -261,7 +261,7 @@ class RFQController extends Controller
                     ];
                 }
 
-            $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->where('status','!=','Cancelled')->get();
+            $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get();
                 foreach($rfq_details AS $d){
                     $RFQDetails[] = [
                         'rfq_details_id'=>$d->id,
