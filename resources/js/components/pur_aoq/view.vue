@@ -111,20 +111,20 @@
 	// }
 
 
-	const UpdateOffersAwarded= (loop, rfq_offer_id, rfq_vendor_id, rfq_details_id,latest_aoq_details_id) => {
+	const UpdateOffersAwarded= (loop, rfq_offer_id, pr_details_id,latest_aoq_details_id) => {
 		const award = document.getElementById("awarded_"+loop).value;
 		const comments = document.getElementById("comments_"+loop).value;
 			const formOffers= new FormData()
+			formOffers.append('rfq_head_id', head.value.rfq_head_id)
 			formOffers.append('rfq_offer_id', rfq_offer_id)
-			formOffers.append('rfq_vendor_id', rfq_vendor_id)
-			formOffers.append('rfq_details_id', rfq_details_id)
+			formOffers.append('pr_details_id', pr_details_id)
 			formOffers.append('awarded', award ?? 0)
 			formOffers.append('comments', comments)
-			axios.post("/api/update_offers_awarded/", formOffers)
-			ReloadAwarded(latest_aoq_details_id)
-			// axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
-			// 	getUpdatedOffers(latest_aoq_details_id)
-			// });
+			// axios.post("/api/update_offers_awarded/", formOffers)
+			// ReloadAwarded(latest_aoq_details_id)
+			axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
+				ReloadAwarded(latest_aoq_details_id)
+			});
 	}
 
 	const UpdateOffersComments= (loop, rfq_offer_id, latest_aoq_details_id) => {
@@ -351,7 +351,7 @@
 																</div>
 															</td>
 															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded')">
-																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @blur="UpdateOffersAwarded(i,ao.rfq_offer_id,ao.rfq_vendor_id,ao.rfq_details_id, latest_aoq_details_id)">
+																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @blur="UpdateOffersAwarded(i,ao.rfq_offer_id,ai.pr_details_id,latest_aoq_details_id)">
 															</td>
 															<td class="p-1 align-top text-center" width="3%" v-else>
 																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disabled>

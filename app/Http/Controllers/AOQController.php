@@ -382,7 +382,7 @@ class AOQController extends Controller
                 'aoq_status'=>$ah->aoq_status,
                 'aoq_date'=>date('F j, Y', strtotime($ah->aoq_date)),
                 'rfq_no'=>$ah->rfq_no,
-                'rfq_head_id'=>$ah->id,
+                'rfq_head_id'=>$ah->rfq_head_id,
                 'pr_no'=>$ah->pr_no,
                 'department'=>PRHead::where('pr_no',$ah->pr_no)->value('department_name'),
                 'enduse'=>PRHead::where('pr_no',$ah->pr_no)->value('enduse'),
@@ -420,6 +420,7 @@ class AOQController extends Controller
             foreach($aoq_items AS $ai){
                 $items_data[] = [
                     'rfq_details_id'=>$ai->id,
+                    'pr_details_id'=>$ai->pr_details_id,
                     'item_description'=>$ai->pr_details->item_description,
                     'uom'=>$ai->pr_details->uom,
                     'quantity'=>$ai->pr_details->quantity,
@@ -458,11 +459,11 @@ class AOQController extends Controller
     }
 
     public function update_offers_awarded(Request $request){
+        $rfq_head_id = $request->input('rfq_head_id');
         $rfq_offer_id = $request->input('rfq_offer_id');
-        $rfq_vendor_id = $request->input('rfq_vendor_id');
-        $rfq_details_id = $request->input('rfq_details_id');
+        $pr_details_id = $request->input('pr_details_id');
         $update_o=RFQOffers::where('id',$rfq_offer_id)->update(['awarded'=>$request->input('awarded'),]);
-        $update_awarded=RFQOffers::where('id','!=',$rfq_offer_id)->where('rfq_vendor_id',$rfq_vendor_id)->where('rfq_details_id',$rfq_details_id)->update(['awarded'=>0]);
+        $update_awarded=RFQOffers::where('id','!=',$rfq_offer_id)->where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$pr_details_id)->update(['awarded'=>0]);
     }
 
     public function update_offers_comments(Request $request){
