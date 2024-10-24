@@ -169,9 +169,11 @@
                                     </ul>
                                 </template>
                                 <template #column-6="props">
-                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.aoq_status == 'For TE'">{{ props.rowData.aoq_status }}</span>
-                                    <span class="bg-blue-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Done TE'">{{ props.rowData.aoq_status }}</span>
-                                    <span class="bg-lime-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Awarded'">{{ props.rowData.aoq_status }}</span>
+                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.aoq_status == 'For TE'">{{props.rowData.aoq_status}}</span>
+                                    <span class="bg-blue-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Done TE'">{{props.rowData.aoq_status}}</span>
+                                    <span class="bg-lime-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Awarded'">{{props.rowData.aoq_status}}</span>
+                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.status == 'Draft'">- {{props.rowData.status}}</span>
+                                    <span class="bg-red-500 px-1 text-white" v-if="props.rowData.status == 'Cancelled'">- {{props.rowData.status}}</span>
                                 </template>
                                 <template #column-7="props">
                                     <button @click="ViewAOQ(props.rowData.id, props.rowData.aoq_details_id, props.rowData.status, props.rowData.aoq_status)" class="btn btn-xs btn-warning text-white p-1">

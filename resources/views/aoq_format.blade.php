@@ -68,7 +68,7 @@
 								<td class="p-1 align-top text-center" rowspan="3">{{  number_format($ai['quantity'],2) }}</td>
 								<td class="p-1 align-top text-center" rowspan="3">{{  $ai['uom']; }}</td>
 								@foreach($first_offers AS $fo)
-								@if($av['rfq_vendor_id']==$fo['rfq_vendor_id'])
+								@if($av['pr_details_id']==$fo['pr_details_id'])
 								<td>{{$fo['offer'];}}</td>
 								@if($ai['min_price']==$fo['unit_price'])
 								<td style='background-color: #FDE047'>{{ $fo['currency'] }} {{ $fo['unit_price'] }}</td>
@@ -86,7 +86,7 @@
                             </tr>
 							<tr>
 							@foreach($second_offers AS $so)
-								@if($av['rfq_vendor_id']==$so['rfq_vendor_id'])
+								@if($av['pr_details_id']==$so['pr_details_id'])
 								<td>{{$so['offer'];}}</td>
 								@if($ai['min_price']==$so['unit_price'])
 								<td style='background-color: #FDE047'>{{ $so['currency'] }} {{ $so['unit_price'] }}</td>
@@ -104,7 +104,7 @@
 							</tr>
 							<tr>
 							@foreach($third_offers AS $to)
-								@if($av['rfq_vendor_id']==$to['rfq_vendor_id'])
+								@if($av['pr_details_id']==$to['pr_details_id'])
 								<td>{{$to['offer'];}}</td>
 								@if($ai['min_price']==$to['unit_price'])
 								<td style='background-color: #FDE047'>{{ $to['currency'] }} {{ $to['unit_price'] }}</td>
