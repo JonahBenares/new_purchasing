@@ -23,6 +23,7 @@
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
 		select: true,
+        order: [0, 'desc'],
 		lengthMenu: [
 			[10, 25, 50, -1],
 			['10 rows', '25 rows', '50 rows', 'Show all']
