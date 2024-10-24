@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AOQController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/export-aoq/{aoq_head_id}', [AOQController::class, 'export_aoq']);
+
+
 Route::get('/{pathMatch}', function(){
     return view('welcome');
 })->where('pathMatch',".*");
