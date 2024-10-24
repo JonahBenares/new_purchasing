@@ -35,6 +35,7 @@ class AOQController extends Controller
             $purpose= PRHead::where('id',$pr_head_id)->value('purpose');
             $requestor= PRHead::where('id',$pr_head_id)->value('requestor');
             $allvendors = RFQVendor::with('vendor_details')->whereIn('id',AOQDetails::where('aoq_head_id',$aa->id)->pluck('rfq_vendor_id'))->orderby('vendor_name', 'ASC')->get();
+            $all_vendors=[];
             foreach($allvendors AS $av){
                 $awarded_vendor = RFQOffers::where('rfq_vendor_id',$av->id)->where('awarded',1)->get();
                 $count_awarded_vendor=$awarded_vendor->count();
@@ -126,7 +127,7 @@ class AOQController extends Controller
             ];
         }
 
-        $rfqvendor = RFQVendor::where('rfq_head_id',$rfq_head_id)->orderBy('vendor_name','ASC')->get();
+        $rfqvendor = RFQVendor::where('rfq_head_id',$rfq_head_id)->where('canvassed',1)->orderBy('vendor_name','ASC')->get();
         foreach($rfqvendor AS $rv){
             $rfq_vendor[] = [
                 'vendor_checkbox'=>0,
@@ -223,7 +224,7 @@ class AOQController extends Controller
             ];
         }
 
-        $rfq_vendors = RFQVendor::whereNotIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
+        $rfq_vendors = RFQVendor::where('rfq_head_id',$rfq_head_id)->whereNotIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
         $count_rfq_vendors =$rfq_vendors->count();
 
         $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
@@ -255,7 +256,7 @@ class AOQController extends Controller
 
         $aoq_items = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
         foreach($aoq_items AS $ai){
-            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
+            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('unit_price','!=',0)->where('pr_details_id',$ai->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
             $items_data[] = [
                 'rfq_details_id'=>$ai->id,
                 'pr_details_id'=>$ai->pr_details_id,
@@ -381,7 +382,7 @@ class AOQController extends Controller
                 'aoq_status'=>$ah->aoq_status,
                 'aoq_date'=>date('F j, Y', strtotime($ah->aoq_date)),
                 'rfq_no'=>$ah->rfq_no,
-                'rfq_head_id'=>$ah->id,
+                'rfq_head_id'=>$ah->rfq_head_id,
                 'pr_no'=>$ah->pr_no,
                 'department'=>PRHead::where('pr_no',$ah->pr_no)->value('department_name'),
                 'enduse'=>PRHead::where('pr_no',$ah->pr_no)->value('enduse'),
@@ -419,6 +420,7 @@ class AOQController extends Controller
             foreach($aoq_items AS $ai){
                 $items_data[] = [
                     'rfq_details_id'=>$ai->id,
+                    'pr_details_id'=>$ai->pr_details_id,
                     'item_description'=>$ai->pr_details->item_description,
                     'uom'=>$ai->pr_details->uom,
                     'quantity'=>$ai->pr_details->quantity,
@@ -428,7 +430,7 @@ class AOQController extends Controller
 
             $rfq_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('rfq_vendor_id',$rfq_vendor_id)->get();
             foreach($rfq_offers AS $o){
-                $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$o->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
+                $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('unit_price','!=',0)->where('pr_details_id',$o->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
                 $RFQOffers[] = [
                     'min_price'=>$min_price,
                     'rfq_offer_id'=>$o->id,
@@ -457,11 +459,11 @@ class AOQController extends Controller
     }
 
     public function update_offers_awarded(Request $request){
+        $rfq_head_id = $request->input('rfq_head_id');
         $rfq_offer_id = $request->input('rfq_offer_id');
-        $rfq_vendor_id = $request->input('rfq_vendor_id');
-        $rfq_details_id = $request->input('rfq_details_id');
+        $pr_details_id = $request->input('pr_details_id');
         $update_o=RFQOffers::where('id',$rfq_offer_id)->update(['awarded'=>$request->input('awarded'),]);
-        $update_awarded=RFQOffers::where('id','!=',$rfq_offer_id)->where('rfq_vendor_id',$rfq_vendor_id)->where('rfq_details_id',$rfq_details_id)->update(['awarded'=>0]);
+        $update_awarded=RFQOffers::where('id','!=',$rfq_offer_id)->where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$pr_details_id)->update(['awarded'=>0]);
     }
 
     public function update_offers_comments(Request $request){
@@ -478,6 +480,9 @@ class AOQController extends Controller
             'aoq_status'=>'Awarded',
             'status'=>'Saved'
         ]);
+
+        $pr_no= AOQHead::where('id',$aoq_head_id)->value('pr_no');
+        $update_pr_status = PrReportDetails::whereIn('pr_details_id',RFQDetails::where('pr_no',$pr_no)->pluck('pr_details_id'))->update(['status' => 'Awarded']);
 
     }
 

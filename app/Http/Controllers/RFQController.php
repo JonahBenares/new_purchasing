@@ -21,7 +21,7 @@ use Config;
 class RFQController extends Controller
 {
     public function get_all_rfq(Request $request){
-        $all_rfq = RFQHead::orderby('rfq_no', 'ASC')->get();
+        $all_rfq = RFQHead::orderby('rfq_no', 'DESC')->get();
         $x=0;
         $rfqarray=array();
         foreach($all_rfq AS $ar){
@@ -210,7 +210,7 @@ class RFQController extends Controller
             // $vendor_terms = VendorTerms::orderBy('order_no','ASC')->get();
             $rfq_vendor_terms = RFQVendorTerms::whereIn('rfq_vendor_id',RFQVendor::where('rfq_head_id',$rfq_head_id)->pluck('id'))->orderBy('id','ASC')->get();
             $signatories=User::where('id','!=',$userid)->orderBy('name','ASC')->get()->unique('name');
-            $rfqitems =PRDetails::whereNotIn('id',RFQDetails::where('rfq_head_id',$rfq_head_id)->pluck('pr_details_id'))->get();
+            $rfqitems =PRDetails::whereNotIn('id',RFQDetails::where('rfq_head_id',$rfq_head_id)->pluck('pr_details_id'))->where('status','Saved')->get();
             $count_pritems=$rfqitems->count();
             $currency=Config::get('constants.currency');
             $rfq_head = RFQHead::with('pr_head')->where('id',$rfq_head_id)->get();
@@ -323,7 +323,7 @@ class RFQController extends Controller
                     RFQVendorTerms::create($new_rfq_terms);
             }
             
-            $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
+            $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->where('status','!=','Cancelled')->get()->unique('pr_details_id');
             foreach($rfq_details AS $d){
                 $deliver_qty = PrReportDetails::where('pr_details_id',$d->pr_details_id)->value('delivered_qty');
                 $remaining_qty = $d->pr_details->quantity - $deliver_qty;

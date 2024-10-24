@@ -111,20 +111,21 @@
 	// }
 
 
-	const UpdateOffersAwarded= (loop, rfq_offer_id, rfq_vendor_id, rfq_details_id,latest_aoq_details_id) => {
+	const UpdateOffersAwarded= (loop, rfq_offer_id, pr_details_id,latest_aoq_details_id) => {
 		const award = document.getElementById("awarded_"+loop).value;
 		const comments = document.getElementById("comments_"+loop).value;
 			const formOffers= new FormData()
+			formOffers.append('rfq_head_id', head.value.rfq_head_id)
 			formOffers.append('rfq_offer_id', rfq_offer_id)
-			formOffers.append('rfq_vendor_id', rfq_vendor_id)
-			formOffers.append('rfq_details_id', rfq_details_id)
+			formOffers.append('pr_details_id', pr_details_id)
 			formOffers.append('awarded', award ?? 0)
 			formOffers.append('comments', comments)
-			axios.post("/api/update_offers_awarded/", formOffers)
-			ReloadAwarded(latest_aoq_details_id)
-			// axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
-			// 	getUpdatedOffers(latest_aoq_details_id)
-			// });
+			// axios.post("/api/update_offers_awarded/", formOffers)
+			// ReloadAwarded(latest_aoq_details_id)
+			axios.post("/api/update_offers_awarded/", formOffers).then(function (response) {
+				ReloadAwarded(latest_aoq_details_id)
+				getAOQPreviewDetails()
+			});
 	}
 
 	const UpdateOffersComments= (loop, rfq_offer_id, latest_aoq_details_id) => {
@@ -134,6 +135,7 @@
 			formOffers.append('comments', comments)
 			axios.post("/api/update_offers_comments/", formOffers)
 			ReloadAwarded(latest_aoq_details_id)
+			getAOQPreviewDetails()
 			// axios.post("/api/update_offers_comments/", formOffers).then(function (response) {
 			// 	getUpdatedOffers(latest_aoq_details_id)
 			// });
@@ -350,12 +352,13 @@
 																	<span>{{ parseFloat(ao.unit_price *  ai.quantity).toFixed(2) }}</span>
 																</div>
 															</td>
-															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded')">
-																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @blur="UpdateOffersAwarded(i,ao.rfq_offer_id,ao.rfq_vendor_id,ao.rfq_details_id, latest_aoq_details_id)">
+															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded' && ao.unit_price != 0)">
+																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" @blur="UpdateOffersAwarded(i,ao.rfq_offer_id,ai.pr_details_id,latest_aoq_details_id)">
 															</td>
 															<td class="p-1 align-top text-center" width="3%" v-else>
-																<input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disabled>
+																<!-- <input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disbaled> -->
 															</td>
+															
 															<td class="p-1 align-top" width="10%" v-if="(head.status != 'Awarded')">
 																<textarea placeholder="Comments" class="w-full" :id="'comments_'+ i" v-model = "ao.comments" @blur="UpdateOffersComments(i,ao.rfq_offer_id,latest_aoq_details_id)"></textarea>
 															</td>
@@ -503,22 +506,22 @@
 							<!-- loop offer header per vendor here end-->
 						</tr>
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-						<template v-for="(ai, index) in preview_aoq_items">
+						<template v-for="(pai, index) in preview_aoq_items">
 							<tr>
 								<td class="p-1 align-top text-center" rowspan="4">{{ index + 1 }}</td>
-								<td class="p-1 align-top" rowspan="4">{{ ai.item_description }}</td>
-								<td class="p-1 align-top text-center" rowspan="4">{{ ai.quantity }}</td>
-								<td class="p-1 align-top text-center" rowspan="4">{{ ai.uom }}</td>
+								<td class="p-1 align-top" rowspan="4">{{ pai.item_description }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ pai.quantity }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ pai.uom }}</td>
 							</tr>
 							<!-- loop here if 3 and below offers here -->
 								<tr>	
 									<!-- loop offers per vendor here -->
 									<template v-for="fo in first_offers">
-										<template v-if="ai.pr_details_id == fo.pr_details_id">
+										<template v-if="pai.pr_details_id == fo.pr_details_id">
 											<td class="p-1">
 												{{ fo.offer }}
 											</td>
-											<td :class="(ai.min_price == fo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(pai.min_price == fo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ fo.currency }}</span>
 													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
@@ -527,7 +530,7 @@
 											<td colspan="2" :class="(fo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ fo.currency }}</span>
-													<span>{{  parseFloat(fo.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{  parseFloat(fo.unit_price * pai.quantity).toFixed(2) }}</span>
 												</div>
 											</td>
 											
@@ -540,11 +543,11 @@
 								<tr>
 									<!-- loop offers per vendor here -->
 									<template v-for="so in second_offers">
-										<template v-if="ai.pr_details_id == so.pr_details_id">
+										<template v-if="pai.pr_details_id == so.pr_details_id">
 											<td class="p-1">
 												{{ so.offer }}
 											</td>
-											<td :class="(ai.min_price == so.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(pai.min_price == so.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ so.currency }}</span>
 													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
@@ -553,7 +556,7 @@
 											<td :class="(so.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ so.currency }}</span>
-													<span>{{  parseFloat(so.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{  parseFloat(so.unit_price * pai.quantity).toFixed(2) }}</span>
 												</div>
 											</td>
 											
@@ -565,11 +568,11 @@
 								<tr>
 									<!-- loop offers per vendor here -->
 									<template v-for="to in third_offers">
-										<template v-if="ai.pr_details_id == to.pr_details_id">
+										<template v-if="pai.pr_details_id == to.pr_details_id">
 											<td class="p-1">
 												{{ to.offer }}
 											</td>
-											<td :class="(ai.min_price == to.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(pai.min_price == to.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
@@ -578,7 +581,7 @@
 											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
-													<span>{{  parseFloat(to.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{  parseFloat(to.unit_price * pai.quantity).toFixed(2) }}</span>
 												</div>
 											</td>
 											

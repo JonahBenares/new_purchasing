@@ -1418,7 +1418,7 @@
 								</div>
 								<div class="col-lg-4">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Aprroved by</label>
+										<label class="text-gray-500 m-0" for="">Approved by</label>
 										<select class="p-2 border w-full bg-yellow-50 text-sm" v-model="approved_by" id= "approvedby_">
 											<option value="">--Select Employee--</option>
 											<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
