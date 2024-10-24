@@ -82,10 +82,10 @@
 				var check=document.getElementsByClassName('checkboxes')[x].checked;
 				if(!check){
 					checkall.value=allSelected
-					vendors.value[x].checkbox=1;
+					vendors.value[x].vendor_checkbox=1;
 					document.getElementById("CreateAOQBtn").style.display="block"
 				}else{
-					vendors.value[x].checkbox=0;
+					vendors.value[x].vendor_checkbox=0;
 					checkall.value=!allSelected
 					document.getElementById("CreateAOQBtn").style.display="none"
 				}
@@ -291,7 +291,7 @@
 											<td class="p-1" width="2%"><input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected"></td>
 											<td class="p-1">List of Vendors</td>
 										</tr>
-										<tr class="bg-yellow-50" v-for="v in vendors" >
+										<tr class="bg-yellow-50" v-for="v in vendors">
 											<td class="p-1"><input type="checkbox" class='checkboxes' v-model="v.vendor_checkbox" :checked="checkall" :true-value="1" :false-value="0" @change="CountCheckbox"></td>
 											<td class="p-1">{{ v.vendor_name }} ({{v.vendor_identifier}})</td>
 											<input type="hidden" class="form-control" v-model="v.rfq_vendor_id">
