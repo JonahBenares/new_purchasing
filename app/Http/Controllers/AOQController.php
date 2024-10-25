@@ -121,7 +121,7 @@ class AOQController extends Controller
                 'enduse'=>$ah->pr_head->enduse,
                 'purpose'=>$ah->pr_head->purpose,
                 'requestor'=>$ah->pr_head->requestor,
-                'requestor_id'=>User::where('name',$ah->pr_head->requestor)->value('id'),
+                'requestor_id'=>$ah->pr_head->requestor_id,
                 'prepared_by'=>$userid,
                 'prepared_by_name'=>User::where('id',$userid)->value('name'),
             ];
