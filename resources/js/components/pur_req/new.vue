@@ -333,7 +333,8 @@
 			}, function (err) {
 				loading.value=false;
 				var substring="1048 Column 'department_id'"
-				var substring1="floor(): Argument #1"
+				var substring1="1048 Column 'requestor_id'"
+				var substring2="floor(): Argument #1"
 				if(err.response.data.message.includes(substring)==true){
 					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
 					document.getElementById('upload_pr').value=''
@@ -342,6 +343,13 @@
 					const btn_pr = document.getElementById("btn_pr");
 					btn_pr.disabled = true;
 				}else if(err.response.data.message.includes(substring1)==true){
+					error.value = 'Requestor does not exist, make sure it is existing in employees masterfile.';
+					document.getElementById('upload_pr').value=''
+					prFile.value=''
+					pr_options.value='';
+					const btn_pr = document.getElementById("btn_pr");
+					btn_pr.disabled = true;
+				}else if(err.response.data.message.includes(substring2)==true){
 					error.value = 'Invalid file format. Please upload another file with correct format.';
 					document.getElementById('upload_pr').value=''
 					prFile.value=''
@@ -386,7 +394,7 @@
 		formData.append('department_id', prhead.value.department_id)
 		formData.append('urgency', prhead.value.urgency)
 		formData.append('process_code', prhead.value.process_code)
-		formData.append('requestor', prhead.value.requestor)
+		formData.append('requestor', prhead.value.requestor_id)
 		formData.append('enduse', prhead.value.enduse)
 		formData.append('purpose', prhead.value.purpose)
 		formData.append('petty_cash', prhead.value.petty_cash)
@@ -420,7 +428,30 @@
 				item_list.value=[]
 				getImportdata(pr_head_id.value)
 			}, function (err) {
-				error.value = err.response.data.message;
+				// error.value = err.response.data.message;
+				error.value=''
+				error_pr.value=[]
+				if (err.response.data.errors.pr_no) {
+					error_pr.value.push(err.response.data.errors.pr_no[0])
+				}
+				if (err.response.data.errors.department_id) {
+					error_pr.value.push(err.response.data.errors.department_id[0])
+				}
+				if (err.response.data.errors.location) {
+					error_pr.value.push(err.response.data.errors.location[0])
+				}
+				if (err.response.data.errors.date_prepared) {
+					error_pr.value.push(err.response.data.errors.date_prepared[0])
+				}
+				if (err.response.data.errors.requestor) {
+					error_pr.value.push(err.response.data.errors.requestor[0])
+				}
+				if (err.response.data.errors.enduse) {
+					error_pr.value.push(err.response.data.errors.enduse[0])
+				}
+				if (err.response.data.errors.purpose) {
+					error_pr.value.push(err.response.data.errors.purpose[0])
+				}	
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
 		}else{
@@ -440,7 +471,7 @@
 		formData.append('department_id', prhead.value.department_id)
 		formData.append('urgency', prhead.value.urgency)
 		formData.append('process_code', prhead.value.process_code)
-		formData.append('requestor', prhead.value.requestor)
+		formData.append('requestor', prhead.value.requestor_id)
 		formData.append('enduse', prhead.value.enduse)
 		formData.append('purpose', prhead.value.purpose)
 		formData.append('petty_cash', prhead.value.petty_cash)
@@ -786,7 +817,11 @@
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
-										<input type="text" class="form-control" placeholder="Requestor" v-model="prhead.requestor">
+										<!-- <input type="text" class="form-control" placeholder="Requestor" v-model="prhead.requestor"> -->
+										<select class="form-control" v-model="prhead.requestor_id">
+											<option value='0'>--Select Requestor--</option>
+											<option :value="req.id" v-for="req in signatories" :key="req.id">{{ req.name }}</option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -1043,7 +1078,11 @@
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
-										<input type="text" class="form-control" placeholder="Requestor" v-model="form.requestor">
+										<!-- <input type="text" class="form-control" placeholder="Requestor" v-model="form.requestor"> -->
+										<select class="form-control" v-model="form.requestor">
+											<option value='0'>--Select Requestor--</option>
+											<option :value="req.id" v-for="req in signatories" :key="req.id">{{ req.name }}</option>
+										</select>
 									</div>
 								</div>
 							</div>

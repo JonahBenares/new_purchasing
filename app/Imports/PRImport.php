@@ -7,6 +7,7 @@ use App\Models\PRDetails;
 use App\Models\PRSeries;
 use App\Models\PrReportDetails;
 use App\Models\Departments;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
@@ -55,8 +56,11 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
     public function model(array $row)
     {
         if(count($row)!=0){
-            $department_id=Departments::where('department_name',$row['department'])->value('id');
-            $department_code=Departments::where('department_name',$row['department'])->value('department_code');
+            $department=trim($row['department']);
+            $requestor=trim($row['requestor']);
+            $requestor_id=User::where('name',$requestor)->value('id');
+            $department_id=Departments::where('department_name',$department)->value('id');
+            $department_code=Departments::where('department_name',$department)->value('department_code');
             if($row['purchase_request']!=''){
                 $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                 $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
@@ -80,9 +84,10 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                     $prhead['pr_no']=$pr_no;
                     $prhead['site_pr']=$row['site_pr'];
                     $prhead['department_id']=$department_id;
-                    $prhead['department_name']=$row['department'];
+                    $prhead['department_name']=$department;
                     $prhead['dept_code']=$department_code;
-                    $prhead['requestor']=$row['requestor'];
+                    $prhead['requestor_id']=$requestor_id;
+                    $prhead['requestor']=$requestor;
                     $prhead['urgency']=$row['urgency'];
                     $prhead['purpose']=$row['purpose'];
                     $prhead['enduse']=$row['enduse'];
