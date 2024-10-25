@@ -21,6 +21,7 @@ class PRHead extends Model
         'enduse',
         'purpose',
         'requestor',
+        'requestor_id',
         'urgency',
         'process_code',
         'method',

@@ -69,7 +69,7 @@ class PRController extends Controller
             'process_code'=>'',
             'enduse'=>'',
             'purpose'=>'',
-            'requestor'=>'',
+            'requestor'=>0,
             'petty_cash'=>0,
         ];
         return response()->json($formData);
@@ -91,27 +91,60 @@ class PRController extends Controller
             // foreach(json_decode($prhead) AS $ph){
                 // if(count(json_decode($prhead))>0){ 
                     $insertprhead=PRHead::where('id',$request->id)->first();
+                    $requestor=User::where('id',$request->requestor)->value('name');
                     $department_name=Departments::where('id',$request->department_id)->value('department_name');
                     $department_code=Departments::where('id',$request->department_id)->value('department_code');
                     $status=($request->petty_cash==0) ? 'Saved' : 'Closed';
-                    $data_head=[
-                        'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
-                        'pr_no'=>$request->pr_no,
-                        'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
-                        'date_issued'=>($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '',
-                        'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
-                        'department_id'=>$request->department_id,
-                        'department_name'=>$department_name,
-                        'dept_code'=>$department_code,
-                        'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
-                        'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
-                        'requestor'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
-                        'enduse'=>($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '',
-                        'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
-                        'status'=>$status,
-                        'petty_cash'=>$request->petty_cash,
-                        'user_id'=>Auth::id(),
-                    ];    
+                    $data_head=$this->validate($request,
+                        [
+                            'pr_no'=>'required|string',
+                            'department_id'=>'required|integer',
+                            'location'=>'required|string',
+                            'date_prepared'=>'required|string',
+                            'requestor'=>'required|integer|gt:0',
+                            'enduse'=>'required|string',
+                            'purpose'=>'required|string',
+                        ],
+                        [
+                            'department_id.required'=> 'The department field is required.',
+                            'gt'=> 'The :attribute field is required.',
+                            // 'location.required'=> 'The location field is required.',
+                            // 'date_prepared.required'=> 'The date prepared field is required.',
+                            // 'requestor.required'=> 'The requestor field is required.',
+                            // 'enduse.required'=> 'The enduse field is required.',
+                            // 'purpose.required'=> 'The purpose field is required.',
+                        ]
+                    );
+                    $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+                    $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
+                    $data_head['department_name']=$department_name;
+                    $data_head['dept_code']=$department_code;
+                    $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
+                    $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+                    $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+                    $data_head['requestor']=$requestor;
+                    $data_head['status']=$status;
+                    $data_head['petty_cash']=$request->petty_cash;
+                    $data_head['user_id']=Auth::id();
+                    // $data_head=[
+                    //     'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
+                    //     'pr_no'=>$request->pr_no,
+                    //     'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
+                    //     'date_issued'=>($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '',
+                    //     'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
+                    //     'department_id'=>$request->department_id,
+                    //     'department_name'=>$department_name,
+                    //     'dept_code'=>$department_code,
+                    //     'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
+                    //     'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
+                    //     'requestor_id'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : 0,
+                    //     'requestor'=>$requestor,
+                    //     'enduse'=>($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '',
+                    //     'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
+                    //     'status'=>$status,
+                    //     'petty_cash'=>$request->petty_cash,
+                    //     'user_id'=>Auth::id(),
+                    // ];    
                     $insertprhead->update($data_head); 
                     if($insertprhead && $request->petty_cash==1){
                         if($request->props_id==0){
@@ -190,22 +223,24 @@ class PRController extends Controller
         //         if(count(json_decode($prhead))>0){ 
                     $insertprhead=PRHead::where('id',$request->id)->first();
                     // $department_name=Departments::where('id',$request->department_id)->value('department_name');
+                    $requestor=User::where('id',$request->requestor)->value('name');
+                    $department_name=Departments::where('id',$request->department_id)->value('department_name');
+                    $department_code=Departments::where('id',$request->department_id)->value('department_code');
+                    $company=Config::get('constants.company');
                     if($request->props_id!=0){
                         $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
                         $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
                         $pr_no=explode('-',$request->pr_no);
-                        $department_name=Departments::where('id',$request->department_id)->value('department_name');
-                        $department_code=Departments::where('id',$request->department_id)->value('department_code');
                         $series_rows = PRSeries::where('year',$year)->count();
                         $exp=explode('-',$request->pr_no);
                         if($series_rows==0){
                             $max_series='1';
                             $pr_series='0001';
-                            $pr_no = $department_code.$year_short."-".$pr_series;
+                            $pr_no = $department_code.$year_short."-".$pr_series."-".$company;
                         } else {
                             $max_series=PRSeries::where('year',$year)->max('series');
                             $pr_series=$max_series+1;
-                            $pr_no = $department_code.$year_short."-".$exp[1];
+                            $pr_no = $department_code.$year_short."-".$exp[1]."-".$company;
                             // Str::padLeft($exp, 4,'000')
                         }
                         if(!PRSeries::where('year',$year)->where('series',$exp[1])->exists()){
@@ -213,9 +248,6 @@ class PRController extends Controller
                             $series['series']=$pr_series;
                             $pr_series=PRSeries::create($series);
                         }
-                    }else{
-                        $department_name=Departments::where('id',$request->department_id)->value('department_name');
-                        $department_code=Departments::where('id',$request->department_id)->value('department_code');
                     }
                     $data_head=[
                         'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
@@ -228,7 +260,8 @@ class PRController extends Controller
                         'dept_code'=>$department_code,
                         'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
                         'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
-                        'requestor'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
+                        'requestor_id'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : 0,
+                        'requestor'=>$requestor,
                         'enduse'=>($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '',
                         'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
                         'status'=>'Draft',
@@ -445,6 +478,7 @@ class PRController extends Controller
         $item_list=$request->input("item_list");
         $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
         $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
+        $requestor=User::where('id',$request->requestor)->value('name');
         $department_name=Departments::where('id',$request->department_id)->value('department_name');
         $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
@@ -455,23 +489,27 @@ class PRController extends Controller
                 'department_id'=>'required|integer',
                 'location'=>'required|string',
                 'date_prepared'=>'required|string',
-                'requestor'=>'required|string',
+                'requestor'=>'required|integer|gt:0',
                 'enduse'=>'required|string',
                 'purpose'=>'required|string',
             ],
             [
-               'department_id.required'=> 'The department field is required.',
-               'location.required'=> 'The location field is required.',
-               'date_prepared.required'=> 'The date prepared field is required.',
-               'requestor.required'=> 'The requestor field is required.',
-               'enduse.required'=> 'The enduse field is required.',
-               'purpose.required'=> 'The purpose field is required.',
+                'department_id.required'=> 'The department field is required.',
+                'gt'=> 'The :attribute field is required.',
+                //    'department_id.required'=> 'The department field is required.',
+                //    'location.required'=> 'The location field is required.',
+                //    'date_prepared.required'=> 'The date prepared field is required.',
+                //    'requestor.required'=> 'The requestor field is required.',
+                //    'enduse.required'=> 'The enduse field is required.',
+                //    'purpose.required'=> 'The purpose field is required.',
             ]
         );
         // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
         $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
         $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
         // $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '0';
+        $data_head['requestor']=$requestor;
         $data_head['department_name']=$department_name;
         $data_head['dept_code']=$department_code;
         $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
@@ -618,6 +656,7 @@ class PRController extends Controller
         $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
         $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
         // $pr_no=explode('-',$request->pr_no);
+        $requestor=User::where('id',$request->requestor)->value('name');
         $department_name=Departments::where('id',$request->department_id)->value('department_name');
         $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $series_rows = PRSeries::where('year',$year)->count();
@@ -638,7 +677,8 @@ class PRController extends Controller
         $data_head['dept_code']=$department_code;
         $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
         $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : 0;
+        $data_head['requestor']=$requestor;
         $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
         $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';

@@ -1,16 +1,23 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
-
+	const suppliers =  ref([]);
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	onMounted(async () => {
+		getSupplier()
+	})
+	const getSupplier = async () => {
+		let response = await axios.get("/api/supplier_dropdown");
+		suppliers.value = response.data.suppliers;
+	}
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -114,9 +121,9 @@
 									<label class="text-gray-500 m-0" for="">Choose Supplier and PR No</label>
 									<input type="file" name="img[]" class="file-upload-default">
 									<div class="input-group col-xs-12">
-										<select class="form-control file-upload-info">
-											<option value="">Select Supplier</option>
-											<option value="">MF Computer Solutions, Inc. </option>
+										<select class="form-control file-upload-info" @change="">
+											<option value="">--Select Supplier--</option>
+											<option :value="sup.id" v-for="sup in suppliers" :key="sup.id">{{ sup.vendor_name }} ({{ sup.identifier }})</option>
 										</select>
 										<select class="form-control file-upload-info">
 											<option value="">PR Number</option>

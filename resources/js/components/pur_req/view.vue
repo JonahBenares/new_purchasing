@@ -245,7 +245,7 @@
 									<span class="text-sm text-gray-700">{{get_prhead.pr_no}}</span>
 								</div>
 								<div class="col-lg-6 col-sm-6 col-md-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
+									<span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.site_pr}}</span>
 								</div>
 							</div>
@@ -296,7 +296,7 @@
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">{{ pd.wh_stocks }}</td>
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">{{ pd.date_needed }}</td>
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">
-												<input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)"  v-if="pd.status!='Cancelled'">
+												<input type="date" :class=" (pd.recom_date==null) ? 'w-full bg-transparent print:hidden' : 'w-full bg-transparent'" v-model="pd.recom_date" @change="updateRecomdate(pd.id)"  v-if="pd.status!='Cancelled'">
 												<span v-else>{{ pd.recom_date }}</span>
 												<!-- <input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)" readonly v-else> -->
 											</td>

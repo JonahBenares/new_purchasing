@@ -12,6 +12,7 @@ use App\Http\Controllers\AOQController;
 use App\Http\Controllers\PRController;
 use App\Http\Controllers\JORController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\POController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -158,3 +159,5 @@ Route::get('/complete_todo/{id}',[DashboardController::class,'complete_todo']);
 Route::get('/complete_reminder/{id}',[DashboardController::class,'complete_reminder']);
 Route::post('/complete_all_todo',[DashboardController::class,'complete_all_todo']);
 Route::post('/complete_all_reminder',[DashboardController::class,'complete_all_reminder']);
+
+Route::get('/supplier_dropdown', [POController::class,'supplier_dropdown']);
