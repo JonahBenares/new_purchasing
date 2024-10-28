@@ -115,7 +115,7 @@
 	<tr>
 	@foreach($second_offers AS $so)
 		@if($ai['pr_details_id']==$so['pr_details_id'])
-			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['offer'];}} sadas asd asdasd asdadasdasd asd asdasd asdassasda sadasd</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['offer'];}}</td>
 		@if($ai['min_price']==$so['unit_price'])
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $so['currency'] }} {{ $so['unit_price'] }}</td>
 		@else
