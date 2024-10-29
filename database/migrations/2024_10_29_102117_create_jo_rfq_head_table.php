@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('rfq_name')->nullable();
             $table->string('rfq_no')->nullable();
             $table->string('rfq_date')->nullable();
+            $table->string('status')->nullable();
             $table->integer('user_id')->default(0);
             $table->timestamps();
         });
