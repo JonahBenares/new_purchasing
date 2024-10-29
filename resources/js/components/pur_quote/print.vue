@@ -116,6 +116,8 @@
 
 	const AdditionalVendor= () => {
 		// if(confirm("Are you sure you want to update this Vendor?")){
+		document.getElementById("YesVendor").disabled = true;
+		document.getElementById("NoVendor").disabled = true;
 		const formVendor= new FormData()
 				let ven = vendor_details.value
 				const v = ven.split("_")
@@ -144,6 +146,8 @@
 
 	const AdditionalItems= () => {
 		// if(confirm("Are you sure you want to update this Vendor?")){
+		document.getElementById("YesItem").disabled = true;
+		document.getElementById("NoItem").disabled = true;
 		const formItems= new FormData()
 			formItems.append('rfq_head_id', props.id)
 			formItems.append('pr_no', RFQHead.value.pr_no)
@@ -715,8 +719,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalVendor()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id="NoVendor" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id="YesVendor" @click="AdditionalVendor()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -868,8 +872,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalItems()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id= "NoItem" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id= "YesItem" @click="AdditionalItems()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -909,8 +913,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="printDiv(rfqvendorid)">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id = "NoPrint" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id = "YesPrint" @click="printDiv(rfqvendorid)">Yes</button>
 								</div>
 							</div>
 						</div>
