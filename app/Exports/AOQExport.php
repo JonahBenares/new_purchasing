@@ -81,7 +81,7 @@ class AOQExport implements FromView
 
         $aoq_items = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
         foreach($aoq_items AS $ai){
-            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
+            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->where('unit_price','!=',0)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
             $items_data[] = [
                 'rfq_details_id'=>$ai->id,
                 'pr_details_id'=>$ai->pr_details_id,

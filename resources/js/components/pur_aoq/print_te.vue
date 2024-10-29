@@ -356,7 +356,7 @@
 									<span hidden>{{ termno=0 }}</span>
 									<template v-for="at in all_terms">
 									<tr v-if="av.rfq_vendor_id == at.rfq_vendor_id">
-										<td class="!border-0 text-start" >{{ at.terms }}</td>
+										<td class="!border-0 text-start" >{{ letters[termno] }}. {{ at.terms }}</td>
 										<span hidden>{{ termno++ }}</span> 
 									</tr>
 									</template>

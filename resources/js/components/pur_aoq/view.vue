@@ -704,6 +704,11 @@
 								</table>
 							</div>
 						</div>
+						<div class="col-lg-12">
+							<div class="flex justify-center space-x-1 my-3">
+								<a :href="'/export-aoq/'+previewhead.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
+							</div>
+						</div>
 					</div> 
 				</div>
 			</div>

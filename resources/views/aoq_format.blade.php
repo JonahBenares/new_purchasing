@@ -158,40 +158,44 @@
 	<tr>
 		<td></td>
 		<td style="text-align:right">Legend:</td>
+		@foreach($aoq_vendor_data AS $av)
 		<td></td>
+		<td></td>
+		<td style="text-align:right">Lowest Price</td>
+		<td style="text-align:center;background-color: #FDE047" ></td>
+		@endforeach
+		<!-- <td></td>
 		<td></td>
 		<td style="text-align:right">Lowest Price</td>
 		<td style="text-align:center;background-color: #FDE047" ></td>
 		<td></td>
 		<td></td>
 		<td style="text-align:right">Lowest Price</td>
-		<td style="text-align:center;background-color: #FDE047" ></td>
-		<td></td>
-		<td></td>
-		<td style="text-align:right">Lowest Price</td>
-		<td style="text-align:center;background-color: #FDE047" ></td>
+		<td style="text-align:center;background-color: #FDE047" ></td> -->
 	</tr>
 	<tr>
 		<td></td>
 		<td style="text-align:right"></td>
+		@foreach($aoq_vendor_data AS $av)
 		<td></td>
+		<td></td>
+		<td style="text-align:right">Recommended Award</td>
+		<td style="text-align:center;background-color: #84CC16"></td>
+		@endforeach
+		<!-- <td></td>
 		<td></td>
 		<td style="text-align:right">Recommended Award</td>
 		<td style="text-align:center;background-color: #84CC16"></td>
 		<td></td>
 		<td></td>
 		<td style="text-align:right">Recommended Award</td>
-		<td style="text-align:center;background-color: #84CC16"></td>
-		<td></td>
-		<td></td>
-		<td style="text-align:right">Recommended Award</td>
-		<td style="text-align:center;background-color: #84CC16"></td>
+		<td style="text-align:center;background-color: #84CC16"></td> -->
 	</tr>
 </table>
 <table>
 	<tr>
 		<td></td>
-		<td style="vertical-align:text-top; text-align:right; height: 150px;"> <p>Terms and Conditions</p> </td>
+		<td style="vertical-align:text-top; text-align:right; height: 150px;"> <p>Terms and Conditions:</p> </td>
 		<td></td>
 		<td></td>
 		@foreach($aoq_vendor_data AS $av)
