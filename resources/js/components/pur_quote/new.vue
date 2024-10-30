@@ -188,6 +188,8 @@
 
 
 	const SaveandProceed= () => {
+		document.getElementById("YesNew").disabled = true;
+		document.getElementById("NoNew").disabled = true;
 		const formRFQ= new FormData()
 			formRFQ.append('pr_head_id', PRHead.value.pr_head_id)
 			formRFQ.append('pr_no', PRHead.value.pr_no)
@@ -576,8 +578,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="CancelSave()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="SaveandProceed()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id= "NoNew" @click="CancelSave()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id= "YesNew" @click="SaveandProceed()">Yes</button>
 								</div>
 							</div>
 						</div>
