@@ -321,11 +321,8 @@
 											<td class="p-1 align-top">{{ to.remarks }}</td>
 										</template>
 									</template>
-									<!-- loop offers per vendor here -->
 								</tr>
 							</template>
-							<!-- loop here if 3 and below offers here -->
-						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 
 						<tr class="!border-0">
 							<td class="!border-0" colspan="4"><br></td>
@@ -335,9 +332,9 @@
 							<td colspan="4" class="p-0 !border-0">
 								<table class="w-full">
 									<tr>
-										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-										<td class="!border-0" colspan="2"></td>
-										<td class="!border-0" width="50%"></td>
+										<td class="!border-0 text-right px-2" colspan="2" width="40%">Legend:</td>
+										<td class="!border-0"></td>
+										<td class="!border-0" width="10%"></td>
 									</tr>
 									<tr class="!border-0">
 										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
@@ -359,7 +356,7 @@
 									<span hidden>{{ termno=0 }}</span>
 									<template v-for="at in all_terms">
 									<tr v-if="av.rfq_vendor_id == at.rfq_vendor_id">
-										<td class="!border-0 text-start" >{{ at.terms }}</td>
+										<td class="!border-0 text-start" >{{ letters[termno] }}. {{ at.terms }}</td>
 										<span hidden>{{ termno++ }}</span> 
 									</tr>
 									</template>
@@ -367,7 +364,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><br></td>
+							<td colspan="19" class="border-0"><br></td>
 						</tr>
 					</table>
 					<table class="!text-xs" width="150%">
@@ -427,15 +424,15 @@
 			<br>
 			<div class="row">
 				<div class="col-lg-12" v-if="(head.status != 'Cancelled' && head.aoq_status != 'Awarded' && head.aoq_status != 'Done TE')">
-					<div class="flex justify-center space-x-1">
-						<!-- <a href="/pur_aoq/print_te" class="btn btn-primary mr-2 w-44">Save and Export</a> -->
-						<!-- <a href="#" class="btn btn-primary mr-2 w-44">Export</a> -->
-						<button type="button" @click="CancelAlert()" class="btn btn-danger mr-2 w-36">Cancel</button>
-						<button type="submit" @click="openAddVendor()" class="btn btn-info w-26" v-if="count_rfq_vendors != 0">Add Vendor</button>
-						<!-- <button type="button" @click="ExportAOQ()" class="btn btn-primary mr-2 w-44">Save and Export</button> -->
-						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
-						<button type="submit" @click="DoneTEAlert()" class="btn btn-success w-26">Done TE & Proceed</button>
-						
+					<div class="flex justify-between space-x-1">
+						<div class="flex justify-start space-x-1">
+							<button type="button" @click="CancelAlert()" class="btn btn-danger">Cancel</button>
+							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 1">Add Vendor</button>
+						</div>
+						<div class="flex justify-end space-x-1">
+							<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary ">Export</a>
+							<button type="submit" @click="DoneTEAlert()" class="btn btn-success ">Done TE & Proceed</button>
+						</div>
 					</div>
 				</div>
 				<div class="col-lg-12" v-else>
@@ -604,7 +601,6 @@
 				</div>
 			</div>
 		</Transition>
-
 		<Transition
             enter-active-class="transition ease-out !duration-1000"
             enter-from-class="opacity-0 scale-95"

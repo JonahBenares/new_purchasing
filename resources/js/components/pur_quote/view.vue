@@ -1,5 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
+	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon} from '@heroicons/vue/24/solid'
 	import axios from 'axios';
 	import {onMounted, ref} from "vue";
@@ -199,6 +200,8 @@
 
 	const AdditionalVendor= () => {
 		// if(confirm("Are you sure you want to update this Vendor?")){
+		document.getElementById("YesVendor").disabled = true;
+		document.getElementById("NoVendor").disabled = true;
 		const formVendor= new FormData()
 				let ven = vendor_details.value
 				const v = ven.split("_")
@@ -260,6 +263,8 @@
 
 	const AdditionalItems= () => {
 		// if(confirm("Are you sure you want to update this Vendor?")){
+		document.getElementById("YesItem").disabled = true;
+		document.getElementById("NoItem").disabled = true;
 		const formItems= new FormData()
 			formItems.append('rfq_head_id', props.id)
 			formItems.append('pr_no', RFQHead.value.pr_no)
@@ -557,6 +562,8 @@
 	}
 
 	const CreateNewAOQ= () =>{
+		document.getElementById("YesCreate").disabled = true;
+		document.getElementById("NoCreate").disabled = true;
 		const formAOQHead= new FormData()
 		formAOQHead.append('aoq_no', aoq_no.value)
 		formAOQHead.append('rfq_head_id', props.id)
@@ -576,7 +583,7 @@
 </script>
 <template>
 	<navigation>
-		<div class="row">
+		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
@@ -597,48 +604,57 @@
 				<div class="card">
 				<div class="card-body">
 						
-					<hr class="border-dashed mt-2">
-					<div class="pt-1">
-						<div class="row">
-							<div class="col-lg-8">
-								<div class="row">
-									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
-										<span class="text-sm text-gray-700">{{ RFQHead.rfq_no }}</span>
+					<div class="">
+						<div id="details">
+							<hr class="border-dashed mt-2">
+							<div class="row">
+								<div class="col-lg-8">
+									<div class="row">
+										<div class="col-lg-6">
+											<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+											<span class="text-sm text-gray-700">{{ RFQHead.rfq_no }}</span>
+										</div>
+										<div class="col-lg-6">
+											<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
+											<span class="text-sm text-gray-700">{{ RFQHead.rfq_date }}</span>
+										</div>
 									</div>
-									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
-										<span class="text-sm text-gray-700">{{ RFQHead.rfq_date }}</span>
+									<div class="row">
+										<div class="col-lg-12">
+											<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
+											<span class="text-sm text-gray-700">{{ RFQHead.rfq_name }}</span>
+										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-lg-12">
-										<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
-										<span class="text-sm text-gray-700">{{ RFQHead.rfq_name }}</span>
+								<div class="col-lg-4">
+									<div class="flex justify-end space-x-2">
+										<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="(count_pritems != 0 && count_ccr == 0)">Add Items</button>
+										<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="ShowPrintView()">Show Print View</button>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4">
-								<div class="flex justify-end space-x-2">
-									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="(count_pritems != 0 && count_ccr == 0)">Add Items</button>
-									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="ShowPrintView()">Show Print View</button>
-								</div>
-							</div>
+							<br>
 						</div>
-						
-						<br>
 						<div>
-							<div class="w-full flex justify-between space-x-1 po_buttons">
-								<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} {{ (rv.vendor_identifier != '') ? '('+rv.vendor_identifier+')' : '' }}</button>
-								<button @click="openVendorModel()" class="btn btn-primary p-1">
-									<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-								</button>
+							<div class="rfq_buttons">
+								<div class="w-full flex justify-between space-x-1  ">
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} {{ (rv.vendor_identifier != '') ? '('+rv.vendor_identifier+')' : '' }}</button>
+									<button @click="openVendorModel()" class="btn btn-primary p-1">
+										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+									</button>
+								</div>
 							</div>
 							<div class="page-bg">
 								<div v-for="rvi in RFQVendors">
-									<div class="page" v-if="vendor == rvi.rfq_vendor_id">
+									<div class="bg-white !mx-auto w-[21cm] print:!w-full" v-if="vendor == rvi.rfq_vendor_id">
 										<div class="subpage">
-											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
+											<div class="hidden print:block">
+												<printheader ></printheader>
+												<div class="flex justify-center mt-1">
+													<span class="uppercase">Request for Quotation</span>
+												</div>
+												<hr class="print:block border-dashed mt-2">
+											</div>
 											<table class="table-bsordered w-full !text-xs mb-2">
 												<tr>
 													<td class="" width="10%">Date: </td>
@@ -694,21 +710,8 @@
 																<div class="border-b p-1 w-full h-7 !align-top text-center" v-else>{{ ro.offer_currency }}</div>
 																<input type="hidden" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
 																<input type="hidden" class="border-b p-1 w-full !align-top text-center offerid_" v-model="ro.offer_currency" v-else readonly>
-																
 															</div>
 														</div>
-														<!-- <div class="!h-14 border-b">
-															<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-															<select name="" id="" class=" p-1 w-full !align-top text-center">
-																<option value="">PHP</option>
-															</select>
-														</div>
-														<div class="!h-14 border-b">
-															<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-															<select name="" id="" class=" p-1 w-full !align-top text-center">
-																<option value="">PHP</option>
-															</select>
-														</div> -->
 													</td>
 												</tr>
 												</tbody>
@@ -807,7 +810,7 @@
 												</table>
 										</div>
 									</div>
-									<div class="row my-2 po_buttons"> 
+									<div class="row my-2 po_buttons" v-if="vendor == rvi.rfq_vendor_id"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 0">
 												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" v-if="rvi.count_vendor_offers != 0">Canvass Complete</button>
@@ -823,13 +826,8 @@
 							</div>
 						</div>
 						<br>
-						<div class="row my-2"> 
-							<!-- <div class="col-lg-4 col-md-3">
-								<div class="flex justify-start space-x-1">
-									
-								</div>
-							</div> -->
-							<div class="col-lg-12 col-md-3">
+						<div class="row my-2 po_buttons"> 
+							<div class="col-lg-12 col-md-3" >
 								<ol class="flex items-center w-full">
 									<li class="w-full" v-for="(vc, index) in RFQVendors">
 										<li class="flex w-full items-center text-white after:w-full after:h-1 after:border-b after:border-green-500 after:border-4 after:inline-block-800" v-if="(vc.canvassed == 1 && vc.status != 'Draft')">
@@ -1097,8 +1095,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalItems()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id="NoItem" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id="YesItem" @click="AdditionalItems()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -1194,8 +1192,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalVendor()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id= "NoVendor" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id="YesVendor" @click="AdditionalVendor()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -1480,8 +1478,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="CloseAOQAlert()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="CreateNewAOQ()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id="NoCreate"  @click="CloseAOQAlert()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id ="YesCreate" @click="CreateNewAOQ()">Yes</button>
 								</div>
 							</div>
 						</div>

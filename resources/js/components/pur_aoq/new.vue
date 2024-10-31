@@ -156,6 +156,9 @@
 	}
 	
 	const CreateNewAOQ= () =>{
+		document.getElementById("YesCreate").disabled = true;
+		document.getElementById("NoCreate").disabled = true;
+
 		const formAOQHead= new FormData()
 		formAOQHead.append('aoq_no', aoq_no.value)
 		formAOQHead.append('rfq_head_id', head.value.rfq_head_id)
@@ -423,8 +426,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="CreateNewAOQ()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id="NoCreate" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id="YesCreate" @click="CreateNewAOQ()">Yes</button>
 								</div>
 							</div>
 						</div>

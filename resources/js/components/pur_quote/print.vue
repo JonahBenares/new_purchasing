@@ -116,6 +116,8 @@
 
 	const AdditionalVendor= () => {
 		// if(confirm("Are you sure you want to update this Vendor?")){
+		document.getElementById("YesVendor").disabled = true;
+		document.getElementById("NoVendor").disabled = true;
 		const formVendor= new FormData()
 				let ven = vendor_details.value
 				const v = ven.split("_")
@@ -144,6 +146,8 @@
 
 	const AdditionalItems= () => {
 		// if(confirm("Are you sure you want to update this Vendor?")){
+		document.getElementById("YesItem").disabled = true;
+		document.getElementById("NoItem").disabled = true;
 		const formItems= new FormData()
 			formItems.append('rfq_head_id', props.id)
 			formItems.append('pr_no', RFQHead.value.pr_no)
@@ -443,7 +447,6 @@
 												</div>
 												<hr class="print:block border-dashed mt-2">
 											</div>
-											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
 											<table class="table-bsordered w-full text-xs mb-2">
 												<tr>
 													<td class="" width="10%">Date: </td>
@@ -503,19 +506,6 @@
 														</td>
 													</tr>
 												</tbody>
-<!-- 												
-												<tbody v-for="rd in RFQDetails">
-													<tr v-if="rd.rfq_vendor_id == rvi.rfq_vendor_id">
-														<td class="p-1 align-top text-center" rowspan="4">1</td>
-														<td class="p-1 align-top text-center" rowspan="8"  v-if="ro.rfq_details_id == rd.rfq_details_id && rd.rfq_details_id == ro.rfq_details_id">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
-														<td class="p-1 align-top text-left" rowspan="4">{{ rd.item_description }}</td>
-													</tr>
-													<tr v-for="ro in RFQOffers">
-														<td v-if="ro.rfq_details_id == rd.rfq_details_id && rd.rfq_details_id == ro.rfq_details_id">{{ ro.offer }}</td>
-														<td v-if="ro.rfq_details_id == rd.rfq_details_id && rd.rfq_details_id == ro.rfq_details_id">{{ ro.unit_price }}</td>
-													</tr>
-												</tbody> -->
-
 											</table>
 											<br>
 											<div class="bg-red-100 border-2 border-red-200 w-full p-1  px-2 text-red-500 my-1 mb-2 hidden"  id="duedatealert">
@@ -526,43 +516,43 @@
 											</div>
 											<table class="table-bordesred w-full text-xs">
 												<tr>
-													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50" type="date" id="duedate" v-model="rvi.due_date"></td>
+													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50 print:bg-white" type="date" id="duedate" v-model="rvi.due_date"></td>
 													<td colspan="4" id="duedate" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
 												</tr>
 												<tr>
 													<td colspan="4">2. Please Fill - Up :</td>
 												</tr>
 												<tbody v-if="(rvi.canvassed==0)">
-												<tr>
-													<td width="10%"></td>
-													<td width="40%" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<input type="text" class="p-1 w-full bg-yellow-50" id="newterms" v-model="term">
-															<button type="button" class="btn btn-primary p-1" @click="AddRFQTerms(rvi.vendor_details_id, rvi.rfq_vendor_id)">
-															<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon></button>
-														</div>
-													</td>
-													<td width="10%"></td>
-												</tr>
-												<span hidden>{{ orderno=1 }}</span>
-												<tr v-for="(vt, order_no) in rfq_vendor_terms">
-													<td width="10%"></td>
-													<td width="40%" colspan="2">
-														<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+													<tr class="po_buttons">
+														<td width="10%"></td>
+														<td width="40%" colspan="2">
 															<div class="flex justify-between space-x-1">
-																<span class="pt-1">{{ letters[orderno-1] }}. </span>
-																<input type="text" class="p-1 w-full bg-yellow-50 rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
-																<button class="btn btn-danger p-1" @click="RemoveRFQVendorTerms(order_no,vt.id)">
-																	<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-																</button>
-																<span hidden>{{ orderno++ }}</span>
+																<input type="text" class="p-1 w-full bg-yellow-50" id="newterms" v-model="term">
+																<button type="button" class="btn btn-primary p-1" @click="AddRFQTerms(rvi.vendor_details_id, rvi.rfq_vendor_id)">
+																<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon></button>
 															</div>
-															<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
-															<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
-														</div>
-													</td>
-													<td width="10%"></td>
-												</tr>
+														</td>
+														<td width="10%"></td>
+													</tr>
+													<span hidden>{{ orderno=1 }}</span>
+													<tr v-for="(vt, order_no) in rfq_vendor_terms">
+														<td width="10%"></td>
+														<td width="40%" colspan="2">
+															<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+																<div class="flex justify-between space-x-1">
+																	<span class="pt-1">{{ letters[orderno-1] }}. </span>
+																	<input type="text" class="p-1 w-full print:bg-white bg-yellow-50 rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
+																	<button class="btn btn-danger p-1 po_buttons" @click="RemoveRFQVendorTerms(order_no,vt.id)">
+																		<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+																	</button>
+																	<span hidden>{{ orderno++ }}</span>
+																</div>
+																<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
+																<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
+															</div>
+														</td>
+														<td width="10%"></td>
+													</tr>
 												</tbody>
 												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
 													<tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
@@ -729,8 +719,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalVendor()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id="NoVendor" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id="YesVendor" @click="AdditionalVendor()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -882,8 +872,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="AdditionalItems()">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id= "NoItem" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id= "YesItem" @click="AdditionalItems()">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -923,8 +913,8 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="printDiv(rfqvendorid)">Yes</button>
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id = "NoPrint" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id = "YesPrint" @click="printDiv(rfqvendorid)">Yes</button>
 								</div>
 							</div>
 						</div>
