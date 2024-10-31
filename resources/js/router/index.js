@@ -398,8 +398,9 @@ const routes = [
         }
     },
     {
-        path:'/pur_po/new',
+        path:'/pur_po/new/:id',
         component: pur_poNew,
+        props:true,
         meta:{
             requiresAuth:true
         }

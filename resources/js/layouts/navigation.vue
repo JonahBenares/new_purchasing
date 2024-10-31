@@ -643,7 +643,7 @@
                                 <div class="!hidden"  :class="{ show:poDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_po/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_po/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_po">Show List</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/po_direct">Direct PO</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li>
