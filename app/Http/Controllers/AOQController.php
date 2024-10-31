@@ -474,12 +474,18 @@ class AOQController extends Controller
 
     public function save_aoq($aoq_head_id){
         $userid = Auth::id();
-        $update_draft=AOQHead::where('id',$aoq_head_id)->update([
+        $update_aoq_head=AOQHead::where('id',$aoq_head_id)->update([
             'awarded_by'=>$userid,
             'awarded_date'=>date('Y-m-d H:i:s'),
             'aoq_status'=>'Awarded',
             'status'=>'Saved'
         ]);
+
+        $update_rfq_vendor=RFQVendor::whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->update([
+            'award_status'=>'Saved',
+        ]);
+
+        
 
         $pr_no= AOQHead::where('id',$aoq_head_id)->value('pr_no');
         $update_pr_status = PrReportDetails::whereIn('pr_details_id',RFQDetails::where('pr_no',$pr_no)->pluck('pr_details_id'))->update(['status' => 'Awarded']);
@@ -495,6 +501,10 @@ class AOQController extends Controller
 
     public function update_aoq_draft($aoq_head_id){
         $update_draft=AOQHead::where('id',$aoq_head_id)->update(['status'=>'Draft']);
+
+        $update_rfq_vendor=RFQVendor::whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->update([
+            'award_status'=>'Draft',
+        ]);
 
     }
 

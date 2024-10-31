@@ -51,9 +51,6 @@ class AOQExport implements FromView
         $rfq_head_id = AOQHead::where('id',$this->aoq_head_id)->value('rfq_head_id');
         $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
         foreach($aoq_details AS $ad){
-            $first_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',1)->get();
-            $second_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',2)->get();
-            $third_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',3)->get();
             // $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ad->pr_details_id)->min('unit_price');
             $vendor_data[] = [
                 'rfq_vendor_id'=>$ad->rfq_vendor_id,
@@ -84,10 +81,9 @@ class AOQExport implements FromView
 
         $aoq_items = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
         foreach($aoq_items AS $ai){
-            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
+            $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ai->pr_details_id)->where('unit_price','!=',0)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
             $items_data[] = [
                 'rfq_details_id'=>$ai->id,
-                'pr_details_id'=>$ai->pr_details_id,
                 'pr_details_id'=>$ai->pr_details_id,
                 'item_description'=>$ai->pr_details->item_description,
                 'uom'=>$ai->pr_details->uom,
@@ -115,6 +111,9 @@ class AOQExport implements FromView
         // $first_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('offer_no',1)->get();
         // $second_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('offer_no',2)->get();
         // $third_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('offer_no',3)->get();
+        $first_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',1)->get();
+        $second_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',2)->get();
+        $third_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',3)->get();
 
         $rfq_no = RFQHead::where('id',$rfq_head_id)->value('rfq_no');
         $pr_no = AOQHead::where('id',$this->aoq_head_id)->value('pr_no');
