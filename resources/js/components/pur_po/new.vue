@@ -5,7 +5,10 @@
     import { useRouter } from "vue-router"
 	import moment from 'moment'
 	const preview =  ref();
+	const error =  ref([]);
+	const success =  ref('');
 	const suppliers =  ref([]);
+	const dangerAlerterrors = ref(false)
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const warningAlert = ref(false)
@@ -21,7 +24,7 @@
 	const pr_head =  ref([]);
 	const po_details =  ref([]);
 	const rfq_terms =  ref([]);
-	const vat =  ref('');
+	const vat =  ref(0);
 	const vat_percent =  ref(12);
 	const vat_amount =  ref(0);
 	const vat_in_ex =  ref(0);
@@ -32,6 +35,7 @@
 	const grand_total =  ref(0);
 	const new_data =  ref(0);
 	const balance =  ref(0);
+	const remaining_balance =  ref([]);
 	let signatories=ref([]);
 	const checked_by =  ref(0);
 	const recommended_by =  ref(0);
@@ -68,6 +72,9 @@
 		vendor.value = response.data.vendor;
 		grand_total.value = response.data.grand_total;
 		prepared_by.value = response.data.prepared_by;
+		po_details.value.forEach(function (val, index, theArray) {
+			checkRemainingQty(val.pr_details_id,index)
+		});
 	}
 
 	const getSignatories = async () => {
@@ -87,7 +94,7 @@
 	}
 	const closeAlert = () => {
 		successAlert.value = !hideAlert.value
-		dangerAlert.value = !hideAlert.value
+		dangerAlerterrors.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
 		warningAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
@@ -234,6 +241,11 @@
 		}
 	}
 
+	const checkRemainingQty = async (pr_details_id,count) => {
+		let response = await axios.get("/api/check_balance/"+pr_details_id);
+		remaining_balance.value[count] = response.data.balance.pr_qty;
+	}
+
 	const onSave = () => {
 		const formData= new FormData()
 		var total = document.querySelector("#grand_total").textContent;
@@ -244,7 +256,7 @@
 		formData.append('handling_fee', handling_fee.value)
 		formData.append('discount', discount.value)
 		formData.append('vat', vat.value)
-		formData.append('vat_percent', vat_percent.value)
+		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total)
@@ -257,6 +269,9 @@
 		formData.append('po_details', JSON.stringify(po_details.value))
 		formData.append('po_head_id', pohead_id.value)
 		formData.append('props_id', props.id)
+		po_details.value.forEach(function (val, index, theArray) {
+			formData.append('quantity'+index, remaining_balance.value[index])
+		});
 		if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
 			axios.post(`/api/save_po`,formData).then(function (response) {
 				pohead_id.value=response.data;
@@ -265,28 +280,28 @@
 			}, function (err) {
 				// error.value = err.response.data.message;
 				error.value=''
-				error_pr.value=[]
-				if (err.response.data.errors.pr_no) {
-					error_pr.value.push(err.response.data.errors.pr_no[0])
-				}
-				if (err.response.data.errors.department_id) {
-					error_pr.value.push(err.response.data.errors.department_id[0])
-				}
-				if (err.response.data.errors.location) {
-					error_pr.value.push(err.response.data.errors.location[0])
-				}
-				if (err.response.data.errors.date_prepared) {
-					error_pr.value.push(err.response.data.errors.date_prepared[0])
-				}
-				if (err.response.data.errors.requestor) {
-					error_pr.value.push(err.response.data.errors.requestor[0])
-				}
-				if (err.response.data.errors.enduse) {
-					error_pr.value.push(err.response.data.errors.enduse[0])
-				}
-				if (err.response.data.errors.purpose) {
-					error_pr.value.push(err.response.data.errors.purpose[0])
-				}	
+				// error_pr.value=[]
+				// if (err.response.data.errors.pr_no) {
+				// 	error_pr.value.push(err.response.data.errors.pr_no[0])
+				// }
+				// if (err.response.data.errors.department_id) {
+				// 	error_pr.value.push(err.response.data.errors.department_id[0])
+				// }
+				// if (err.response.data.errors.location) {
+				// 	error_pr.value.push(err.response.data.errors.location[0])
+				// }
+				// if (err.response.data.errors.date_prepared) {
+				// 	error_pr.value.push(err.response.data.errors.date_prepared[0])
+				// }
+				// if (err.response.data.errors.requestor) {
+				// 	error_pr.value.push(err.response.data.errors.requestor[0])
+				// }
+				// if (err.response.data.errors.enduse) {
+				// 	error_pr.value.push(err.response.data.errors.enduse[0])
+				// }
+				// if (err.response.data.errors.purpose) {
+				// 	error_pr.value.push(err.response.data.errors.purpose[0])
+				// }	
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
 		}else{
@@ -424,10 +439,10 @@
 														<td class="uppercase p-1 text-center" width="12%">Total</td>
 													</tr>
 													<tr class="" v-for="(pd, index) in po_details">
-														<span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.remaining_qty) }}</span>
+														<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
 														<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 														<td class="border-y-none p-0 text-center">
-															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,pd.remaining_qty, index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="pd.remaining_qty">
+															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 														<td class="border-y-none p-1" colspan="2">{{ pd.offer }}</td>
@@ -466,7 +481,7 @@
 															<div class="flex justify-end">
 																<!-- <span class="p-1" >VAT</span> -->
 																<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat">
-																	<option value="">--Select--</option>
+																	<option value="0">--Select--</option>
 																	<option value="1">VAT</option>
 																	<option value="2">NON-VAT</option>
 																</select>
@@ -708,7 +723,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<a href="/pur_po/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
+									<a href="/pur_po/new/0" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a>
 									<a href="/pur_po/view" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a>
 								</div>
 							</div>
@@ -752,6 +767,48 @@
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<a href="/pur_po/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlerterrors }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
+									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
+									<!-- <h5 class="leading-tight" v-else-if="error_inventory!=''">{{ error_inventory }}</h5>
+									<h5 class="leading-tight" v-else-if="error_pr!=''" v-for="er in error_pr">{{ er }}</h5> -->
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
 						</div>

@@ -10,12 +10,15 @@ class PoDr extends Model
     use HasFactory;
     protected $table='po_dr';
     protected $fillable=[
+        'po_head_id',
         'pr_head_id',
         'po_no',
         'pr_no',
         'site_pr',
         'dr_date',
         'dr_no',
+        'series',
+        'year',
         'status',
         'delivery_date',
         'user_id',
