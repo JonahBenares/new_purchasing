@@ -220,6 +220,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesVendor").disabled = false;
+				document.getElementById("NoVendor").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -274,6 +276,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesItem").disabled = false;
+				document.getElementById("NoItem").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -813,9 +817,9 @@
 									<div class="row my-2 po_buttons" v-if="vendor == rvi.rfq_vendor_id"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 0">
+												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" v-if="rvi.count_vendor_offers != 0">Canvass Complete</button>
 												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" v-else disabled>Canvass Complete</button>
-												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 											</div>
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 1">
 												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
@@ -943,7 +947,7 @@
 								<div class="flex justify-center space-x-2">
 									<button @click="closeModal()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/pur_quote/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New RFQ</a>
+									<a href="/pur_quote/new/0" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New RFQ</a>
 								</div>
 							</div>
 						</div>

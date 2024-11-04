@@ -327,7 +327,7 @@ class RFQController extends Controller
                     RFQVendorTerms::create($new_rfq_terms);
             }
             
-            $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->where('status','!=','Cancelled')->get()->unique('pr_details_id');
+            $rfq_details = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->where('status',null)->get()->unique('pr_details_id');
             foreach($rfq_details AS $d){
                 $deliver_qty = PrReportDetails::where('pr_details_id',$d->pr_details_id)->value('delivered_qty');
                 $remaining_qty = $d->pr_details->quantity - $deliver_qty;
@@ -350,7 +350,7 @@ class RFQController extends Controller
                         'pr_details_id'=>$d->pr_details_id,
                         'pr_no'=>$request->input('pr_no'),
                         'remaining_qty'=>$remaining_qty,
-                        'uom'=>$d->uom,
+                        'uom'=>$d->pr_details->uom,
                     ]);
                 }
             }

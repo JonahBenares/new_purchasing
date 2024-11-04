@@ -535,20 +535,21 @@ const routes = [
         }
     },
     {
-        path:'/job_quote/view',
+        path:'/job_quote/view/:id',
         component: job_quoteView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/job_quote/print',
+        path:'/job_quote/print/:id',
         component: job_quotePrint,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
-
     {
         path:'/job_aoq',
         component: job_aoqIndex,

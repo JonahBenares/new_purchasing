@@ -135,6 +135,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesVendor").disabled = false;
+				document.getElementById("NoVendor").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -157,6 +159,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesItem").disabled = false;
+				document.getElementById("NoItem").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
