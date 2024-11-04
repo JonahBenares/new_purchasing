@@ -37,6 +37,6 @@ class PRHead extends Model
     }
 
     public function aoq_head(){
-        return $this->hasMany(aoq_head::class);
+        return $this->hasMany(AOQHead::class);
     }
 }

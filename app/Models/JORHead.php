@@ -32,4 +32,12 @@ class JORHead extends Model
         'general_description',
         'project_activity',
     ];
+
+    public function jo_rfq_head(){
+        return $this->hasMany(JORFQHead::class);
+    }
+
+    // public function jo_aoq_head(){
+    //     return $this->hasMany(JOAOQHead::class);
+    // }
 }

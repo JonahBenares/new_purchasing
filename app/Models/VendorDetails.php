@@ -33,4 +33,8 @@ class VendorDetails extends Model
     public function rfq_vendor(){
         return $this->hasMany(RFQVendor::class);
     }
+
+    public function jo_rfq_vendor(){
+        return $this->hasMany(RFQVendor::class);
+    }
 }

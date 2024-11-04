@@ -13,6 +13,7 @@ use App\Http\Controllers\PRController;
 use App\Http\Controllers\JORController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POController;
+use App\Http\Controllers\JORFQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -164,3 +165,23 @@ Route::get('/supplier_dropdown', [POController::class,'supplier_dropdown']);
 Route::get('/get_prno/{vendor_details_id}', [POController::class,'get_prno']);
 Route::get('/generate_po/{vendor_details_id}/{pr_no}', [POController::class,'generate_po']);
 Route::get('/check_balance/{pr_details_id}', [POController::class,'check_balance']);
+
+
+Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);
+Route::get('/jor_list', [JORFQController::class,'all_jor']);
+Route::get('/vendor_list', [JORFQController::class,'all_vendor']);
+Route::get('/get_jor_data/{jor_head_id}', [JORFQController::class,'get_jor_data']);
+Route::post('/add_jo_rfq',[JORFQController::class,'add_jo_rfq']);
+Route::get('/get_jo_rfq_data/{jo_rfq_head_id}', [JORFQController::class,'get_jo_rfq_data']);
+Route::post('/save_jo_rfq_print_details',[JORFQController::class,'save_print_jo_rfq_details']);
+Route::get('/get_jo_rfq_vendor_list/{jo_rfq_head_id}', [JORFQController::class,'jo_rfq_vendor_list_data']);
+Route::post('/add_additional_jo_rfq_vendor',[JORFQController::class,'add_additional_jo_rfq_vendor']);
+Route::get('/get_jo_rfq_item_list/{jo_rfq_head_id}', [JORFQController::class,'get_jo_rfq_item_list']);
+Route::post('/add_additional_labor_material',[JORFQController::class,'add_additional_labor_material']);
+// Route::post('/canvass_complete/{rfq_vendor_id}', [JORFQController::class,'canvass_complete']);
+Route::post('/canvass_complete_jo_vendor',[JORFQController::class,'canvass_complete_jo_vendor']);
+Route::post('/draft_jo_vendor',[JORFQController::class,'draft_jo_vendor']);
+Route::post('/add_additional_jo_terms',[JORFQController::class,'add_additional_jo_terms']);
+Route::post('/update_jo_terms', [JORFQController::class,'update_jo_terms']);
+Route::get('/remove_jo_terms/{jo_rfq_terms_id}', [JORFQController::class,'remove_jo_terms']);
+

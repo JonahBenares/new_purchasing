@@ -245,16 +245,16 @@
 						<div class="row">							
 							<div class="col-lg-6 offset-lg-3 col-md-3">
 								<div class="form-group">
-								<label class="text-gray-500 m-0" for="">Choose PR Number</label>
-								<!-- <input type="file" name="img[]" class="file-upload-default"> -->
-								<div class="input-group col-xs-12">
-									<select class="form-control file-upload-info" v-model="pr_no">
-                                        <option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }} (Total RFQ:{{ (pr.count_pr_in_rfq != '') ? pr.count_pr_in_rfq : 0  }})</option>
-                                    </select>
-									<span class="input-group-append">
-										<button class="btn btn-primary" type="button" @click="getPRDetails()">Select</button>
-									</span>
-								</div>
+									<label class="text-gray-500 m-0" for="">Choose PR Number</label>
+									<!-- <input type="file" name="img[]" class="file-upload-default"> -->
+									<div class="input-group col-xs-12">
+										<select class="form-control file-upload-info" v-model="pr_no">
+											<option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }} (Total RFQ:{{ (pr.count_pr_in_rfq != '') ? pr.count_pr_in_rfq : 0  }})</option>
+										</select>
+										<span class="input-group-append">
+											<button class="btn btn-primary" type="button" @click="getPRDetails()">Select</button>
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
