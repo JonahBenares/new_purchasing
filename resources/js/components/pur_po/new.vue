@@ -36,6 +36,7 @@
 	const checked_by =  ref(0);
 	const recommended_by =  ref(0);
 	const approved_by =  ref(0);
+	let pohead_id=ref(0);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -235,13 +236,18 @@
 
 	const onSave = () => {
 		const formData= new FormData()
-		// alert(document.querySelector("#grand_total").textContent);
+		var total = document.querySelector("#grand_total").textContent;
+		formData.append('po_no', po_no.value)
+		formData.append('pr_no', pr_head.value.pr_no)
+		formData.append('vendor_details_id', vendor.value.id)
 		formData.append('shipping_cost', shipping_cost.value)
 		formData.append('handling_fee', handling_fee.value)
 		formData.append('discount', discount.value)
 		formData.append('vat', vat.value)
 		formData.append('vat_percent', vat_percent.value)
 		formData.append('vat_amount', vat_amount.value)
+		formData.append('vat_in_ex', vat_in_ex.value)
+		formData.append('grand_total', total)
 		formData.append('checked_by', checked_by.value)
 		formData.append('approved_by', approved_by.value)
 		formData.append('recommended_by', recommended_by.value)
@@ -249,33 +255,13 @@
 		formData.append('rfq_terms', JSON.stringify(rfq_terms.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
 		formData.append('po_details', JSON.stringify(po_details.value))
-		if(props.id==0){
-			formData.append('approved_date', approved_date.value)
-			formData.append('remarks', remarks.value)
-			formData.append('prepared_by', prepared_by.value)
-			formData.append('recommended_by', recommended_by.value)
-			formData.append('approved_by', approved_by.value)
-		}else{
-			formData.append('petty_cash_id', petty_cash.value.id)
-			formData.append('approved_date', petty_cash.value.approved_date)
-			formData.append('remarks', petty_cash.value.remarks)
-			formData.append('prepared_by', petty_cash.value.prepared_by)
-			formData.append('recommended_by', petty_cash.value.recommended_by)
-			formData.append('approved_by', petty_cash.value.approved_by)
-		}
+		formData.append('po_head_id', pohead_id.value)
 		formData.append('props_id', props.id)
-		if(prdetails.value.length!=0 || item_list.value.length!=0){
-			axios.post(`/api/save_upload/${pr_head_id.value}`,formData).then(function (response) {
-				if(prhead.value.petty_cash==0){
-					success.value='You have successfully saved new pr.'
-					successAlert.value=!successAlert.value
-				}else{
-					success.value='You have successfully saved new pr.'
-					successAlert.value=!successAlert.value
-					router.push('/pur_req/view/'+prhead.value.id)
-				}
-				item_list.value=[]
-				getImportdata(pr_head_id.value)
+		if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
+			axios.post(`/api/save_po`,formData).then(function (response) {
+				pohead_id.value=response.data;
+				success.value='You have successfully saved new po.'
+				successAlert.value=!successAlert.value
 			}, function (err) {
 				// error.value = err.response.data.message;
 				error.value=''
@@ -304,10 +290,37 @@
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
 		}else{
-			error.value = 'Items cannot be empty, Please fill in data.';
-			dangerAlerterrors.value=!dangerAlerterrors.value
+			if(checked_by.value==0){
+				document.getElementById('checked_by').style.backgroundColor = '#FAA0A0';
+			}
+			if(approved_by.value==0){
+				document.getElementById('approved_by').style.backgroundColor = '#FAA0A0';
+			}
+			if(recommended_by.value==0){
+				document.getElementById('recommended_by').style.backgroundColor = '#FAA0A0';
+			}
+			const btn_draft = document.getElementById("draft");
+			btn_draft.disabled = true;
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
 		}
     }
+
+	const resetError = (button) => {
+		if(button==='button1'){
+			document.getElementById('checked_by').style.backgroundColor = '#FFFFFF';
+		}
+		if(button==='button3'){
+			document.getElementById('approved_by').style.backgroundColor = '#FFFFFF';
+		}
+		if(button==='button2'){
+			document.getElementById('recommended_by').style.backgroundColor = '#FFFFFF';
+		}
+		const btn_draft = document.getElementById("draft");
+		btn_draft.disabled = false;
+		const btn_save = document.getElementById("save");
+		btn_save.disabled = false;
+	}
 </script>
 <template>
 	<navigation>
@@ -360,7 +373,10 @@
 								<div class="row">
 									<div class="col-lg-8">
 										<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-										<span class="text-sm text-gray-700">{{ po_no }}</span>
+										<span class="text-sm text-gray-700">
+											<input type="text" v-model="po_no" hidden>
+											{{ po_no }}
+										</span>
 									</div>
 									<div class="col-lg-4">
 										<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
@@ -594,21 +610,21 @@
 													<td class="text-center p-1">{{prepared_by}}</td>
 													<td></td>
 													<td class="text-center p-1">
-														<select class="text-center" v-model="checked_by">
+														<select class="text-center" v-model="checked_by" id="checked_by" @click="resetError('button1')">
 															<option value='0'>--Select Reviewed/Checked by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>
 													</td>
 													<td></td>
 													<td class="text-center p-1">
-														<select class="text-center" v-model="recommended_by">
+														<select class="text-center" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
 															<option value='0'>--Select Recommended by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>
 													</td>
 													<td></td>
 													<td class="text-center p-1">
-														<select class="text-center" v-model="approved_by">
+														<select class="text-center" v-model="approved_by" id="approved_by" @click="resetError('button3')">
 															<option value='0'>--Select Approved by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>
@@ -647,7 +663,8 @@
 												<!-- kung wala pa na save -->
 												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
 												<button @click="openWarningAlert()" class="btn btn-warning w-26 !text-white" id="draft">Save as Draft</button>
-												<button @click="openSuccessAlert()" type="submit" class="btn btn-primary w-36" id="save">Save</button>
+												<button @click="onSave()" type="button" class="btn btn-primary w-36" id="save">Save</button>
+												<!-- <button @click="openSuccessAlert()" type="submit" class="btn btn-primary w-36" id="save">Save</button> -->
 											</div>
 											
 										</div>

@@ -164,3 +164,4 @@ Route::get('/supplier_dropdown', [POController::class,'supplier_dropdown']);
 Route::get('/get_prno/{vendor_details_id}', [POController::class,'get_prno']);
 Route::get('/generate_po/{vendor_details_id}/{pr_no}', [POController::class,'generate_po']);
 Route::get('/check_balance/{pr_details_id}', [POController::class,'check_balance']);
+Route::get('/save_po', [POController::class,'save_po']);
