@@ -14,6 +14,7 @@ class PoDrItems extends Model
         'po_details_id',
         'pr_details_id',
         'rfq_offer_id',
-        'quantity'
+        'quantity',
+        'status'
     ];
 }

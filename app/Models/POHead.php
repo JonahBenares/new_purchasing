@@ -30,6 +30,10 @@ class POHead extends Model
         'user_id',
         'revision_no',
         'method',
-        'status'
+        'status',
+        'internal_comment',
+        'cancelled_date',
+        'cancelled_by',
+        'cancelled_reason'
     ];
 }

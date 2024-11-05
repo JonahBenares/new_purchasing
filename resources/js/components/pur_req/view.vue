@@ -215,7 +215,7 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card print:h-screen">
 					<div class="py-2 px-2 bg-red-500" v-if="get_prhead.status=='Cancelled'">
-						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by_all }}  || Cancelled Date: {{moment().format('MMM. DD,YYYY')}} </span>
+						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by_all }}  || Cancelled Date: {{moment(get_prhead.cancelled_date).format('MMM. DD,YYYY')}} </span>
 					</div>
 					<div class="card-body">
 						<div class="pt-1 " id="printable">

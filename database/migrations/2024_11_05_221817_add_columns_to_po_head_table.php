@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('po_dr', function (Blueprint $table) {
-            $table->integer('series')->default(0)->after('dr_no');
+        Schema::table('po_head', function (Blueprint $table) {
+            $table->string('cancelled_date')->nullable()->after('status');
+            $table->integer('cancelled_by')->default(0)->after('cancelled_date');
+            $table->text('cancelled_reason')->nullable()->after('cancelled_by');
         });
     }
 
@@ -21,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('po_dr', function (Blueprint $table) {
+        Schema::table('po_head', function (Blueprint $table) {
             //
         });
     }

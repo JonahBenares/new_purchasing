@@ -406,8 +406,9 @@ const routes = [
         }
     },
     {
-        path:'/pur_po/view',
+        path:'/pur_po/view/:id',
         component: pur_poView,
+        props:true,
         meta:{
             requiresAuth:true
         }

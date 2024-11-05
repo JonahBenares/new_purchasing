@@ -160,8 +160,14 @@ Route::get('/complete_reminder/{id}',[DashboardController::class,'complete_remin
 Route::post('/complete_all_todo',[DashboardController::class,'complete_all_todo']);
 Route::post('/complete_all_reminder',[DashboardController::class,'complete_all_reminder']);
 
+Route::get('/get_allpo',[POController::class,'get_allpo']);
 Route::get('/supplier_dropdown', [POController::class,'supplier_dropdown']);
 Route::get('/get_prno/{vendor_details_id}', [POController::class,'get_prno']);
 Route::get('/generate_po/{vendor_details_id}/{pr_no}', [POController::class,'generate_po']);
 Route::get('/check_balance/{pr_details_id}', [POController::class,'check_balance']);
 Route::post('/save_po', [POController::class,'save_po']);
+Route::get('/po_viewdetails/{po_head_id}', [POController::class,'po_viewdetails']);
+Route::post('/insert_internalcomment/{id}',[POController::class,'insert_internalcomment']);
+Route::post('/cancel_po_items/{po_details_id}',[POController::class,'cancel_po_items']);
+Route::post('/cancel_all_po/{po_head_id}',[POController::class,'cancel_all_po']);
+
