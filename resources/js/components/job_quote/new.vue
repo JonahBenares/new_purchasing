@@ -414,6 +414,7 @@
 											<td class="p-1 uppercase text-center" width="2%">
 												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial">
 											</td>
+											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>
 											<td class="p-1 uppercase" width="20%">PN No.</td>
@@ -421,11 +422,12 @@
 											<td class="p-1 uppercase" width="10%">WH Stocks</td>
 											<td class="p-1 uppercase" width="15%">Date Needed</td>
 										</tr>
-										<tr v-for="md in MaterialDetails">
+										<tr v-for="(md, materialno) in MaterialDetails">
 											<input type="hidden" v-model="md.jor_material_details_id">
 											<td class="p-1 text-center">
 												<input type="checkbox" class='checkboxesmaterial' v-model="md.material_checkbox" :checked="checkallmaterial" :true-value="1" :false-value="0" @change="CountCheckbox">
 											</td>
+											<td class="p-1 text-center align-top">{{ materialno + 1 }}</td>
 											<td class="p-1 text-center">{{ parseFloat(md.quantity).toFixed(2) }}</td>
 											<td class="p-1 text-center">{{ md.uom }}</td>
 											<td class="p-1">{{ md.pn_no }}</td>
@@ -556,14 +558,16 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered !text-xs mb-3">
 									<tr class="bg-gray-100">
+										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="7%">Qty</td>
 										<td class="p-1 uppercase text-center" width="7%">UOM</td>
 										<td class="p-1 uppercase" width="20%">PN No.</td>
 										<td class="p-1 uppercase" width="">Item Description</td>
 										<td class="p-1 uppercase" width="15%">Date Needed</td>
 									</tr>
-									<tr v-for="sm in selected_materials">
+									<tr v-for="(sm, m) in selected_materials">
 										<input type="hidden" v-model="sm.jor_material_details_id">
+										<td class="p-1 text-center align-top">{{ m + 1 }}</td>
 										<td class="p-1 text-center">{{ parseFloat(sm.quantity).toFixed(2) }}</td>
 										<td class="p-1 text-center">{{ sm.uom }}</td>
 										<td class="p-1">{{ sm.pn_no }}</td>

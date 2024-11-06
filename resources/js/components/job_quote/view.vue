@@ -555,6 +555,7 @@
 													</div>
 													<table class="table-bordered w-full !text-xs mb-2">
 														<tr class="bg-gray-100">
+															<td class="p-1 text-center" width="5%">#</td>
 															<td class="p-1" width="50%">Scope of Work</td>
 															<td class="p-1" width="35%">Offer</td>
 															<td class="p-1">Price</td>
@@ -562,15 +563,18 @@
 														<tr>
 															<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
 														</tr>
+														<span hidden>{{ labor_no=1 }}</span>
 														<tbody v-for="rld in RFQLaborDetails" class="p-0">
 														<tr v-for="rlo in RFQLaborOffers">
 															<template v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id && rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id">
+															<td class="p-1 align-top text-center">{{ labor_no }}</td>
 															<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
 															<td class="align-top">
 																	<textarea name="" id="" class="resize w-full  h-screen !max-h-[200px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="rvi.canvassed == 0" @change="CanvassCompleteBtn"></textarea>
 																	<textarea name="" id="" class="resize w-full  h-screen !max-h-[200px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-else readonly></textarea>
 																	<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
 															</td>
+															<span hidden>{{ labor_no++ }}</span>
 															<td class="align-top">
 																<!-- <div class="!h-14 border-b"> -->
 																	<template v-if="(rvi.canvassed == 0)">

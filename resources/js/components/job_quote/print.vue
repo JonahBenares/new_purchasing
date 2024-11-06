@@ -446,6 +446,7 @@
 											</div>
 											<table class="table-bordered w-full text-xs mb-2">
 												<tr class="bg-gray-100">
+													<td class="p-1 text-center" width="5%">#</td>
 													<td class="p-1" width="50%">Scope of Work</td>
 													<td class="p-1" width="35%">Offer</td>
 													<td class="p-1 text-center" width="15%">Unit Price</td>
@@ -453,9 +454,12 @@
 												<tr>
 													<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
 												</tr>
+												<span hidden>{{ labor_no=1 }}</span>
 												<tbody v-for="rld in RFQLaborDetails" class="p-0">
 												<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+													<td class="p-1 align-top text-center">{{ labor_no }}</td>
 													<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
+													<span hidden>{{ labor_no++ }}</span>
 													<template v-if="(rvi.canvassed == 0)">
 														<td class="align-top" ></td>
 														<td class="align-top"></td>
@@ -471,7 +475,7 @@
 											</table>
 											<table class="table-bordered w-full text-xs mb-2">
 												<tr class="bg-gray-100">
-													<td class="p-1 text-center" width="5%">No</td>
+													<td class="p-1 text-center" width="5%">#</td>
 													<td class="p-1 text-center" width="10%">Qty</td>
 													<td class="p-1" width="35%">Item Description</td>
 													<td class="p-1" width="35%">Brand/Offer</td>
