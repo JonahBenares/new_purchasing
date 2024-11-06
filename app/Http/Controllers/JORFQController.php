@@ -254,8 +254,8 @@ class JORFQController extends Controller
             }
 
             $userid = Auth::id();
-            $jo_rfq_vendor_terms = JORFQTerms::whereIn('jo_rfq_vendor_id',JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->pluck('id'))->orderBy('id','ASC')->get();
             $signatories=User::where('id','!=',$userid)->orderBy('name','ASC')->get()->unique('name');
+            $jo_rfq_vendor_terms = JORFQTerms::whereIn('jo_rfq_vendor_id',JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->pluck('id'))->orderBy('id','ASC')->get();
             $rfqmaterials =JORMaterialDetails::whereNotIn('id',JORFQMaterialDetails::where('jo_rfq_head_id',$jo_rfq_head_id)->pluck('jor_material_details_id'))->where('status','Saved')->get();
             $count_jormaterial=$rfqmaterials->count();
             $rfqlabor =JORLaborDetails::whereNotIn('id',JORFQLaborDetails::where('jo_rfq_head_id',$jo_rfq_head_id)->pluck('jor_labor_details_id'))->where('status','Saved')->get();
@@ -290,6 +290,7 @@ class JORFQController extends Controller
             $jo_rfq_vendor = JORFQVendor::with('vendor_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->orderBy('vendor_name','ASC')->get();
             $jorfqvendorid=JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->first()->id;
                 foreach($jo_rfq_vendor AS $v){
+                    $jorfq_vendor_terms = JORFQTerms::whereIn('jo_rfq_vendor_id',JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->pluck('id'))->where('jo_rfq_vendor_id',$v->id)->orderBy('id','ASC')->get();
                     // $jorfq_vendorterms = JORFQTerms::where('jo_rfq_vendor_id',$v->id)->orderBy('id','ASC')->get();
                     // $count_rfq_terms=$jorfq_vendorterms->count();
 
@@ -314,6 +315,7 @@ class JORFQController extends Controller
                         'noted_by_name'=>User::where('id',$v->noted_by)->value('name'),
                         'approved_by_id'=>$v->approved_by,
                         'approved_by_name'=>User::where('id',$v->approved_by)->value('name'),
+                        'jorfq_vendor_terms'=>$jorfq_vendor_terms,
                         // 'count_rfq_terms'=>$count_rfq_terms,
                         // 'count_vendor_labor_offers'=>$vendor_labor_offers,
                         // 'count_vendor_material_offers'=>$count_vendor_material_offers,

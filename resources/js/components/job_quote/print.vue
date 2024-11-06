@@ -563,8 +563,9 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
-													<tr v-if="vt.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+												<tbody v-for="(vt, index) in rvi.jorfq_vendor_terms" v-else>
+													<!-- <tr v-if="vt.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id"> -->
+													<tr>
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>
