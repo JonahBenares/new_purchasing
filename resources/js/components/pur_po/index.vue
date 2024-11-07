@@ -160,10 +160,14 @@
                                         <span class="badge bg-green-500 text-white !rounded-xl px-2 p-1" v-if="props.rowData.status=='Saved'">PO Issued</span>
                                         <span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Draft'">{{props.rowData.status}}</span>
                                         <span class="badge bg-red-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Cancelled'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-blue-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Revised'">{{props.rowData.status}}</span>
                                     </div>
                                 </template>
                                 <template #column-6="props">
-                                    <a :href="'/pur_po/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="props.rowData.status!='Draft'">
+                                    <a :href="'/pur_po/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="props.rowData.status=='Saved'|| props.rowData.status=='Cancelled'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/pur_po/edit/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Revised'">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                     <a :href="'/pur_po/new/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else>

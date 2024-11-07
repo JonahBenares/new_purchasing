@@ -10,6 +10,7 @@ class PoDetailsTemp extends Model
     use HasFactory;
     protected $table="po_details_temp";
     protected $fillable=[
+        'po_details_id',
         'po_head_id',
         'pr_details_id',
         'rfq_offers_id',

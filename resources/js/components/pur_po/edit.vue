@@ -221,11 +221,16 @@ import moment from 'moment';
     }
 	
 	const additionalCost = () =>{
-		if(props.id==0){
-			var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
-		}else{
-			var total = parseFloat(totals.value)
-		}
+		// if(props.id==0){
+		// 	var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		// }else{
+		// 	var total = parseFloat(totals.value)
+		// }
+		var total=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			total += parseFloat(p);
+        });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
@@ -238,22 +243,32 @@ import moment from 'moment';
 	}
 
 	const vatChange = () => {
-		var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		var grandtotal=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			grandtotal += parseFloat(p);
+        });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
         var percent=vat_percent/100;
-        var new_vat = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+        var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
         document.getElementById("vat_amount").value = formatNumber(new_vat);
-        var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        var new_total=(parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
         document.getElementById("grand_total").innerHTML=formatNumber(new_total);
-		new_data.value=parseFloat(new_total)
+		// new_data.value=parseFloat(new_total)
 	} 
 
 	const selectVat = () => {
 		if(vat.value==1){
 			var vat_percent = document.getElementById("vat_percent").value;
 			var percent=vat_percent/100;
-			var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+			// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+			var total=0;
+			po_details.value.forEach(function (val, index, theArray) {
+				var p = document.getElementById('tprice'+index).value;
+				total += parseFloat(p);
+			});
 			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 			// vat_amount.value=new_data.value * percent;
 			additionalCost()
@@ -269,11 +284,15 @@ import moment from 'moment';
 			var p = document.getElementById('tprice'+index).value;
 			grandtotal += parseFloat(p);
         });
+
 		var vat = document.getElementById("vat_percent").value;
         var percent=vat/100;
 		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 		vat_amount.value=new_vat;
-		grand_total.value=formatNumber(grandtotal + new_vat);
+		
+		var discount_display= (discount.value!='') ? discount.value : 0;
+		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+		grand_total.value=formatNumber(overall_total);
 		orig_amount.value=formatNumber(grandtotal);
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
 		balance.value = response.data.balance;
@@ -339,7 +358,16 @@ import moment from 'moment';
 
 	const onSave = () => {
 		const formData= new FormData()
+		var total = document.querySelector("#grand_total").textContent;
 		formData.append('po_head', JSON.stringify(po_head_rev.value))
+		formData.append('shipping_cost', shipping_cost.value)
+		formData.append('handling_fee', handling_fee.value)
+		formData.append('discount', discount.value)
+		formData.append('vat', vat.value)
+		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
+		formData.append('vat_amount', vat_amount.value)
+		formData.append('vat_in_ex', vat_in_ex.value)
+		formData.append('grand_total', total)
 		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		formData.append('terms_list', JSON.stringify(terms_list.value))
@@ -347,7 +375,11 @@ import moment from 'moment';
 		formData.append('po_instructions', JSON.stringify(po_instructions.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
 		formData.append('po_details', JSON.stringify(po_details.value))
+		formData.append('internal_comment', po_head.value.internal_comment)
 		formData.append('props_id', props.id)
+		po_details.value.forEach(function (val, index, theArray) {
+			formData.append('quantity'+index, remaining_balance.value[index])
+		});
 		axios.post(`/api/save_change_po`,formData).then(function (response) {
 			infoAlert.value = !hideAlert.value
 			approval_set.value = !approval_set.value
@@ -372,7 +404,6 @@ import moment from 'moment';
 		formData.append('approved_date', approved_date.value)
 		formData.append('approved_reason', approved_reason.value)
 		formData.append('shipping_cost', shipping_cost.value)
-		formData.append('shipping_cost', shipping_cost.value)
 		formData.append('handling_fee', handling_fee.value)
 		formData.append('discount', discount.value)
 		formData.append('vat', vat.value)
@@ -391,12 +422,11 @@ import moment from 'moment';
 			formData.append('quantity'+index, remaining_balance.value[index])
 		});
 		axios.post(`/api/save_approved_revision`,formData).then(function (response) {
-			console.log(response.data);
-			// success.value='You have successfully revised po'
-			// successAlertCD.value=!successAlertCD.value
-			// setTimeout(() => {
-			// 	router.push('/pur_po/view/'+props.id)
-			// }, 1000);
+			success.value='You have successfully revised po'
+			successAlertCD.value=!successAlertCD.value
+			setTimeout(() => {
+				router.push('/pur_po/view/'+props.id)
+			}, 1000);
 		}, function (err) {
 			error.value='Error! Please try again.';
 			dangerAlerterrors.value=!dangerAlerterrors.value

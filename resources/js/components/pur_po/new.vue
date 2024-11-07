@@ -225,11 +225,16 @@
 		return true;
     }
 	const additionalCost = () =>{
-		if(props.id==0){
-			var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
-		}else{
-			var total = parseFloat(totals.value)
-		}
+		// if(props.id==0){
+		// 	var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		// }else{
+		// 	var total = parseFloat(totals.value)
+		// }
+		var total=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			total += parseFloat(p);
+        });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
@@ -242,7 +247,12 @@
 	}
 
 	const vatChange = () => {
-		var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		var total=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			total += parseFloat(p);
+        });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
         var percent=vat_percent/100;
@@ -255,7 +265,12 @@
 
 	const selectVat = () => {
 		if(vat.value==1){
-			var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+			// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+			var total=0;
+			po_details.value.forEach(function (val, index, theArray) {
+				var p = document.getElementById('tprice'+index).value;
+				total += parseFloat(p);
+			});
 			var vat_percent = document.getElementById("vat_percent").value;
 			var percent=vat_percent/100;
 			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
@@ -277,7 +292,12 @@
         var percent=vat/100;
 		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 		vat_amount.value=new_vat;
-		grand_total.value=formatNumber(grandtotal + new_vat);
+		
+		var discount_display= (discount.value!='') ? discount.value : 0;
+		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+		grand_total.value=formatNumber(overall_total);
+
+		// grand_total.value=formatNumber(grandtotal + new_vat);
 		orig_amount.value=formatNumber(grandtotal);
 		let response = await axios.get("/api/check_balance/"+pr_details_id);
 		balance.value = response.data.balance;

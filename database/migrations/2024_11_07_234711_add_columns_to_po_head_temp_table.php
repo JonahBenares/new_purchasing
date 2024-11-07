@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('po_instructions_temp', function (Blueprint $table) {
-            $table->id();
-            $table->integer('po_head_id')->default(0);
-            $table->text('instructions')->nullable();
-            $table->timestamps();
+        Schema::table('po_head_temp', function (Blueprint $table) {
+            $table->text('internal_comment')->nullable()->after('revision_no');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('po_instructions_temp');
+        Schema::table('po_head_temp', function (Blueprint $table) {
+            //
+        });
     }
 };

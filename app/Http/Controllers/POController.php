@@ -16,7 +16,7 @@ use App\Models\POHeadTemp;
 use App\Models\PoDetailsTemp;
 use App\Models\PoDrTemp;
 use App\Models\PoDrItemsTemp;
-use App\Models\POInstructionTemp;
+use App\Models\POInstructionsTemp;
 use App\Models\POTermsTemp;
 
 use App\Models\PORevisionHead;
@@ -724,6 +724,7 @@ class POController extends Controller
         foreach(json_decode($po_details) AS $pd){
             $quantity = $request->input("quantity"."$y");
             $data_details=[
+                'po_details_id'=>$pd->id,
                 'po_head_id'=>$pd->po_head_id,
                 'pr_details_id'=>$pd->pr_details_id,
                 'rfq_offers_id'=>$pd->rfq_offers_id,
@@ -732,17 +733,63 @@ class POController extends Controller
             ];
             $podetails_temp=PoDetailsTemp::create($data_details);
 
-            foreach(json_decode($po_dr) AS $pdr){
-                $data_dritems=[
-                    'po_dr_id'=>$pdr->id,
-                    'po_details_id'=>$pd->id,
-                    'pr_details_id'=>$pd->pr_details_id,
-                    'rfq_offer_id'=>$pd->rfq_offers_id,
-                    'quantity'=>$quantity,
-                ];
-                $po_dritems_temp=PoDrItemsTemp::create($data_dritems);
-            }
+            // foreach(json_decode($po_dr) AS $pdr){
+            //     $data_dritems=[
+            //         'po_dr_id'=>$pdr->id,
+            //         'po_details_id'=>$pd->id,
+            //         'pr_details_id'=>$pd->pr_details_id,
+            //         'rfq_offer_id'=>$pd->rfq_offers_id,
+            //         'quantity'=>$quantity,
+            //     ];
+            //     $po_dritems_temp=PoDrItemsTemp::create($data_dritems);
+            // }
             $y++;
+        }
+
+        if(count(json_decode($po_terms))>0){
+            foreach(json_decode($po_terms) AS $pt){
+                
+                $data_terms=[
+                    'po_terms_id' => $pt->id,
+                    'po_head_id'=>$request->props_id,
+                    'terms'=>$pt->terms,
+                ];
+                $po_terms_temp=POTermsTemp::create($data_terms);
+            }
+        }
+
+        if(count(json_decode($terms_list))>0){
+            foreach(json_decode($terms_list) AS $il){
+           
+                $data_terms1=[
+                    'po_terms_id' => '0',
+                    'po_head_id' => $request->props_id,
+                    'terms' => $il->terms_condition
+                ];
+                $po_terms_temp1=POTermsTemp::create($data_terms1);
+            }
+        }
+
+        if(count(json_decode($po_instructions))>0){
+            foreach(json_decode($po_instructions) AS $pi){
+                $data_ins=[
+                    'po_instruction_id'=>$pi->id,
+                    'po_head_id'=>$request->props_id,
+                    'instructions'=>$pi->instructions,
+                ];
+                $po_ins_temp=POInstructionsTemp::create($data_ins);
+            }
+        }
+
+        if(count(json_decode($other_list))>0){
+            foreach(json_decode($other_list) AS $ol){
+                $data_ins1=[
+                    'po_instruction_id'=>'0',
+                    'po_head_id' => $request->props_id,
+                    'instructions' => $ol->instructions
+                ];
+                $po_terms_temp1=POInstructionsTemp::create($data_ins1);
+            }
         }
 
         $data_head=POHead::where('id',$request->props_id)->update([
@@ -760,36 +807,38 @@ class POController extends Controller
         $po_details=$request->input("po_details");
         $revision_max=POHead::where('id',$request->props_id)->max('revision_no');
         $revision_no=$revision_max+1;
+        $po_head_temp=POHeadTemp::where('po_head_id',$request->props_id)->first();
         $data_head=POHead::where('id',$request->props_id)->update([
             'approved_by_rev'=>$request->approved_by_rev,
             'approved_date'=>$request->approved_date,
             'approved_reason'=>$request->approved_reason,
-            'shipping_cost'=>$request->shipping_cost,
-            'handling_fee'=>$request->handling_fee,
-            'discount'=>$request->discount,
-            'vat'=>$request->vat,
-            'vat_percent'=>$request->vat_percent,
-            'vat_amount'=>$request->vat_amount,
-            'vat_in_ex'=>$request->vat_in_ex,
-            'grand_total'=>$request->grand_total,
-            'internal_comment'=>$request->internal_comment,
+            'shipping_cost'=>$po_head_temp->shipping_cost,
+            'handling_fee'=>$po_head_temp->handling_fee,
+            'discount'=>$po_head_temp->discount,
+            'vat'=>$po_head_temp->vat,
+            'vat_percent'=>$po_head_temp->vat_percent,
+            'vat_amount'=>$po_head_temp->vat_amount,
+            'vat_in_ex'=>$po_head_temp->vat_in_ex,
+            'grand_total'=>$po_head_temp->grand_total,
+            'internal_comment'=>$po_head_temp->internal_comment,
             'revision_no'=>$revision_no,
             'status'=>'Saved',
         ]);
+        
         foreach(json_decode($po_dr) AS $pdr){
             $data_dr=PoDr::where('id',$pdr->id)->update([
                 'revision_no'=>$revision_no,
             ]);
         }
         $y=0;
-        foreach(json_decode($po_details) AS $pd){
-            $quantity = $request->input("quantity"."$y");
-            $data_details=PoDetails::where('id',$pd->id)->update([
-                'quantity'=>$quantity,
-                'total_cost'=>$pd->unit_price * $quantity,
+        $po_details_temp=PoDetailsTemp::where('po_head_id',$request->props_id)->get();
+        foreach($po_details_temp AS $pd){
+            $data_details=PoDetails::where('id',$pd->po_details_id)->update([
+                'quantity'=>$pd->quantity,
+                'total_cost'=>$pd->total_cost,
             ]);
-            $data_dr_details=PoDrItems::where('po_details_id',$pd->id)->where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
-                'quantity'=>$quantity,
+            $data_dr_details=PoDrItems::where('po_details_id',$pd->po_details_id)->where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
+                'quantity'=>$pd->quantity,
             ]);
 
             $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
@@ -798,66 +847,188 @@ class POController extends Controller
             $rpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
             $method = POHead::where('id',$pd->po_head_id)->value('method');
             $total_out=$po_qty + $dpo_qty + $rpo_qty;
-            if($pr_qty > $quantity){
+            if($pr_qty > $pd->quantity){
                 $po_status='PO Issued Partially';
-            }else if($pr_qty == $quantity){
+            }else if($pr_qty == $pd->quantity){
                 $po_status='PO Issued Fully';
             }
 
             if($method=='PO'){
-                $total = $pd->quantity - $quantity;
-                if($pd->quantity!=$quantity){
+                //$total = $pd->quantity - $pd->quantity;
+                if($po_qty!=$pd->quantity){
+                    $total=$po_qty-$pd->quantity;
                     $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
-                        'po_qty'=>$po_qty - $total,
+                        'po_qty'=> $po_qty - $total,
                         'status'=>$po_status
                     ]);
                 }
             }else if($method=='DPO'){
-                if($pd->quantity!=$quantity){
+                if($pd->quantity!=$pd->quantity){
+                    $total=$dpo_qty-$pd->quantity;
                     $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
-                        'dpo_qty'=>$dpo_qty - $quantity,
+                        'dpo_qty'=>$dpo_qty - $total,
                         'status'=>$po_status
                     ]);
                 }
             }else if($method=='RPO'){
-                if($pd->quantity!=$quantity){
+                if($pd->quantity!=$pd->quantity){
+                    $total=$rpo_qty-$pd->quantity;
                     $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
-                        'po_qty'=>$total_po,
+                        'po_qty'=>$rpo_qty - $total,
                         'status'=>$po_status
                     ]);
                 }
             }   
             $y++;
         }
-        foreach(json_decode($po_terms) AS $pt){
-            $update_terms=POTerms::where('id',$pt->id)->update([
-                'terms'=>$pt->terms
-            ]);
-        }
-        foreach(json_decode($terms_list) AS $il){
-            if(count(json_decode($terms_list))>0){
+        $po_terms_tempd=POTermsTemp::where('po_head_id',$request->props_id)->get();
+        foreach($po_terms_tempd AS $ptt){
+            if($ptt->po_terms_id!=0){
+                $update_terms=POTerms::where('id',$ptt->po_terms_id)->update([
+                    'terms'=>$ptt->terms
+                ]);
+            }else{
                 $terms = new POTerms([
-                    'po_head_id' => $request->props_id,
-                    'terms' => $il->terms_condition
+                    'po_head_id' => $ptt->po_head_id,
+                    'terms' => $ptt->terms
                 ]);
                 $terms->save();
             }
         }
-        foreach(json_decode($po_instructions) AS $pi){
-            $update_instructions=POInstruction::where('id',$pi->id)->update([
-                'instructions'=>$pi->instructions
-            ]);
-        }
-
-        foreach(json_decode($other_list) AS $ol){
-            if(count(json_decode($other_list))>0){
+        $po_instruction_tempd=POInstructionsTemp::where('po_head_id',$request->props_id)->get();
+        foreach($po_instruction_tempd AS $pid){
+            if($pid->po_instruction_id!=0){
+                $update_instructions=POInstruction::where('id',$pid->po_instruction_id)->update([
+                    'instructions'=>$pid->instructions
+                ]);
+            }else{
                 $others = new POInstruction([
-                    'po_head_id' => $request->props_id,
-                    'instructions' => $ol->instructions
+                    'po_head_id' => $pid->po_head_id,
+                    'instructions' => $pid->instructions
                 ]);
                 $others->save();
             }
         }
 
+        $deletedhead = POHeadTemp::where('po_head_id',$request->props_id);
+        $deletedhead->delete();
+        $deleteddetails = PoDetailsTemp::where('po_head_id',$request->props_id);
+        $deleteddetails->delete();
+        $deletedterms = POTermsTemp::where('po_head_id',$request->props_id);
+        $deletedterms->delete();
+        $deletedins = POInstructionsTemp::where('po_head_id',$request->props_id);
+        $deletedins->delete();
+
     }
+
+    // public function save_approved_revision(Request $request){
+    //     $po_dr=$request->input("po_dr");
+    //     $po_dr_items=$request->input("po_dr_items");
+    //     $terms_list=$request->input("terms_list");
+    //     $po_terms=$request->input("po_terms");
+    //     $po_instructions=$request->input("po_instructions");
+    //     $other_list=$request->input("other_list");
+    //     $po_details=$request->input("po_details");
+    //     $revision_max=POHead::where('id',$request->props_id)->max('revision_no');
+    //     $revision_no=$revision_max+1;
+    //     $data_head=POHead::where('id',$request->props_id)->update([
+    //         'approved_by_rev'=>$request->approved_by_rev,
+    //         'approved_date'=>$request->approved_date,
+    //         'approved_reason'=>$request->approved_reason,
+    //         'shipping_cost'=>$request->shipping_cost,
+    //         'handling_fee'=>$request->handling_fee,
+    //         'discount'=>$request->discount,
+    //         'vat'=>$request->vat,
+    //         'vat_percent'=>$request->vat_percent,
+    //         'vat_amount'=>$request->vat_amount,
+    //         'vat_in_ex'=>$request->vat_in_ex,
+    //         'grand_total'=>$request->grand_total,
+    //         'internal_comment'=>$request->internal_comment,
+    //         'revision_no'=>$revision_no,
+    //         'status'=>'Saved',
+    //     ]);
+    //     foreach(json_decode($po_dr) AS $pdr){
+    //         $data_dr=PoDr::where('id',$pdr->id)->update([
+    //             'revision_no'=>$revision_no,
+    //         ]);
+    //     }
+    //     $y=0;
+    //     foreach(json_decode($po_details) AS $pd){
+    //         $quantity = $request->input("quantity"."$y");
+    //         $data_details=PoDetails::where('id',$pd->id)->update([
+    //             'quantity'=>$quantity,
+    //             'total_cost'=>$pd->unit_price * $quantity,
+    //         ]);
+    //         $data_dr_details=PoDrItems::where('po_details_id',$pd->id)->where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
+    //             'quantity'=>$quantity,
+    //         ]);
+
+    //         $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
+    //         $po_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+    //         $dpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+    //         $rpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
+    //         $method = POHead::where('id',$pd->po_head_id)->value('method');
+    //         $total_out=$po_qty + $dpo_qty + $rpo_qty;
+    //         if($pr_qty > $quantity){
+    //             $po_status='PO Issued Partially';
+    //         }else if($pr_qty == $quantity){
+    //             $po_status='PO Issued Fully';
+    //         }
+
+    //         if($method=='PO'){
+    //             $total = $pd->quantity - $quantity;
+    //             if($pd->quantity!=$quantity){
+    //                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
+    //                     'po_qty'=>$po_qty - $total,
+    //                     'status'=>$po_status
+    //                 ]);
+    //             }
+    //         }else if($method=='DPO'){
+    //             if($pd->quantity!=$quantity){
+    //                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
+    //                     'dpo_qty'=>$dpo_qty - $total,
+    //                     'status'=>$po_status
+    //                 ]);
+    //             }
+    //         }else if($method=='RPO'){
+    //             if($pd->quantity!=$quantity){
+    //                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
+    //                     'po_qty'=>$rpo_qty - $total,
+    //                     'status'=>$po_status
+    //                 ]);
+    //             }
+    //         }   
+    //         $y++;
+    //     }
+    //     foreach(json_decode($po_terms) AS $pt){
+    //         $update_terms=POTerms::where('id',$pt->id)->update([
+    //             'terms'=>$pt->terms
+    //         ]);
+    //     }
+    //     foreach(json_decode($terms_list) AS $il){
+    //         if(count(json_decode($terms_list))>0){
+    //             $terms = new POTerms([
+    //                 'po_head_id' => $request->props_id,
+    //                 'terms' => $il->terms_condition
+    //             ]);
+    //             $terms->save();
+    //         }
+    //     }
+    //     foreach(json_decode($po_instructions) AS $pi){
+    //         $update_instructions=POInstruction::where('id',$pi->id)->update([
+    //             'instructions'=>$pi->instructions
+    //         ]);
+    //     }
+
+    //     foreach(json_decode($other_list) AS $ol){
+    //         if(count(json_decode($other_list))>0){
+    //             $others = new POInstruction([
+    //                 'po_head_id' => $request->props_id,
+    //                 'instructions' => $ol->instructions
+    //             ]);
+    //             $others->save();
+    //         }
+    //     }
+
+    // }
 }

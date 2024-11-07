@@ -10,6 +10,7 @@ class POInstructionsTemp extends Model
     use HasFactory;
     protected $table='po_instructions_temp';
     protected $fillable=[
+        'po_instruction_id',
         'po_head_id',
         'instructions'
     ];
