@@ -365,8 +365,8 @@
 							<div class="row my-2 po_buttons" > 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
-										<button type="submit" class="btn btn-danger mr-2 w-36" @click="cancelAllpr('no')" v-if="get_prhead.status!='Cancelled' && get_prhead.status!='Closed'">Cancel</button>
-										<button type="submit" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
+										<button type="button" class="btn btn-danger mr-2 w-36" @click="cancelAllpr('no')" v-if="get_prhead.status!='Cancelled' && get_prhead.status!='Closed'">Cancel</button>
+										<button type="button" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
 									</div>
 								</div>
 							</div>

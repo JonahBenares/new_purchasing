@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PoDr extends Model
+class PORevisionDrHead extends Model
 {
     use HasFactory;
-    protected $table='po_dr';
+    protected $table='revised_po_dr';
     protected $fillable=[
+        'po_dr_id',
         'po_head_id',
         'pr_head_id',
         'po_no',
@@ -22,6 +23,7 @@ class PoDr extends Model
         'user_id',
         'cancelled_date',
         'cancelled_by',
-        'cancelled_reason'
+        'cancelled_reason',
+        'revision_no'
     ];
 }

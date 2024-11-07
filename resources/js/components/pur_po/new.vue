@@ -1,18 +1,21 @@
 <script setup>
-	//Add draft if else and functions
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	import moment from 'moment'
 	import { all } from 'axios';
+	const router = useRouter();
 	const preview =  ref();
-	const error =  ref([]);
+	const error =  ref('');
 	const success =  ref('');
 	const suppliers =  ref([]);
 	const dangerAlerterrors = ref(false)
 	const dangerAlert = ref(false)
+	const dangerAlert_terms = ref(false)
+	const dangerAlert_instructions = ref(false)
 	const successAlert = ref(false)
+	const successAlertCD = ref(false)
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
@@ -49,7 +52,11 @@
 	let terms_text=ref("");
 	let other_list=ref([]);
 	let other_text=ref("");
-	let cancelled_by=ref("");
+	let newvat=ref(0);
+	const totals=ref(0);
+	const instruction_id=ref(0);
+	const terms_id=ref(0);
+	const cancel_all_reason=ref('');
 	const props = defineProps({
 		id:{
 			type:String,
@@ -64,19 +71,34 @@
 		}
 	})
 
+	const formatNumber = (number) => {
+      return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 	const poDraft = async () => {
 		let response = await axios.get("/api/po_viewdetails/"+props.id);
+		pohead_id.value=props.id
+		prepared_by.value = response.data.prepared_by;
+		checked_by.value = response.data.po_head.checked_by;
+		recommended_by.value = response.data.po_head.recommended_by;
+		approved_by.value = response.data.po_head.approved_by;
 		po_head.value = response.data.po_head;
+		po_no.value = response.data.po_head.po_no;
+		dr_no.value = response.data.po_dr.dr_no;
+		shipping_cost.value = response.data.po_head.shipping_cost;
+		handling_fee.value = response.data.po_head.handling_fee;
+		discount.value = response.data.po_head.discount;
+		vat.value = response.data.po_head.vat;
+		vat_percent.value = response.data.po_head.vat_percent;
+		vat_amount.value = response.data.po_head.vat_amount;
+		vat_in_ex.value = response.data.po_head.vat_in_ex;
+		newvat.value= (response.data.grand_total + shipping_cost.value + handling_fee.value) * (vat_percent.value/100)
+		grand_total.value = (response.data.grand_total + shipping_cost.value + handling_fee.value + newvat.value) - discount.value
+		totals.value = response.data.grand_total;
 		pr_head.value = response.data.pr_head;
 		vendor.value = response.data.po_vendor;
 		po_details.value = response.data.po_details;
 		rfq_terms.value = response.data.po_terms;
 		other_list.value = response.data.po_instructions;
-		prepared_by.value = response.data.prepared_by;
-		checked_by.value = response.data.checked_by;
-		recommended_by.value = response.data.recommended_by;
-		approved_by.value = response.data.approved_by;
-		cancelled_by.value = response.data.cancelled_by;
 	}
 
 	const getSupplier = async () => {
@@ -123,8 +145,11 @@
 	}
 	const closeAlert = () => {
 		successAlert.value = !hideAlert.value
+		successAlertCD.value = !hideAlert.value
 		dangerAlerterrors.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
+		dangerAlert_terms.value = !hideAlert.value
+		dangerAlert_instructions.value = !hideAlert.value
 		warningAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
 	}
@@ -166,6 +191,7 @@
 	const addRowOther= () => {
 		if(other_text.value!=''){
 			const others = {
+				id:0,
 				instructions:other_text.value,
 			}
 			other_list.value.push(others)
@@ -180,9 +206,7 @@
 	const removeOthers = (index) => {
 		other_list.value.splice(index,1)
 	}
-	const formatNumber = (number) => {
-      return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+	
 
 	const isNumber = (evt)=> {
 		evt = (evt) ? evt : window.event;
@@ -201,7 +225,11 @@
 		return true;
     }
 	const additionalCost = () =>{
-		var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		if(props.id==0){
+			var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		}else{
+			var total = parseFloat(totals.value)
+		}
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
@@ -210,6 +238,7 @@
 		document.getElementById("grand_total").innerHTML  = formatNumber(new_total)
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=formatNumber(new_vat);
+		vat_amount.value=formatNumber(new_vat);
 	}
 
 	const vatChange = () => {
@@ -226,9 +255,11 @@
 
 	const selectVat = () => {
 		if(vat.value==1){
+			var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 			var vat_percent = document.getElementById("vat_percent").value;
 			var percent=vat_percent/100;
-			vat_amount.value=new_data.value * percent;
+			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			// vat_amount.value=new_data.value * percent;
 			additionalCost()
 		}else{
 			vat_amount.value=0
@@ -250,7 +281,9 @@
 		orig_amount.value=formatNumber(grandtotal);
 		let response = await axios.get("/api/check_balance/"+pr_details_id);
 		balance.value = response.data.balance;
-		if(qty>balance.value.pr_qty){
+		var po_qty=balance.value.po_qty + balance.value.dpo_qty + balance.value.rpo_qty
+		var all_qty=balance.value.pr_qty - po_qty
+		if(qty>all_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
 			btn_draft.disabled = true;
@@ -267,7 +300,8 @@
 
 	const checkRemainingQty = async (pr_details_id,count) => {
 		let response = await axios.get("/api/check_balance/"+pr_details_id);
-		remaining_balance.value[count] = response.data.balance.pr_qty;
+		var all_qty=response.data.balance.po_qty + response.data.balance.dpo_qty + response.data.balance.rpo_qty
+		remaining_balance.value[count] = response.data.balance.pr_qty - all_qty;
 	}
 
 	const onSave = (status) => {
@@ -329,6 +363,9 @@
 				pohead_id.value=response.data;
 				success.value='You have successfully draft new po.'
 				warningAlert.value=!warningAlert.value
+				if(props.id!=0){
+					poDraft()
+				}
 				// successAlert.value=!successAlert.value
 			}, function (err) {
 				// error.value = err.response.data.message;
@@ -361,6 +398,72 @@
 			return false;
 		}
     }
+
+	const deleteTerms = (id,option) => {
+		if(option=='yes'){
+			axios.get(`/api/delete_terms/`+id).then(function () {
+				dangerAlert_terms.value = !hideAlert.value
+				success.value='Successfully deleted term!'
+				successAlertCD.value = !successAlertCD.value
+				poDraft()
+				terms_list.value=[]
+				setTimeout(() => {
+					closeAlert()
+				}, 2000);
+			}).catch(function(err){
+				success.value=''
+				error.value=''
+			});
+		}else{
+			terms_id.value=id
+			dangerAlert_terms.value = !dangerAlert_terms.value
+		}
+	}
+
+	const deleteInstructions = (id,option) => {
+		if(option=='yes'){
+			axios.get(`/api/delete_instructions/`+id).then(function () {
+				dangerAlert_instructions.value = !hideAlert.value
+				success.value='Successfully deleted instruction!'
+				successAlertCD.value = !successAlertCD.value
+				poDraft()
+				other_list.value=[]
+				setTimeout(() => {
+					closeAlert()
+				}, 2000);
+			}).catch(function(err){
+				success.value=''
+				error.value=''
+			});
+		}else{
+			instruction_id.value=id
+			dangerAlert_instructions.value = !dangerAlert_instructions.value
+		}
+	}
+
+	const cancelAllPO = (option) => {
+		if(option=='yes'){
+			if(cancel_all_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_all_reason', cancel_all_reason.value)
+				axios.post(`/api/cancel_all_po/`+props.id,formData).then(function (response) {
+                    dangerAlert.value = !hideAlert.value
+                    success.value='Successfully cancelled PO!'
+                    successAlertCD.value = !successAlertCD.value
+                    cancel_all_reason.value=''
+                    document.getElementById('cancel_all_check').placeholder=""
+                    document.getElementById('cancel_all_check').style.backgroundColor = '#FFFFFF';
+                    poDraft()
+                    router.push('/pur_po/view/'+props.id)
+				})
+			}else{
+				document.getElementById('cancel_all_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('cancel_all_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			dangerAlert.value = !dangerAlert.value
+		}
+	}
 </script>
 <template>
 	<navigation>
@@ -478,13 +581,13 @@
 														<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 													</tr>
 													<tr class="" v-for="(pd, index) in po_details" v-else>
-														<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
+														<span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.quantity) }}</span>
 														<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 														<td class="border-y-none p-0 text-center">
-															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,pd.quantity, index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="pd.quantity">
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
-														<td class="border-y-none p-1" colspan="2">{{ pd.offer }}</td>
+														<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
 														<td class="border-y-none p-1 text-right">{{pd.unit_price}} {{ pd.currency }}</td>
 														<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 													</tr>
@@ -505,15 +608,17 @@
 															<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
 														</td>
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-														<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost" @keyup="additionalCost()"></td>
+														<td class="p-0">
+															<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost" @keyup="additionalCost()" @change="additionalCost()" >
+														</td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-														<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee" @keyup="additionalCost()"></td>
+														<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee" @keyup="additionalCost()" @change="additionalCost()"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-														<td class="p-0"><input  type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount" @keyup="additionalCost()"></td>
+														<td class="p-0"><input  type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount" @keyup="additionalCost()" @change="additionalCost()"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-0 text-right" colspan="2">
@@ -532,7 +637,7 @@
 															<div class="flex p-0">
 																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange()">%
                                                                 <input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
-                                                                <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost()">
+                                                                <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost()" @change="additionalCost()">
 															</div>
 														</td>
 														<!-- NON-VAT -->
@@ -595,9 +700,13 @@
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
 													<td class="align-top" colspan="2">
 														<div class="flex justify-between">
-															<!-- <span class="w-32">{{ rt.terms }} </span> -->
 															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="rt.terms"></textarea>
 														</div>
+													</td>
+													<td v-if="props.id!=0">
+														<button type="button" @click="deleteTerms(rt.id,'no')" class="btn btn-danger p-1">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button>
 													</td>
 												</tr>
 												<tr v-for="(t,index) in terms_list">
@@ -631,7 +740,10 @@
 												<tr v-for="(o, indexes) in other_list">
 													<td class="px-1" colspan="2">{{ o.instructions }}</td>
 													<td class="p-0 align-top" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1" v-if="props.id==0">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button>
+														<button type="button" @click="deleteInstructions(o.id)" class="btn btn-danger p-1" v-else>
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
 													</td>
@@ -716,6 +828,7 @@
 											<div class="flex justify-between space-x-1">
 												<!-- kung wala pa na save -->
 												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
+												<button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled' && props.id!=0">Cancel PO</button>
 												<button @click="onSave('Draft')" class="btn btn-warning w-26 !text-white" id="draft">Save as Draft</button>
 												<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save">Save</button>
 												<!-- <button @click="openSuccessAlert()" type="submit" class="btn btn-primary w-36" id="save">Save</button> -->
@@ -771,6 +884,38 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlertCD }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+					</div> 
 				</div>
 			</div>
 		</Transition>
@@ -851,6 +996,134 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_terms }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Are you sure you want to remove this term?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
+									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteTerms(terms_id,'yes')" >Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_instructions }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Are you sure you want to remove this instruction?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
+									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteInstructions(instruction_id,'yes')" >Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this PO?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_all_check" class="form-control !border" rows="3" v-model="cancel_all_reason"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelAllPO('yes')">Yes</button>
 								</div>
 							</div>
 						</div>

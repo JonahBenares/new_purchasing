@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PoDetails extends Model
+class PORevisionDetails extends Model
 {
     use HasFactory;
-    protected $table="po_details";
+    protected $table="revised_po_details";
     protected $fillable=[
         'po_head_id',
         'item_no',

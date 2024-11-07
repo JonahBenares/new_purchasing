@@ -414,8 +414,9 @@ const routes = [
         }
     },
     {
-        path:'/pur_po/edit',
+        path:'/pur_po/edit/:id',
         component: pur_poEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }

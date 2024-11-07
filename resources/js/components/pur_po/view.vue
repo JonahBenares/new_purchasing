@@ -40,6 +40,9 @@
     onMounted(async () => {
 		poView()
 	})
+    const formatNumber = (number) => {
+        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
     const poView = async () => {
 		let response = await axios.get("/api/po_viewdetails/"+props.id);
 		po_head.value = response.data.po_head;
@@ -253,8 +256,8 @@
                                                                 </a>
                                                             </div>
                                                         </td>
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{pd.unit_price}} {{pd.currency}}</td>
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{pd.total_cost}}</td>
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class=""></td>
@@ -273,15 +276,15 @@
                                                             <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
                                                         </td>
                                                         <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-                                                        <td class="p-1 text-right ">{{po_head.shipping_cost}}</td>
+                                                        <td class="p-1 text-right ">{{ formatNumber(po_head.shipping_cost ?? 0) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-                                                        <td class="p-1 text-right ">{{po_head.handling_fee}}</td>
+                                                        <td class="p-1 text-right ">{{ formatNumber(po_head.handling_fee ?? 0) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">{{po_head.discount}}</td>
+                                                        <td class="p-1 text-right ">{{formatNumber(po_head.discount ?? 0 ) }}</td>
                                                     </tr>
                                                     <tr class="" v-if="po_head.vat==1">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
@@ -289,7 +292,7 @@
                                                             <div class="flex">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="po_head.vat_amount">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatNumber(po_head.vat_amount ?? 0)">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -297,13 +300,13 @@
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="0">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="0.00">
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-                                                        <td class="p-1 text-right font-bold !text-sm">{{po_head.grand_total}}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm">{{ formatNumber(po_head.grand_total ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -415,9 +418,9 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="submit" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
+                                                    <button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
                                                     <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
-                                                        <a href="/pur_po/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                        <a :href="'/pur_po/edit/'+props.id" type="button" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
                                                         <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
@@ -437,7 +440,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
+                                                    <button type="button" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
                                             </div>

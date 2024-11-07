@@ -170,4 +170,8 @@ Route::get('/po_viewdetails/{po_head_id}', [POController::class,'po_viewdetails'
 Route::post('/insert_internalcomment/{id}',[POController::class,'insert_internalcomment']);
 Route::post('/cancel_po_items/{po_details_id}',[POController::class,'cancel_po_items']);
 Route::post('/cancel_all_po/{po_head_id}',[POController::class,'cancel_all_po']);
-
+Route::get('/delete_terms/{id}',[POController::class,'delete_terms']);
+Route::get('/delete_instructions/{id}',[POController::class,'delete_instructions']);
+Route::get('/check_balance_rev/{po_head_id}/{pr_details_id}', [POController::class,'check_balance_rev']);
+Route::post('/save_change_po', [POController::class,'save_change_po']);
+Route::post('/save_approved_revision', [POController::class,'save_approved_revision']);

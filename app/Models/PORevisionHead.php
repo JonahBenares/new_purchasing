@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class POHead extends Model
+class PORevisionHead extends Model
 {
     use HasFactory;
-    protected $table="po_head";
+    protected $table="revised_po_head";
     protected $fillable=[
+        'po_head_id',
         'pr_no',
         'vendor_details_id',
         'vendor_name',
@@ -34,9 +35,6 @@ class POHead extends Model
         'internal_comment',
         'cancelled_date',
         'cancelled_by',
-        'cancelled_reason',
-        'approved_date',
-        'approved_by_rev',
-        'approved_reason',
+        'cancelled_reason'
     ];
 }
