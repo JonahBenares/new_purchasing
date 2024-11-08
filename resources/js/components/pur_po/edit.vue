@@ -23,6 +23,7 @@ import moment from 'moment';
 	const hide_button = ref()
 	const hideAlert = ref(true)
 	const po_head =  ref([]);
+	const po_head_temp =  ref([]);
 	const po_head_rev =  ref([]);
 	const po_dr =  ref([]);
 	const po_dr_rev =  ref([]);
@@ -30,11 +31,15 @@ import moment from 'moment';
 	const po_vendor = ref([])
 	const pr_head =  ref([]);
 	const po_details =  ref([]);
+	const po_details_temp =  ref([]);
 	const po_terms = ref([])
+	const po_terms_temp = ref([])
 	const po_instructions = ref([])
+	const po_instructions_temp = ref([])
 	const rfq_terms =  ref([]);
 	const orig_amount =  ref(0);
 	const balance =  ref(0);
+	const balance_overall =  ref(0);
 	const remaining_balance =  ref([]);
 	const prepared_by =  ref('');
 	const checked_by =  ref('');
@@ -102,6 +107,21 @@ import moment from 'moment';
 		po_details.value.forEach(function (val, index, theArray) {
 			checkRemainingQty(val.po_head_id,val.pr_details_id,index)
 		});
+		if(po_head.value.status=='Revised'){
+			poReviseTemp()
+			infoAlert.value = !hideAlert.value
+			approval_set.value = !approval_set.value
+			buttons_set.value = !hide_button.value
+		}
+	}
+
+	const poReviseTemp= async () => {
+		let response = await axios.get("/api/po_viewdetails/"+props.id);
+		po_head.value = response.data.po_head;
+		po_head_temp.value = response.data.po_head_temp;
+		po_details_temp.value = response.data.po_details_temp;
+		po_terms_temp.value = response.data.po_terms_temp;
+		po_instructions_temp.value = response.data.po_instructions_temp;
 	}
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
@@ -278,6 +298,42 @@ import moment from 'moment';
 		}
 	}
 
+	// const checkBalance = async (pr_details_id,qty,count) => {
+	// 	var grandtotal=0;
+	// 	po_details.value.forEach(function (val, index, theArray) {
+	// 		var p = document.getElementById('tprice'+index).value;
+	// 		grandtotal += parseFloat(p);
+    //     });
+	// 	var vat = document.getElementById("vat_percent").value;
+    //     var percent=vat/100;
+	// 	var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+	// 	vat_amount.value=new_vat;
+		
+	// 	var discount_display= (discount.value!='') ? discount.value : 0;
+	// 	var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+	// 	grand_total.value=formatNumber(overall_total);
+
+	// 	// grand_total.value=formatNumber(grandtotal + new_vat);
+	// 	orig_amount.value=formatNumber(grandtotal);
+	// 	let response = await axios.get("/api/check_balance/"+pr_details_id);
+	// 	balance.value = response.data.balance;
+	// 	var po_qty=balance.value.po_qty + balance.value.dpo_qty + balance.value.rpo_qty
+	// 	var all_qty=balance.value.pr_qty - po_qty
+	// 	if(qty>all_qty){
+	// 		document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
+	// 		const btn_draft = document.getElementById("draft");
+	// 		btn_draft.disabled = true;
+	// 		const btn_save = document.getElementById("save");
+	// 		btn_save.disabled = true;
+	// 	}else{
+	// 		document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
+	// 		const btn_draft = document.getElementById("draft");
+	// 		btn_draft.disabled = false;
+	// 		const btn_save = document.getElementById("save");
+	// 		btn_save.disabled = false;
+	// 	}
+	// }
+
 	const checkBalance = async (po_head_id,pr_details_id,qty,count) => {
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
@@ -296,16 +352,22 @@ import moment from 'moment';
 		orig_amount.value=formatNumber(grandtotal);
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
 		balance.value = response.data.balance;
-		if(qty>balance.value.quantity){
+		balance_overall.value = response.data.balance_overall;
+		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
+		var all_qty=balance_overall.value.pr_qty - po_qty
+		var total_qty = all_qty + po_qty;
+		if(total_qty==balance_overall.value.pr_qty){
+			var over_all_total=all_qty
+		}else{
+			var over_all_total=total_qty
+		}
+	
+		if(qty>total_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
-			// const btn_draft = document.getElementById("draft");
-			// btn_draft.disabled = true;
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = true;
 		}else{
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
-			// const btn_draft = document.getElementById("draft");
-			// btn_draft.disabled = false;
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = false;
 		}
@@ -314,6 +376,7 @@ import moment from 'moment';
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
 		remaining_balance.value[count] = response.data.balance.quantity;
 	}
+
 	const deleteTerms = (id,option) => {
 		if(option=='yes'){
 			axios.get(`/api/delete_terms/`+id).then(function () {
@@ -386,6 +449,9 @@ import moment from 'moment';
 			buttons_set.value = !hide_button.value
 			success.value='You have successfully revise po, please fill in approve form below.'
 			successAlertCD.value=!successAlertCD.value
+			const btn_save = document.getElementById("confirm_alert");
+			btn_save.disabled = true;
+			poReviseTemp()
 			setTimeout(() => {
 				closeAlert()
 			}, 2000);
@@ -398,6 +464,7 @@ import moment from 'moment';
 	const onSaveApprove = () => {
 		const formData= new FormData()
 		var total = document.querySelector("#grand_total").textContent;
+		formData.append('po_head', JSON.stringify(po_head_rev.value))
 		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		formData.append('approved_by_rev', approved_by_rev.value)
@@ -413,7 +480,7 @@ import moment from 'moment';
 		formData.append('grand_total', total)
 		formData.append('internal_comment', po_head.value.internal_comment)
 		formData.append('terms_list', JSON.stringify(terms_list.value))
-		formData.append('po_terms', JSON.stringify(rfq_terms.value))
+		formData.append('po_terms', JSON.stringify(po_terms.value))
 		formData.append('po_instructions', JSON.stringify(po_instructions.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
 		formData.append('po_details', JSON.stringify(po_details.value))
@@ -421,17 +488,42 @@ import moment from 'moment';
 		po_details.value.forEach(function (val, index, theArray) {
 			formData.append('quantity'+index, remaining_balance.value[index])
 		});
-		axios.post(`/api/save_approved_revision`,formData).then(function (response) {
-			success.value='You have successfully revised po'
-			successAlertCD.value=!successAlertCD.value
-			setTimeout(() => {
-				router.push('/pur_po/view/'+props.id)
-			}, 1000);
-		}, function (err) {
-			error.value='Error! Please try again.';
-			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
+		if(approved_by_rev.value!=0 && approved_date.value!=''){
+			axios.post(`/api/save_approved_revision`,formData).then(function (response) {
+				success.value='You have successfully revised po'
+				successAlertCD.value=!successAlertCD.value
+				const btn_save = document.getElementById("save_approve");
+				btn_save.disabled = true;
+				setTimeout(() => {
+					router.push('/pur_po/view/'+props.id)
+				}, 1000);
+			}, function (err) {
+				error.value='Error! Please try again.';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			if(approved_by_rev.value==0){
+				document.getElementById('approved_by_rev').style.backgroundColor = '#FAA0A0';
+			}
+			if(approved_date.value==0){
+				document.getElementById('approved_date').style.backgroundColor = '#FAA0A0';
+			}
+			const btn_save = document.getElementById("save_approve");
+			btn_save.disabled = true;
+		}
     }
+
+	const resetError = (button) => {
+		if(button==='button1'){
+			document.getElementById('approved_date').style.backgroundColor = '#FEFCE8';
+		}
+
+		if(button==='button2'){
+			document.getElementById('approved_by_rev').style.backgroundColor = '#FEFCE8';
+		}
+		const btn_save = document.getElementById("save_approve");
+		btn_save.disabled = false;
+	}
 </script>
 <template>
 	<navigation>
@@ -599,11 +691,24 @@ import moment from 'moment';
 													<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 													<td class="uppercase p-1 text-center" width="12%">Total</td>
 												</tr>
-												<tr class="" v-for="(pd, index) in po_details">
+												<tr class="" v-for="(pd, index) in po_details" v-if="po_head.status!='Revised'">
 													<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
+														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
 														<input type="number" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+													</td>
+													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
+													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
+													<td class="border-y-none p-1 text-right">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
+												</tr>
+												<tr class="" v-for="(pd, index) in po_details_temp" v-else>
+													<span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.quantity) }}</span>
+													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
+													<td class="border-y-none p-0 text-center">
+														{{ pd.quantity }}
+														<!-- <input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,pd.quantity, index)" @change="checkBalance(pd.pr_details_id,pd.quantity, index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="pd.quantity"> -->
 													</td>
 													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
@@ -627,15 +732,25 @@ import moment from 'moment';
 														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
 													</td>
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-													<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost"  @keyup="additionalCost()" @change="additionalCost()"></td>
+													<td class="p-0">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" :value="po_head_temp.shipping_cost"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-													<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee"  @keyup="additionalCost()" @change="additionalCost()"></td>
+													<td class="p-0">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.handling_fee"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-													<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount"  @keyup="additionalCost()" @change="additionalCost()"></td>
+													<td class="p-0">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.discount"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+													</td>
 												</tr>
 												<!-- <tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
@@ -651,7 +766,12 @@ import moment from 'moment';
 													<td class="border-l-none border-y-none p-0 text-right" colspan="2">
 														<div class="flex justify-end">
 															<!-- <span class="p-1" >VAT</span> -->
-															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat">
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat" v-if="po_head.status!='Revised'">
+																<option value="0">--Select--</option>
+																<option value="1">VAT</option>
+																<option value="2">NON-VAT</option>
+															</select>
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat" disabled v-else>
 																<option value="0">--Select--</option>
 																<option value="1">VAT</option>
 																<option value="2">NON-VAT</option>
@@ -856,11 +976,11 @@ import moment from 'moment';
 										<div class="row my-2 bg-yellow-50 px-2 py-3"> 
 											<div class="col-lg-2 col-md-3 pl-0">
 												<span class="text-sm p-1">Approve Date</span>
-												<input type="date" v-model="approved_date" class="form-control">
+												<input type="date" v-model="approved_date" class="form-control" id="approved_date" @click="resetError('button1')">
 											</div>
 											<div class="col-lg-3 col-md-3">
 												<span class="text-sm p-1">Approve By</span>
-												<select class="form-control" v-model="approved_by_rev" id="approved_by_rev">
+												<select class="form-control" v-model="approved_by_rev" id="approved_by_rev" @click="resetError('button2')">
 													<option value='0'>--Select Approve by--</option>
 													<option :value="revsig.id" v-for="revsig in signatories" :key="revsig.id">{{ revsig.name }}</option>
 												</select>
@@ -870,11 +990,11 @@ import moment from 'moment';
 											</div>
 											<div class="col-lg-6 col-md-6">
 												<span class="text-sm p-1">Reason</span>
-												<textarea name="" class="form-control" rows="1" v-model="approved_reason"></textarea>
+												<textarea name="" class="form-control" rows="1" v-model="approved_reason" ></textarea>
 											</div>
 											<div class="col-lg-1 col-md-1">
 												<span class="text-sm p-1"><br></span>
-												<button @click="onSaveApprove()" class="btn btn-primary btn-sm" >Approve</button>
+												<button @click="onSaveApprove()" class="btn btn-primary btn-sm" id="save_approve">Approve</button>
 											</div>
 										</div>
 									</div>
@@ -965,7 +1085,7 @@ import moment from 'moment';
 								<div class="flex justify-center space-x-2">
 									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
-									<button @click="onSave()" class="btn !bg-blue-500 !text-white btn-sm !rounded-full w-full">Save</button>
+									<button @click="onSave()" class="btn !bg-blue-500 !text-white btn-sm !rounded-full w-full" id="confirm_alert">Save</button>
 								</div>
 							</div>
 						</div>

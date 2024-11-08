@@ -10,6 +10,7 @@ class PORevisionInstructions extends Model
     use HasFactory;
     protected $table='revised_po_instructions';
     protected $fillable=[
+        'po_head_rev_id',
         'po_head_id',
         'instructions'
     ];

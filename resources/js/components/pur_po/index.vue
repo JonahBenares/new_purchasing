@@ -16,8 +16,22 @@
     import moment from 'moment'
     const drawer_revise = ref(false)
 	const hideModal = ref(true)
-    const openDrawerRevise = () => {
+	const po_head_rev = ref([])
+	const po_nos = ref('')
+	const po_head_id = ref(0)
+	const revision_nos = ref('')
+    const openDrawerRevise = async (id,po_no,revision_no) => {
 		drawer_revise.value = !drawer_revise.value
+        let response = await axios.get("/api/old_revision_data/"+id);
+		po_head_rev.value = response.data.po_head_rev;
+		po_nos.value = po_no;
+		revision_nos.value = revision_no;
+		po_head_id.value = id;
+		// po_details_rev.value = response.data.po_details_rev;
+		// po_dr_rev.value = response.data.po_dr_rev;
+		// po_dritems_rev.value = response.data.po_dritems_rev;
+		// po_terms_rev.value = response.data.po_terms_rev;
+		// po_instructions_rev.value = response.data.po_instructions_rev;
 	}
     const closeModal = () => {
 		drawer_revise.value = !hideModal.value
@@ -151,8 +165,9 @@
                                     </tr>
                                 </thead>
                                 <template #column-1="props">
-                                        <span class="text-left z-50 !w-full p-1 px-2 cursor-pointer btn-link" @click="openDrawerRevise()">
-                                            {{props.rowData.po_no}}
+                                        <span class="text-left z-50 !w-full p-1 px-2 cursor-pointer btn-link" @click="openDrawerRevise(props.rowData.id, props.rowData.po_no, props.rowData.revision_no)">
+                                            
+                                            {{props.rowData.po_no}}{{ (props.rowData.revision_no!=0 && props.rowData.revision_no!=null && props.rowData.revision_no!='') ? '.r'+props.rowData.revision_no : '' }} 
                                         </span>
 								</template>
                                 <template #column-5="props">
@@ -203,14 +218,11 @@
                 </div>
                 <hr class="m-0">
                 <div class="modal_s_items ">
-                    <div class="">
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
-                        <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
+                    <div class="" v-for="phv in po_head_rev">
+                        <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
+                    </div>
+                    <div>
+                        <a :href="'/pur_po/view/'+po_head_id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_nos }}{{ (revision_nos!=0) ? '.r'+revision_nos : '' }} (Current)</a>
                     </div>
                     <!-- <div>
                         <p class="text-center text-sm">No Data</p>

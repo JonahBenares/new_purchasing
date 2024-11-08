@@ -88,7 +88,7 @@
 		handling_fee.value = response.data.po_head.handling_fee;
 		discount.value = response.data.po_head.discount;
 		vat.value = response.data.po_head.vat;
-		vat_percent.value = response.data.po_head.vat_percent;
+		vat_percent.value = (response.data.po_head.vat_percent!=0) ? response.data.po_head.vat_percent : 12;
 		vat_amount.value = response.data.po_head.vat_amount;
 		vat_in_ex.value = response.data.po_head.vat_in_ex;
 		newvat.value= (response.data.grand_total + shipping_cost.value + handling_fee.value) * (vat_percent.value/100)
@@ -121,6 +121,7 @@
 		po_details.value = response.data.po_details;
 		rfq_terms.value = response.data.rfq_terms;
 		vendor.value = response.data.vendor;
+		
 		grand_total.value = response.data.grand_total;
 		prepared_by.value = response.data.prepared_by;
 		po_details.value.forEach(function (val, index, theArray) {
@@ -357,7 +358,14 @@
 				axios.post(`/api/save_po`,formData).then(function (response) {
 					pohead_id.value=response.data;
 					success.value='You have successfully saved new po.'
-					successAlert.value=!successAlert.value
+					successAlertCD.value=!successAlertCD.value
+					setTimeout(() => {
+						if(props.id==0){
+							router.push('/pur_po/view/'+pohead_id.value)
+						}else{
+							router.push('/pur_po/view/'+props.id)
+						}
+					}, 2000);
 				}, function (err) {
 					// error.value = err.response.data.message;
 					error.value='Error! Please try again.';
@@ -589,11 +597,12 @@
 														<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 														<td class="uppercase p-1 text-center" width="12%">Total</td>
 													</tr>
-													<tr class="" v-for="(pd, index) in po_details" v-if="props.id==0">
+													<tr class="" v-for="(pd, index) in po_details" :key="index" v-if="props.id==0">
 														<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
 														<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 														<td class="border-y-none p-0 text-center">
-															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]" v-if="remaining_balance[index]!=0">
+															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]" readonly disabled v-else>
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 														<td class="border-y-none p-1" colspan="2">{{ pd.offer }}</td>

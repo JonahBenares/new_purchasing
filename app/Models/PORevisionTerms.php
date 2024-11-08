@@ -10,6 +10,7 @@ class PORevisionTerms extends Model
     use HasFactory;
     protected $table='revised_po_terms';
     protected $fillable=[
+        'po_head_rev_id',
         'po_head_id',
         'terms'
     ];

@@ -16,5 +16,9 @@ class PoDetailsTemp extends Model
         'rfq_offers_id',
         'quantity',
         'total_cost',
+        'item_description',
+        'uom',
+        'unit_price',
+        'currency',
     ];
 }

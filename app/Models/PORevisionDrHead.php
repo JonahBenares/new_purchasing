@@ -10,6 +10,7 @@ class PORevisionDrHead extends Model
     use HasFactory;
     protected $table='revised_po_dr';
     protected $fillable=[
+        'po_head_rev_id',
         'po_dr_id',
         'po_head_id',
         'pr_head_id',

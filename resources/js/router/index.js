@@ -54,6 +54,7 @@ import pur_poIndex from '../components/pur_po/index.vue'
 import pur_poNew from '../components/pur_po/new.vue'
 import pur_poEdit from '../components/pur_po/edit.vue'
 import pur_poView from '../components/pur_po/view.vue'
+import pur_poViewRevised from '../components/pur_po/view_revised.vue'
 import pur_poPrint from '../components/pur_po/print.vue'
 
 import pur_poDirect from '../components/pur_direct/index.vue'
@@ -408,6 +409,14 @@ const routes = [
     {
         path:'/pur_po/view/:id',
         component: pur_poView,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_po/view_revised/:id',
+        component: pur_poViewRevised,
         props:true,
         meta:{
             requiresAuth:true

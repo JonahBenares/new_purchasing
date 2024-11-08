@@ -175,3 +175,5 @@ Route::get('/delete_instructions/{id}',[POController::class,'delete_instructions
 Route::get('/check_balance_rev/{po_head_id}/{pr_details_id}', [POController::class,'check_balance_rev']);
 Route::post('/save_change_po', [POController::class,'save_change_po']);
 Route::post('/save_approved_revision', [POController::class,'save_approved_revision']);
+Route::get('/old_revision_data/{id}',[POController::class,'old_revision_data']);
+Route::get('/view_revision_data/{id}',[POController::class,'view_revision_data']);

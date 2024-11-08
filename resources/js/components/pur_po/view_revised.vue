@@ -17,7 +17,6 @@
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
-    const po_head_rev = ref([])
 	const po_head = ref([])
 	const pr_head = ref([])
 	const po_vendor = ref([])
@@ -32,6 +31,12 @@
     let po_details_id_view=ref("")
     let cancel_reason=ref("")
     let cancel_all_reason=ref("")
+
+    const po_head_rev = ref([])
+	const po_details_rev = ref([])
+	const po_terms_rev = ref([])
+	const po_instructions_rev = ref([])
+    
     const props = defineProps({
 		id:{
 			type:String,
@@ -45,13 +50,13 @@
         return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
     const poView = async () => {
-		let response = await axios.get("/api/po_viewdetails/"+props.id);
-		po_head.value = response.data.po_head;
+		let response = await axios.get("/api/view_revision_data/"+props.id);
+		po_head.value = response.data.po_head_rev;
 		pr_head.value = response.data.pr_head;
 		po_vendor.value = response.data.po_vendor;
-		po_details.value = response.data.po_details;
-		po_terms.value = response.data.po_terms;
-		po_instructions.value = response.data.po_instructions;
+		po_details.value = response.data.po_details_rev;
+		po_terms.value = response.data.po_terms_rev;
+		po_instructions.value = response.data.po_instructions_rev;
 		prepared_by.value = response.data.prepared_by;
 		checked_by.value = response.data.checked_by;
 		recommended_by.value = response.data.recommended_by;
@@ -81,10 +86,8 @@
     const openDrawerRFD = () => {
 		drawer_rfd.value = !drawer_rfd.value
 	}
-    const openDrawerRevise = async (id) => {
+    const openDrawerRevise = () => {
 		drawer_revise.value = !drawer_revise.value
-        let response = await axios.get("/api/old_revision_data/"+id);
-		po_head_rev.value = response.data.po_head_rev;
 	}
 	const closeModal = () => {
 		drawer_dr.value = !hideModal.value
@@ -164,13 +167,13 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Order <small>View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Order <small>Revised View</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item"><a href="/pur_po">Purchase Order</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">View</li>
+                            <li class="breadcrumb-item active" aria-current="page">Revised View</li>
                         </ol>
                     </nav>
                 </div>
@@ -199,7 +202,7 @@
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-                                        <span class="text-sm text-gray-700">{{po_head.po_no}}</span>
+                                        <span class="text-sm text-gray-700">{{po_head.po_no}}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} </span>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
@@ -254,9 +257,6 @@
                                                         <td :class=" (po_head.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
                                                             <div class="flex justify-between space-x-1">
                                                                 <span class="w-full">{{pd.item_description}}</span>
-                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details.length>1 && po_head.status!='Cancelled'">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
                                                             </div>
                                                         </td>
                                                         <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
@@ -414,24 +414,25 @@
                                     <hr	class="border-dashed">
                                     <div class="po_buttons text-xs" v-if="po_head.status!='Cancelled'">
                                         <span class="w-full block">Internal Comment:</span>
-                                        <textarea class="bg-yellow-50" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea>
+                                        {{ (po_head.internal_comment!='null') ? po_head.internal_comment : '' }}
+                                        <!-- <textarea class="bg-yellow-50" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea> -->
                                         <hr	class="border-dashed">
                                     </div>
                                     <div class="row my-2 po_buttons"> 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
+                                                    <!-- <button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
                                                     <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
                                                         <a :href="'/pur_po/edit/'+props.id" type="button" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
-                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise(props.id)">
+                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                     
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <div class="flex justify-between">
+                                                    <!-- <div class="flex justify-between">
                                                         <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
@@ -442,7 +443,7 @@
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                     <button type="button" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
@@ -501,7 +502,7 @@
                 <div class="modal__content w-3/12 float-right min-h-[690px]">
                     <div class="row mb-3">
                         <div class="col-lg-12 flex justify-between">
-                            <span class="font-bold ">Revise List</span>
+                            <span class="font-bold ">DR List</span>
                             <a href="#" class="text-gray-600" @click="closeModal">
                                 <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                             </a>
@@ -509,12 +510,18 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="" v-for="phv in po_head_rev">
-                            <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
+                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
                         </div>
-                        <div>
-                            <a :href="'/pur_po/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_head.po_no }}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} (Current)</a>
-                        </div>
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
                     </div> 
                 </div>
             </div>
