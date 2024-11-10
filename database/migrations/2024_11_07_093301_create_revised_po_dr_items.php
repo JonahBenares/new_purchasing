@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('pr_details_id')->default(0);
             $table->integer('rfq_offer_id')->default(0);
             $table->double('quantity')->default(0);
-            $table->string('status')->nullable(0);
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

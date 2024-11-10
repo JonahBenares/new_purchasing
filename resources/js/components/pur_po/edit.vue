@@ -356,11 +356,12 @@ import moment from 'moment';
 		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
 		var all_qty=balance_overall.value.pr_qty - po_qty
 		var total_qty = all_qty + po_qty;
-		if(total_qty==balance_overall.value.pr_qty){
-			var over_all_total=all_qty
-		}else{
-			var over_all_total=total_qty
-		}
+		// alert(all_qty)
+		// if(total_qty==balance_overall.value.pr_qty){
+		// 	var over_all_total=all_qty
+		// }else{
+		// 	var over_all_total=total_qty
+		// }
 	
 		if(qty>total_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
@@ -438,7 +439,7 @@ import moment from 'moment';
 		formData.append('po_instructions', JSON.stringify(po_instructions.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
 		formData.append('po_details', JSON.stringify(po_details.value))
-		formData.append('internal_comment', po_head.value.internal_comment)
+		formData.append('internal_comment', po_head.value.internal_comment ?? '')
 		formData.append('props_id', props.id)
 		po_details.value.forEach(function (val, index, theArray) {
 			formData.append('quantity'+index, remaining_balance.value[index])
@@ -478,7 +479,7 @@ import moment from 'moment';
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total)
-		formData.append('internal_comment', po_head.value.internal_comment)
+		formData.append('internal_comment', po_head.value.internal_comment ?? '')
 		formData.append('terms_list', JSON.stringify(terms_list.value))
 		formData.append('po_terms', JSON.stringify(po_terms.value))
 		formData.append('po_instructions', JSON.stringify(po_instructions.value))
@@ -515,11 +516,11 @@ import moment from 'moment';
 
 	const resetError = (button) => {
 		if(button==='button1'){
-			document.getElementById('approved_date').style.backgroundColor = '#FEFCE8';
+			document.getElementById('approved_date').style.backgroundColor = '#FFFFFF';
 		}
 
 		if(button==='button2'){
-			document.getElementById('approved_by_rev').style.backgroundColor = '#FEFCE8';
+			document.getElementById('approved_by_rev').style.backgroundColor = '#FFFFFF';
 		}
 		const btn_save = document.getElementById("save_approve");
 		btn_save.disabled = false;

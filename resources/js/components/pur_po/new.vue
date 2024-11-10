@@ -606,7 +606,7 @@
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 														<td class="border-y-none p-1" colspan="2">{{ pd.offer }}</td>
-														<td class="border-y-none p-1 text-right">{{pd.unit_price}} {{ pd.currency }}</td>
+														<td class="border-y-none p-1 text-right">{{ formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
 														<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 													</tr>
 													<tr class="" v-for="(pd, index) in po_details" v-else>
