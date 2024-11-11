@@ -434,7 +434,7 @@
 							<div>
 								<div class="rfq_buttons">
 									<div class="w-full flex justify-between space-x-1 ">
-										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} {{ (rv.vendor_identifier != '') ? '('+rv.vendor_identifier+')' : '' }}</button>
+										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier }})</button>
 										<button @click="openModel()" class="btn btn-primary p-1">
 											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 										</button>

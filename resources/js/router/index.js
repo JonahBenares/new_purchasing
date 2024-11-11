@@ -364,7 +364,6 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
         path:'/pur_aoq/view/:id/:aoq_details_id',
         component: pur_aoqView,
@@ -373,7 +372,6 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
         path:'/pur_aoq/print_te/:id',
         component: pur_aoqPrintTe,
@@ -565,18 +563,19 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
-        path:'/job_aoq/view',
+        path:'/job_aoq/view/:id/:jo_aoq_details_id',
         component: job_aoqView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
 
     {
-        path:'/job_aoq/print_te',
+        path:'/job_aoq/print_te/:id',
         component: job_aoqPrintTe,
+        props:true,
         meta:{
             requiresAuth:true
         }

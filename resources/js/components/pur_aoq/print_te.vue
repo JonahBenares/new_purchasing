@@ -245,7 +245,7 @@
 							<tr>
 								<td class="p-1 align-top text-center" rowspan="4">{{ index + 1 }}</td>
 								<td class="p-1 align-top" rowspan="4">{{ ai.item_description }}</td>
-								<td class="p-1 align-top text-center" rowspan="4">{{ ai.quantity }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{  parseFloat(ai.quantity).toFixed(2) }}</td>
 								<td class="p-1 align-top text-center" rowspan="4">{{ ai.uom }}</td>
 							</tr>
 							<!-- loop here if 3 and below offers here -->
@@ -427,7 +427,7 @@
 					<div class="flex justify-between space-x-1">
 						<div class="flex justify-start space-x-1">
 							<button type="button" @click="CancelAlert()" class="btn btn-danger">Cancel</button>
-							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 1">Add Vendor</button>
+							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 0">Add Vendor</button>
 						</div>
 						<div class="flex justify-end space-x-1">
 							<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary ">Export</a>

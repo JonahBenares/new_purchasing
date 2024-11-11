@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AOQHead extends Model
+class JOAOQHead extends Model
 {
     use HasFactory;
-    protected $table = "aoq_head";
+    protected $table = "jo_aoq_head";
     protected $fillable = [
-        'rfq_head_id',
+        'jo_rfq_head_id',
         'aoq_no',
-        'aoq_date',
+        'jo_aoq_date',
         'date_needed',
-        'pr_no',
+        'jor_no',
         'status',
         'user_id',
         'awarded_by',

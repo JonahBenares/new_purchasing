@@ -163,7 +163,7 @@
                                         <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
                                             <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li> -->
-                                        <li :class="(ven.count_awarded == 1) ? 'px-1 bg-lime-500' : 'px-1'">
+                                        <li :class="(ven.count_awarded != 0) ? 'px-1 bg-lime-500' : 'px-1'">
                                             {{ ven.vendor_name }} ({{ ven.identifier }})
                                         </li>
                                     </ul>
