@@ -101,6 +101,12 @@
 		other_list.value = response.data.po_instructions;
 	}
 
+	const poDraftDisplay = async () => {
+		let response = await axios.get("/api/po_viewdetails/"+pohead_id.value);
+		rfq_terms.value = response.data.po_terms;
+		other_list.value = response.data.po_instructions;
+	}
+
 	const getSupplier = async () => {
 		let response = await axios.get("/api/supplier_dropdown");
 		suppliers.value = response.data.suppliers;
@@ -128,6 +134,25 @@
 			checkRemainingQty(val.pr_details_id,index)
 		});
 	}
+
+	// const adjustedPoDetails = () => {
+    //     let itemNo = 1; // Start item_no from 1 or whichever base value you need
+    //     return po_details.value
+    //         .map((pd, index) => {
+	// 			alert(remaining_balance.value[index])
+    //             // Add the index for filtering
+    //             return { ...pd, index, remaining_balance: remaining_balance.value[index] };
+    //         })
+    //         .filter(item => item.remaining_balance !== 0 && item.remaining_balance!==undefined) // Filter items with non-zero remaining balance
+    //         .map(item => {
+    //             // Assign item_no and increment for the next
+    //             item.item_no = itemNo++;
+    //             return item;
+    //         });
+    // }
+	// const filteredPoDetails = () => {
+    //     return po_details.value.filter((pd, index) => props.id == 0 && remaining_balance.value[index] !== 0);
+    // }
 
 	const getSignatories = async () => {
 		let response = await axios.get("/api/get_signatories");
@@ -234,7 +259,8 @@
 		var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
-			total += parseFloat(p);
+			var pi = p.replace(",", "");
+			total += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
@@ -252,7 +278,8 @@
 		var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
-			total += parseFloat(p);
+			var pi = p.replace(",", "");
+			total += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
@@ -270,7 +297,8 @@
 			var total=0;
 			po_details.value.forEach(function (val, index, theArray) {
 				var p = document.getElementById('tprice'+index).value;
-				total += parseFloat(p);
+				var pi = p.replace(",", "");
+				total += parseFloat(pi);
 			});
 			var vat_percent = document.getElementById("vat_percent").value;
 			var percent=vat_percent/100;
@@ -287,7 +315,8 @@
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
-			grandtotal += parseFloat(p);
+			var pi = p.replace(",", "");
+			grandtotal += parseFloat(pi);
         });
 		var vat = document.getElementById("vat_percent").value;
         var percent=vat/100;
@@ -328,6 +357,7 @@
 	const onSave = (status) => {
 		const formData= new FormData()
 		var total = document.querySelector("#grand_total").textContent;
+		var total_replace = total.replace(",", "");
 		formData.append('dr_no', dr_no.value)
 		formData.append('po_no', po_no.value)
 		formData.append('pr_no', pr_head.value.pr_no)
@@ -339,7 +369,7 @@
 		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
-		formData.append('grand_total', total)
+		formData.append('grand_total', total_replace)
 		formData.append('checked_by', checked_by.value)
 		formData.append('approved_by', approved_by.value)
 		formData.append('recommended_by', recommended_by.value)
@@ -393,6 +423,10 @@
 				warningAlert.value=!warningAlert.value
 				if(props.id!=0){
 					poDraft()
+				}else{
+					terms_list.value=[]
+					other_list.value=[]
+					poDraftDisplay()
 				}
 				// successAlert.value=!successAlert.value
 			}, function (err) {
@@ -597,12 +631,12 @@
 														<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 														<td class="uppercase p-1 text-center" width="12%">Total</td>
 													</tr>
-													<tr class="" v-for="(pd, index) in po_details" :key="index" v-if="props.id==0">
+													<tr v-for="(pd, index) in po_details" :key="index" v-if="props.id == 0">
 														<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
 														<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 														<td class="border-y-none p-0 text-center">
-															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]" v-if="remaining_balance[index]!=0">
-															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]" readonly disabled v-else>
+															<input type="text" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+															<!-- <input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]" readonly disabled v-else> -->
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 														<td class="border-y-none p-1" colspan="2">{{ pd.offer }}</td>
@@ -664,7 +698,7 @@
 														<!-- VAT -->
 														<td class="p-0" v-if="vat==1">
 															<div class="flex p-0">
-																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange()">%
+																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange()" @change="vatChange()">%
                                                                 <input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
                                                                 <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost()" @change="additionalCost()">
 															</div>
@@ -729,10 +763,10 @@
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
 													<td class="align-top" colspan="2">
 														<div class="flex justify-between">
-															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="rt.terms"></textarea>
+															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="rt.terms" readonly></textarea>
 														</div>
 													</td>
-													<td v-if="props.id!=0">
+													<td v-if="props.id!=0 || pohead_id!=0">
 														<button type="button" @click="deleteTerms(rt.id,'no')" class="btn btn-danger p-1">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>

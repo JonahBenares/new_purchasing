@@ -248,19 +248,19 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
                                                     <tr class="" v-for="(pd,indeex) in po_details">
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
-                                                        <td :class=" (po_head.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
+                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
                                                             <div class="flex justify-between space-x-1">
                                                                 <span class="w-full">{{pd.item_description}}</span>
-                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details.length>1 && po_head.status!='Cancelled'">
+                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details.length>1 && pd.status!='Cancelled'">
                                                                     <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                                                                 </a>
                                                             </div>
                                                         </td>
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
-                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class=""></td>

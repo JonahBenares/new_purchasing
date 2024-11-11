@@ -249,7 +249,8 @@ import moment from 'moment';
 		var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
-			total += parseFloat(p);
+			var pi = p.replace(",", "");
+			total += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
@@ -267,7 +268,8 @@ import moment from 'moment';
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
-			grandtotal += parseFloat(p);
+			var pi = p.replace(",", "");
+			grandtotal += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var vat_percent = document.getElementById("vat_percent").value;
@@ -287,7 +289,8 @@ import moment from 'moment';
 			var total=0;
 			po_details.value.forEach(function (val, index, theArray) {
 				var p = document.getElementById('tprice'+index).value;
-				total += parseFloat(p);
+				var pi = p.replace(",", "");
+				total += parseFloat(pi);
 			});
 			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 			// vat_amount.value=new_data.value * percent;
@@ -338,7 +341,8 @@ import moment from 'moment';
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
-			grandtotal += parseFloat(p);
+			var pi = p.replace(",", "");
+			grandtotal += parseFloat(pi);
         });
 
 		var vat = document.getElementById("vat_percent").value;
@@ -423,6 +427,7 @@ import moment from 'moment';
 	const onSave = () => {
 		const formData= new FormData()
 		var total = document.querySelector("#grand_total").textContent;
+		var total_replace = total.replace(",", "");
 		formData.append('po_head', JSON.stringify(po_head_rev.value))
 		formData.append('shipping_cost', shipping_cost.value)
 		formData.append('handling_fee', handling_fee.value)
@@ -431,7 +436,7 @@ import moment from 'moment';
 		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
-		formData.append('grand_total', total)
+		formData.append('grand_total', total_replace)
 		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		formData.append('terms_list', JSON.stringify(terms_list.value))
@@ -697,7 +702,7 @@ import moment from 'moment';
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
 														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
-														<input type="number" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 													</td>
 													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
