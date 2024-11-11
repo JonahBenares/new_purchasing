@@ -228,7 +228,7 @@ class JORFQController extends Controller
 
                     for($m=0;$m<3;$m++){
                         JORFQMaterialOffers::create([
-                            // 'offer_no'=>$m+1,
+                            'offer_no'=>$m+1,
                             'jo_rfq_head_id'=>$jo_rfq_head_id,
                             'jo_rfq_vendor_id'=>$jo_rfq_vendor_id,
                             'jo_rfq_material_details_id'=>$jo_rfq_material_details_id,
@@ -483,7 +483,7 @@ class JORFQController extends Controller
                 
                 for($m=0;$m<3;$m++){
                     JORFQMaterialOffers::create([
-                        // 'offer_no'=>$m+1,
+                        'offer_no'=>$m+1,
                         'jo_rfq_head_id'=>$jo_rfq_head_id,
                         'jo_rfq_vendor_id'=>$jo_rfq_vendor_id,
                         'jo_rfq_material_details_id'=>$jo_rfq_material_details_id,
@@ -590,7 +590,7 @@ class JORFQController extends Controller
                             
                             for($m=0;$m<3;$m++){
                                 JORFQMaterialOffers::create([
-                                    // 'offer_no'=>$m+1,
+                                    'offer_no'=>$m+1,
                                     'jo_rfq_head_id'=>$jo_rfq_head_id,
                                     'jo_rfq_vendor_id'=>$jrv->id,
                                     'jo_rfq_material_details_id'=>$jo_rfq_material_details_id,

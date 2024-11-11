@@ -1,47 +1,258 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
-    import { useRouter } from "vue-router"
+	import axios from 'axios';
+    import { onMounted, ref } from "vue"
+	import { useRouter } from "vue-router";
+	const router = useRouter();
 	const vendor =  ref();
 	const preview =  ref();
 
+	let head=ref([]);
+	let vendordets=ref([]);
+	let aoq_labor=ref([]);
+	let aoq_labor_offers=ref([]);
+	let aoq_material=ref([]);
+	let aoq_material_offers=ref([]);
+	let letters=ref([]);
+	let vendor_terms=ref([]);
+	let previous=ref([]);
+	let next=ref([]);
+	let max_id=ref('');
+	let latest_jo_aoq_details_id=ref('');
+	let count_labor_awarded=ref(0);
+	let count_material_awarded=ref(0);
+
+	let previewhead=ref([]);
+	let aoq_vendor=ref([]);
+	let preview_labor_data=ref([]);
+	let preview_labor_offers=ref([]);
+	let preview_material_data=ref([]);
+	let first_offers=ref([]);
+	let second_offers=ref([]);
+	let third_offers=ref([]);
+	let preview_vendor_terms=ref([]);
+	let all_terms=ref([]);
+
+	const props = defineProps({
+        id:{
+            type:String,
+            default:''
+        },
+		jo_aoq_details_id:{
+            type:String,
+            default:''
+        },
+    })
+
+	onMounted(async () => {
+		getAOQDoneTEDetails()
+		getAOQPreviewDetails()
+		ReloadAwarded()
+	})
+
+	const getAOQDoneTEDetails = async (jo_aoq_details_id) => {
+		if(jo_aoq_details_id != undefined){
+			let response = await axios.get(`/api/joaoq_donete_details/${props.id}/${jo_aoq_details_id}`)
+			head.value = response.data.aoq_head_data
+			vendordets.value = response.data.aoq_vendor_data
+			aoq_labor.value = response.data.aoq_labor_data
+			aoq_labor_offers.value = response.data.aoq_labor_offers_data
+			aoq_material.value = response.data.aoq_material_data
+			aoq_material_offers.value = response.data.aoq_material_offers_data
+			letters.value=response.data.letters
+			vendor_terms.value = response.data.vendor_terms
+			max_id.value = response.data.max_id
+			previous.value = response.data.previous
+			next.value = response.data.next
+			latest_jo_aoq_details_id.value = jo_aoq_details_id
+			count_labor_awarded.value = response.data.count_labor_awarded
+			count_material_awarded.value = response.data.count_material_awarded
+		}else{
+			let response = await axios.get(`/api/joaoq_donete_details/${props.id}/${props.jo_aoq_details_id}`)
+			head.value = response.data.aoq_head_data
+			vendordets.value = response.data.aoq_vendor_data
+			aoq_labor.value = response.data.aoq_labor_data
+			aoq_labor_offers.value = response.data.aoq_labor_offers_data
+			aoq_material.value = response.data.aoq_material_data
+			aoq_material_offers.value = response.data.aoq_material_offers_data
+			letters.value=response.data.letters
+			vendor_terms.value = response.data.vendor_terms
+			max_id.value = response.data.max_id
+			previous.value = response.data.previous
+			next.value = response.data.next
+			latest_jo_aoq_details_id.value = props.jo_aoq_details_id
+			count_labor_awarded.value = response.data.count_labor_awarded
+			count_material_awarded.value = response.data.count_material_awarded
+		}
+
+	}
+
+	const ReloadAwarded = async (jo_aoq_details_id) => {
+		if(jo_aoq_details_id != undefined){
+			var details_id = jo_aoq_details_id
+		}else{
+			var details_id = props.jo_aoq_details_id
+		}
+		let response = await axios.get(`/api/joaoq_donete_details/${props.id}/${details_id}`)
+		vendordets.value = response.data.aoq_vendor_data
+		aoq_labor.value = response.data.aoq_labor_data
+		aoq_labor_offers.value = response.data.aoq_labor_offers_data
+		aoq_material.value = response.data.aoq_material_data
+		aoq_material_offers.value = response.data.aoq_material_offers_data
+		letters.value=response.data.letters
+		vendor_terms.value = response.data.vendor_terms
+		count_labor_awarded.value = response.data.count_labor_awarded
+		count_material_awarded.value = response.data.count_material_awarded
+		latest_jo_aoq_details_id.value = details_id
+		max_id.value = response.data.max_id
+		previous.value = response.data.previous
+		next.value = response.data.next
+
+		// if(count_labor_awarded.value != 0 || count_material_awarded.value != 0){
+		// 	document.getElementById("savejoaoqbtn").disabled = false;
+		// }else{
+		// 	document.getElementById("savejoaoqbtn").disabled = true;
+		// }
+	}
+
+	const getAOQPreviewDetails = async () => {
+		let response = await axios.get(`/api/jo_aoq_head_details/${props.id}`)
+		previewhead.value = response.data.aoq_head_data
+		aoq_vendor.value = response.data.aoq_vendor_data
+		// preview_aoq_items.value = response.data.aoq_items_data
+		preview_material_data.value = response.data.material_data
+		first_offers.value = response.data.first_offers
+		second_offers.value = response.data.second_offers
+		third_offers.value = response.data.third_offers
+		preview_labor_data.value = response.data.labor_data
+		preview_labor_offers.value = response.data.labor_offers
+		preview_vendor_terms.value = response.data.vendor_terms
+		all_terms.value = response.data.all_terms
+	}
+
+	const UpdateLaborOffersAwarded= (loop, jo_rfq_labor_offer_id, jor_labor_details_id,latest_jo_aoq_details_id) => {
+		const labor_award = document.getElementById("laborawarded_"+loop).value;
+			const formLaborOffers= new FormData()
+			formLaborOffers.append('jo_rfq_head_id', head.value.jo_rfq_head_id)
+			formLaborOffers.append('jo_rfq_labor_offer_id', jo_rfq_labor_offer_id)
+			formLaborOffers.append('jor_labor_details_id', jor_labor_details_id)
+			formLaborOffers.append('awarded', labor_award ?? 0)
+			axios.post("/api/update_labor_offers_awarded/", formLaborOffers).then(function (response) {
+				ReloadAwarded(latest_jo_aoq_details_id)
+				getAOQPreviewDetails()
+			});
+	}
+
+	const UpdateLaborOffersComments= (loop, jo_rfq_labor_offer_id, latest_jo_aoq_details_id) => {
+		const labor_comments = document.getElementById("laborcomments_"+loop).value;
+			const formLaborOffers= new FormData()
+			formLaborOffers.append('jo_rfq_labor_offer_id', jo_rfq_labor_offer_id)
+			formLaborOffers.append('comments', labor_comments)
+			axios.post("/api/update_labor_offers_comments/", formLaborOffers)
+			ReloadAwarded(latest_jo_aoq_details_id)
+			getAOQPreviewDetails()
+	}
+
+	const UpdateMaterialOffersAwarded= (loop, jo_rfq_material_offer_id, jor_material_details_id,latest_jo_aoq_details_id) => {
+		const material_award = document.getElementById("materialawarded_"+loop).value;
+			const formMaterialOffers= new FormData()
+			formMaterialOffers.append('jo_rfq_head_id', head.value.jo_rfq_head_id)
+			formMaterialOffers.append('jo_rfq_material_offer_id', jo_rfq_material_offer_id)
+			formMaterialOffers.append('jor_material_details_id', jor_material_details_id)
+			formMaterialOffers.append('awarded', material_award ?? 0)
+			axios.post("/api/update_material_offers_awarded/", formMaterialOffers).then(function (response) {
+				ReloadAwarded(latest_jo_aoq_details_id)
+				getAOQPreviewDetails()
+			});
+	}
+
+	const UpdateMaterialOffersComments= (loop, jo_rfq_material_offer_id, latest_jo_aoq_details_id) => {
+		const material_comments = document.getElementById("materialcomments_"+loop).value;
+			const formMaterialOffers= new FormData()
+			formMaterialOffers.append('jo_rfq_material_offer_id', jo_rfq_material_offer_id)
+			formMaterialOffers.append('comments', material_comments)
+			axios.post("/api/update_material_offers_comments/", formMaterialOffers)
+			ReloadAwarded(latest_jo_aoq_details_id)
+			getAOQPreviewDetails()
+	}
+
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
-	const warningAlert = ref(false)
+	const saveAlert = ref(false)
+	const draftAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
     const openSuccessAlert = () => {
 		successAlert.value = !successAlert.value
+		chooseVendor.value = !hideModal.value
 	}
 
-	const openWarningAlert = () => {
-		warningAlert.value = !warningAlert.value
+	const openSaveAlert = () => {
+		saveAlert.value = !saveAlert.value
+	}
+
+	const SaveAOQ = () => {
+		saveAlert.value = !hideAlert.value
+		axios.post(`/api/save_jo_aoq/${props.id}`).then(function (response) {
+			router.push(`/job_aoq/print_te/${props.id}`)
+		});
+
+		
+	}
+
+	const openDraftAlert = () => {
+		axios.post(`/api/update_jo_aoq_draft/${props.id}`)
+		draftAlert.value = !draftAlert.value
 	}
 	const closeAlert = () => {
 		successAlert.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
-		warningAlert.value = !hideAlert.value
+		draftAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
+		saveAlert.value = !hideAlert.value
 	}
 
 
 	const showAddVendor = ref(false)
+	const cancelAlert = ref(false)
+	const chooseVendor = ref(false)
 	const showPreview = ref(false)
 	const hideModal = ref(true)
+	
+
+	const openChooseVendor = () => {
+		chooseVendor.value = !chooseVendor.value
+	}
 	const openAddVendor = () => {
 		showAddVendor.value = !showAddVendor.value
 	}
 	const openPreview = () => {
 		showPreview.value = !showPreview.value
 	}
+
+	const CancelAlert = () => {
+		cancelAlert.value = !cancelAlert.value
+	}
+
+	const CancelTransaction = () => {
+		axios.get(`/api/cancel_jo_aoq/${props.id}`).then(function () {
+			router.push('/job_aoq')
+		});
+	}
+
 	const closeModal = () => {
 		showAddVendor.value = !hideModal.value
 		showPreview.value = !hideModal.value
+		chooseVendor.value = !hideModal.value
+		saveAlert.value = !hideModal.value
+		cancelAlert.value = !hideModal.value
+		
 	}
 
 </script>
@@ -63,7 +274,10 @@
                 </div>
             </div>
         </div>
-		<div class="bg-yellow-400 text-white px-3 py-2 font-bold">Done TE</div>
+		<div class="bg-yellow-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'For TE')">For Technical Evaluation (AOQ - {{props.id}})</div>
+		<div class="bg-blue-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Done TE')">Done Technical Evaluation (AOQ - {{props.id}})</div>
+		<div class="bg-lime-500 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Awarded')">Awarded (AOQ - {{props.id}})</div>
+		<div class="bg-red-500 text-white px-3 py-2 font-bold" v-if="(head.status == 'Cancelled')">Cancelled</div>
 		<div class="row">
 			
 			<div class="col-12 grid-margin stretch-card">
@@ -79,51 +293,51 @@
 							<div class="row">
 								<div class="col-lg-6">
 									<span class="text-sm text-gray-700 font-bold pr-1">JOR No: </span>
-									<span class="text-sm text-gray-700">JOR-CENPRI24-1002</span>
+									<span class="text-sm text-gray-700">{{ head.jor_no }}</span>
 								</div>
 								<div class="col-lg-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
-									<span class="text-sm text-gray-700">AOQ-1009-1001</span>
+									<span class="text-sm text-gray-700">{{ head.aoq_no }}</span>
 								</div>
 								<div class="col-lg-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Requested By: </span>
-									<span class="text-sm text-gray-700">Henne Tanan</span>
+									<span class="text-sm text-gray-700">{{ head.requestor }}</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-6">
 									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
-									<span class="text-sm text-gray-700">IT Department</span>
+									<span class="text-sm text-gray-700">{{ head.department }}</span>
 								</div>
 								<div class="col-lg-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
-									<span class="text-sm text-gray-700">05/16/24</span>
+									<span class="text-sm text-gray-700">{{ head.aoq_date }}</span>
 								</div>
 								<div class="col-lg-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Date Needed: </span>
-									<span class="text-sm text-gray-700">05/16/24</span>
+									<span class="text-sm text-gray-700">{{ head.date_needed }}</span>
 								</div>
 							</div>
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-lg-12">
 									<span class="text-sm text-gray-700 font-bold pr-1">End-Use:</span>
 									<span class="text-sm text-gray-700">February 16, 2024</span>
 								</div>
-							</div>
+							</div> -->
 							<div class="row">
 								<div class="col-lg-12">
 									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
-									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+									<span class="text-sm text-gray-700">{{ head.purpose }}</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
 									<span class="text-sm text-gray-700 font-bold pr-1">Project Title: </span>
-									<span class="text-sm text-gray-700">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</span>
+									<span class="text-sm text-gray-700">{{ head.project_activity }}</span>
 								</div>
 							</div>
 
-							<div class="second_one" v-if="vendor === 'vendor_2'">
+							<div class="second_one">
 								<br>
 								<div class="row">
 									<div class="col-lg-12">
@@ -132,13 +346,13 @@
 												<td class="bg-gray-50 " colspan="4"></td>
 												<!-- loop vendors here start -->
 												<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-													<p class="m-0 text-xs font-bold">MF Computer Solutions, Inc. </p>
+													<p class="m-0 text-xs font-bold">{{ vendordets.vendor_name }}</p>
 													<!-- <p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
 													<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
 													<div class="flex justify-center space-x-2">
-														<span>Mary Marie</span>
+														<span>{{ vendordets.contact_person }}</span>
 														<span>|</span>
-														<span>(034) 9872-2772</span>
+														<span>{{ vendordets.phone }}</span>
 													</div>
 												</td>
 												<!-- loop vendors here end-->
@@ -158,323 +372,123 @@
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 											<tr>
 												<td class="bg-gray-50 p-1 uppercase" colspan="19">
-													Supply of technical expertise for the following:
+													{{ head.general_description }}
 												</td>
 												<!-- loop vendors here end-->
 											</tr>
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+											<template v-for="(al, laborno) in aoq_labor">
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">
-														Supply of manpower/labor, tools, equipment and technical expertise for the following:
-														<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-														<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-														<br>3. Repair and replacement of parts as seen upon inspection.
-														<br>4. Setting of internal parts and mounting of the governor.
-														<br>5. Calibration and bench testing for:
-														<br>5.1. Speed Setting and Indicator
-														<br>5.2. Speed Droop Setting and Indicator
-														<br>5.3. Load Limit Setting and Indicator
-														<br>6. Functional test of shut-down solenoid valve
-														<br>7. Testing and Commissioning
-														<br>8. Submission of inspection, service, commissioning and bench testing reports.
-														<br>9. Other works necessary for job completion.
-													</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
+													<td class="p-1 align-top text-center" rowspan="2">{{ laborno+1 }}</td>
+													<td class="p-1 align-top" rowspan="2">{{ al.scope_of_work }}</td>
+													<td class="p-1 align-top text-center" rowspan="2">{{ parseFloat(al.quantity).toFixed(2) }}</td>
+													<td class="p-1 align-top text-center" rowspan="2">{{ al.uom }}</td>
 												</tr>
 												<!-- loop here if 3 and below offers here -->
-													<tr>
+													<tr v-for="(alo, l) in aoq_labor_offers">
 														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top " width="11%">
+															<td class="p-1" width="30%">{{ alo.offer }}</td>
+															<td width="11%" :class="(alo.min_price == alo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
+																	<span>{{ alo.labor_currency }}</span>
+																	<span>{{  parseFloat(alo.unit_price).toFixed(2) }}</span>
 																</div>
 															</td>
-															<td class="p-1 align-top" width="11%">
+															<td width="11%" :class="(alo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
 																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
+																	<span>{{ alo.labor_currency }}</span>
+																	<span>{{  parseFloat(alo.unit_price * al.quantity).toFixed(2) }}</span>
 																</div>
 															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
+															<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded' && alo.unit_price != 0)">
+																<input type="radio" :name="'laborawarded'+ laborno" :id="'laborawarded_'+ l" v-model = "alo.awarded" value="1" @click="UpdateLaborOffersAwarded(l,alo.jo_rfq_labor_offer_id,al.jor_labor_details_id,latest_jo_aoq_details_id)">
 															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
+															<td class="p-1 align-top text-center" width="3%" v-else>
 															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
+															
+															<td class="p-1 align-top" width="10%" v-if="(head.status != 'Awarded')">
+																<textarea placeholder="Comments" class="w-full" :id="'laborcomments_'+ l" v-model = "alo.comments" @blur="UpdateLaborOffersComments(l,alo.jo_rfq_labor_offer_id,latest_jo_aoq_details_id)"></textarea>
 															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
+															<td class="p-1 align-top" width="10%" v-else>
+																<textarea placeholder="Comments" class="w-full" :id="'laborcomments_'+ l" v-model = "alo.comments" readonly></textarea>
 															</td>
 														<!-- loop offers per vendor here -->
 													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
+												</template>
 												<!-- loop here if 3 and below offers here -->
 												<tr>
 													<td class="bg-gray-50 p-1 uppercase" colspan="19">
 														Materials
 													</td>
 												</tr>
-
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+											<template v-for="(am, materialno) in aoq_material">
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">Mouse</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
+													<td class="p-1 align-top text-center" rowspan="4">{{ materialno + 1 }}</td>
+													<td class="p-1 align-top" rowspan="4">{{ am.item_description }}</td>
+													<td class="p-1 align-top text-center" rowspan="4">{{ parseFloat(am.quantity).toFixed(2) }}</td>
+													<td class="p-1 align-top te</template>xt-center" rowspan="4">{{ am.uom }}</td>
 												</tr>
 												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top  bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
+													<template v-for="(amo, m) in aoq_material_offers">
+														<tr v-if="(amo.jo_rfq_material_details_id == am.jo_rfq_material_details_id)">
+															<!-- loop offers per vendor here -->
+																<td class="p-1" width="30%">{{ amo.offer }}</td>
+																<td width="11%" :class="(amo.min_price == amo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+																	<div class="flex justify-between space-x-1">
+																		<span>{{ amo.material_currency }}</span>
+																	<span>{{  parseFloat(amo.unit_price).toFixed(2) }}</span>
+																	</div>
+																</td>
+																<td width="11%" :class="(amo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
+																	<div class="flex justify-between space-x-1">
+																		<span>{{ amo.material_currency }}</span>
+																	<span>{{  parseFloat(amo.unit_price * am.quantity).toFixed(2) }}</span>
+																	</div>
+																</td>
+																<td class="p-1 align-top text-center" width="3%"  v-if="(head.status != 'Awarded' && amo.unit_price != 0)">
+																	<input type="radio" :name="'materialawarded'+ materialno" :id="'materialawarded_'+ m" v-model = "amo.awarded" value="1" @click="UpdateMaterialOffersAwarded(m,amo.jo_rfq_material_offer_id,am.jor_material_details_id,latest_jo_aoq_details_id)">
+																</td>
+																<td class="p-1 align-top text-center" width="3%" v-else>
+																	<!-- <input type="radio" :name="'awarded'+ itemno" :id="'awarded_'+ i" v-model = "ao.awarded" value="1" disbaled> -->
+																</td>
+																
+																<td class="p-1 align-top" width="10%" v-if="(head.status != 'Awarded')">
+																	<textarea placeholder="Comments" class="w-full" :id="'materialcomments_'+ m" v-model = "amo.comments" @blur="UpdateMaterialOffersComments(m,amo.jo_rfq_material_offer_id,latest_jo_aoq_details_id)"></textarea>
+																</td>
+																<td class="p-1 align-top" width="10%" v-else>
+																	<textarea placeholder="Comments" class="w-full" :id="'materialcomments_'+ m" v-model = "amo.comments" readonly></textarea>
+																</td>
+															<!-- loop offers per vendor here -->
+														</tr>
+													</template>
+												</template>
 												<!-- loop here if 3 and below offers here -->
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">2</td>
-													<td class="p-1 align-top" rowspan="4">Keyboard</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 											<tr class="!border-0">
 												<td class="!border-0" colspan="4"><br></td>
 												<td class="!border-0" colspan="4"><br></td>
 											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">a.</td>
-												<td class="!border-0 text-center" colspan="1">Price Validity</td>
+											<span hidden>{{ termno=0 }}</span>
+											<tr class="!border-0" v-for="vt in vendor_terms">
+												<template  v-if="(vt.terms_id != null)">
+												<td class="!border-0 text-center">{{ letters[termno] }}.</td>
+												<td class="!border-0 text-center" colspan="1"></td>
 												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
+												<td class="!border-0 !border-b" colspan="1">{{ vt.terms }}</td>
 												<td class="!border-0" colspan="4"></td>
+												<span hidden>{{ termno++ }}</span> 
+												</template>
 											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">b.</td>
-												<td class="!border-0 text-center" colspan="1">Payment Terms</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan=""></td>
-												<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-												<td class="!border-0" colspan="2"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">c.</td>
-												<td class="!border-0 text-center" colspan="1">Work Duration</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
-												<td class="!border-0 bg-lime-500" colspan="1"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">d.</td>
-												<td class="!border-0 text-center" colspan="1">Item's Warranty</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
-												<td class="!border-0 bg-yellow-300" colspan="1"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">e.</td>
-												<td class="!border-0 text-center" colspan="1">In-land Freight</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan="4"></td>
-											</tr>
+											
 											<tr class="!border-0">
 												<td class="!border-0" colspan="4"><br></td>
 												<td class="!border-0" colspan="4"><br></td>
 											</tr>
 										</table>
 										<br>
-										<table class="!text-xs" width="100%">
+										<!-- <table class="!text-xs" width="100%">
 											<tr>
 												<td width="19%" class="text-center">Prepared by:</td>
 												<td></td>
@@ -519,7 +533,7 @@
 												</td>
 											</tr>
 											
-										</table>
+										</table> -->
 										<br>
 									</div>
 								</div>
@@ -528,853 +542,21 @@
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-between space-x-2">
 											<div class="flex justify-between space-x-1">
+												<button type="submit" class="btn btn-danger mr-2 w-36" @click="CancelAlert()" v-if="(head.status != 'Awarded')">Cancel</button>
 												<button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-												<button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
+												<!-- <button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button> -->
 											</div>
-											<div class="flex justify-between space-x-1">
-												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
-												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_1'">Back</button>
-												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_3'">Next</button>
+											<div class="flex justify-between space-x-1" v-if="(head.status != 'Awarded')">
+												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openDraftAlert()">Save as Draft</button>
+												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_jo_aoq_details_id != props.jo_aoq_details_id)">Back</button>
+												<button v-if="(max_id == latest_jo_aoq_details_id) && (vendordets.count_labor_awarded == 0 && vendordets.count_material_awarded == 0)" type="submit" id="savejoaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26" disbaled>Save AOQ</button> 
+												<button v-if="(max_id == latest_jo_aoq_details_id) && (vendordets.count_labor_awarded != 0 || vendordets.count_material_awarded != 0)" type="submit" id="savejoaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26">Save AOQ</button> 
+												<button v-if="(max_id != latest_jo_aoq_details_id)" @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
 											</div>
-											
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div class="second_one" v-else-if="vendor === 'vendor_3'">
-								<br>
-								<div class="row">
-									<div class="col-lg-12">
-										<table class="table-bordered w-full !text-xs">
-											<tr>
-												<td class="bg-gray-50 " colspan="4"></td>
-												<!-- loop vendors here start -->
-												<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-													<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p>
-													<!-- <p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
-													<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
-													<div class="flex justify-center space-x-2">
-														<span>Mary Marie</span>
-														<span>|</span>
-														<span>(034) 9872-2772</span>
-													</div>
-												</td>
-												<!-- loop vendors here end-->
-											</tr>
-											<tr>
-												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="3%">#</td>
-												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Description</td>
-												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">Qty</td>
-												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">UOM</td>
-												<!-- loop offer header per vendor here start -->
-												<td class="uppercase bg-gray-100 p-1 " >Offer</td>
-												<td class="uppercase bg-gray-100 p-1 text-center" >Unit Price</td>
-												<td class="uppercase bg-gray-100 p-1 text-center" colspan="2">Amount</td>
-												<td class="uppercase bg-gray-100 p-1 text-center" >Comment</td>
-												<!-- loop offer header per vendor here end-->
-											</tr>
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-											<tr>
-												<td class="bg-gray-50 p-1 uppercase" colspan="19">
-													Supply of technical expertise for the following:
-												</td>
-												<!-- loop vendors here end-->
-											</tr>
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">
-														Supply of manpower/labor, tools, equipment and technical expertise for the following:
-														<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-														<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-														<br>3. Repair and replacement of parts as seen upon inspection.
-														<br>4. Setting of internal parts and mounting of the governor.
-														<br>5. Calibration and bench testing for:
-														<br>5.1. Speed Setting and Indicator
-														<br>5.2. Speed Droop Setting and Indicator
-														<br>5.3. Load Limit Setting and Indicator
-														<br>6. Functional test of shut-down solenoid valve
-														<br>7. Testing and Commissioning
-														<br>8. Submission of inspection, service, commissioning and bench testing reports.
-														<br>9. Other works necessary for job completion.
-													</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-												<tr>
-													<td class="bg-gray-50 p-1 uppercase" colspan="19">
-														Materials
-													</td>
-												</tr>
-
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">Mouse</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top " width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">2</td>
-													<td class="p-1 align-top" rowspan="4">Keyboard</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-											<tr class="!border-0">
-												<td class="!border-0" colspan="4"><br></td>
-												<td class="!border-0" colspan="4"><br></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">a.</td>
-												<td class="!border-0 text-center" colspan="1">Price Validity</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan="4"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">b.</td>
-												<td class="!border-0 text-center" colspan="1">Payment Terms</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan=""></td>
-												<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-												<td class="!border-0" colspan="2"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">c.</td>
-												<td class="!border-0 text-center" colspan="1">Work Duration</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
-												<td class="!border-0 bg-lime-500" colspan="1"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">d.</td>
-												<td class="!border-0 text-center" colspan="1">Item's Warranty</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
-												<td class="!border-0 bg-yellow-300" colspan="1"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">e.</td>
-												<td class="!border-0 text-center" colspan="1">In-land Freight</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan="4"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0" colspan="4"><br></td>
-												<td class="!border-0" colspan="4"><br></td>
-											</tr>
-										</table>
-										<br>
-										<table class="!text-xs" width="100%">
-											<tr>
-												<td width="19%" class="text-center">Prepared by:</td>
-												<td></td>
-												<td width="19%" class="text-center">Received and Checked by</td>
-												<td></td>
-												<td width="19%" class="text-center">Award Recommended by</td>
-												<td></td>
-												<td width="19%" class="text-center">Recommending Approval</td>
-												<td></td>
-												<td width="19%" class="text-center">Aprroved by</td>
-											</tr>
-											<tr>
-												<td class=""><br></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-											</tr>
-											<tr>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-											</tr>
-											
-										</table>
-										<br>
-									</div>
-								</div>
-								<br>
-								<div class="row my-2"> 
-									<div class="col-lg-12 col-md-12">
-										<div class="flex justify-between space-x-2">
-											<div class="flex justify-between space-x-1">
-												<button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-												<button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
+											<div class="flex justify-between space-x-1" v-else>
+												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_jo_aoq_details_id != props.jo_aoq_details_id)">Back</button>
+												<button v-else @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
 											</div>
-											<div class="flex justify-between space-x-1">
-												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
-												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_2'">Back</button>
-												<button type="submit" class="btn btn-primary w-26" @click="openSuccessAlert()">Save AOQ</button>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="first_one" v-else>
-								<br>
-								<div class="row">
-									<div class="col-lg-12">
-										<table class="table-bordered w-full !text-xs">
-											<tr>
-												<td class="bg-gray-50 " colspan="4"></td>
-												<!-- loop vendors here start -->
-												<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-													<p class="m-0 text-xs font-bold">Lectrix Solutions Electrical Supplies & Services Cebu</p>
-													<!-- <p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
-													<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
-													<div class="flex justify-center space-x-2">
-														<span>Mary Marie</span>
-														<span>|</span>
-														<span>(034) 9872-2772</span>
-													</div>
-												</td>
-												<!-- loop vendors here end-->
-											</tr>
-											<tr>
-												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="3%">#</td>
-												<td class="uppercase bg-gray-100 p-1 align-top" width="30%">Description</td>
-												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">Qty</td>
-												<td class="uppercase bg-gray-100 p-1 align-top text-center" width="5%">UOM</td>
-												<!-- loop offer header per vendor here start -->
-												<td class="uppercase bg-gray-100 p-1 " >Offer</td>
-												<td class="uppercase bg-gray-100 p-1 text-center" >Unit Price</td>
-												<td class="uppercase bg-gray-100 p-1 text-center" colspan="2">Amount</td>
-												<td class="uppercase bg-gray-100 p-1 text-center" >Comment</td>
-												<!-- loop offer header per vendor here end-->
-											</tr>
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-											<tr>
-												<td class="bg-gray-50 p-1 uppercase" colspan="19">
-													Supply of technical expertise for the following:
-												</td>
-												<!-- loop vendors here end-->
-											</tr>
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">
-														Supply of manpower/labor, tools, equipment and technical expertise for the following:
-														<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-														<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-														<br>3. Repair and replacement of parts as seen upon inspection.
-														<br>4. Setting of internal parts and mounting of the governor.
-														<br>5. Calibration and bench testing for:
-														<br>5.1. Speed Setting and Indicator
-														<br>5.2. Speed Droop Setting and Indicator
-														<br>5.3. Load Limit Setting and Indicator
-														<br>6. Functional test of shut-down solenoid valve
-														<br>7. Testing and Commissioning
-														<br>8. Submission of inspection, service, commissioning and bench testing reports.
-														<br>9. Other works necessary for job completion.
-													</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2a" >
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-												<tr>
-													<td class="bg-gray-50 p-1 uppercase" colspan="19">
-														Materials
-													</td>
-												</tr>
-
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">1</td>
-													<td class="p-1 align-top" rowspan="4">Mouse</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2b">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-												<tr>
-													<td class="p-1 align-top text-center" rowspan="4">2</td>
-													<td class="p-1 align-top" rowspan="4">Keyboard</td>
-													<td class="p-1 align-top text-center" rowspan="4">5</td>
-													<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-												</tr>
-												<!-- loop here if 3 and below offers here -->
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">
-																sample 1
-															</td>
-															<td class="p-1 align-top bg-yellow-300" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>100.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>500.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">sample 2</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1250.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-													<tr>
-														<!-- loop offers per vendor here -->
-															<td class="p-1" width="30%">smaple 3</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>350.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top" width="11%">
-																<div class="flex justify-between space-x-1">
-																	<span>Php</span>
-																	<span>1750.00</span>
-																</div>
-															</td>
-															<td class="p-1 align-top text-center" width="3%">
-																<input type="radio" name="offer_2c">
-															</td>
-															<td class="p-1 align-top" width="10%">
-																<textarea placeholder="Comments" class="w-full" rows="1"></textarea>
-															</td>
-														<!-- loop offers per vendor here -->
-													</tr>
-												<!-- loop here if 3 and below offers here -->
-											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-											<tr class="!border-0">
-												<td class="!border-0" colspan="4"><br></td>
-												<td class="!border-0" colspan="4"><br></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">a.</td>
-												<td class="!border-0 text-center" colspan="1">Price Validity</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan="4"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">b.</td>
-												<td class="!border-0 text-center" colspan="1">Payment Terms</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan=""></td>
-												<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-												<td class="!border-0" colspan="2"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">c.</td>
-												<td class="!border-0 text-center" colspan="1">Work Duration</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
-												<td class="!border-0 bg-lime-500" colspan="1"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">d.</td>
-												<td class="!border-0 text-center" colspan="1">Item's Warranty</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
-												<td class="!border-0 bg-yellow-300" colspan="1"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0 text-center">e.</td>
-												<td class="!border-0 text-center" colspan="1">In-land Freight</td>
-												<td class="!border-0" colspan="2"></td>	
-												<td class="!border-0 !border-b" colspan="1"></td>
-												<td class="!border-0" colspan="4"></td>
-											</tr>
-											<tr class="!border-0">
-												<td class="!border-0" colspan="4"><br></td>
-												<td class="!border-0" colspan="4"><br></td>
-											</tr>
-										</table>
-										<br>
-										<table class="!text-xs" width="100%">
-											<tr>
-												<td width="19%" class="text-center">Prepared by:</td>
-												<td></td>
-												<td width="19%" class="text-center">Received and Checked by</td>
-												<td></td>
-												<td width="19%" class="text-center">Award Recommended by</td>
-												<td></td>
-												<td width="19%" class="text-center">Recommending Approval</td>
-												<td></td>
-												<td width="19%" class="text-center">Aprroved by</td>
-											</tr>
-											<tr>
-												<td class=""><br></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-												<td></td>
-												<td class=""></td>
-											</tr>
-											<tr>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-												<td></td>
-												<td class="border-b text-center pb-1">
-													Employee Name
-												</td>
-											</tr>
-											
-										</table>
-										<br>
-									</div>
-								</div>
-								<br>
-								<div class="row my-2"> 
-									<div class="col-lg-12 col-md-12">
-										<div class="flex justify-between space-x-2">
-											<div class="flex justify-between space-x-1">
-												<button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-												<button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button>
-											</div>
-											<div class="flex justify-between space-x-1">
-												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
-												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
-												<button type="submit" class="btn btn-primary w-26" v-on:click="vendor = 'vendor_2'">Next</button>
-											</div>
-											
 										</div>
 									</div>
 								</div>
@@ -1544,7 +726,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal pt-4 px-3" :class="{ show:showPreview }">
-				<div @click="closeModal" class="w-full h-full fixed"></div>
+			<div @click="closeModal" class="w-full h-full fixed"></div>
 				<div class="modal__content w-11/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
@@ -1554,750 +736,340 @@
 							</a>
 						</div>
 					</div>
-					<div class="modal_s_items">
-						<div class="overflow-x-scroll">
-							<div class="">
-								<table class="w-full !text-xs mb-3 ">
-									<tr>
-										<td class="font-bold pr-1" width="8%">JOR No: </td>
-										<td class="">JOR-CENPRI24-1002</td>
-										<td class=" font-bold pr-1" width="8%">AOQ No: </td>
-										<td class="">AOQ-1009-1001</td>
-										<td class=" font-bold pr-1" width="8%">Requested By: </td>
-										<td class="">Henne Tanan</td>
-									</tr>
-									<tr>
-										<td class="font-bold pr-1">Department: </td>
-										<td class="">IT Department</td>
-										<td class=" font-bold pr-1">Date: </td>
-										<td class="">05/16/24</td>
-										<td class=" font-bold pr-1">Date Needed: </td>
-										<td class="">01/16/24</td>
-									</tr>
-									<tr>
-										<td class="font-bold pr-1">End-Use:</td>
-										<td class="">IT Department</td>
-									</tr>
-									<tr>
-										<td class="font-bold pr-1">Purpose:</td>
-										<td class="">Replace damage monitor, mouse and keyboard</td>
-									</tr>
-									<tr>
-										<td class="font-bold pr-1">Project Title:</td>
-										<td class="">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</td>
-									</tr>
-								</table>
-								<table class="table-bordered !text-xs mb-3" width="250%">
-									<tr>
-										<td class="bg-gray-50 " colspan="4"></td>
-										<!-- loop vendors here start -->
-										<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-											<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p>
-											<!-- <p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
-											<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
-											<div class="flex justify-center space-x-2">
-												<span>Mary Marie</span>
-												<span>|</span>
-												<span>(034) 9872-2772</span>
+					<div class="bg-white p-4 ">
+			<div class="overflow-x-scroll">
+				<div class="">
+					<table class="w-full !text-xs mb-3 ">
+						<tr>
+							<td class="font-bold pr-1" width="8%">JOR No: </td>
+							<td class="">{{ previewhead.jor_no }}</td>
+							<td class=" font-bold pr-1" width="8%">AOQ No: </td>
+							<td class="">{{ previewhead.aoq_no }}</td>
+							<td class=" font-bold pr-1" width="8%">Requested By: </td>
+							<td class="">{{ previewhead.requestor }}</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">Department: </td>
+							<td class="">{{ previewhead.department }}</td>
+							<td class=" font-bold pr-1">Date: </td>
+							<td class="">{{ previewhead.aoq_date }}</td>
+							<td class=" font-bold pr-1">Date Needed: </td>
+							<td class="">{{ previewhead.date_needed }}</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">Purpose:</td>
+							<td class="">{{ previewhead.purpose }}</td>
+						</tr>
+						<tr>
+							<td class="font-bold pr-1">Project Title:</td>
+							<td class="">{{ previewhead.project_activity }}</td>
+						</tr>
+					</table>
+					<table class="table-bordered !text-xs mb-3" width="150%">
+						<tr>
+							<td class="bg-gray-50 " colspan="4"></td>
+							<!-- loop vendors here start -->
+							<template v-for="av in aoq_vendor">
+								<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
+								<p class="m-0 text-xs font-bold">{{ av.vendor_name }}</p>
+								<div class="flex justify-center space-x-2">
+									<span>{{ av.contact_person }}</span>
+									<span>|</span>
+									<span>{{ av.phone }}</span>
+								</div>
+							</td>
+							</template>
+							<!-- loop vendors here end-->
+						</tr>
+						
+						<tr>
+							<td class="uppercase bg-gray-100 p-1 align-top text-center" width="1%">#</td>
+							<td class="uppercase bg-gray-100 p-1 align-top" width="10%">Description</td>
+							<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">Qty</td>
+							<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">UOM</td>
+							<!-- loop offer header per vendor here start -->
+							<template v-for="av in aoq_vendor">
+								<td class="uppercase bg-gray-100 p-1 " width="10%">Offer</td>
+								<td class="uppercase bg-gray-100 p-1 text-center"  width="3%">Unit Price</td>
+								<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
+								<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
+							</template>
+							<!-- loop offer header per vendor here end-->
+						</tr>
+						<tr>
+							<td class="bg-gray-50 p-1 uppercase" colspan="19">
+								{{  previewhead.general_description }}
+							</td>
+							<!-- loop vendors here end-->
+						</tr>
+						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+						<template v-for="(ld, l_index) in preview_labor_data">
+							<tr>
+								<td class="p-1 align-top text-center" rowspan="2">{{ l_index+1 }}</td>
+								<td class="p-1 align-top" rowspan="2">{{ ld.scope_of_work }}</td>
+								<td class="p-1 align-top text-center" rowspan="2">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
+								<td class="p-1 align-top text-center" rowspan="2">{{ ld.uom }}</td>
+							</tr>
+							<!-- loop here if 3 and below offers here -->
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="lo in preview_labor_offers">
+										<td class="p-1">{{ lo.offer }}</td>
+										<td :class="(ld.min_price == lo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ lo.currency }}</span>
+												<span>{{  parseFloat(lo.unit_price).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-											<p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
-											<!-- <p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p>
-											<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
-											<div class="flex justify-center space-x-2">
-												<span>Mary Marie</span>
-												<span>|</span>
-												<span>(034) 9872-2772</span>
+										<td colspan="2" :class="(lo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ lo.currency }}</span>
+												<span>{{  parseFloat(lo.unit_price * ld.quantity).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-											<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p>
-											<!--<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p>
-											<p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>-->
-											<div class="flex justify-center space-x-2"> 
-												<span>Mary Marie</span>
-												<span>|</span>
-												<span>(034) 9872-2772</span>
-											</div>
-										</td>
-										<!-- loop vendors here end-->
-									</tr>
-									
-									<tr>
-										<td class="uppercase bg-gray-100 p-1 align-top text-center" width="1%">#</td>
-										<td class="uppercase bg-gray-100 p-1 align-top" width="10%">Description</td>
-										<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">Qty</td>
-										<td class="uppercase bg-gray-100 p-1 align-top text-center" width="2%">UOM</td>
-										<!-- loop offer header per vendor here start -->
-										<td class="uppercase bg-gray-100 p-1 " width="10%">Offer</td>
-										<td class="uppercase bg-gray-100 p-1 text-center"  width="3%">Unit Price</td>
-										<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
-										<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
-										<!-- loop offer header per vendor here end-->
-											<!-- loop offer header per vendor here start -->
-										<td class="uppercase bg-gray-100 p-1 " width="10%">Offer</td>
-										<td class="uppercase bg-gray-100 p-1 text-center"  width="3%">Unit Price</td>
-										<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
-										<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
-										<!-- loop offer header per vendor here end-->
-											<!-- loop offer header per vendor here start -->
-										<td class="uppercase bg-gray-100 p-1 " width="10%">Offer</td>
-										<td class="uppercase bg-gray-100 p-1 text-center"  width="3%">Unit Price</td>
-										<td class="uppercase bg-gray-100 p-1 text-center" colspan="2" width="3%">Amount</td>
-										<td class="uppercase bg-gray-100 p-1 text-center" width="5%">Comment</td>
-										<!-- loop offer header per vendor here end-->
-									</tr>
-									<tr>
-										<td class="bg-gray-50 p-1 uppercase" colspan="19">
-											Supply of technical expertise for the following:
-										</td>
-										<!-- loop vendors here end-->
-									</tr>
-									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-										<tr>
-											<td class="p-1 align-top text-center" rowspan="4">1</td>
-											<td class="p-1 align-top" rowspan="4">
-												Supply of manpower/labor, tools, equipment and technical expertise for the following:
-												<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-												<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-												<br>3. Repair and replacement of parts as seen upon inspection.
-												<br>4. Setting of internal parts and mounting of the governor.
-												<br>5. Calibration and bench testing for:
-												<br>5.1. Speed Setting and Indicator
-												<br>5.2. Speed Droop Setting and Indicator
-												<br>5.3. Load Limit Setting and Indicator
-												<br>6. Functional test of shut-down solenoid valve
-												<br>7. Testing and Commissioning
-												<br>8. Submission of inspection, service, commissioning and bench testing reports.
-												<br>9. Other works necessary for job completion.
+										<td class="p-1 align-top">{{ lo.remarks }}</td>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+							</template>
+							<!-- loop here if 3 and below offers here -->
+						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+						<tr>
+							<td class="bg-gray-50 p-1 uppercase" colspan="19">
+								Materials
+							</td>
+						</tr>
+						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+						<template v-for="(md, m_index) in preview_material_data">
+							<tr>
+								<td class="p-1 align-top text-center" rowspan="4">{{ m_index+1 }}</td>
+								<td class="p-1 align-top" rowspan="4">{{ md.item_description }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{  parseFloat(md.quantity).toFixed(2) }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ md.uom }}</td>
+							</tr>
+							<!-- loop here if 3 and below offers here -->
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="fo in first_offers">
+										<template v-if="md.jor_material_details_id == fo.jor_material_details_id">
+											<td class="p-1">
+												{{ fo.offer }}
 											</td>
-											<td class="p-1 align-top text-center" rowspan="4">5</td>
-											<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-										</tr>
-										<!-- loop here if 3 and below offers here -->
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-										<!-- loop here if 3 and below offers here -->
-									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
+											<td :class="(md.min_price == fo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+												<div class="flex justify-between space-x-1">
+													<span>{{ fo.currency }}</span>
+													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
+												</div>
+											</td>
+											<td colspan="2" :class="(fo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+												<div class="flex justify-between space-x-1">
+													<span>{{ fo.currency }}</span>
+													<span>{{  parseFloat(fo.unit_price * md.quantity).toFixed(2) }}</span>
+												</div>
+											</td>
+											<td class="p-1 align-top">{{ fo.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="so in second_offers">
+										<template v-if="md.jor_material_details_id == so.jor_material_details_id">
+											<td class="p-1">
+												{{ so.offer }}
+											</td>
+											<td :class="(md.min_price == so.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+												<div class="flex justify-between space-x-1">
+													<span>{{ so.currency }}</span>
+													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
+												</div>
+											</td>
+											<td :class="(so.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
+												<div class="flex justify-between space-x-1">
+													<span>{{ so.currency }}</span>
+													<span>{{  parseFloat(so.unit_price * md.quantity).toFixed(2) }}</span>
+												</div>
+											</td>
+											<td class="p-1 align-top">{{ so.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="to in third_offers">
+										<template v-if="md.jor_material_details_id == to.jor_material_details_id">
+											<td class="p-1">
+												{{ to.offer }}
+											</td>
+											<td :class="(md.min_price == to.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
+												<div class="flex justify-between space-x-1">
+													<span>{{ to.currency }}</span>
+													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
+												</div>
+											</td>
+											<!-- <td class="p-1 align-top" colspan="2"> -->
+											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
+												<div class="flex justify-between space-x-1">
+													<span>{{ to.currency }}</span>
+													<span>{{  parseFloat(to.unit_price * md.quantity).toFixed(2) }}</span>
+												</div>
+											</td>
+											<td class="p-1 align-top">{{ to.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+							</template>
+							<!-- loop here if 3 and below offers here -->
+								<tr class="!border-0">
+									<td class="!border-0" colspan="4"><br></td>
+									<td class="!border-0" colspan="4"><br></td>
+								</tr>
+						<tr>
+							<td colspan="4" class="p-0 !border-0">
+								<table class="w-full">
 									<tr>
-										<td class="bg-gray-50 p-1 uppercase" colspan="19">
-											Materials
-										</td>
-									</tr>
-									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-										<tr>
-											<td class="p-1 align-top text-center" rowspan="4">1</td>
-											<td class="p-1 align-top" rowspan="4">Mouse</td>
-											<td class="p-1 align-top text-center" rowspan="4">5</td>
-											<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-										</tr>
-										<!-- loop here if 3 and below offers here -->
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>150.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>750.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-										<!-- loop here if 3 and below offers here -->
-									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-
-									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-										<tr>
-											<td class="p-1 align-top text-center" rowspan="4">2</td>
-											<td class="p-1 align-top" rowspan="4">Keyboard</td>
-											<td class="p-1 align-top text-center" rowspan="4">5</td>
-											<td class="p-1 align-top text-center" rowspan="4">pc/s</td>
-										</tr>
-										<!-- loop here if 3 and below offers here -->
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-											<tr>
-												<!-- loop offers per vendor here -->
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-													<td class="p-1">
-														sample 1
-													</td>
-													<td class="p-1 align-top bg-yellow-300">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>100.00</span>
-														</div>
-													</td>
-													<td class="p-1 align-top" colspan="2">
-														<div class="flex justify-between space-x-1">
-															<span>Php</span>
-															<span>500.00</span>
-														</div>
-													</td>
-													
-													<td class="p-1 align-top"></td>
-												<!-- loop offers per vendor here -->
-											</tr>
-										<!-- loop here if 3 and below offers here -->
-									<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
-									<tr class="!border-0">
-										<td class="!border-0" colspan="4"><br></td>
-										<td class="!border-0" colspan="4"><br></td>
+										<td class="!border-0 text-right px-2" colspan="2" width="40%">Legend:</td>
+										<td class="!border-0"></td>
+										<td class="!border-0" width="10%"></td>
 									</tr>
 									<tr class="!border-0">
-									<td class="!border-0 text-center">a.</td>
-										<td class="!border-0 text-center" colspan="1">Price Validity</td>
-										<td class="!border-0" colspan="2"></td>	
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
-									</tr>
-									<tr class="!border-0">
-										<td class="!border-0 text-center">b.</td>
-										<td class="!border-0 text-center" colspan="1">Payment Terms</td>
-										<td class="!border-0" colspan="2"></td>	
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-										<td class="!border-0" colspan="2"></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-										<td class="!border-0" colspan="2"></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 text-right px-2" colspan="">Legend:</td>
-										<td class="!border-0" colspan="2"></td>
-									</tr>
-									<tr class="!border-0">
-										<td class="!border-0 text-center">c.</td>
-										<td class="!border-0 text-center" colspan="1">Work Duration</td>
-										<td class="!border-0" colspan="2"></td>	
-										<td class="!border-0 !border-b" colspan="1"></td>
 										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
-										<td class="!border-0 bg-lime-500" width="1%"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
-										<td class="!border-0 bg-lime-500" width="1%"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0 text-right px-2" colspan="2">Recommended Award</td>
-										<td class="!border-0 bg-lime-500" width="1%"></td>
+										<td class="!border-0 bg-lime-500" width="20%"></td>
+										<td class="!border-0"></td>
 									</tr>
 									<tr class="!border-0">
-										<td class="!border-0 text-center">d.</td>
-										<td class="!border-0 text-center" colspan="1">Item's Warranty</td>
-										<td class="!border-0" colspan="2"></td>	
-										<td class="!border-0 !border-b" colspan="1"></td>
 										<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
-										<td class="!border-0 bg-yellow-300" colspan="1"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
-										<td class="!border-0 bg-yellow-300" colspan="1"></td>
-										<td class="!border-0" colspan=""></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0 text-right px-2" colspan="2">Lowest Price</td>
-										<td class="!border-0 bg-yellow-300" colspan="1"></td>
-									</tr>
-									<tr class="!border-0">
-										<td class="!border-0 text-center">e.</td>
-										<td class="!border-0 text-center" colspan="1">In-land Freight</td>
-										<td class="!border-0" colspan="2"></td>	
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
-										<td class="!border-0 !border-b" colspan="1"></td>
-										<td class="!border-0" colspan="4"></td>
-									</tr>
-									<tr class="!border-0">
-										<td class="!border-0" colspan="4"><br></td>
-										<td class="!border-0" colspan="4"><br></td>
-									</tr>
-									<tr class="!border-0">
-										<td class="!border-0" colspan="4"><br></td>
-										<td class="!border-0" colspan="4"><br></td>
+										<td class="!border-0 bg-yellow-300"></td>
+										<td class="!border-0"></td>
 									</tr>
 								</table>
+							</td>
+							<td colspan="5" class="p-0 !border-0" v-for="av in aoq_vendor">
+								<table class="w-full">
+									<tr>
+										<td class="!border-0 text-start font-bold">Terms and Conditions</td>
+									</tr>
+									<span hidden>{{ termno=0 }}</span>
+									<template v-for="at in all_terms">
+									<tr v-if="av.jo_rfq_vendor_id == at.jo_rfq_vendor_id">
+										<td class="!border-0 text-start" >{{ letters[termno] }}. {{ at.terms }}</td>
+										<span hidden>{{ termno++ }}</span> 
+									</tr>
+									</template>
+								</table>
+							</td>
+						</tr>
+							<tr>
+								<td colspan="19" class="border-0"><br></td>
+							</tr>
+					</table>
+					<table class="!text-xs" width="150%">
+						<tr>
+							<td></td>
+							<td width="12%">Prepared by:</td>
+							<td></td>
+							<td width="12%">Received and Checked by</td>
+							<td></td>
+							<td width="12%">Award Recommended by</td>
+							<td></td>
+							<td width="12%">Recommending Approval</td>
+							<td></td>
+							<td width="12%">Aprroved by</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class=""><br></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+							<td class=""></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="border-b">
+								{{ previewhead.prepared_by_name }}
+							</td>
+							<td></td>
+							<td class="border-b">
+								{{ previewhead.received_by_name }}
+							</td>
+							<td></td>
+							<td class="border-b">
+								{{ previewhead.award_recommended_by_name }}
+							</td>
+							<td></td>
+							<td class="border-b">
+								{{ previewhead.recommended_by_name }}
+							</td>
+							<td></td>
+							<td class="border-b">
+								{{ previewhead.approved_by_name }}
+							</td>
+							<td></td>
+						</tr>
+					</table>
+					<br>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="flex justify-center space-x-1">
+						<a :href="'/export-jo-aoq/'+previewhead.jo_aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
+					</div>
+				</div>
+			</div>
+		</div>
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:saveAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
 							</div>
 						</div>
-					</div> 
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Confirmation!</h2>
+									<h5 class="leading-tight">Are you sure you want to save this AOQ?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeModal()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" @click="SaveAOQ()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</Transition>
@@ -2350,8 +1122,8 @@
             leave-from-class="opacity-100 scale-500"
             leave-to-class="opacity-0 scale-95"
         >
-			<div class="modal p-0 !bg-transparent" :class="{ show:warningAlert }">
-				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+			<div class="modal p-0 !bg-transparent" :class="{ show:draftAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-yellow-400 border-8 bg-yellow-400 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -2375,7 +1147,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
-									<!-- <a href="/job_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
+									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<a href="/job_aoq/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a>
 								</div>
 							</div>
@@ -2384,6 +1156,46 @@
 				</div>
 			</div>
 		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:cancelAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Are you sure you want to cancel this AOQ?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-gray btn-sm !rounded-full w-full"  @click="closeModal()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="CancelTransaction()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 	</navigation>
-	
 </template>
