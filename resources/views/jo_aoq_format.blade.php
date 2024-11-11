@@ -101,18 +101,20 @@
 		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="1">{{  $ald['uom']; }}</td>
 
 		@foreach($labor_offers AS $lo)
-		<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['offer'];}}</td>
-		@if($ald['min_price']==$lo['unit_price'])
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
-		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
-		@endif
-		@if($lo['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $lo['labor_currency'] }}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
-		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency']}}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
-		@endif
-		<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['comments'];}}</td>
+			@if($lo['jor_labor_details_id']==$ald['jor_labor_details_id'])
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['offer'];}}</td>
+			@if($ald['min_price']==$lo['unit_price'])
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
+			@endif
+			@if($lo['awarded'] == 1)
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $lo['labor_currency'] }}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency']}}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
+			@endif
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['comments'];}}</td>
+			@endif
 		@endforeach
 	</tr>
 	@php

@@ -130,6 +130,7 @@ class JOAOQController extends Controller
         }
 
         $rfqvendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->where('canvassed',1)->orderBy('vendor_name','ASC')->get();
+        $rfq_vendor = [];
         foreach($rfqvendor AS $rv){
             $rfq_vendor[] = [
                 'vendor_checkbox'=>0,
@@ -257,8 +258,8 @@ class JOAOQController extends Controller
         }
 
         $aoq_labor_items = JORFQLaborDetails::with('jor_labor_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get()->unique('jor_labor_details_id');
+        $labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->get();
         foreach($aoq_labor_items AS $al){
-            $labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->get();
             $min_price = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('unit_price','!=',0)->where('jor_labor_details_id',$al->jor_labor_details_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->min('unit_price');
             $labor_data[] = [
                 'jo_rfq_details_id'=>$al->id,

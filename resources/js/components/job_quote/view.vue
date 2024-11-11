@@ -389,6 +389,7 @@
 		axios.post("/api/canvass_complete_jo_vendor", formCanvass).then(function () {
 			CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 			GetPerVendorDetails()
+			getAOQHeadDetails()
 		});
 	}
 

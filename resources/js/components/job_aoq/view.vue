@@ -385,7 +385,8 @@
 													<td class="p-1 align-top text-center" rowspan="2">{{ al.uom }}</td>
 												</tr>
 												<!-- loop here if 3 and below offers here -->
-													<tr v-for="(alo, l) in aoq_labor_offers">
+												 <template v-for="(alo, l) in aoq_labor_offers">
+													<tr v-if="(alo.jo_rfq_labor_details_id == al.jo_rfq_labor_details_id)">
 														<!-- loop offers per vendor here -->
 															<td class="p-1" width="30%">{{ alo.offer }}</td>
 															<td width="11%" :class="(alo.min_price == alo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
@@ -415,6 +416,7 @@
 														<!-- loop offers per vendor here -->
 													</tr>
 												</template>
+											</template>
 												<!-- loop here if 3 and below offers here -->
 												<tr>
 													<td class="bg-gray-50 p-1 uppercase" colspan="19">
@@ -814,6 +816,7 @@
 								<tr>
 									<!-- loop offers per vendor here -->
 									<template v-for="lo in preview_labor_offers">
+										<template v-if="lo.jor_labor_details_id == ld.jor_labor_details_id">
 										<td class="p-1">{{ lo.offer }}</td>
 										<td :class="(ld.min_price == lo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
@@ -828,6 +831,7 @@
 											</div>
 										</td>
 										<td class="p-1 align-top">{{ lo.remarks }}</td>
+										</template>
 									</template>
 									<!-- loop offers per vendor here -->
 								</tr>

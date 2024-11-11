@@ -420,6 +420,7 @@
 			axios.post("/api/canvass_complete_vendor", formCanvass).then(function () {
 				CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 				GetDraftCanvassDetails()
+				getAOQHeadDetails()
 			});
 	}
 

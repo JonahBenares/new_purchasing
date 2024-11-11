@@ -93,6 +93,7 @@ class JOAOQExport implements FromView
                     'min_price'=>$min_price,
                     'jo_rfq_labor_offer_id'=>$rlo->id,
                     'jo_rfq_labor_details_id'=>$rlo->rfq_details_id,
+                    'jor_labor_details_id'=>$rlo->jor_labor_details_id,
                     'jo_rfq_vendor_id'=>$rlo->rfq_vendor_id,
                     'offer'=>$rlo->offer,
                     'unit_price'=>$rlo->unit_price,
@@ -118,8 +119,8 @@ class JOAOQExport implements FromView
         }
 
         $first_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',1)->get();
-        $second_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_head_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
-        $third_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_head_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
+        $second_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
+        $third_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
 
         $rfq_no = JORFQHead::where('id',$jo_rfq_head_id)->value('rfq_no');
         $jor_no = JOAOQHead::where('id',$this->jo_aoq_head_id)->value('jor_no');

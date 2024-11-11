@@ -225,6 +225,7 @@
 								<tr>
 									<!-- loop offers per vendor here -->
 									<template v-for="lo in labor_offers">
+										<template v-if="lo.jor_labor_details_id == ld.jor_labor_details_id">
 										<td class="p-1">{{ lo.offer }}</td>
 										<td :class="(ld.min_price == lo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
@@ -239,6 +240,7 @@
 											</div>
 										</td>
 										<td class="p-1 align-top">{{ lo.remarks }}</td>
+										</template>
 									</template>
 									<!-- loop offers per vendor here -->
 								</tr>
