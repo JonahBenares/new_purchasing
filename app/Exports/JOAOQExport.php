@@ -87,7 +87,7 @@ class JOAOQExport implements FromView
                 'min_price'=>$min_price,
             ];
 
-            $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jor_labor_details_id',$al->jor_labor_details_id)->get();
+            $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('jor_labor_details_id',$al->jor_labor_details_id)->get();
             foreach($rfq_labor_offers AS $rlo){
                 $labor_offers[] = [
                     'min_price'=>$min_price,
