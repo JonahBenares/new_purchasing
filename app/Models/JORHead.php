@@ -21,6 +21,7 @@ class JORHead extends Model
         'completion_date',
         'delivery_date',
         'purpose',
+        'requestor_id',
         'requestor',
         'urgency',
         'process_code',

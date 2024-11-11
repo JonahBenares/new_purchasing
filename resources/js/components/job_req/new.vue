@@ -120,7 +120,8 @@
 			}, function (err) {
 				loading.value=false;
 				var substring="1048 Column 'department_id'"
-				var substring1="floor(): Argument #1"
+				var substring1="1048 Column 'requestor_id'"
+				var substring2="floor(): Argument #1"
 				if(err.response.data.message.includes(substring)==true){
 					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
 					document.getElementById('upload_jor').value=''
@@ -129,6 +130,13 @@
 					const btn_jor = document.getElementById("btn_jor");
 					btn_jor.disabled = true;
 				}else if(err.response.data.message.includes(substring1)==true){
+					error.value = 'Requestor does not exist, make sure it is existing in employees masterfile.';
+					document.getElementById('upload_jor').value=''
+					jorFile.value=''
+					jo_options.value='';
+					const btn_jor = document.getElementById("btn_jor");
+					btn_jor.disabled = true;
+				}else if(err.response.data.message.includes(substring2)==true){
 					error.value = 'Invalid file format. Please upload another file with correct format.';
 					document.getElementById('btn_jor').value=''
 					jorFile.value=''
