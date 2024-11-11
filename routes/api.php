@@ -14,6 +14,7 @@ use App\Http\Controllers\JORController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POController;
 use App\Http\Controllers\JORFQController;
+use App\Http\Controllers\JOAOQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -197,4 +198,23 @@ Route::post('/draft_jo_vendor',[JORFQController::class,'draft_jo_vendor']);
 Route::post('/add_additional_jo_terms',[JORFQController::class,'add_additional_jo_terms']);
 Route::post('/update_jo_terms', [JORFQController::class,'update_jo_terms']);
 Route::get('/remove_jo_terms/{jo_rfq_terms_id}', [JORFQController::class,'remove_jo_terms']);
+
+Route::get('/get_all_jo_aoq', [JOAOQController::class,'get_all_jo_aoq']);
+Route::get('/jo_rfq_jor_list', [JOAOQController::class,'all_jo_rfq_jor']);
+Route::get('/jo_rfq_list/{jor_no}', [JOAOQController::class,'all_jo_rfq']);
+Route::get('/create_new_jo_aoq_details/{jo_rfq_head_id}', [JOAOQController::class,'create_new_jo_aoq']);
+Route::post('/add_jo_aoq_head',[JOAOQController::class,'add_jo_aoq_head']);
+Route::get('/jo_aoq_head_details/{jo_aoq_head_id}', [JOAOQController::class,'jo_aoq_head_details']);
+Route::get('/joaoq_donete_details/{jo_aoq_head_id}/{jo_aoq_details_id}', [JOAOQController::class,'joaoq_donete_details']);
+Route::get('/cancel_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'cancel_jo_aoq']);
+Route::post('/update_labor_offers_awarded',[JOAOQController::class,'update_labor_offers_awarded']);
+Route::post('/update_labor_offers_comments',[JOAOQController::class,'update_labor_offers_comments']);
+Route::post('/update_material_offers_awarded',[JOAOQController::class,'update_material_offers_awarded']);
+Route::post('/update_material_offers_comments',[JOAOQController::class,'update_material_offers_comments']);
+Route::post('/update_jo_aoq_draft/{jo_aoq_head_id}',[JOAOQController::class,'update_jo_aoq_draft']);
+Route::post('/save_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'save_jo_aoq']);
+// // Route::get('/export-aoq/{aoq_head_id}', [JOAOQController::class, 'export_aoq']);
+Route::get('/jo_vendor_offers/{jo_rfq_vendor_id}/{jo_rfq_head_id}',[JOAOQController::class,'jo_vendor_offers']);
+Route::post('/add_jo_aoq_vendor',[JOAOQController::class,'add_jo_aoq_vendor']);
+Route::post('/done_te_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'done_te_jo_aoq']);
 

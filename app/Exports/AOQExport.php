@@ -50,6 +50,8 @@ class AOQExport implements FromView
         }
         $rfq_head_id = AOQHead::where('id',$this->aoq_head_id)->value('rfq_head_id');
         $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
+        $colspan = 4 + ($count_aoq_vendors * 4);
         foreach($aoq_details AS $ad){
             // $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ad->pr_details_id)->min('unit_price');
             $vendor_data[] = [
@@ -152,6 +154,7 @@ class AOQExport implements FromView
             'award_recommended_by_name'=>User::where('id',$award_recommended_by)->value('name'),
             'recommended_by_name'=>User::where('id',$recommended_by)->value('name'),
             'approved_by_name'=>User::where('id',$approved_by)->value('name'),
+            'colspan'=>$colspan,
         ]);
     }
 }

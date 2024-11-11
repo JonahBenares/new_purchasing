@@ -95,11 +95,11 @@
 		previous.value = response.data.previous
 		next.value = response.data.next
 
-		if(count_awarded.value != 0){
-			document.getElementById("saveaoqbtn").disabled = false;
-		}else{
-			document.getElementById("saveaoqbtn").disabled = true;
-		}
+		// if(count_awarded.value != 0){
+		// 	document.getElementById("saveaoqbtn").disabled = false;
+		// }else{
+		// 	document.getElementById("saveaoqbtn").disabled = true;
+		// }
 	}
 
 	const getAOQPreviewDetails = async () => {
@@ -458,8 +458,8 @@
 						</div>
 					</div>
 					<div class="modal_s_items">
-						<div class="overflow-x-scroll">
-							<div class="">
+					<div class="overflow-x-scroll">
+						<div class="">
 					<table class="w-full !text-xs mb-3 ">
 						<tr>
 							<td class="font-bold pr-1" width="8%">PR No: </td>

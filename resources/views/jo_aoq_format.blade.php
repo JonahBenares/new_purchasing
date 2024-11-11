@@ -37,7 +37,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="5">PR No: {{ $pr_no }}</td>
+		<td colspan="5">JOR No: {{ $jor_no }}</td>
 		<td colspan="3">AOQ No: {{ $aoq_no }} </td>
 		<td colspan="2" class="">Requested By: {{ $requestor }}</td>
 	</tr>
@@ -47,10 +47,10 @@
 		<td colspan="2" class="">Date Needed: {{ $date_needed }}</td>
 	</tr>
 	<tr>
-		<td  colspan="10" class="font-bold pr-1">End-Use: {{ $enduse }}</td>
+		<td  colspan="10" class="font-bold pr-1">Purpose: {{ $purpose }}</td>
 	</tr>
 	<tr>
-		<td  colspan="10" class="font-bold pr-1">Purpose: {{ $purpose }}</td>
+		<td  colspan="10" class="font-bold pr-1">Project Title: {{ $project_activity }}</td>
 	</tr>
 </table>
 <table style="border: 1px solid black; border-collapse: collapse;">
@@ -76,7 +76,7 @@
 	</tr>
 	<tr>
 		<td style="background:#f2f2f2;border:1px solid gray;text-align:center">#</td>
-		<td style="background:#f2f2f2;border:1px solid gray;">Item Description</td>
+		<td style="background:#f2f2f2;border:1px solid gray;">Description</td>
 		<td style="background:#f2f2f2;border:1px solid gray;text-align:center">Qty</td>
 		<td style="background:#f2f2f2;border:1px solid gray;text-align:center">UOM</td>
 		@foreach($aoq_vendor_data AS $av)
@@ -86,27 +86,66 @@
 		<td style="background:#f2f2f2;border:1px solid gray;">Comment</td>
 		@endforeach
 	</tr>
-	@php
-		$itemno = 1;
-	@endphp
-	@foreach($aoq_items_data AS $ai)
 	<tr>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;text-align:center" rowspan="3">{{ $itemno }}</td>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap" rowspan="3">{{ $ai['item_description']; }}</td>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="3">{{  number_format($ai['quantity'],2) }}</td>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="3">{{  $ai['uom']; }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;">{{ $general_description }}</td>
+	</tr>
+
+	@php
+		$laborno = 1;
+	@endphp
+	@foreach($aoq_labor_data AS $ald)
+	<tr>
+	<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;text-align:center" rowspan="1">{{ $laborno }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap" rowspan="1">{{ $ald['scope_of_work']; }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="1">{{  number_format($ald['quantity'],2) }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="1">{{  $ald['uom']; }}</td>
+
+		@foreach($labor_offers AS $lo)
+			@if($lo['jor_labor_details_id']==$ald['jor_labor_details_id'])
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['offer'];}}</td>
+			@if($ald['min_price']==$lo['unit_price'])
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
+			@endif
+			@if($lo['awarded'] == 1)
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $lo['labor_currency'] }}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency']}}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
+			@endif
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['comments'];}}</td>
+			@endif
+		@endforeach
+	</tr>
+	@php
+		$laborno++;
+	@endphp
+	@endforeach
+	
+	<tr>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;" colspan="3">Materials</td>
+	</tr>
+	@php
+		$materialno = 1;
+	@endphp
+	@foreach($aoq_material_data AS $amd)
+	<tr>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;text-align:center" rowspan="3">{{ $materialno }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap" rowspan="3">{{ $amd['item_description']; }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="3">{{  number_format($amd['quantity'],2) }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="3">{{  $amd['uom']; }}</td>
 		@foreach($first_offers AS $fo)
-		@if($ai['pr_details_id']==$fo['pr_details_id'])
+		@if($amd['jor_material_details_id']==$fo['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['offer'];}}</td>
-		@if($ai['min_price']==$fo['unit_price'])
+		@if($amd['min_price']==$fo['unit_price'])
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $fo['currency'] }} {{ number_format($fo['unit_price'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency'] }} {{ number_format($fo['unit_price'],2) }}</td>
 		@endif
 		@if($fo['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $fo['currency'] }}  {{ number_format($fo['unit_price'] * $ai['quantity'],2) }}</td>
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $fo['currency'] }}  {{ number_format($fo['unit_price'] * $amd['quantity'],2) }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency']}}  {{ number_format($fo['unit_price'] * $ai['quantity'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency']}}  {{ number_format($fo['unit_price'] * $amd['quantity'],2) }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['remarks'];}}</td>
 		@endif
@@ -114,17 +153,17 @@
 	</tr>
 	<tr>
 	@foreach($second_offers AS $so)
-		@if($ai['pr_details_id']==$so['pr_details_id'])
+		@if($amd['jor_material_details_id']==$so['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['offer'];}}</td>
-		@if($ai['min_price']==$so['unit_price'])
+		@if($amd['min_price']==$so['unit_price'])
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $so['currency'] }} {{ number_format($so['unit_price'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency'] }} {{ number_format($so['unit_price'],2) }}</td>
 		@endif
 		@if($so['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $so['currency'] }}  {{ number_format($so['unit_price'] * $ai['quantity'],2) }}</td>
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $so['currency'] }}  {{ number_format($so['unit_price'] * $amd['quantity'],2) }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency']}}  {{ number_format($so['unit_price'] * $ai['quantity'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency']}}  {{ number_format($so['unit_price'] * $amd['quantity'],2) }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['remarks'];}}</td>
 		@endif
@@ -132,26 +171,27 @@
 	</tr>
 	<tr>
 	@foreach($third_offers AS $to)
-		@if($ai['pr_details_id']==$to['pr_details_id'])
+		@if($amd['jor_material_details_id']==$to['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['offer'];}}</td>
-		@if($ai['min_price']==$to['unit_price'])
+		@if($amd['min_price']==$to['unit_price'])
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $to['currency'] }} {{ number_format($to['unit_price'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency'] }} {{ number_format($to['unit_price'],2) }}</td>
 		@endif
 		@if($to['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $to['currency'] }}  {{ number_format($to['unit_price'] * $ai['quantity'],2) }}</td>
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $to['currency'] }}  {{ number_format($to['unit_price'] * $amd['quantity'],2) }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency']}}  {{ number_format($to['unit_price'] * $ai['quantity'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency']}}  {{ number_format($to['unit_price'] * $amd['quantity'],2) }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['remarks'];}}</td>
 		@endif
 		@endforeach
 	</tr>
-	@endforeach
 	@php
-		$itemno++;
+		$materialno++;
 	@endphp
+	@endforeach
+	
 	<tr>
 		<td><br></td>
 	</tr>
@@ -202,9 +242,9 @@
 		<td colspan="4" style="vertical-align: text-top; height: 150px;">
 				@php
 					$letter = 'a'; // Starting letter
-				@endphp				
+				@endphp		
 				@foreach($all_terms AS $at)
-					@if($av['rfq_vendor_id']==$at['rfq_vendor_id'])
+					@if($av['jo_rfq_vendor_id']==$at['jo_rfq_vendor_id'])
 						<p>{{ $letter }}. {{ $at['terms'] }}</p>
 						@php
 							$letter = chr(ord($letter) + 1); // Increment letter
@@ -212,6 +252,7 @@
 					@endif
 				@endforeach
 			</td>
+		
 		@endforeach
 	</tr>
 	

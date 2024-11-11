@@ -17,8 +17,8 @@
 	let signatories=ref([]);
 	let rfq_vendor_terms=ref([]);
 	let vendor_details=ref('');
-	let noted_by=ref(3);
-	let approved_by=ref(1);
+	// let noted_by=ref(3);
+	// let approved_by=ref(1);
 	let count_jorlabor=ref(0);
 	let count_jormaterial=ref(0);
 	let term=ref('');
@@ -33,6 +33,16 @@
 	let count_vendor_labor_offers=ref(0);
 	let count_vendor_material_offers=ref(0);
 
+	let aoq_no=ref('');
+	let head=ref([]);
+	let vendors=ref([]);
+	let aoq_signatories=ref([]);
+	let date_needed=ref('');
+	let received_by=ref('');
+	let award_recommended_by=ref('');
+	let recommended_by=ref('');
+	let approved_by=ref(6);
+
 	const props = defineProps({
         id:{
             type:String,
@@ -45,7 +55,7 @@
 		GetRFQTermsDetails()
 		GetAdditionalItems()
 		GetAdditionalVendors()
-		// getAOQHeadDetails()
+		getAOQHeadDetails()
 	})
 
 	const GetRFQDetails = async () => {
@@ -379,7 +389,95 @@
 		axios.post("/api/canvass_complete_jo_vendor", formCanvass).then(function () {
 			CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 			GetPerVendorDetails()
+			getAOQHeadDetails()
 		});
+	}
+
+	const getAOQHeadDetails = async () => {
+		let response = await axios.get(`/api/create_new_jo_aoq_details/${props.id}`)
+		aoq_no.value = response.data.aoq_no
+		head.value = response.data.aoq_head_data
+		vendors.value = response.data.rfq_vendor
+		aoq_signatories.value=response.data.signatories
+	}
+
+	const allSelectedVendor=ref(false);
+	const checkallven=ref([]);
+	const CheckAllVendor = () => {
+		var count_vendor=document.getElementsByClassName('vendor_checkboxes');
+		for(var x=0;x<count_vendor.length;x++){
+			var check_vendor=document.getElementsByClassName('vendor_checkboxes')[x].checked;
+			if(!check_vendor){
+				checkallven.value=allSelectedVendor
+				vendors.value[x].vendor_checkbox=1;
+				document.getElementById("CreateAOQBtn").disabled = false;
+			}else{
+				checkallven.value=!allSelectedVendor
+				vendors.value[x].vendor_checkbox=0;
+				document.getElementById("CreateAOQBtn").disabled = true;
+			}
+		}
+	}
+
+	const CountVendorCheckbox= () =>{
+		var VendorisChecked = document.getElementsByClassName("vendor_checkboxes");
+		var count=0;
+		for(var x=0;x<VendorisChecked.length;x++){
+			if(VendorisChecked[x].checked === true){
+				count++;
+			}
+		}
+			if(count>=1){
+				document.getElementById("CreateAOQBtn").disabled = false;
+			}else{
+				document.getElementById("CreateAOQBtn").disabled = true;
+			}
+	}
+
+	const CreateNewAOQAlert = () =>{
+		if(date_needed.value == ''){
+			document.getElementById('dateneeded_').style.backgroundColor = '#FAA0A0';
+			document.getElementById("DateNeededAlert").style.display="block"
+		}else if(recommended_by.value == ''){
+			document.getElementById("DateNeededAlert").style.display="none"
+			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
+			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
+			document.getElementById('recommendedby_').style.backgroundColor = '#FAA0A0';
+			document.getElementById("DropdownAlert").style.display="block"
+		}else if(approved_by.value == ''){
+			document.getElementById("DateNeededAlert").style.display="none"
+			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
+			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
+			document.getElementById('approvedby_').style.backgroundColor = '#FAA0A0';
+			document.getElementById("DropdownAlert").style.display="block"
+		}else{
+			document.getElementById('dateneeded_').style.backgroundColor = '#FEFCE8';
+			document.getElementById('recommendedby_').style.backgroundColor = '#FEFCE8';
+			document.getElementById('approvedby_').style.backgroundColor = '#FEFCE8';
+			document.getElementById("DropdownAlert").style.display="none"
+			document.getElementById("DateNeededAlert").style.display="none"
+			CreateNewAOQModal.value = !CreateNewAOQModal.value
+		}
+	}
+
+	const CreateNewAOQ= () =>{
+		document.getElementById("YesCreate").disabled = true;
+		document.getElementById("NoCreate").disabled = true;
+		const formAOQHead= new FormData()
+		formAOQHead.append('aoq_no', aoq_no.value)
+		formAOQHead.append('jo_rfq_head_id', props.id)
+		formAOQHead.append('jor_no', head.value.jor_no)
+		formAOQHead.append('aoq_date', head.value.aoq_date)
+		formAOQHead.append('date_needed', date_needed.value)
+		formAOQHead.append('prepared_by', head.value.prepared_by)
+		formAOQHead.append('received_by', head.value.requestor_id)
+		formAOQHead.append('award_recommended_by', award_recommended_by.value)
+		formAOQHead.append('recommended_by', recommended_by.value)
+		formAOQHead.append('approved_by', approved_by.value)
+		formAOQHead.append('aoq_vendors', JSON.stringify(vendors.value))
+			axios.post("/api/add_jo_aoq_head", formAOQHead).then(function (response) {
+			router.push('/job_aoq/print_te/'+response.data)
+			});
 	}
 
 	const vendor =  ref(rfqvendorid);
@@ -495,7 +593,7 @@
 						<div>
 							<div class="rfq_buttons">
 								<div class="w-full flex justify-between space-x-1">
-									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.jo_rfq_vendor_id">{{ rv.vendor_name }} {{ rv.vendor_identifier}}</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.jo_rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier}})</button>
 									<button @click="openModel()" class="btn btn-primary p-1">
 										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 									</button>
@@ -1153,6 +1251,211 @@
 								<div class="flex justify-center space-x-2">
 									<button @click="closeModal()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<a href="/job_quote/new/0" class="btn !text-white !bg-blue-400 btn-sm !rounded-full w-full">Create New RFQ</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out duration-200"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal pt-4 px-3" :class="{ show:chooseVendor }">
+				<div @click="closeModal2()" class="w-full h-full fixed"></div>
+				<div class="modal__content w-8/12 mb-5">
+					<div class="row mb-3">
+						<div class="col-lg-12 flex justify-between">
+							<span class="font-bold ">Choose Vendor and please fill out the following fields</span>
+							<a href="#" class="text-gray-600" @click="closeModal2()">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-0">
+					<div class="modal_s_items">
+						<div class="row">
+							<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">JOR No: </span>
+									<span class="text-sm text-gray-700">{{ head.jor_no }}</span>
+								</div>
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
+									<span class="text-sm text-gray-700">{{ aoq_no }}</span>
+									<!-- <input type="text" class="form-control" placeholder="RFQ No" v-model="aoq_no" readonly> -->
+								</div>
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
+									<span class="text-sm text-gray-700">{{ head.aoq_date}}</span>
+								</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
+									<span class="text-sm text-gray-700">{{ head.department }}</span>
+								</div>
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+									<span class="text-sm text-gray-700">{{ head.rfq_no }}</span>
+								</div>
+						</div>
+						<div class="row">
+								<!-- <div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">End-Use:</span>
+									<span class="text-sm text-gray-700">{{ head.enduse }}</span>
+								</div> -->
+								<div class="col-lg-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Requested By: </span>
+									<span class="text-sm text-gray-700">{{ head.requestor}}</span>
+								</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
+									<span class="text-sm text-gray-700">{{ head.purpose }}</span>
+								</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12">
+								<table class="w-full table-bordered text-sm" >
+									<tr class="bg-gray-100">
+										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor"></td>
+										<td class="p-1">List of Vendors</td>
+									</tr>
+									<tr class="bg-yellow-50" v-for="(v, i) in vendors" >
+										<td class="p-1"><input type="checkbox" class='vendor_checkboxes' v-model="v.vendor_checkbox" :checked="checkallven" :true-value="1" :false-value="0" @change="CountVendorCheckbox"></td>
+										<td class="p-1">{{ v.vendor_name }} ({{v.vendor_identifier}})</td>
+										<input type="hidden" class="form-control" v-model="v.jo_rfq_vendor_id">
+									</tr>
+								</table>
+							</div>
+						</div>
+						<br>
+						<hr>
+						<div class="bg-red-100 border-2 border-red-200 w-full p-2 text-red-500 my-1 mb-2 hidden"  id="DateNeededAlert">
+						<div class="flex justify-start space-x-2">
+								<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
+								<span>Please fill in date needed.</span>
+							</div>
+						</div>
+						<div class="bg-red-100 border-2 border-red-200 w-full p-2 text-red-500 my-1 mb-2 hidden"  id="DropdownAlert">
+						<div class="flex justify-start space-x-2">
+								<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
+								<span>Please select an option from the dropdown.</span>
+							</div>
+						</div>
+						<div class="modal_s_items">
+							<div class="row">
+								<div class="col-lg-4 col-md-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Date Needed</label>
+										<input type="text" class="p-2 border w-full bg-yellow-50 text-sm" onfocus="(this.type='date')" placeholder="Date Needed" id= "dateneeded_" v-model="date_needed">
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Prepared by</label>
+										<input type="text" class="form-control" v-model="head.prepared_by_name" readonly>
+										<input type="hidden" class="form-control" v-model="head.prepared_by">
+										<!-- <select class="form-control" placeholder="" >
+											<option value="">--Select Employee--</option>
+										</select> -->
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Received and Checked by</label>
+										<!-- <select class="p-2 border w-full bg-yellow-50 text-sm" v-model="received_by" id= "receivedby_">
+											<option value="">--Select Employee--</option>
+											<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
+										</select> -->
+										<input type="text" class="form-control" v-model="head.requestor" readonly>
+										<input type="hidden" class="form-control" v-model="head.requestor_id">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Award Recommended by</label>
+										<select class="p-2 border w-full bg-yellow-50 text-sm" v-model="award_recommended_by" id= "awardrecommendedby_">
+											<option value="">--Select Employee--</option>
+											<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Recommending Approval</label>
+										<select class="p-2 border w-full bg-yellow-50 text-sm" v-model="recommended_by" id= "recommendedby_">
+											<option value="">--Select Employee--</option>
+											<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Approved by</label>
+										<select class="p-2 border w-full bg-yellow-50 text-sm" v-model="approved_by" id= "approvedby_">
+											<option value="">--Select Employee--</option>
+											<option :value="s.id" v-for="s in signatories" :key="s.id">{{ s.name }}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<hr>
+						</div> 
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-primary mr-2 w-44" id="CreateAOQBtn" @click="CreateNewAOQAlert()" disabled>Save</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:CreateNewAOQModal }">
+				<div @click="CloseAOQAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Confirmation!</h2>
+									<h5 class="leading-tight">Are you sure you want to save this new AOQ?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" id="NoCreate"  @click="CloseAOQAlert()">No</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full" id ="YesCreate" @click="CreateNewAOQ()">Yes</button>
 								</div>
 							</div>
 						</div>
