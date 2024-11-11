@@ -135,6 +135,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesVendor").disabled = false;
+				document.getElementById("NoVendor").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -157,6 +159,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesItem").disabled = false;
+				document.getElementById("NoItem").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -554,8 +558,9 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
-													<tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+												<tbody v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
+													<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
+													<tr>
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>

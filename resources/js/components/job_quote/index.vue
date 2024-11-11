@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon , MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import {onMounted, ref} from "vue";
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -17,19 +17,7 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
 	DataTable.use(DataTablesCore);
-    const data = [
-        ['SPE/Operation24-2032-CNPR', 'RFQ-0005', 'RFQ 5', '<div class="text-center">2024-07-01</div>', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Triumph Hardware (Main Branch)</li><li class="leading-none">Bacolod Mindanao Lumber and Plywood Corp.</li><li class="leading-none">SGS Hardware Corporation</li></ul>', 'sample' , ''],
-        ['Admin24-2033-CNPR', 'RFQ-0004', 'RFQ 4', '<div class="text-center">2024-05-21</div>', '<ul class="list-disc m-0"><li class="leading-none">Javieros Hollow Blocks Factory</li></ul>', 'sample' , ''],
-        ['HAS24-2034-CNPR', 'RFQ-0003', 'RFQ 3', '<div class="text-center">2024-03-13</div>', '<ul class="list-disc m-0"><li class="leading-none">Bacolod Paint Marketing</li><li class="leading-none">Sugarland Hardware Corp.</li><li class="leading-none">Bacolod Luis Paint Center Enterprises. Inc.</li></ul>', 'sample' , ''],
-        ['FLM24-2019-CNPR', 'RFQ-0002', 'RFQ 2', '<div class="text-center">2024-02-08</div>', '<ul class="list-disc m-0"><li class="leading-none">New China Enterprise Inc.</li> </ul>', 'sample' , ''],
-        ['EIC24-1005-CNPR', 'RFQ-0001', 'RFQ 1', '<div class="text-center">2024-01-08</div>', '<ul class="list-disc m-0"><li class="leading-none">Bearing Center & Machinery Inc.</li><li class="leading-none">CAR-V Industrial Sales</li><li class="leading-none">United Bearing Industrial Corp</li></ul>', 'sample' , ''],
-
-    ];
-
-    
-    
-    
-    
+    const router = useRouter();
 
     const options = {
 		// dom: 'Bftip',
@@ -100,6 +88,21 @@
 		// buttons: ['copy','excel','csv','pageLength']
 	};
 
+    let jo_rfq_list=ref([]);
+
+    onMounted(async () => {
+		getJORFQ()
+	})
+
+    const getJORFQ = async (page = 1) => {
+		let response = await axios.get(`/api/get_all_jo_rfq?page=${page}`);
+		jo_rfq_list.value=response.data.jorfqarray
+	}
+
+    const ViewJORFQ = (id) => {
+		router.push('/job_quote/print/'+id)
+	}
+
 </script>
 <template>
 	<navigation>
@@ -123,21 +126,21 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/job_quote/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                            <a href="/job_quote/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                 <span>Add New RFQ</span>
                             </a>
                         </div>
                         <div class="pt-3">
                             <!-- <table class="table table-bordered table-hover !border "> -->
-                                <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                                <DataTable :data="jo_rfq_list" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> JOR</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="10%"> Date</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> JOR No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="15%"> RFQ No</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="15%"> RFQ Name</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="10%"> Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> Vendors</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Scope</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="20%"> Project Activity</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -145,10 +148,23 @@
                                         </th>
                                     </tr>
                                 </thead>
+                                <template #column-4="props">
+                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc text-sm">
+                                        <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
+                                            <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
+                                        </li>
+                                        <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
+                                            <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
+                                        </li>
+                                        <li class="px-1" v-if="ven.canvassed == 0 && ven.status == null">
+                                            {{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})
+                                        </li>
+                                    </ul>
+                                </template>
                                 <template #column-6="props">
-                                    <a href="/job_quote/view" class="btn btn-xs btn-warning text-white p-1">
+                                    <button @click="ViewJORFQ(props.rowData.id)" class="btn btn-xs btn-warning text-white p-1">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
-                                    </a>
+                                    </button>
                                 </template>
                                 </DataTable>
                                 <!-- <tbody>
