@@ -103,12 +103,12 @@
 		@foreach($labor_offers AS $lo)
 			@if($lo['jor_labor_details_id']==$ald['jor_labor_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['offer'];}}</td>
-			@if($ald['min_price']==$lo['unit_price'])
+			@if($ald['min_price']==$lo['unit_price'] && $status != 'Cancelled')
 				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
 			@else
 				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
 			@endif
-			@if($lo['awarded'] == 1)
+			@if($lo['awarded'] == 1 && $status != 'Cancelled')
 				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $lo['labor_currency'] }}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
 			@else
 				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency']}}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
@@ -137,12 +137,12 @@
 		@foreach($first_offers AS $fo)
 		@if($amd['jor_material_details_id']==$fo['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['offer'];}}</td>
-		@if($amd['min_price']==$fo['unit_price'])
+		@if($amd['min_price']==$fo['unit_price'] && $status != 'Cancelled')
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $fo['currency'] }} {{ number_format($fo['unit_price'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency'] }} {{ number_format($fo['unit_price'],2) }}</td>
 		@endif
-		@if($fo['awarded'] == 1)
+		@if($fo['awarded'] == 1 && $status != 'Cancelled')
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $fo['currency'] }}  {{ number_format($fo['unit_price'] * $amd['quantity'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency']}}  {{ number_format($fo['unit_price'] * $amd['quantity'],2) }}</td>
@@ -155,12 +155,12 @@
 	@foreach($second_offers AS $so)
 		@if($amd['jor_material_details_id']==$so['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['offer'];}}</td>
-		@if($amd['min_price']==$so['unit_price'])
+		@if($amd['min_price']==$so['unit_price'] && $status != 'Cancelled')
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $so['currency'] }} {{ number_format($so['unit_price'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency'] }} {{ number_format($so['unit_price'],2) }}</td>
 		@endif
-		@if($so['awarded'] == 1)
+		@if($so['awarded'] == 1 && $status != 'Cancelled')
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $so['currency'] }}  {{ number_format($so['unit_price'] * $amd['quantity'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency']}}  {{ number_format($so['unit_price'] * $amd['quantity'],2) }}</td>
@@ -173,12 +173,12 @@
 	@foreach($third_offers AS $to)
 		@if($amd['jor_material_details_id']==$to['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['offer'];}}</td>
-		@if($amd['min_price']==$to['unit_price'])
+		@if($amd['min_price']==$to['unit_price'] && $status != 'Cancelled')
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $to['currency'] }} {{ number_format($to['unit_price'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency'] }} {{ number_format($to['unit_price'],2) }}</td>
 		@endif
-		@if($to['awarded'] == 1)
+		@if($to['awarded'] == 1 && $status != 'Cancelled')
 			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $to['currency'] }}  {{ number_format($to['unit_price'] * $amd['quantity'],2) }}</td>
 		@else
 			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency']}}  {{ number_format($to['unit_price'] * $amd['quantity'],2) }}</td>
