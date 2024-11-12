@@ -23,6 +23,7 @@
 	const dr_no = ref('')
 	const po_dr_id = ref(0)
 	const total_sumdelivered = ref(0)
+	const total_sumdelivered1 = ref([])
 	const po_dr =  ref([]);
 	const po_dr_mult =  ref([]);
 	const po_dr_items =  ref([]);
@@ -73,6 +74,7 @@
 		let response = await axios.get("/api/generate_dr/"+props.id);
 		dr_no.value = response.data.dr_no;
 		po_dr.value = response.data.po_dr;
+		po_dr_mult.value = response.data.po_dr_mult;
 		po_dr_items.value = response.data.po_dr_items;
 		vendor.value = response.data.vendor;
 		enduse.value = response.data.enduse;
@@ -82,13 +84,14 @@
 		total_sumdelivered.value = response.data.total_sumdelivered;
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			getOffer(val.rfq_offer_id,index)
-			to_deliver.value[index]= parseFloat(val.quantity)  - total_sumdelivered.value
+			checkRemainingQty(val.po_details_id,val.quantity,index)
 		});
 	}
 	const generateDR = async () => {
 		let response = await axios.get("/api/generate_dr/"+po_head_id.value);
 		dr_no.value = response.data.dr_no;
 		po_dr.value = response.data.po_dr;
+		po_dr_mult.value = response.data.po_dr_mult;
 		po_dr_items.value = response.data.po_dr_items;
 		vendor.value = response.data.vendor;
 		enduse.value = response.data.enduse;
@@ -98,7 +101,8 @@
 		total_sumdelivered.value = response.data.total_sumdelivered;
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			getOffer(val.rfq_offer_id,index)
-			to_deliver.value[index]= parseFloat(val.quantity)  - total_sumdelivered.value
+			checkRemainingQty(val.po_details_id,val.quantity,index)
+			// to_deliver.value[index]= parseFloat(val.quantity)  - total_sumdelivered1.value[index]
 			// to_deliver.value[index]= parseFloat(val.quantity) - parseFloat(val.delivered_qty)
 		});
 	}
@@ -122,8 +126,13 @@
 		}
 	}
 
+	const checkRemainingQty = async (po_details_id,qty,count) => {
+		let response = await axios.get("/api/check_remaining_dr_balance/"+po_details_id);
+		total_sumdelivered1.value[count] = response.data.balance_sum
+		to_deliver.value[count]= parseFloat(qty)  - total_sumdelivered1.value[count]
+	}
+
 	const onSave = () => {
-		
 		const formData= new FormData()
 		formData.append('dr_no', dr_no.value)
 		formData.append('po_dr_id', po_dr.value.id)
@@ -137,15 +146,15 @@
 		});
 		if(driver.value!=''){
 			axios.post(`/api/save_dr`,formData).then(function (response) {
-				alert(response.data)
-				// po_dr_id.value=response.data;
-				// success.value='You have successfully saved new dr.'
-				// successAlert.value=!successAlert.value
+				// alert(response.data)
+				po_dr_id.value=response.data;
+				success.value='You have successfully saved new dr.'
+				successAlert.value=!successAlert.value
 			}, function (err) {
 				error.value='Error! Please try again.';
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
-		}else{
+		}else if(allZero){
 			document.getElementById('driver').placeholder="Driver field must not be empty!"
 			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
 			const btn_save = document.getElementById("save");
@@ -205,7 +214,6 @@
 							<div v-if="po_dr && po_dr.length!=0">
 								<div class="row">
 									<div class="col-lg-8">
-										<input type="text" v-model="po_dr_id">
 										<input type="hidden" v-model="dr_no">
 										<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
 										<span class="text-sm text-gray-700">{{po_dr.po_no}}{{ (po_dr.revision_no!=0 && po_dr.revision_no!=null && po_dr.revision_no!='') ? '.r'+po_dr.revision_no : '' }}</span>
@@ -259,7 +267,7 @@
 												<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 												<td class="p-1 ">{{ offer[index] }}</td>
 												<td class="p-0"><input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalance(pdi.po_dr_id,pdi.po_details_id,to_deliver[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_checker'+index" v-model="to_deliver[index]"></td>
-												<td class="p-1 text-center">{{ total_sumdelivered }}</td>
+												<td class="p-1 text-center">{{ total_sumdelivered1[index] }}</td>
 												<td class="p-1 text-center">{{ pdi.quantity }}</td>
 												<td class="p-1 text-center">{{ uom[index] }}</td>
 											</tr>

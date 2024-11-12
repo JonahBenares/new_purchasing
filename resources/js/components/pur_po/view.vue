@@ -24,6 +24,7 @@
 	const po_details = ref([])
 	const po_terms = ref([])
 	const po_instructions = ref([])
+	const po_dr = ref([])
     const prepared_by =  ref('');
     const checked_by =  ref('');
     const recommended_by =  ref('');
@@ -47,6 +48,7 @@
     const poView = async () => {
 		let response = await axios.get("/api/po_viewdetails/"+props.id);
 		po_head.value = response.data.po_head;
+		po_dr.value = response.data.po_dr_array;
 		pr_head.value = response.data.pr_head;
 		po_vendor.value = response.data.po_vendor;
 		po_details.value = response.data.po_details;
@@ -540,14 +542,8 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="">
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                        <div class="" v-for="pdr in po_dr">
+                            <a :href="'/pur_dr/view/'+pdr.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ pdr.dr_no }}</a>
                         </div>
                         <!-- <div>
                             <p class="text-center text-sm">No Data</p>

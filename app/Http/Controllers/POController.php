@@ -1123,35 +1123,53 @@ class POController extends Controller
             $dr_no = $year."-".Str::padLeft($dr_series, 4,'000').'-'.$company;
         }
         $po_dr = PoDr::where('po_head_id',$po_head_id)->first();
-        $po_dr_mult = PoDr::where('po_head_id',$po_head_id)->get();
-        $po_details = PoDetails::where('po_head_id',$po_head_id)->get();
+        $po_dr_distinct = PoDr::select('po_head_id','pr_head_id','po_no','pr_no','site_pr')->distinct()->where('po_head_id',$po_head_id)->get();
         $enduse=PRHead::where('id',$po_dr->pr_head_id)->value('enduse');
         $purpose=PRHead::where('id',$po_dr->pr_head_id)->value('purpose');
         $requestor=PRHead::where('id',$po_dr->pr_head_id)->value('requestor');
         $po_head = POHead::where('id',$po_head_id)->first();
         $prepared_by=Auth::user()?->name;
         $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$po_head->vendor_details_id)->where('status','=','Active')->first();
-        foreach($po_dr_mult AS $pd){
-            $po_dr_items=PoDrItems::where('po_dr_id',$pd->id)->get();
-            $total_delivered=[];
-            foreach($po_dr_items AS $pdi){
-                $total_delivered[]=$pdi->delivered_qty;
-            }
-            $total_sumdelivered=array_sum($total_delivered);
+        $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->get();
+        $total_delivered=[];
+        foreach($po_dr_items AS $pdi){
+            $total_delivered[]=$pdi->delivered_qty;
         }
+        $total_sumdelivered=array_sum($total_delivered);
         return response()->json([
             'dr_no'=>$dr_no,
             'po_dr'=>$po_dr,
-            'po_dr_mult'=>$po_dr_mult,
+            'po_dr_mult'=>$po_dr_distinct,
             'po_dr_items'=>$po_dr_items,
             'enduse'=>$enduse,
             'purpose'=>$purpose,
             'requestor'=>$requestor,
             'vendor'=>$vendor,
             'prepared_by'=>$prepared_by,
-            'total_sumdelivered'=>$total_sumdelivered,
+            'total_sumdelivered'=>$total_delivered,
         ],200);
     }
+
+    public function get_dr_view($po_dr_id){
+        $po_dr = PoDr::where('id',$po_dr_id)->where('status','Saved')->first();
+        $po_dr_items = PoDrItems::where('po_dr_id',$po_dr_id)->get();
+        $enduse=PRHead::where('id',$po_dr->pr_head_id)->value('enduse');
+        $purpose=PRHead::where('id',$po_dr->pr_head_id)->value('purpose');
+        $requestor=PRHead::where('id',$po_dr->pr_head_id)->value('requestor');
+        $po_head = POHead::where('id',$po_dr->po_head_id)->first();
+        $prepared_by=User::where('id',$po_dr->user_id)->value('name');
+        $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$po_head->vendor_details_id)->where('status','=','Active')->first();
+        return response()->json([
+            'po_dr'=>$po_dr,
+            'po_dr_items'=>$po_dr_items,
+            'enduse'=>$enduse,
+            'purpose'=>$purpose,
+            'requestor'=>$requestor,
+            'prepared_by'=>$prepared_by,
+            'vendor'=>$vendor,
+        ],200);
+    }
+
 
     public function get_offer($rfq_offer_id){
         $offer = RFQOffers::where('id',$rfq_offer_id)->where('awarded','1')->first();
@@ -1162,8 +1180,16 @@ class POController extends Controller
 
     public function check_dr_balance($po_dr_id,$po_details_id){
         $balance = PoDrItems::where('po_dr_id',$po_dr_id)->where('po_details_id',$po_details_id)->first();
+        $balance_delivered = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
         return response()->json([
-            'balance'=>$balance->quantity - $balance->delivered_qty,
+            'balance'=>$balance->quantity - $balance_delivered,
+        ],200);
+    }
+
+    public function check_remaining_dr_balance($po_details_id){
+        $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
+        return response()->json([
+            'balance_sum'=>$balance_sum,
         ],200);
     }
 
@@ -1214,15 +1240,18 @@ class POController extends Controller
                 $po_dr['driver']=$request->driver;
                 $po_dr['user_id']=Auth::id();
                 $po_drinsert=PoDr::create($po_dr);
+                $y=0;
                 foreach(json_decode($request->po_dr_items) AS $pd){
                     $to_deliver = $request->input("to_deliver"."$y");
-                    $po_dr_itmins['po_dr_id']=$pd->po_dr_id;
-                    $po_dr_itmins['po_details_id']=$pd->po_details_id;
-                    $po_dr_itmins['pr_details_id']=$pd->pr_details_id;
-                    $po_dr_itmins['rfq_offer_id']=$pd->rfq_offer_id;
-                    $po_dr_itmins['quantity']=$pd->quantity;
-                    $po_dr_itmins['delivered_qty']=$to_deliver;
-                    $po_drinsert=PoDrItems::create($po_dr_itmins);
+                    if($to_deliver!=0){
+                        $po_dr_itmins['po_dr_id']=$po_drinsert->id;
+                        $po_dr_itmins['po_details_id']=$pd->po_details_id;
+                        $po_dr_itmins['pr_details_id']=$pd->pr_details_id;
+                        $po_dr_itmins['rfq_offer_id']=$pd->rfq_offer_id;
+                        $po_dr_itmins['quantity']=$pd->quantity;
+                        $po_dr_itmins['delivered_qty']=$to_deliver;
+                        $po_drinsertitem=PoDrItems::create($po_dr_itmins);
+                    }
                     $y++;
                 }
                 echo $po_drinsert->id;
