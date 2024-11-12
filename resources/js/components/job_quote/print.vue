@@ -461,14 +461,32 @@
 													<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
 													<span hidden>{{ labor_no++ }}</span>
 													<template v-if="(rvi.canvassed == 0)">
-														<td class="align-top" ></td>
-														<td class="align-top"></td>
+														<td class="align-top">
+															<div class="border-b p-1 w-full h-10 !align-top"></div>
+															<div class="border-b p-1 w-full h-10 !align-top"></div>
+															<div class="p-1 w-full h-10 !align-top"></div>
+														</td>
+														<td class="align-top">
+															<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+															<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+															<div class="p-1 w-full h-10 !align-top text-center"></div>
+														</td>
 													</template>
 													<template v-if="(rvi.canvassed == 1)">
-														<template v-for="rlo in RFQLaborOffers">
+														<td class="align-top">
+															<template v-for="rlo in RFQLaborOffers">
+																<div class="border-b p-1 w-full h-10 !align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</div>
+															</template>
+														</td>
+														<td class="align-top">
+															<template v-for="rlo in RFQLaborOffers">
+																<div class="border-b p-1 w-full h-10 !align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
+															</template>
+														</td>
+														<!-- <template v-for="rlo in RFQLaborOffers">
 															<td class="align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</td>
 															<td class="align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</td>
-														</template>
+														</template> -->
 													</template>
 												</tr>
 												</tbody>

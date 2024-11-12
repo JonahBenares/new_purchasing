@@ -663,32 +663,38 @@
 														</tr>
 														<span hidden>{{ labor_no=1 }}</span>
 														<tbody v-for="rld in RFQLaborDetails" class="p-0">
-														<tr v-for="rlo in RFQLaborOffers">
-															<template v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id && rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id">
+														<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+															<!-- <tr v-for="rlo in RFQLaborOffers"> -->
+															<!-- <template v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id && rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id"> -->
 															<td class="p-1 align-top text-center">{{ labor_no }}</td>
 															<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
 															<td class="align-top">
-																	<textarea name="" id="" class="resize w-full  h-screen !max-h-[200px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="rvi.canvassed == 0" @change="CanvassCompleteBtn"></textarea>
-																	<textarea name="" id="" class="resize w-full  h-screen !max-h-[200px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-else readonly></textarea>
+																<template v-for="rlo in RFQLaborOffers">
+																	<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)" @change="CanvassCompleteBtn"></textarea>
+																	<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)" readonly></textarea>
 																	<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
+																</template>
 															</td>
 															<span hidden>{{ labor_no++ }}</span>
 															<td class="align-top">
 																<!-- <div class="!h-14 border-b"> -->
-																	<template v-if="(rvi.canvassed == 0)">
-																	<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
-																	<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
-																		<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-																	</select>
-																	<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
+																	<template v-for="rlo in RFQLaborOffers">
+																		<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
+																		<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
+																		<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
+																			<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
+																		</select>
+																		<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
+																		</template>
+																		<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)">
+																			<div class="border-b p-1 w-full h-7 !align-top text-center laborunitprice_"> {{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
+																			<div class="border-b p-1 w-full h-7 !align-top text-center laborcurrency_">{{ rlo.labor_currency }}</div>
+																		</template>
 																	</template>
-																	<template v-if="(rvi.canvassed == 1)">
-																		<div class="border-b p-1 w-full h-7 !align-top text-center laborunitprice_"> {{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
-																		<div class="border-b p-1 w-full h-7 !align-top text-center laborcurrency_">{{ rlo.labor_currency }}</div>
-																	</template>
+																	
 																<!-- </div> -->
 															</td>
-															</template>
+															<!-- </template> -->
 														</tr>
 													</tbody>
 													</table>
