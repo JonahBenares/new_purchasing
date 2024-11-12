@@ -227,13 +227,13 @@
 									<template v-for="lo in labor_offers">
 										<template v-if="lo.jor_labor_details_id == ld.jor_labor_details_id">
 										<td class="p-1">{{ lo.offer }}</td>
-										<td :class="(ld.min_price == lo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+										<td :class="(ld.min_price == lo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
 												<span>{{ lo.currency }}</span>
 												<span>{{  parseFloat(lo.unit_price).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td colspan="2" :class="(lo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+										<td colspan="2" :class="(lo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
 												<span>{{ lo.currency }}</span>
 												<span>{{  parseFloat(lo.unit_price * ld.quantity).toFixed(2) }}</span>
