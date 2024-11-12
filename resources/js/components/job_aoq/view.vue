@@ -389,13 +389,13 @@
 													<tr v-if="(alo.jo_rfq_labor_details_id == al.jo_rfq_labor_details_id)">
 														<!-- loop offers per vendor here -->
 															<td class="p-1" width="30%">{{ alo.offer }}</td>
-															<td width="11%" :class="(alo.min_price == alo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+															<td width="11%" :class="(alo.min_price == alo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 																<div class="flex justify-between space-x-1">
 																	<span>{{ alo.labor_currency }}</span>
 																	<span>{{  parseFloat(alo.unit_price).toFixed(2) }}</span>
 																</div>
 															</td>
-															<td width="11%" :class="(alo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
+															<td width="11%" :class="(alo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
 																<div class="flex justify-between space-x-1">
 																	<span>{{ alo.labor_currency }}</span>
 																	<span>{{  parseFloat(alo.unit_price * al.quantity).toFixed(2) }}</span>
@@ -436,13 +436,13 @@
 														<tr v-if="(amo.jo_rfq_material_details_id == am.jo_rfq_material_details_id)">
 															<!-- loop offers per vendor here -->
 																<td class="p-1" width="30%">{{ amo.offer }}</td>
-																<td width="11%" :class="(amo.min_price == amo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+																<td width="11%" :class="(amo.min_price == amo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 																	<div class="flex justify-between space-x-1">
 																		<span>{{ amo.material_currency }}</span>
 																	<span>{{  parseFloat(amo.unit_price).toFixed(2) }}</span>
 																	</div>
 																</td>
-																<td width="11%" :class="(amo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
+																<td width="11%" :class="(amo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top'">
 																	<div class="flex justify-between space-x-1">
 																		<span>{{ amo.material_currency }}</span>
 																	<span>{{  parseFloat(amo.unit_price * am.quantity).toFixed(2) }}</span>
@@ -818,13 +818,13 @@
 									<template v-for="lo in preview_labor_offers">
 										<template v-if="lo.jor_labor_details_id == ld.jor_labor_details_id">
 										<td class="p-1">{{ lo.offer }}</td>
-										<td :class="(ld.min_price == lo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+										<td :class="(ld.min_price == lo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
 												<span>{{ lo.currency }}</span>
 												<span>{{  parseFloat(lo.unit_price).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td colspan="2" :class="(lo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+										<td colspan="2" :class="(lo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
 												<span>{{ lo.currency }}</span>
 												<span>{{  parseFloat(lo.unit_price * ld.quantity).toFixed(2) }}</span>
@@ -859,13 +859,13 @@
 											<td class="p-1">
 												{{ fo.offer }}
 											</td>
-											<td :class="(md.min_price == fo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(md.min_price == fo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ fo.currency }}</span>
 													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td colspan="2" :class="(fo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<td colspan="2" :class="(fo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ fo.currency }}</span>
 													<span>{{  parseFloat(fo.unit_price * md.quantity).toFixed(2) }}</span>
@@ -883,13 +883,13 @@
 											<td class="p-1">
 												{{ so.offer }}
 											</td>
-											<td :class="(md.min_price == so.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(md.min_price == so.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
 													<span>{{ so.currency }}</span>
 													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
-											<td :class="(so.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
+											<td :class="(so.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ so.currency }}</span>
 													<span>{{  parseFloat(so.unit_price * md.quantity).toFixed(2) }}</span>
@@ -907,14 +907,14 @@
 											<td class="p-1">
 												{{ to.offer }}
 											</td>
-											<td :class="(md.min_price == to.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
+											<td :class="(md.min_price == to.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
 												</div>
 											</td>
 											<!-- <td class="p-1 align-top" colspan="2"> -->
-											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
+											<td :class="(to.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
 													<span>{{ to.currency }}</span>
 													<span>{{  parseFloat(to.unit_price * md.quantity).toFixed(2) }}</span>
