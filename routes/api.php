@@ -179,6 +179,11 @@ Route::post('/save_change_po', [POController::class,'save_change_po']);
 Route::post('/save_approved_revision', [POController::class,'save_approved_revision']);
 Route::get('/old_revision_data/{id}',[POController::class,'old_revision_data']);
 Route::get('/view_revision_data/{id}',[POController::class,'view_revision_data']);
+Route::get('/po_dropdown', [POController::class,'po_dropdown']);
+Route::get('/generate_dr/{po_head_id}', [POController::class,'generate_dr']);
+Route::get('/get_offer/{rfq_offer_id}', [POController::class,'get_offer']);
+Route::get('/check_dr_balance/{po_dr_id}/{po_details_id}', [POController::class,'check_dr_balance']);
+Route::post('/save_dr', [POController::class,'save_dr']);
 
 
 Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);

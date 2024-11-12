@@ -18,6 +18,7 @@ class PoDr extends Model
         'dr_date',
         'dr_no',
         'status',
+        'driver',
         'delivery_date',
         'user_id',
         'cancelled_date',

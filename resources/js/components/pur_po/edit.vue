@@ -257,10 +257,10 @@ import moment from 'moment';
 		var percent=vat_percent/100;
 		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
-		document.getElementById("grand_total").innerHTML  = formatNumber(new_total)
+		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
 		new_data.value=parseFloat(new_total)
-		document.getElementById("vat_amount").value=formatNumber(new_vat);
-		vat_amount.value=formatNumber(new_vat);
+		document.getElementById("vat_amount").value=new_vat.toFixed(2);
+		vat_amount.value=new_vat.toFixed(2);
 	}
 
 	const vatChange = () => {
@@ -275,9 +275,9 @@ import moment from 'moment';
 		var vat_percent = document.getElementById("vat_percent").value;
         var percent=vat_percent/100;
         var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
-        document.getElementById("vat_amount").value = formatNumber(new_vat);
+        document.getElementById("vat_amount").value = new_vat.toFixed(2);
         var new_total=(parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
-        document.getElementById("grand_total").innerHTML=formatNumber(new_total);
+        document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
 		// new_data.value=parseFloat(new_total)
 	} 
 
@@ -352,8 +352,8 @@ import moment from 'moment';
 		
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
-		grand_total.value=formatNumber(overall_total);
-		orig_amount.value=formatNumber(grandtotal);
+		grand_total.value=overall_total.toFixed(2);
+		orig_amount.value=grandtotal.toFixed(2);
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
 		balance.value = response.data.balance;
 		balance_overall.value = response.data.balance_overall;

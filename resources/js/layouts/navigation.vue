@@ -692,7 +692,7 @@
                                 <div class="!hidden"  :class="{ show:drDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Show List</a></li>
                                     </ul>
                                 </div>

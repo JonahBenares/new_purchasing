@@ -94,7 +94,7 @@ class POController extends Controller
             $po_series=$max_series+1;
             $po_no = 'P'.$pr_no_exp."-".Str::padLeft($po_series, 4,'000');
         }
-
+        
         $dr_series_rows = PoDrSeries::where('year',$year)->count();
         if($dr_series_rows==0){
             $max_dr_series='1';
@@ -1065,18 +1065,8 @@ class POController extends Controller
 
     public function old_revision_data($po_head_rev_id){
         $po_head_rev = PORevisionHead::where('po_head_id',$po_head_rev_id)->get();
-        // $po_details_rev = PORevisionDetails::where('po_head_id',$po_head_rev_id)->get();
-        // $po_dr_rev = PORevisionDrHead::where('po_head_rev_id',$po_head_rev_id)->first();
-        // $po_dritems_rev = PORevisionDrItems::where('po_dr_id',$po_dr_rev->id)->get();
-        // $po_terms_rev = PORevisionTerms::where('po_head_rev_id',$po_head_rev_id)->get();
-        // $po_instructions_rev = PORevisionInstructions::where('po_head_rev_id',$po_head_rev_id)->get();
         return response()->json([
             'po_head_rev'=>$po_head_rev,
-            // 'po_details_rev'=>$po_details_rev,
-            // 'po_dr_rev'=>$po_dr_rev,
-            // 'po_dritems_rev'=>$po_dritems_rev,
-            // 'po_terms_rev'=>$po_terms_rev,
-            // 'po_instructions_rev'=>$po_instructions_rev,
         ],200);
     }
 
@@ -1112,114 +1102,131 @@ class POController extends Controller
         ],200);
     }
 
-    // public function save_approved_revision(Request $request){
-    //     $po_dr=$request->input("po_dr");
-    //     $po_dr_items=$request->input("po_dr_items");
-    //     $terms_list=$request->input("terms_list");
-    //     $po_terms=$request->input("po_terms");
-    //     $po_instructions=$request->input("po_instructions");
-    //     $other_list=$request->input("other_list");
-    //     $po_details=$request->input("po_details");
-    //     $revision_max=POHead::where('id',$request->props_id)->max('revision_no');
-    //     $revision_no=$revision_max+1;
-    //     $data_head=POHead::where('id',$request->props_id)->update([
-    //         'approved_by_rev'=>$request->approved_by_rev,
-    //         'approved_date'=>$request->approved_date,
-    //         'approved_reason'=>$request->approved_reason,
-    //         'shipping_cost'=>$request->shipping_cost,
-    //         'handling_fee'=>$request->handling_fee,
-    //         'discount'=>$request->discount,
-    //         'vat'=>$request->vat,
-    //         'vat_percent'=>$request->vat_percent,
-    //         'vat_amount'=>$request->vat_amount,
-    //         'vat_in_ex'=>$request->vat_in_ex,
-    //         'grand_total'=>$request->grand_total,
-    //         'internal_comment'=>$request->internal_comment,
-    //         'revision_no'=>$revision_no,
-    //         'status'=>'Saved',
-    //     ]);
-    //     foreach(json_decode($po_dr) AS $pdr){
-    //         $data_dr=PoDr::where('id',$pdr->id)->update([
-    //             'revision_no'=>$revision_no,
-    //         ]);
-    //     }
-    //     $y=0;
-    //     foreach(json_decode($po_details) AS $pd){
-    //         $quantity = $request->input("quantity"."$y");
-    //         $data_details=PoDetails::where('id',$pd->id)->update([
-    //             'quantity'=>$quantity,
-    //             'total_cost'=>$pd->unit_price * $quantity,
-    //         ]);
-    //         $data_dr_details=PoDrItems::where('po_details_id',$pd->id)->where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
-    //             'quantity'=>$quantity,
-    //         ]);
+    public function po_dropdown(){
+        $po_dropdown = PoDr::select('po_head_id','po_no')->distinct()->where('status','Saved')->get();
+        return response()->json([
+            'po_dropdown'=>$po_dropdown,
+        ],200);
+    }
 
-    //         $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
-    //         $po_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
-    //         $dpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
-    //         $rpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
-    //         $method = POHead::where('id',$pd->po_head_id)->value('method');
-    //         $total_out=$po_qty + $dpo_qty + $rpo_qty;
-    //         if($pr_qty > $quantity){
-    //             $po_status='PO Issued Partially';
-    //         }else if($pr_qty == $quantity){
-    //             $po_status='PO Issued Fully';
-    //         }
+    public function generate_dr($po_head_id){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $dr_series_rows = PoDrSeries::where('year',$year)->count();
+        if($dr_series_rows==0){
+            $max_dr_series='1';
+            $dr_series='0001';
+            $dr_no = $year."-".$dr_series.'-'.$company;
+        } else {
+            $max_dr_series=PoDrSeries::where('year',$year)->max('series');
+            $dr_series=$max_dr_series+1;
+            $dr_no = $year."-".Str::padLeft($dr_series, 4,'000').'-'.$company;
+        }
+        $po_dr = PoDr::where('po_head_id',$po_head_id)->first();
+        $po_dr_mult = PoDr::where('po_head_id',$po_head_id)->get();
+        $po_details = PoDetails::where('po_head_id',$po_head_id)->get();
+        $enduse=PRHead::where('id',$po_dr->pr_head_id)->value('enduse');
+        $purpose=PRHead::where('id',$po_dr->pr_head_id)->value('purpose');
+        $requestor=PRHead::where('id',$po_dr->pr_head_id)->value('requestor');
+        $po_head = POHead::where('id',$po_head_id)->first();
+        $prepared_by=Auth::user()?->name;
+        $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$po_head->vendor_details_id)->where('status','=','Active')->first();
+        foreach($po_dr_mult AS $pd){
+            $po_dr_items=PoDrItems::where('po_dr_id',$pd->id)->get();
+            $total_delivered=[];
+            foreach($po_dr_items AS $pdi){
+                $total_delivered[]=$pdi->delivered_qty;
+            }
+            $total_sumdelivered=array_sum($total_delivered);
+        }
+        return response()->json([
+            'dr_no'=>$dr_no,
+            'po_dr'=>$po_dr,
+            'po_dr_mult'=>$po_dr_mult,
+            'po_dr_items'=>$po_dr_items,
+            'enduse'=>$enduse,
+            'purpose'=>$purpose,
+            'requestor'=>$requestor,
+            'vendor'=>$vendor,
+            'prepared_by'=>$prepared_by,
+            'total_sumdelivered'=>$total_sumdelivered,
+        ],200);
+    }
 
-    //         if($method=='PO'){
-    //             $total = $pd->quantity - $quantity;
-    //             if($pd->quantity!=$quantity){
-    //                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
-    //                     'po_qty'=>$po_qty - $total,
-    //                     'status'=>$po_status
-    //                 ]);
-    //             }
-    //         }else if($method=='DPO'){
-    //             if($pd->quantity!=$quantity){
-    //                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
-    //                     'dpo_qty'=>$dpo_qty - $total,
-    //                     'status'=>$po_status
-    //                 ]);
-    //             }
-    //         }else if($method=='RPO'){
-    //             if($pd->quantity!=$quantity){
-    //                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
-    //                     'po_qty'=>$rpo_qty - $total,
-    //                     'status'=>$po_status
-    //                 ]);
-    //             }
-    //         }   
-    //         $y++;
-    //     }
-    //     foreach(json_decode($po_terms) AS $pt){
-    //         $update_terms=POTerms::where('id',$pt->id)->update([
-    //             'terms'=>$pt->terms
-    //         ]);
-    //     }
-    //     foreach(json_decode($terms_list) AS $il){
-    //         if(count(json_decode($terms_list))>0){
-    //             $terms = new POTerms([
-    //                 'po_head_id' => $request->props_id,
-    //                 'terms' => $il->terms_condition
-    //             ]);
-    //             $terms->save();
-    //         }
-    //     }
-    //     foreach(json_decode($po_instructions) AS $pi){
-    //         $update_instructions=POInstruction::where('id',$pi->id)->update([
-    //             'instructions'=>$pi->instructions
-    //         ]);
-    //     }
+    public function get_offer($rfq_offer_id){
+        $offer = RFQOffers::where('id',$rfq_offer_id)->where('awarded','1')->first();
+        return response()->json([
+            'offer'=>$offer,
+        ],200);
+    }
 
-    //     foreach(json_decode($other_list) AS $ol){
-    //         if(count(json_decode($other_list))>0){
-    //             $others = new POInstruction([
-    //                 'po_head_id' => $request->props_id,
-    //                 'instructions' => $ol->instructions
-    //             ]);
-    //             $others->save();
-    //         }
-    //     }
+    public function check_dr_balance($po_dr_id,$po_details_id){
+        $balance = PoDrItems::where('po_dr_id',$po_dr_id)->where('po_details_id',$po_details_id)->first();
+        return response()->json([
+            'balance'=>$balance->quantity - $balance->delivered_qty,
+        ],200);
+    }
 
-    // }
+    public function save_dr(Request $request){
+        if($request->total_sumdelivered==0){
+            $y=0;
+            $updatedrhead=PoDr::where('id',$request->po_dr_id)->first();
+            $data_dr_head['delivery_date']=date('Y-m-d');
+            $data_dr_head['driver']=$request->driver;
+            $updatedrhead->update($data_dr_head);
+            foreach(json_decode($request->po_dr_items) AS $pd){
+                $to_deliver = $request->input("to_deliver"."$y");
+                $po_dr_items_details=PoDrItems::where('id',$pd->id)->update([
+                        'delivered_qty'=>$to_deliver,
+                ]);
+                $y++;
+            }
+            echo $updatedrhead->id;
+        }else{
+            $year=date('Y');
+            $series_dr_rows = PoDrSeries::where('year',$year)->count();
+            $company=Config::get('constants.company');
+            $exp_dr=explode('-',$request->dr_no);
+            if($series_dr_rows==0){
+                $max_dr_series='1';
+                $dr_series='0001';
+                $dr_no = $year."-".$dr_series.'-'.$company;
+            } else {
+                $max_dr_series=PoDrSeries::where('year',$year)->max('series');
+                $dr_series=$max_dr_series+1;
+                $dr_no = $year."-".Str::padLeft($exp_dr[1], 4,'000').'-'.$company;
+            }
+            if(!PoDrSeries::where('year',$year)->where('series',$exp_dr[1])->exists()){
+                $series['year']=$year;
+                $series['series']=$dr_series;
+                $po_series=PoDrSeries::create($series);
+            }
+            foreach(json_decode($request->po_dr) AS $podr){
+                $po_dr['po_head_id']=$podr->po_head_id;
+                $po_dr['pr_head_id']=$podr->pr_head_id;
+                $po_dr['po_no']=$podr->po_no;
+                $po_dr['pr_no']=$podr->pr_no;
+                $po_dr['site_pr']=$podr->site_pr;
+                $po_dr['dr_date']=date('Y-m-d');
+                $po_dr['dr_no']=$dr_no;
+                $po_dr['status']='Saved';
+                $po_dr['delivery_date']=date('Y-m-d');
+                $po_dr['driver']=$request->driver;
+                $po_dr['user_id']=Auth::id();
+                $po_drinsert=PoDr::create($po_dr);
+                foreach(json_decode($request->po_dr_items) AS $pd){
+                    $to_deliver = $request->input("to_deliver"."$y");
+                    $po_dr_itmins['po_dr_id']=$pd->po_dr_id;
+                    $po_dr_itmins['po_details_id']=$pd->po_details_id;
+                    $po_dr_itmins['pr_details_id']=$pd->pr_details_id;
+                    $po_dr_itmins['rfq_offer_id']=$pd->rfq_offer_id;
+                    $po_dr_itmins['quantity']=$pd->quantity;
+                    $po_dr_itmins['delivered_qty']=$to_deliver;
+                    $po_drinsert=PoDrItems::create($po_dr_itmins);
+                    $y++;
+                }
+                echo $po_drinsert->id;
+            }
+        }
+    }
 }

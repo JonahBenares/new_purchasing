@@ -438,7 +438,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="flex justify-between">
-                                                        <a href="/pur_dr/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
+                                                        <a :href="'/pur_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>

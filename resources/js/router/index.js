@@ -472,15 +472,20 @@ const routes = [
         }
     },
     {
-        path:'/pur_dr/new',
+        path:'/pur_dr/new/:id',
         component: pur_drNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_dr/view',
+        path:'/pur_dr/view/:id',
         component: pur_drView,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
