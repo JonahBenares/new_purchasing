@@ -95,25 +95,61 @@
 	@endphp
 	@foreach($aoq_labor_data AS $ald)
 	<tr>
-	<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;text-align:center" rowspan="1">{{ $laborno }}</td>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap" rowspan="1">{{ $ald['scope_of_work']; }}</td>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="1">{{  number_format($ald['quantity'],2) }}</td>
-		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="1">{{  $ald['uom']; }}</td>
+	<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;text-align:center" rowspan="3">{{ $laborno }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap" rowspan="3">{{ $ald['scope_of_work']; }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="3">{{  number_format($ald['quantity'],2) }}</td>
+		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align:center" rowspan="3">{{  $ald['uom']; }}</td>
 
-		@foreach($labor_offers AS $lo)
-			@if($lo['jor_labor_details_id']==$ald['jor_labor_details_id'])
-			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['offer'];}}</td>
-			@if($ald['min_price']==$lo['unit_price'] && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
+		@foreach($first_labor_offers AS $flo)
+			@if($flo['jor_labor_details_id']==$ald['jor_labor_details_id'])
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$flo['offer'];}}</td>
+			@if($ald['min_price']==$flo['unit_price'] && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $flo['currency'] }} {{ number_format($flo['unit_price'],2) }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency'] }} {{ number_format($lo['unit_price'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $flo['currency'] }} {{ number_format($flo['unit_price'],2) }}</td>
 			@endif
-			@if($lo['awarded'] == 1 && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $lo['labor_currency'] }}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
+			@if($flo['awarded'] == 1 && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $flo['currency'] }}  {{ number_format($flo['unit_price'] * $ald['quantity'],2) }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $lo['labor_currency']}}  {{ number_format($lo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $flo['currency']}}  {{ number_format($flo['unit_price'] * $ald['quantity'],2) }}</td>
 			@endif
-			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$lo['comments'];}}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$flo['comments'];}}</td>
+			@endif
+		@endforeach
+	</tr>
+	<tr>
+		@foreach($second_labor_offers AS $slo)
+			@if($slo['jor_labor_details_id']==$ald['jor_labor_details_id'])
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$slo['offer'];}}</td>
+			@if($ald['min_price']==$slo['unit_price'] && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $slo['currency'] }} {{ number_format($slo['unit_price'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $slo['currency'] }} {{ number_format($slo['unit_price'],2) }}</td>
+			@endif
+			@if($slo['awarded'] == 1 && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $slo['currency'] }}  {{ number_format($slo['unit_price'] * $ald['quantity'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $slo['currency']}}  {{ number_format($slo['unit_price'] * $ald['quantity'],2) }}</td>
+			@endif
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$slo['comments'];}}</td>
+			@endif
+		@endforeach
+	</tr>
+	<tr>
+		@foreach($third_labor_offers AS $tlo)
+			@if($tlo['jor_labor_details_id']==$ald['jor_labor_details_id'])
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$tlo['offer'];}}</td>
+			@if($ald['min_price']==$tlo['unit_price'] && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $tlo['currency'] }} {{ number_format($tlo['unit_price'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $tlo['currency'] }} {{ number_format($tlo['unit_price'],2) }}</td>
+			@endif
+			@if($tlo['awarded'] == 1 && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $tlo['currency'] }}  {{ number_format($tlo['unit_price'] * $ald['quantity'],2) }}</td>
+			@else
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $tlo['currency']}}  {{ number_format($tlo['unit_price'] * $ald['quantity'],2) }}</td>
+			@endif
+			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$tlo['comments'];}}</td>
 			@endif
 		@endforeach
 	</tr>

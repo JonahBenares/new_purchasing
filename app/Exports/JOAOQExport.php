@@ -87,22 +87,26 @@ class JOAOQExport implements FromView
                 'min_price'=>$min_price,
             ];
 
-            $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('jor_labor_details_id',$al->jor_labor_details_id)->get();
-            foreach($rfq_labor_offers AS $rlo){
-                $labor_offers[] = [
-                    'min_price'=>$min_price,
-                    'jo_rfq_labor_offer_id'=>$rlo->id,
-                    'jo_rfq_labor_details_id'=>$rlo->rfq_details_id,
-                    'jor_labor_details_id'=>$rlo->jor_labor_details_id,
-                    'jo_rfq_vendor_id'=>$rlo->rfq_vendor_id,
-                    'offer'=>$rlo->offer,
-                    'unit_price'=>$rlo->unit_price,
-                    'labor_currency'=>$rlo->currency,
-                    'awarded'=>$rlo->awarded,
-                    'comments'=>$rlo->remarks,
-                ];
-            }
+            // $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('jor_labor_details_id',$al->jor_labor_details_id)->get();
+            // foreach($rfq_labor_offers AS $rlo){
+            //     $labor_offers[] = [
+            //         'min_price'=>$min_price,
+            //         'jo_rfq_labor_offer_id'=>$rlo->id,
+            //         'jo_rfq_labor_details_id'=>$rlo->rfq_details_id,
+            //         'jor_labor_details_id'=>$rlo->jor_labor_details_id,
+            //         'jo_rfq_vendor_id'=>$rlo->rfq_vendor_id,
+            //         'offer'=>$rlo->offer,
+            //         'unit_price'=>$rlo->unit_price,
+            //         'labor_currency'=>$rlo->currency,
+            //         'awarded'=>$rlo->awarded,
+            //         'comments'=>$rlo->remarks,
+            //     ];
+            // }
         }
+
+        $first_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',1)->get();
+        $second_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
+        $third_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
 
         $aoq_material = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get()->unique('jor_material_details_id');
         foreach($aoq_material AS $am){
@@ -149,7 +153,9 @@ class JOAOQExport implements FromView
             'aoq_vendor_data'=>$vendor_data,
             'aoq_labor_data'=>$labor_data,
             'aoq_material_data'=>$material_data,
-            'labor_offers'=>$labor_offers,
+            'first_labor_offers'=>$first_labor_offers,
+            'second_labor_offers'=>$second_labor_offers,
+            'third_labor_offers'=>$third_labor_offers,
             'first_offers'=>$first_offers,
             'second_offers'=>$second_offers,
             'third_offers'=>$third_offers,
