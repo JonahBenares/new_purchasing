@@ -26,7 +26,9 @@
 	let previewhead=ref([]);
 	let aoq_vendor=ref([]);
 	let preview_labor_data=ref([]);
-	let preview_labor_offers=ref([]);
+	let preview_first_labor_offers=ref([]);
+	let preview_second_labor_offers=ref([]);
+	let preview_third_labor_offers=ref([]);
 	let preview_material_data=ref([]);
 	let first_offers=ref([]);
 	let second_offers=ref([]);
@@ -126,7 +128,9 @@
 		second_offers.value = response.data.second_offers
 		third_offers.value = response.data.third_offers
 		preview_labor_data.value = response.data.labor_data
-		preview_labor_offers.value = response.data.labor_offers
+		preview_first_labor_offers.value = response.data.first_labor_offers
+		preview_second_labor_offers.value = response.data.second_labor_offers
+		preview_third_labor_offers.value = response.data.third_labor_offers
 		preview_vendor_terms.value = response.data.vendor_terms
 		all_terms.value = response.data.all_terms
 	}
@@ -379,10 +383,10 @@
 											<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 											<template v-for="(al, laborno) in aoq_labor">
 												<tr>
-													<td class="p-1 align-top text-center" rowspan="2">{{ laborno+1 }}</td>
-													<td class="p-1 align-top" rowspan="2">{{ al.scope_of_work }}</td>
-													<td class="p-1 align-top text-center" rowspan="2">{{ parseFloat(al.quantity).toFixed(2) }}</td>
-													<td class="p-1 align-top text-center" rowspan="2">{{ al.uom }}</td>
+													<td class="p-1 align-top text-center" rowspan="4">{{ laborno+1 }}</td>
+													<td class="p-1 align-top" rowspan="4">{{ al.scope_of_work }}</td>
+													<td class="p-1 align-top text-center" rowspan="4">{{ parseFloat(al.quantity).toFixed(2) }}</td>
+													<td class="p-1 align-top text-center" rowspan="4">{{ al.uom }}</td>
 												</tr>
 												<!-- loop here if 3 and below offers here -->
 												 <template v-for="(alo, l) in aoq_labor_offers">
@@ -807,30 +811,74 @@
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 						<template v-for="(ld, l_index) in preview_labor_data">
 							<tr>
-								<td class="p-1 align-top text-center" rowspan="2">{{ l_index+1 }}</td>
-								<td class="p-1 align-top" rowspan="2">{{ ld.scope_of_work }}</td>
-								<td class="p-1 align-top text-center" rowspan="2">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
-								<td class="p-1 align-top text-center" rowspan="2">{{ ld.uom }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ l_index+1 }}</td>
+								<td class="p-1 align-top" rowspan="4">{{ ld.scope_of_work }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ ld.uom }}</td>
 							</tr>
 							<!-- loop here if 3 and below offers here -->
+							<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="flo in preview_first_labor_offers">
+										<template v-if="flo.jor_labor_details_id == ld.jor_labor_details_id">
+										<td class="p-1">{{ flo.offer }}</td>
+										<td :class="(ld.min_price == flo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ flo.currency }}</span>
+												<span>{{  parseFloat(flo.unit_price).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td colspan="2" :class="(flo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ flo.currency }}</span>
+												<span>{{  parseFloat(flo.unit_price * ld.quantity).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td class="p-1 align-top">{{ flo.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
 								<tr>
 									<!-- loop offers per vendor here -->
-									<template v-for="lo in preview_labor_offers">
-										<template v-if="lo.jor_labor_details_id == ld.jor_labor_details_id">
-										<td class="p-1">{{ lo.offer }}</td>
-										<td :class="(ld.min_price == lo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+									<template v-for="slo in preview_second_labor_offers">
+										<template v-if="slo.jor_labor_details_id == ld.jor_labor_details_id">
+										<td class="p-1">{{ slo.offer }}</td>
+										<td :class="(ld.min_price == slo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
-												<span>{{ lo.currency }}</span>
-												<span>{{  parseFloat(lo.unit_price).toFixed(2) }}</span>
+												<span>{{ slo.currency }}</span>
+												<span>{{  parseFloat(slo.unit_price).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td colspan="2" :class="(lo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+										<td colspan="2" :class="(slo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
-												<span>{{ lo.currency }}</span>
-												<span>{{  parseFloat(lo.unit_price * ld.quantity).toFixed(2) }}</span>
+												<span>{{ slo.currency }}</span>
+												<span>{{  parseFloat(slo.unit_price * ld.quantity).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td class="p-1 align-top">{{ lo.remarks }}</td>
+										<td class="p-1 align-top">{{ slo.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="tlo in preview_third_labor_offers">
+										<template v-if="tlo.jor_labor_details_id == ld.jor_labor_details_id">
+										<td class="p-1">{{ tlo.offer }}</td>
+										<td :class="(ld.min_price == tlo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ tlo.currency }}</span>
+												<span>{{  parseFloat(tlo.unit_price).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td colspan="2" :class="(tlo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ tlo.currency }}</span>
+												<span>{{  parseFloat(tlo.unit_price * ld.quantity).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td class="p-1 align-top">{{ tlo.remarks }}</td>
 										</template>
 									</template>
 									<!-- loop offers per vendor here -->

@@ -9,7 +9,9 @@
 	let head=ref([]);
 	let aoq_vendor=ref([]);
 	let labor_data=ref([]);
-	let labor_offers=ref([]);
+	let first_labor_offers=ref([]);
+	let second_labor_offers=ref([]);
+	let third_labor_offers=ref([]);
 	let material_data=ref([]);
 	// let aoq_offers=ref([]);
 	let first_offers=ref([]);
@@ -53,7 +55,9 @@
 		vendor_list.value = response.data.vendor_list
 		vendor_terms.value = response.data.vendor_terms
 		labor_data.value = response.data.labor_data
-		labor_offers.value = response.data.labor_offers
+		first_labor_offers.value = response.data.first_labor_offers
+		second_labor_offers.value = response.data.second_labor_offers
+		third_labor_offers.value = response.data.third_labor_offers
 		material_data.value = response.data.material_data
 		all_terms.value = response.data.all_terms
 		// pr_items_data.value = response.data.pr_items_data
@@ -216,30 +220,74 @@
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 						<template v-for="(ld, l_index) in labor_data">
 							<tr>
-								<td class="p-1 align-top text-center" rowspan="2">{{ l_index+1 }}</td>
-								<td class="p-1 align-top" rowspan="2">{{ ld.scope_of_work }}</td>
-								<td class="p-1 align-top text-center" rowspan="2">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
-								<td class="p-1 align-top text-center" rowspan="2">{{ ld.uom }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ l_index+1 }}</td>
+								<td class="p-1 align-top" rowspan="4">{{ ld.scope_of_work }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{ ld.uom }}</td>
 							</tr>
 							<!-- loop here if 3 and below offers here -->
 								<tr>
 									<!-- loop offers per vendor here -->
-									<template v-for="lo in labor_offers">
-										<template v-if="lo.jor_labor_details_id == ld.jor_labor_details_id">
-										<td class="p-1">{{ lo.offer }}</td>
-										<td :class="(ld.min_price == lo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+									<template v-for="flo in first_labor_offers">
+										<template v-if="flo.jor_labor_details_id == ld.jor_labor_details_id">
+										<td class="p-1">{{ flo.offer }}</td>
+										<td :class="(ld.min_price == flo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
-												<span>{{ lo.currency }}</span>
-												<span>{{  parseFloat(lo.unit_price).toFixed(2) }}</span>
+												<span>{{ flo.currency }}</span>
+												<span>{{  parseFloat(flo.unit_price).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td colspan="2" :class="(lo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+										<td colspan="2" :class="(flo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 											<div class="flex justify-between space-x-1">
-												<span>{{ lo.currency }}</span>
-												<span>{{  parseFloat(lo.unit_price * ld.quantity).toFixed(2) }}</span>
+												<span>{{ flo.currency }}</span>
+												<span>{{  parseFloat(flo.unit_price * ld.quantity).toFixed(2) }}</span>
 											</div>
 										</td>
-										<td class="p-1 align-top">{{ lo.remarks }}</td>
+										<td class="p-1 align-top">{{ flo.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="slo in second_labor_offers">
+										<template v-if="slo.jor_labor_details_id == ld.jor_labor_details_id">
+										<td class="p-1">{{ slo.offer }}</td>
+										<td :class="(ld.min_price == slo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ slo.currency }}</span>
+												<span>{{  parseFloat(slo.unit_price).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td colspan="2" :class="(slo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ slo.currency }}</span>
+												<span>{{  parseFloat(slo.unit_price * ld.quantity).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td class="p-1 align-top">{{ slo.remarks }}</td>
+										</template>
+									</template>
+									<!-- loop offers per vendor here -->
+								</tr>
+								<tr>
+									<!-- loop offers per vendor here -->
+									<template v-for="tlo in third_labor_offers">
+										<template v-if="tlo.jor_labor_details_id == ld.jor_labor_details_id">
+										<td class="p-1">{{ tlo.offer }}</td>
+										<td :class="(ld.min_price == tlo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ tlo.currency }}</span>
+												<span>{{  parseFloat(tlo.unit_price).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td colspan="2" :class="(tlo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<div class="flex justify-between space-x-1">
+												<span>{{ tlo.currency }}</span>
+												<span>{{  parseFloat(tlo.unit_price * ld.quantity).toFixed(2) }}</span>
+											</div>
+										</td>
+										<td class="p-1 align-top">{{ tlo.remarks }}</td>
 										</template>
 									</template>
 									<!-- loop offers per vendor here -->
@@ -496,26 +544,31 @@
 											<td class="p-1 align-top" colspan="3">{{ head.general_description }}</td>
 										</tr>
 										<span hidden>{{ labor_no=1 }}</span>
-											<tbody v-for="val in vendor_aoq_labor" class="p-0">
-											<tr v-for="lo in laboroffers">
-												<template v-if="val.jo_rfq_labor_details_id == lo.jo_rfq_labor_details_id">
+										<!-- <tbody v-for="val in vendor_aoq_labor" class="p-0"> -->
+											<!-- <tr v-for="lo in laboroffers"> -->
+											<tr v-for="val in vendor_aoq_labor">
+												<!-- <template v-if="val.jo_rfq_labor_details_id == lo.jo_rfq_labor_details_id"> -->
 												<td class="p-1 align-top text-center">{{ labor_no }}</td>
 												<td class="p-1 align-top">{{ val.scope_of_work }}</td>
 												<td class="align-top">
-													<textarea name="" id="" class="resize w-full  h-screen !max-h-[200px] !min-h-[100] p-1 laboroffer_" v-model="lo.offer"></textarea>
-													<input type="hidden" class="laborofferid_" v-model="lo.jo_rfq_labor_offer_id" >
+													<div v-for="(lo, l) in laboroffers">
+														<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="lo.offer" v-if="lo.jo_rfq_labor_details_id == val.jo_rfq_labor_details_id"></textarea>
+														<input type="hidden" class="laborofferid_" v-model="lo.jo_rfq_labor_offer_id" v-if="lo.jo_rfq_labor_details_id == val.jo_rfq_labor_details_id">
+													</div>
 												</td>
 												<span hidden>{{ labor_no++ }}</span>
 												<td class="align-top">
-													<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="lo.unit_price">
-													<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="lo.labor_currency">
-														<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-													</select>
-													<input type="hidden" class="laborofferid_" v-model="lo.jo_rfq_labor_offer_id" >
+													<div v-for="(lo, l) in laboroffers">
+														<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="lo.unit_price" v-if="lo.jo_rfq_labor_details_id == val.jo_rfq_labor_details_id">
+														<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="lo.labor_currency" v-if="lo.jo_rfq_labor_details_id == val.jo_rfq_labor_details_id">
+															<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
+														</select>
+														<input type="hidden" class="laborofferid_" v-model="lo.jo_rfq_labor_offer_id" v-if="lo.jo_rfq_labor_details_id == val.jo_rfq_labor_details_id">
+													</div>
 												</td>
-												</template>
+												<!-- </template> -->
 											</tr>
-										</tbody>
+										<!-- </tbody> -->
 									</table>
 									<table class="table-bordered w-full !text-xs" >
 										<tr>
