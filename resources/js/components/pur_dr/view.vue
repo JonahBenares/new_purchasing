@@ -78,7 +78,7 @@
 						<div class="row">
 							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-								<span class="text-sm text-gray-700">{{po_dr.po_no}}{{ (po_dr.revision_no!=0 && po_dr.revision_no!=null && po_dr.revision_no!='') ? '.r'+po_dr.revision_no : '' }}</span>
+								<span class="text-sm text-gray-700">{{po_dr.po_no}}{{ (po_dr.revision_no!=0 && po_dr.revision_no!=null) ? '.r'+po_dr.revision_no : '' }}</span>
 							</div>
 							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">DR No: </span>
@@ -128,7 +128,7 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 										<td class="p-1 ">{{offer[index]}}</td>
-										<td class="p-1 text-center">{{ pdi.quantity - pdi.delivered_qty }}</td>
+										<td class="p-1 text-center">{{ pdi.to_deliver }}</td>
 										<td class="p-1 text-center">{{ pdi.delivered_qty }}</td>
 										<td class="p-1 text-center">{{ pdi.quantity }}</td>
 										<td class="p-1 text-center">{{ uom[index] }}</td>

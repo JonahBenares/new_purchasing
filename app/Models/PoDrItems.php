@@ -16,6 +16,7 @@ class PoDrItems extends Model
         'rfq_offer_id',
         'quantity',
         'delivered_qty',
+        'to_deliver',
         'status'
     ];
 }

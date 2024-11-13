@@ -201,7 +201,7 @@
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-                                        <span class="text-sm text-gray-700">{{po_head.po_no}}</span>
+                                        <span class="text-sm text-gray-700">{{po_head.po_no}}{{ (po_head.revision_no!=0 && po_head.revision_no!=null) ? '.r'+po_head.revision_no : '' }}</span>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Date: </span>

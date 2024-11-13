@@ -186,6 +186,7 @@ Route::get('/check_dr_balance/{po_dr_id}/{po_details_id}', [POController::class,
 Route::get('/check_remaining_dr_balance/{po_details_id}', [POController::class,'check_remaining_dr_balance']);
 Route::post('/save_dr', [POController::class,'save_dr']);
 Route::get('/get_dr_view/{po_dr_id}', [POController::class,'get_dr_view']);
+Route::get('/get_alldr', [POController::class,'get_alldr']);
 
 
 

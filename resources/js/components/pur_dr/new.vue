@@ -12,6 +12,7 @@
 	const print_button =  ref(false)
 	const hide_printButton = ref()
 	const successAlert = ref(false)
+	const dangerAlerterrors = ref(false)
 	const hideAlert = ref(true)
 	const po_head_id = ref(0)
 	const to_deliver = ref([])
@@ -22,6 +23,7 @@
 	const driver = ref('')
 	const dr_no = ref('')
 	const po_dr_id = ref(0)
+	const count_po_head_id = ref(0)
 	const total_sumdelivered = ref(0)
 	const total_sumdelivered1 = ref([])
 	const po_dr =  ref([]);
@@ -30,6 +32,7 @@
 	const vendor =  ref([]);
 	const offer =  ref([]);
 	const uom = ref([])
+	const remaining_delivery = ref([])
 	const props = defineProps({
 		id:{
 			type:String,
@@ -49,6 +52,9 @@
 		successAlert.value = !hideAlert.value
 		print_button.value = !print_button.value
 		save_button.value = hideAlert.value
+	}
+	const closeAlert = () => {
+		dangerAlerterrors.value = !hideAlert.value
 	}
 	const isNumber = (evt)=> {
 		evt = (evt) ? evt : window.event;
@@ -73,6 +79,7 @@
 	const drLoad = async () => {
 		let response = await axios.get("/api/generate_dr/"+props.id);
 		dr_no.value = response.data.dr_no;
+		count_po_head_id.value = response.data.count_po_head_id;
 		po_dr.value = response.data.po_dr;
 		po_dr_mult.value = response.data.po_dr_mult;
 		po_dr_items.value = response.data.po_dr_items;
@@ -90,6 +97,7 @@
 	const generateDR = async () => {
 		let response = await axios.get("/api/generate_dr/"+po_head_id.value);
 		dr_no.value = response.data.dr_no;
+		count_po_head_id.value = response.data.count_po_head_id;
 		po_dr.value = response.data.po_dr;
 		po_dr_mult.value = response.data.po_dr_mult;
 		po_dr_items.value = response.data.po_dr_items;
@@ -128,13 +136,16 @@
 
 	const checkRemainingQty = async (po_details_id,qty,count) => {
 		let response = await axios.get("/api/check_remaining_dr_balance/"+po_details_id);
+		total_sumdelivered.value = response.data.balance_sum
 		total_sumdelivered1.value[count] = response.data.balance_sum
 		to_deliver.value[count]= parseFloat(qty)  - total_sumdelivered1.value[count]
+		remaining_delivery[count]= parseFloat(qty)  - total_sumdelivered1.value[count]
 	}
 
 	const onSave = () => {
 		const formData= new FormData()
 		formData.append('dr_no', dr_no.value)
+		formData.append('count_po_head_id', count_po_head_id.value)
 		formData.append('po_dr_id', po_dr.value.id)
 		formData.append('total_sumdelivered', total_sumdelivered.value)
 		formData.append('driver', driver.value)
@@ -143,10 +154,10 @@
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			formData.append('to_deliver'+index, to_deliver.value[index])
 			formData.append('po_details_id'+index, val.po_details_id)
+			formData.append('remaining_qty'+index, remaining_delivery[index])
 		});
 		if(driver.value!=''){
 			axios.post(`/api/save_dr`,formData).then(function (response) {
-				// alert(response.data)
 				po_dr_id.value=response.data;
 				success.value='You have successfully saved new dr.'
 				successAlert.value=!successAlert.value
@@ -154,7 +165,7 @@
 				error.value='Error! Please try again.';
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
-		}else if(allZero){
+		}else{
 			document.getElementById('driver').placeholder="Driver field must not be empty!"
 			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
 			const btn_save = document.getElementById("save");
@@ -167,6 +178,15 @@
 		const btn_save = document.getElementById("save");
 		btn_save.disabled = false;
 	}
+
+	const allZero = () => {
+		return to_deliver.value.every(value => value === 0);
+    }
+
+	const filteredPoDrItems = () => {
+      // Filter items based on corresponding `to_deliver` values
+      return po_dr_items.value.filter((item, index) => to_deliver.value[index] !== 0);
+    }
 </script>
 <template>
 	<navigation>
@@ -199,7 +219,7 @@
 									<div class="input-group col-xs-12">
 										<select class="form-control file-upload-info" v-model="po_head_id">
 											<option value="0">Select PO</option>
-											<option :value="p.po_head_id" v-for="p in po_dropdown" :key="p.po_head_id">{{ p.po_no }}</option>
+											<option :value="p.po_head_id" v-for="p in po_dropdown" :key="p.po_head_id">{{ p.po_no }}{{ (p.revision_no!=0 && p.revision_no!=null) ? '.r'+p.revision_no : '' }}</option>
 										</select>
 										<span class="input-group-append">
 											<button class="btn btn-primary" type="button" @click="generateDR()">Select</button>
@@ -211,7 +231,7 @@
 							</div>
 							<hr class="border-dashed">
 							<!-- <div v-show="po_det"> -->
-							<div v-if="po_dr && po_dr.length!=0">
+							<div v-if="po_dr && po_dr.length!=0 && !allZero()">
 								<div class="row">
 									<div class="col-lg-8">
 										<input type="hidden" v-model="dr_no">
@@ -221,6 +241,7 @@
 									<div class="col-lg-4">
 										<span class="text-sm text-gray-700 font-bold pr-1">DR No: </span>
 										<span class="text-sm text-gray-700">{{ (total_sumdelivered!=0) ? dr_no : po_dr.dr_no}}</span>
+										<!-- <span class="text-sm text-gray-700">{{ (total_sumdelivered!=0) ? dr_no : po_dr.dr_no}}</span> -->
 									</div>
 								</div>
 								<div class="row">
@@ -344,6 +365,9 @@
 									</div>
 								</div>
 							</div>
+							<div v-else-if="to_deliver.length!=0 && allZero()">
+								<center><span><b>Fully Delivered!</b></span></center>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -384,6 +408,48 @@
 									<a :href="'/pur_po/view/'+props.id" class="btn !bg-gray-100 btn-sm !rounded-full w-full" v-if="props.id!=0">Back to PO</a>
 									<a href="/pur_dr/new/0" class="btn !bg-gray-100 btn-sm !rounded-full w-full" v-else>Create New</a>
 									<a :href="'/pur_dr/view/'+po_dr_id"  class="btn !bg-gray-100 btn-sm !rounded-full w-full" >Close & Print</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlerterrors }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
+									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
+									<!-- <h5 class="leading-tight" v-else-if="error_inventory!=''">{{ error_inventory }}</h5>
+									<h5 class="leading-tight" v-else-if="error_pr!=''" v-for="er in error_pr">{{ er }}</h5> -->
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
 						</div>
