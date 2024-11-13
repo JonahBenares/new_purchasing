@@ -32,6 +32,9 @@
 	let material_offers=ref([]);
 	let count_vendor_labor_offers=ref(0);
 	let count_vendor_material_offers=ref(0);
+	let all_vendor_checkbox=ref(0);
+	let all_labor_checkbox=ref(0);
+	let all_material_checkbox=ref(0);
 
 	let aoq_no=ref('');
 	let head=ref([]);
@@ -240,11 +243,15 @@
 					var check_labor=document.getElementsByClassName('checkboxeslabor')[x].checked;
 					if(!check_labor){
 						checkalllabor.value=allSelectedLabor
-						LaborDetails.value[x].labor_checkbox=1;
+						if(all_labor_checkbox.value == 0){
+							LaborDetails.value[x].labor_checkbox=1;
+						}
 						document.getElementById("AddItemsBtn").disabled = false;
 					}else{
 						checkalllabor.value=!allSelectedLabor
-						LaborDetails.value[x].labor_checkbox=0;
+						if(all_labor_checkbox.value == 1){
+							LaborDetails.value[x].labor_checkbox=0;
+						}
 
 						if(material_count>=1){
 							document.getElementById("AddItemsBtn").disabled = false;
@@ -271,11 +278,15 @@
 					var check_material=document.getElementsByClassName('checkboxesmaterial')[x].checked;
 					if(!check_material){
 						checkallmaterial.value=allSelectedMaterial
-						MaterialDetails.value[x].material_checkbox=1;
+						if(all_material_checkbox.value == 0){
+							MaterialDetails.value[x].material_checkbox=1;
+						}
 						document.getElementById("AddItemsBtn").disabled = false;
 					}else{
 						checkallmaterial.value=!allSelectedMaterial
-						MaterialDetails.value[x].material_checkbox=0;
+						if(all_material_checkbox.value == 1){
+							MaterialDetails.value[x].material_checkbox=0;
+						}
 
 						if(labor_count>=1){
 							document.getElementById("AddItemsBtn").disabled = false;
@@ -409,11 +420,15 @@
 			var check_vendor=document.getElementsByClassName('vendor_checkboxes')[x].checked;
 			if(!check_vendor){
 				checkallven.value=allSelectedVendor
-				vendors.value[x].vendor_checkbox=1;
+				if(all_vendor_checkbox.value == 0){
+					vendors.value[x].vendor_checkbox=1;
+				}
 				document.getElementById("CreateAOQBtn").disabled = false;
 			}else{
 				checkallven.value=!allSelectedVendor
-				vendors.value[x].vendor_checkbox=0;
+				if(all_vendor_checkbox.value == 1){
+					vendors.value[x].vendor_checkbox=0;
+				}
 				document.getElementById("CreateAOQBtn").disabled = true;
 			}
 		}
@@ -989,7 +1004,7 @@
 									<table class="w-full table-bordered !text-xs mt-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor">
+												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase" width="">Scope Of Works</td>
@@ -1015,7 +1030,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial">
+												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>
@@ -1331,7 +1346,7 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered text-sm" >
 									<tr class="bg-gray-100">
-										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor"></td>
+										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
 										<td class="p-1">List of Vendors</td>
 									</tr>
 									<tr class="bg-yellow-50" v-for="(v, i) in vendors" >

@@ -18,6 +18,7 @@
 	let award_recommended_by=ref('');
 	let recommended_by=ref('');
 	let approved_by=ref(6);
+	let all_vendor_checkbox=ref(0);
 
 	onMounted(async () => {
 		getjorno()
@@ -75,11 +76,15 @@
 				var check=document.getElementsByClassName('checkboxes')[x].checked;
 				if(!check){
 					checkall.value=allSelected
-					vendors.value[x].vendor_checkbox=1;
+					if(all_vendor_checkbox.value == 0){
+						vendors.value[x].vendor_checkbox=1;
+					}
 					document.getElementById("CreateAOQBtn").style.display="block"
 				}else{
 					vendors.value[x].vendor_checkbox=0;
-					checkall.value=!allSelected
+					if(all_vendor_checkbox.value == 1){
+						vendors.value[x].vendor_checkbox=0;
+					}
 					document.getElementById("CreateAOQBtn").style.display="none"
 				}
 			}
@@ -261,7 +266,7 @@
 								<div class="col-lg-12">
 									<table class="w-full table-bordered text-sm" >
 										<tr class="bg-gray-100">
-											<td class="p-1" width="2%"><input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected"></td>
+											<td class="p-1" width="2%"><input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
 											<td class="p-1">List of Vendors</td>
 										</tr>
 										<tr class="bg-yellow-50" v-for="v in vendors">

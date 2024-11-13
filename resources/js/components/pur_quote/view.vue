@@ -31,6 +31,8 @@
 	let count_ccr=ref(0);
 	let rfqvendorid=ref('');
 	let due_date=ref('');
+	let all_vendor_checkbox=ref(0);
+	let all_checkbox=ref(0);
 
 	let aoq_no=ref('');
 	let head=ref([]);
@@ -235,10 +237,15 @@
 			var check=document.getElementsByClassName('checkboxes')[x].checked;
 			if(!check){
 				checkall.value=allSelected
-				checkbox.value=1;
+				if(all_checkbox.value == 0){
+					pritem_list.value[x].checkbox=1;
+				}
 				document.getElementById("AddItemsBtn").disabled = false;
 			}else{
 				checkall.value=!allSelected
+				if(all_checkbox.value == 1){
+					pritem_list.value[x].checkbox=0;
+				}
 				document.getElementById("AddItemsBtn").disabled = true;
 			}
 		}
@@ -493,11 +500,15 @@
 			var check_vendor=document.getElementsByClassName('vendor_checkboxes')[x].checked;
 			if(!check_vendor){
 				checkallven.value=allSelectedVendor
-				vendors.value[x].vendor_checkbox=1;
+				if(all_vendor_checkbox.value == 0){
+					vendors.value[x].vendor_checkbox=1;
+				}
 				document.getElementById("CreateAOQBtn").disabled = false;
 			}else{
 				checkallven.value=!allSelectedVendor
-				vendors.value[x].vendor_checkbox=0;
+				if(all_vendor_checkbox.value == 1){
+					vendors.value[x].vendor_checkbox=0;
+				}
 				document.getElementById("CreateAOQBtn").disabled = true;
 			}
 		}
@@ -1029,7 +1040,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">
-												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
+												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
@@ -1354,7 +1365,7 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered text-sm" >
 									<tr class="bg-gray-100">
-										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor"></td>
+										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
 										<td class="p-1">List of Vendors</td>
 									</tr>
 									<tr class="bg-yellow-50" v-for="(v, i) in vendors" >

@@ -128,6 +128,7 @@ class AOQController extends Controller
         }
 
         $rfqvendor = RFQVendor::where('rfq_head_id',$rfq_head_id)->where('canvassed',1)->orderBy('vendor_name','ASC')->get();
+        $rfq_vendor = [];
         foreach($rfqvendor AS $rv){
             $rfq_vendor[] = [
                 'vendor_checkbox'=>0,

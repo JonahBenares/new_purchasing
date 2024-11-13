@@ -29,6 +29,7 @@
 	let letters=ref([]);
 	let rfqvendorid=ref('');
 	let count_ccr=ref(0);
+	let all_checkbox=ref(0);
 
 	const props = defineProps({
         id:{
@@ -174,10 +175,15 @@
 				var check=document.getElementsByClassName('checkboxes')[x].checked;
 				if(!check){
 					checkall.value=allSelected
-					checkbox.value=1;
+					if(all_checkbox.value == 0){
+						pritem_list.value[x].checkbox=1;
+					}
 					document.getElementById("AddItemsBtn").disabled = false;
 				}else{
 					checkall.value=!allSelected
+					if(all_checkbox.value == 1){
+						pritem_list.value[x].checkbox=0;
+					}
 					document.getElementById("AddItemsBtn").disabled = true;
 				}
 			}
@@ -806,7 +812,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">
-												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
+												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
