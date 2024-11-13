@@ -1222,21 +1222,23 @@ class POController extends Controller
 
     public function save_dr(Request $request){
         
-        if($request->count_po_head_id==1){
+        if($request->identifier==0){
             $y=0;
             $updatedrhead=PoDr::where('id',$request->po_dr_id)->first();
             $data_dr_head['delivery_date']=date('Y-m-d');
             $data_dr_head['driver']=$request->driver;
+            $data_dr_head['identifier']='1';
             $updatedrhead->update($data_dr_head);
             foreach(json_decode($request->po_dr_items) AS $pd){
                 $to_deliver = $request->input("to_deliver"."$y");
                 $remaining_delivery = $request->input("remaining_qty"."$y");
-                if($pd->delivered_qty==0){
-                    $po_dr_items_details=PoDrItems::where('id',$pd->id)->update([
-                        'delivered_qty'=>$to_deliver,
-                        'to_deliver'=>$remaining_delivery - $to_deliver,
-                    ]);
-                }
+                $po_dr_items_details=PoDrItems::where('id',$pd->id)->update([
+                    'delivered_qty'=>$to_deliver,
+                    'to_deliver'=>$remaining_delivery - $to_deliver,
+                ]);
+                $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+                $update_prreport->delivered_qty += $to_deliver;
+                $update_prreport->update();
                 $y++;
             }
             echo $updatedrhead->id;
@@ -1286,6 +1288,9 @@ class POController extends Controller
                         $po_dr_itmins['to_deliver']=$remaining_delivery - $to_deliver;
                         $po_dr_itmins['delivered_qty']=$to_deliver;
                         $po_drinsertitem=PoDrItems::create($po_dr_itmins);
+                        $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+                        $update_prreport->delivered_qty += $to_deliver;
+                        $update_prreport->update();
                     }
                     $y++;
                 }

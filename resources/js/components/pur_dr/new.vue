@@ -144,6 +144,7 @@
 
 	const onSave = () => {
 		const formData= new FormData()
+		formData.append('identifier', po_dr.value.identifier)
 		formData.append('dr_no', dr_no.value)
 		formData.append('count_po_head_id', count_po_head_id.value)
 		formData.append('po_dr_id', po_dr.value.id)
@@ -240,7 +241,7 @@
 									</div>
 									<div class="col-lg-4">
 										<span class="text-sm text-gray-700 font-bold pr-1">DR No: </span>
-										<span class="text-sm text-gray-700">{{ (total_sumdelivered!=0) ? dr_no : po_dr.dr_no}}</span>
+										<span class="text-sm text-gray-700">{{ (po_dr.identifier!=0) ? dr_no : po_dr.dr_no}}</span>
 										<!-- <span class="text-sm text-gray-700">{{ (total_sumdelivered!=0) ? dr_no : po_dr.dr_no}}</span> -->
 									</div>
 								</div>

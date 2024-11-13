@@ -23,6 +23,8 @@ class PoDr extends Model
         'user_id',
         'cancelled_date',
         'cancelled_by',
-        'cancelled_reason'
+        'cancelled_reason',
+        'revision_no',
+        'identifier',
     ];
 }
