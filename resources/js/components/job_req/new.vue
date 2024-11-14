@@ -116,6 +116,7 @@
 		jo_options.value='';
 		try {
 			axios.post("/api/import_jor",formData).then(function (response) {
+				console.log(response.data)
 				jor_head_id.value=response.data.jor_head_id
 				getImportdata(jor_head_id.value)
 				jo_options.value='jo_upload';

@@ -48,7 +48,7 @@ class JORLaborImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             $qty=$row['qty'] ?? 0;
             $uom=$row['uom'] ?? '';
             $unit_cost=$row['unit_cost'] ?? 0;
-            $total_cost=$row['total_cost'] ?? 0;
+            // $total_cost=$row['total_cost'] ?? 0;
             if($item_no!=''){  
                 if ($item_no == 'Materials:') {
                     $this->rows++;
@@ -59,7 +59,7 @@ class JORLaborImport implements ToModel, WithHeadingRow, SkipsEmptyRows
                     $labordetails['quantity']=$qty;
                     $labordetails['uom']=$uom;
                     $labordetails['unit_cost']=$unit_cost;
-                    $labordetails['total_cost']=$total_cost;
+                    $labordetails['total_cost']=$unit_cost * $qty;
                     $labordetails['status']='Draft';
                     $jor_labor_details_id=JORlaborDetails::create($labordetails);
                 }else if($this->rows==1){
