@@ -350,7 +350,7 @@
 												<td class="bg-gray-50 " colspan="4"></td>
 												<!-- loop vendors here start -->
 												<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-													<p class="m-0 text-xs font-bold">{{ vendordets.vendor_name }}</p>
+													<p class="m-0 text-xs font-bold">{{ vendordets.vendor_name }} ({{ vendordets.vendor_identifier }})</p>
 													<!-- <p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
 													<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
 													<div class="flex justify-center space-x-2">

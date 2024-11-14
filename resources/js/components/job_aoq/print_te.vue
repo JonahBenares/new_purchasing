@@ -186,7 +186,7 @@
 							<!-- loop vendors here start -->
 							<template v-for="av in aoq_vendor">
 								<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-								<p class="m-0 text-xs font-bold">{{ av.vendor_name }}</p>
+								<p class="m-0 text-xs font-bold">{{ av.vendor_name }} ({{ av.vendor_identifier }})</p>
 								<div class="flex justify-center space-x-2">
 									<span>{{ av.contact_person }}</span>
 									<span>|</span>
