@@ -89,7 +89,8 @@ import job_issueIndex from '../components/job_issue/index.vue'
 import job_issueNew from '../components/job_issue/new.vue'
 import job_issueEdit from '../components/job_issue/edit.vue'
 import job_issueView from '../components/job_issue/view.vue'
-import job_issuePrint from '../components/job_issue/print.vue'
+import job_issuePrintCOC from '../components/job_issue/print_coc.vue'
+import job_issuePrintAR from '../components/job_issue/print_ar.vue'
 
 import job_issueDirect from '../components/job_direct/index.vue'
 import job_issueDirectView from '../components/job_direct/view.vue'
@@ -618,13 +619,19 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/print',
-        component: job_issuePrint,
+        path:'/job_issue/print_coc',
+        component: job_issuePrintCOC,
         meta:{
             requiresAuth:true
         }
     },
-
+    {
+        path:'/job_issue/print_ar',
+        component: job_issuePrintAR,
+        meta:{
+            requiresAuth:true
+        }
+    },
     {
         path:'/job_direct',
         component: job_issueDirect,
