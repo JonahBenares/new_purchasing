@@ -50,6 +50,7 @@ import moment from 'moment';
 	const approved_reason =  ref('');
 	let signatories=ref([]);
 	const grand_total =  ref(0);
+	const grand_total_old =  ref(0);
 	const newvat =  ref(0);
 	const totals =  ref(0);
 	const vat =  ref(0);
@@ -93,17 +94,23 @@ import moment from 'moment';
 		vat_amount.value = response.data.po_head.vat_amount;
 		vat_in_ex.value = response.data.po_head.vat_in_ex;
 		newvat.value= (response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) * (response.data.po_head.vat_percent/100)
-		grand_total.value = (response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
+		
 		totals.value = response.data.grand_total;
 		pr_head.value = response.data.pr_head;
 		po_vendor.value = response.data.po_vendor;
-		po_details.value = response.data.po_details;
+		po_details.value = response.data.po_details_view;
 		po_terms.value = response.data.po_terms;
 		po_instructions.value = response.data.po_instructions;
 		prepared_by.value = response.data.prepared_by;
 		checked_by.value = response.data.checked_by;
 		recommended_by.value = response.data.recommended_by;
 		approved_by.value = response.data.approved_by;
+		var cancelled_qty=0;
+		response.data.po_details.forEach(function (val, index, theArray) {
+			cancelled_qty +=(val.status=='Cancelled') ? val.total_cost : ''
+			grand_total_old.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
+			grand_total.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
+		});
 		po_details.value.forEach(function (val, index, theArray) {
 			checkRemainingQty(val.po_head_id,val.pr_details_id,index)
 		});
@@ -240,7 +247,7 @@ import moment from 'moment';
 		return true;
     }
 	
-	const additionalCost = () =>{
+	const additionalCost = (vat_percent) =>{
 		// if(props.id==0){
 		// 	var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 		// }else{
@@ -253,7 +260,7 @@ import moment from 'moment';
 			total += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var vat_percent = document.getElementById("vat_percent").value;
+		// var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
 		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
@@ -263,7 +270,7 @@ import moment from 'moment';
 		vat_amount.value=new_vat.toFixed(2);
 	}
 
-	const vatChange = () => {
+	const vatChange = (vat_percent) => {
 		// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
@@ -272,7 +279,7 @@ import moment from 'moment';
 			grandtotal += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var vat_percent = document.getElementById("vat_percent").value;
+		// var vat_percent = document.getElementById("vat_percent").value;
         var percent=vat_percent/100;
         var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
@@ -281,9 +288,9 @@ import moment from 'moment';
 		// new_data.value=parseFloat(new_total)
 	} 
 
-	const selectVat = () => {
+	const selectVat = (vat_percent) => {
 		if(vat.value==1){
-			var vat_percent = document.getElementById("vat_percent").value;
+			// var vat_percent = document.getElementById("vat_percent").value;
 			var percent=vat_percent/100;
 			// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 			var total=0;
@@ -294,10 +301,10 @@ import moment from 'moment';
 			});
 			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 			// vat_amount.value=new_data.value * percent;
-			additionalCost()
+			additionalCost(vat_percent)
 		}else{
 			vat_amount.value=0
-			additionalCost()
+			additionalCost(vat_percent)
 		}
 	}
 
@@ -337,7 +344,7 @@ import moment from 'moment';
 	// 	}
 	// }
 
-	const checkBalance = async (po_head_id,pr_details_id,qty,count) => {
+	const checkBalance = async (po_head_id,pr_details_id,qty,count,vat_percent) => {
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
@@ -345,8 +352,8 @@ import moment from 'moment';
 			grandtotal += parseFloat(pi);
         });
 
-		var vat = document.getElementById("vat_percent").value;
-        var percent=vat/100;
+		// var vat = document.getElementById("vat_percent").value;
+        var percent=vat_percent/100;
 		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 		vat_amount.value=new_vat;
 		
@@ -360,12 +367,6 @@ import moment from 'moment';
 		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
 		var all_qty=balance_overall.value.pr_qty - po_qty
 		var total_qty = all_qty + po_qty;
-		// alert(all_qty)
-		// if(total_qty==balance_overall.value.pr_qty){
-		// 	var over_all_total=all_qty
-		// }else{
-		// 	var over_all_total=total_qty
-		// }
 	
 		if(qty>total_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
@@ -674,7 +675,7 @@ import moment from 'moment';
                                                     </tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-													<td class="p-1 text-right font-bold !text-sm">{{formatNumber(po_head.grand_total ?? 0)}}</td>
+													<td class="p-1 text-right font-bold !text-sm">{{formatNumber(grand_total_old ?? 0)}}</td>
 												</tr>
 											</table>
 										</div>
@@ -702,7 +703,7 @@ import moment from 'moment';
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
 														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
-														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 													</td>
 													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
@@ -739,23 +740,23 @@ import moment from 'moment';
 													</td>
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
 													<td class="p-0">
-														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost"  @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" v-if="po_head.status!='Revised'">
 
-														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" :value="po_head_temp.shipping_cost"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" :value="po_head_temp.shipping_cost"  @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" readonly v-else>
 													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
 													<td class="p-0">
-														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
-														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.handling_fee"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee"  @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.handling_fee"  @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" readonly v-else>
 													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
 													<td class="p-0">
-														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
-														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.discount"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount"  @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.discount"  @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" readonly v-else>
 													</td>
 												</tr>
 												<!-- <tr class="">
@@ -772,12 +773,12 @@ import moment from 'moment';
 													<td class="border-l-none border-y-none p-0 text-right" colspan="2">
 														<div class="flex justify-end">
 															<!-- <span class="p-1" >VAT</span> -->
-															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat" v-if="po_head.status!='Revised'">
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat(vat_percent)" v-model="vat" v-if="po_head.status!='Revised'">
 																<option value="0">--Select--</option>
 																<option value="1">VAT</option>
 																<option value="2">NON-VAT</option>
 															</select>
-															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat" disabled v-else>
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat(vat_percent)" v-model="vat" disabled v-else>
 																<option value="0">--Select--</option>
 																<option value="1">VAT</option>
 																<option value="2">NON-VAT</option>
@@ -787,9 +788,9 @@ import moment from 'moment';
 													<!-- Kamo na bahala mag hide sang duwa ka input sa dalom kung Non VAT-->
 													<td class="p-0" v-if="vat==1">
 														<div class="flex p-0">
-															<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange()">%
+															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)">%
 															<input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
-															<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost()" @change="additionalCost()">
+															<input type="text" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)">
 														</div>
 													</td>
 													<!-- NON-VAT -->

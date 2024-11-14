@@ -161,7 +161,25 @@
 			dangerAlert.value = !dangerAlert.value
 		}
 	}
+
+    const wordExists = () => {
+      return po_details.value.includes('Cancelled'); // Check if the word exists in the array
+    }
 </script>
+<style>
+    @media print {
+        .print-only {
+            display: block !important; /* Show only during print */
+        }
+        .no-print {
+            display: none !important; /* Hide during print */
+        }
+        .in-print-only {
+            display: block !important; /* Show only during print */
+        }
+    }
+    
+</style>
 <template>
 	<navigation>
 		<div class="row" id="breadcrumbs">
@@ -251,20 +269,22 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Unit Price</td>
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
-                                                    <tr class="" v-for="(pd,indeex) in po_details_view">
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
-                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
+                                                    <span hidden>{{ cancelled_qty=0 }}</span>
+                                                    <tr class="" v-for="(pd,indeex) in po_details">
+                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
+                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1'" colspan="2">
                                                             <div class="flex justify-between space-x-1">
                                                                 <span class="w-full">{{pd.item_description}}</span>
-                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details.length>1 && pd.status!='Cancelled'">
+                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details_view.length>1 && pd.status!='Cancelled'">
                                                                     <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                                                                 </a>
                                                             </div>
                                                         </td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class=""></td>
@@ -313,7 +333,9 @@
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-                                                        <td class="p-1 text-right font-bold !text-sm">{{ formatNumber(po_head.grand_total ?? 0) }}</td>
+
+                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatNumber(po_head.grand_total ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;">{{ formatNumber(po_head.grand_total - cancelled_qty ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>

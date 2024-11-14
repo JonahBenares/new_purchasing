@@ -329,7 +329,6 @@
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
 		grand_total.value=overall_total.toFixed(2);
-
 		// grand_total.value=grandtotal + new_vat);
 		orig_amount.value=grandtotal.toFixed(2);
 		let response = await axios.get("/api/check_balance/"+pr_details_id);
