@@ -250,7 +250,7 @@
 		}
 		return true;
     }
-	const additionalCost = () =>{
+	const additionalCost = (vat_percent) =>{
 		// if(props.id==0){
 		// 	var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 		// }else{
@@ -263,7 +263,7 @@
 			total += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var vat_percent = document.getElementById("vat_percent").value;
+		// var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
 		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
@@ -273,7 +273,7 @@
 		vat_amount.value=new_vat.toFixed(2);
 	}
 
-	const vatChange = () => {
+	const vatChange = (vat_percent) => {
 		// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 		var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
@@ -282,7 +282,9 @@
 			total += parseFloat(pi);
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var vat_percent = document.getElementById("vat_percent").value;
+		// var vat_percent = document.getElementById("vat_percent").value;
+		// var vat_percent = vat_percent.value;
+		// alert(vat_percent)
         var percent=vat_percent/100;
         var new_vat = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
@@ -291,7 +293,7 @@
 		new_data.value=parseFloat(new_total)
 	} 
 
-	const selectVat = () => {
+	const selectVat = (vat_percent) => {
 		if(vat.value==1){
 			// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
 			var total=0;
@@ -300,14 +302,15 @@
 				var pi = p.replace(",", "");
 				total += parseFloat(pi);
 			});
-			var vat_percent = document.getElementById("vat_percent").value;
+			// var vat_percent = vat_percent;
+			// var vat_percent = document.getElementById("vat_percent").value;
 			var percent=vat_percent/100;
 			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 			// vat_amount.value=new_data.value * percent;
-			additionalCost()
+			additionalCost(vat_percent)
 		}else{
 			vat_amount.value=0
-			additionalCost()
+			additionalCost(vat_percent)
 		}
 	}
 
@@ -672,22 +675,22 @@
 														</td>
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
 														<td class="p-0">
-															<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost" @keyup="additionalCost()" @change="additionalCost()" >
+															<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" >
 														</td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-														<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee" @keyup="additionalCost()" @change="additionalCost()"></td>
+														<td class="p-0"><input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-														<td class="p-0"><input  type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount" @keyup="additionalCost()" @change="additionalCost()"></td>
+														<td class="p-0"><input  type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-0 text-right" colspan="2">
 															<div class="flex justify-end">
 																<!-- <span class="p-1" >VAT</span> -->
-																<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat">
+																<select name="" class="border px-1 text-xs" id="" @change="selectVat(vat_percent)" v-model="vat">
 																	<option value="0">--Select--</option>
 																	<option value="1">VAT</option>
 																	<option value="2">NON-VAT</option>
@@ -698,9 +701,9 @@
 														<!-- VAT -->
 														<td class="p-0" v-if="vat==1">
 															<div class="flex p-0">
-																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange()" @change="vatChange()">%
+																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)" @change="vatChange(vat_percent)">%
                                                                 <input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
-                                                                <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost()" @change="additionalCost()">
+                                                                <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)">
 															</div>
 														</td>
 														<!-- NON-VAT -->
