@@ -95,7 +95,7 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                     $jorhead['dept_code']=$department_code;
                     $jorhead['requestor_id']=$requestor_id;
                     $jorhead['requestor']=$requestor;
-                    $jorhead['urgency']=$row['urgency_no'];
+                    $jorhead['urgency']=$row['urgency_no'] ?? 0;
                     $jorhead['purpose']=$row['purpose'];
                     $jorhead['process_code']='';
                     $jorhead['user_id']= $this->user_id;
