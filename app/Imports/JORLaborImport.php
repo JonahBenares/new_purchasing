@@ -38,7 +38,7 @@ class JORLaborImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 
     public function headingRow(): int
     {
-        return 14;
+        return 15;
     }
     public function model(array $row)
     {

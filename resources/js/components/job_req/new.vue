@@ -51,6 +51,7 @@
 	const successAlertCD = ref(false)
 	let jor_series=ref('0');
 	const loading = ref(false)
+	let signatories=ref([]);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -60,11 +61,16 @@
 	onMounted(async () => {
 		getProcesscode()
 		getDepartment()
+		getSignatories()
 		jorForm()
 		if(props.id!=0){
 			getImportdata(props.id)
 		}
 	})
+	const getSignatories = async () => {
+		let response = await axios.get("/api/get_signatories");
+		signatories.value = response.data.employees;
+	}
 	const getDepartment = async () => {
 		let response = await axios.get("/api/get_department");
 		department_list.value = response.data.department;
@@ -120,7 +126,8 @@
 			}, function (err) {
 				loading.value=false;
 				var substring="1048 Column 'department_id'"
-				var substring1="floor(): Argument #1"
+				var substring1="1048 Column 'requestor_id'"
+				var substring2="floor(): Argument #1"
 				if(err.response.data.message.includes(substring)==true){
 					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
 					document.getElementById('upload_jor').value=''
@@ -129,6 +136,13 @@
 					const btn_jor = document.getElementById("btn_jor");
 					btn_jor.disabled = true;
 				}else if(err.response.data.message.includes(substring1)==true){
+					error.value = 'Requestor does not exist, make sure it is existing in employees masterfile.';
+					document.getElementById('upload_jor').value=''
+					jorFile.value=''
+					jo_options.value='';
+					const btn_jor = document.getElementById("btn_jor");
+					btn_jor.disabled = true;
+				}else if(err.response.data.message.includes(substring2)==true){
 					error.value = 'Invalid file format. Please upload another file with correct format.';
 					document.getElementById('btn_jor').value=''
 					jorFile.value=''
@@ -560,7 +574,7 @@
 		formData.append('department_id', jorhead.value.department_id)
 		formData.append('urgency', jorhead.value.urgency)
 		formData.append('process_code', jorhead.value.process_code)
-		formData.append('requestor', jorhead.value.requestor)
+		formData.append('requestor', jorhead.value.requestor_id)
 		formData.append('purpose', jorhead.value.purpose)
 		formData.append('project_activity', jorhead.value.project_activity)
 		formData.append('general_description', jorhead.value.general_description)
@@ -601,7 +615,7 @@
 		formData.append('department_id', jorhead.value.department_id)
 		formData.append('urgency', jorhead.value.urgency)
 		formData.append('process_code', jorhead.value.process_code)
-		formData.append('requestor', jorhead.value.requestor)
+		formData.append('requestor', jorhead.value.requestor_id)
 		formData.append('purpose', jorhead.value.purpose)
 		formData.append('project_activity', jorhead.value.project_activity)
 		formData.append('general_description', jorhead.value.general_description)
@@ -890,7 +904,11 @@
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
-										<input type="text" class="form-control" placeholder="Requestor"  v-model="jorhead.requestor">
+										<!-- <input type="text" class="form-control" placeholder="Requestor"  v-model="jorhead.requestor"> -->
+										<select class="form-control" v-model="jorhead.requestor_id">
+											<option value='0'>--Select Requestor--</option>
+											<option :value="req.id" v-for="req in signatories" :key="req.id">{{ req.name }}</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
@@ -1186,7 +1204,11 @@
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
-										<input type="text" class="form-control" placeholder="Requestor"  v-model="form.requestor">
+										<!-- <input type="text" class="form-control" placeholder="Requestor"  v-model="form.requestor"> -->
+										<select class="form-control" v-model="form.requestor">
+											<option value='0'>--Select Requestor--</option>
+											<option :value="req.id" v-for="req in signatories" :key="req.id">{{ req.name }}</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">

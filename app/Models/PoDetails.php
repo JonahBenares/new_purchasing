@@ -14,7 +14,7 @@ class PoDetails extends Model
         'item_no',
         'pr_details_id',
         'rfq_offers_id',
-        'rfq_offers_id',
+        'reference_po_details_id',
         'reference_po_no',
         'item_description',
         'quantity',
@@ -23,5 +23,8 @@ class PoDetails extends Model
         'total_cost',
         'currency',
         'status',
+        'cancelled_date',
+        'cancelled_by',
+        'cancelled_reason'
     ];
 }

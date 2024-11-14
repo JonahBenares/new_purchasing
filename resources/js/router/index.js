@@ -54,6 +54,7 @@ import pur_poIndex from '../components/pur_po/index.vue'
 import pur_poNew from '../components/pur_po/new.vue'
 import pur_poEdit from '../components/pur_po/edit.vue'
 import pur_poView from '../components/pur_po/view.vue'
+import pur_poViewRevised from '../components/pur_po/view_revised.vue'
 import pur_poPrint from '../components/pur_po/print.vue'
 
 import pur_poDirect from '../components/pur_direct/index.vue'
@@ -365,7 +366,6 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
         path:'/pur_aoq/view/:id/:aoq_details_id',
         component: pur_aoqView,
@@ -374,7 +374,6 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
         path:'/pur_aoq/print_te/:id',
         component: pur_aoqPrintTe,
@@ -407,15 +406,25 @@ const routes = [
         }
     },
     {
-        path:'/pur_po/view',
+        path:'/pur_po/view/:id',
         component: pur_poView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_po/edit',
+        path:'/pur_po/view_revised/:id',
+        component: pur_poViewRevised,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_po/edit/:id',
         component: pur_poEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -464,15 +473,20 @@ const routes = [
         }
     },
     {
-        path:'/pur_dr/new',
+        path:'/pur_dr/new/:id',
         component: pur_drNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_dr/view',
+        path:'/pur_dr/view/:id',
         component: pur_drView,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
@@ -566,18 +580,19 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
-        path:'/job_aoq/view',
+        path:'/job_aoq/view/:id/:jo_aoq_details_id',
         component: job_aoqView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
 
     {
-        path:'/job_aoq/print_te',
+        path:'/job_aoq/print_te/:id',
         component: job_aoqPrintTe,
+        props:true,
         meta:{
             requiresAuth:true
         }

@@ -11,9 +11,12 @@ class PoDrItems extends Model
     protected $table='po_dr_items';
     protected $fillable=[
         'po_dr_id',
-        'po_dr_details_id',
-        'pr_dr_details_id',
+        'po_details_id',
+        'pr_details_id',
         'rfq_offer_id',
-        'quantity'
+        'quantity',
+        'delivered_qty',
+        'to_deliver',
+        'status'
     ];
 }

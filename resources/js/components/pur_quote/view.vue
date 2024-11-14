@@ -31,6 +31,8 @@
 	let count_ccr=ref(0);
 	let rfqvendorid=ref('');
 	let due_date=ref('');
+	let all_vendor_checkbox=ref(0);
+	let all_checkbox=ref(0);
 
 	let aoq_no=ref('');
 	let head=ref([]);
@@ -235,10 +237,15 @@
 			var check=document.getElementsByClassName('checkboxes')[x].checked;
 			if(!check){
 				checkall.value=allSelected
-				checkbox.value=1;
+				if(all_checkbox.value == 0){
+					pritem_list.value[x].checkbox=1;
+				}
 				document.getElementById("AddItemsBtn").disabled = false;
 			}else{
 				checkall.value=!allSelected
+				if(all_checkbox.value == 1){
+					pritem_list.value[x].checkbox=0;
+				}
 				document.getElementById("AddItemsBtn").disabled = true;
 			}
 		}
@@ -420,6 +427,7 @@
 			axios.post("/api/canvass_complete_vendor", formCanvass).then(function () {
 				CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 				GetDraftCanvassDetails()
+				getAOQHeadDetails()
 			});
 	}
 
@@ -492,11 +500,15 @@
 			var check_vendor=document.getElementsByClassName('vendor_checkboxes')[x].checked;
 			if(!check_vendor){
 				checkallven.value=allSelectedVendor
-				vendors.value[x].vendor_checkbox=1;
+				if(all_vendor_checkbox.value == 0){
+					vendors.value[x].vendor_checkbox=1;
+				}
 				document.getElementById("CreateAOQBtn").disabled = false;
 			}else{
 				checkallven.value=!allSelectedVendor
-				vendors.value[x].vendor_checkbox=0;
+				if(all_vendor_checkbox.value == 1){
+					vendors.value[x].vendor_checkbox=0;
+				}
 				document.getElementById("CreateAOQBtn").disabled = true;
 			}
 		}
@@ -642,7 +654,7 @@
 						<div>
 							<div class="rfq_buttons">
 								<div class="w-full flex justify-between space-x-1  ">
-									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} {{ (rv.vendor_identifier != '') ? '('+rv.vendor_identifier+')' : '' }}</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier }})</button>
 									<button @click="openVendorModel()" class="btn btn-primary p-1">
 										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 									</button>
@@ -760,8 +772,8 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
-													<tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+												<tbody v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
+													<tr>
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>
@@ -1028,7 +1040,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">
-												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
+												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
@@ -1353,7 +1365,7 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered text-sm" >
 									<tr class="bg-gray-100">
-										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor"></td>
+										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
 										<td class="p-1">List of Vendors</td>
 									</tr>
 									<tr class="bg-yellow-50" v-for="(v, i) in vendors" >

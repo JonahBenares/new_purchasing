@@ -2,10 +2,14 @@
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
+    import moment from 'moment'
 	const vendor =  ref();
 	const preview =  ref();
+	const error =  ref('');
+	const success =  ref('');
+    const successAlert = ref(false)
     const dangerAlert = ref(false)
 	const dangerAlert_item = ref(false)
 	const drawer_dr = ref(false)
@@ -13,6 +17,51 @@
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
+    const po_head_rev = ref([])
+	const po_head = ref([])
+	const pr_head = ref([])
+	const po_vendor = ref([])
+	const po_details = ref([])
+	const po_details_view = ref([])
+	const po_terms = ref([])
+	const po_instructions = ref([])
+	const po_dr = ref([])
+    const prepared_by =  ref('');
+    const checked_by =  ref('');
+    const recommended_by =  ref('');
+    const approved_by =  ref('');
+    const cancelled_by =  ref('');
+    let po_details_id_view=ref("")
+    let cancel_reason=ref("")
+    let cancel_all_reason=ref("")
+    const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+    onMounted(async () => {
+		poView()
+	})
+    const formatNumber = (number) => {
+        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    const poView = async () => {
+		let response = await axios.get("/api/po_viewdetails/"+props.id);
+		po_head.value = response.data.po_head;
+		po_dr.value = response.data.po_dr_array;
+		pr_head.value = response.data.pr_head;
+		po_vendor.value = response.data.po_vendor;
+		po_details.value = response.data.po_details;
+		po_details_view.value = response.data.po_details_view;
+		po_terms.value = response.data.po_terms;
+		po_instructions.value = response.data.po_instructions;
+		prepared_by.value = response.data.prepared_by;
+		checked_by.value = response.data.checked_by;
+		recommended_by.value = response.data.recommended_by;
+		approved_by.value = response.data.approved_by;
+		cancelled_by.value = response.data.cancelled_by;
+	}
     const openDangerPO = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -20,8 +69,15 @@
 		dangerAlert_item.value = !dangerAlert_item.value
 	}
     const closeAlert = () => {
+        successAlert.value = !hideAlert.value
 		dangerAlert_item.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
+        document.getElementById('cancel_check').placeholder=""
+        document.getElementById('cancel_check').style.backgroundColor = '#FFFFFF';
+        cancel_reason.value=''
+        document.getElementById('cancel_all_check').placeholder=""
+        document.getElementById('cancel_all_check').style.backgroundColor = '#FFFFFF';
+        cancel_all_reason.value=''
 	}
 	const openDrawerDR = () => {
 		drawer_dr.value = !drawer_dr.value
@@ -29,8 +85,10 @@
     const openDrawerRFD = () => {
 		drawer_rfd.value = !drawer_rfd.value
 	}
-    const openDrawerRevise = () => {
+    const openDrawerRevise = async (id) => {
 		drawer_revise.value = !drawer_revise.value
+        let response = await axios.get("/api/old_revision_data/"+id);
+		po_head_rev.value = response.data.po_head_rev;
 	}
 	const closeModal = () => {
 		drawer_dr.value = !hideModal.value
@@ -39,6 +97,69 @@
 	}
     const printDiv = () => {
 		window.print();
+	}
+
+    const internalComment = () => {
+		const formData= new FormData()
+        formData.append('internal_comment', po_head.value.internal_comment)
+        var api='insert_internalcomment/'+props.id;
+		axios.post('/api/'+api,formData).then(function () {
+		}, function (err) {
+			error.value = err.response.data.message;
+		});
+	}
+
+    const cancelPOitems = (option, id) => {
+		if(option=='yes'){
+			if(cancel_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_reason', cancel_reason.value)
+				axios.post(`/api/cancel_po_items/`+id,formData).then(function (response) {
+                    dangerAlert_item.value = !hideAlert.value
+                    success.value='Successfully cancelled item!'
+                    successAlert.value = !successAlert.value
+                    cancel_reason.value=''
+                    document.getElementById('cancel_check').placeholder=""
+                    document.getElementById('cancel_check').style.backgroundColor = '#FFFFFF';
+                    poView()
+                    setTimeout(() => {
+                        closeAlert()
+                    }, 2000);
+				})
+			}else{
+				document.getElementById('cancel_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('cancel_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			po_details_id_view.value=id
+			dangerAlert_item.value = !dangerAlert_item.value
+		}
+	}
+
+    const cancelAllPO = (option) => {
+		if(option=='yes'){
+			if(cancel_all_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_all_reason', cancel_all_reason.value)
+				axios.post(`/api/cancel_all_po/`+props.id,formData).then(function (response) {
+                    dangerAlert.value = !hideAlert.value
+                    success.value='Successfully cancelled PO!'
+                    successAlert.value = !successAlert.value
+                    cancel_all_reason.value=''
+                    document.getElementById('cancel_all_check').placeholder=""
+                    document.getElementById('cancel_all_check').style.backgroundColor = '#FFFFFF';
+                    poView()
+                    setTimeout(() => {
+                        closeAlert()
+                    }, 2000);
+				})
+			}else{
+				document.getElementById('cancel_all_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('cancel_all_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			dangerAlert.value = !dangerAlert.value
+		}
 	}
 </script>
 <template>
@@ -62,6 +183,9 @@
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
+                    <div class="py-2 px-2 bg-red-500" v-if="po_head.status=='Cancelled'">
+						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by }}  || Cancelled Date: {{moment().format('MMM. DD,YYYY')}} </span>
+					</div>
                     <div class="card-body">
                         <hr class="border-dashed mt-0">
                         <div class="pt-1" id="printable">
@@ -72,41 +196,44 @@
 								</div>
 								<hr class="print:block border-dashed mt-2">
 							</div>
+                            <div class="print:block hidden print:flex print:justify-center h-full" v-if="po_head.status=='Cancelled'">
+								<img src="../../../images/bg_cancelled.png" alt="" class="absolute h-[420px] align-center opacity-100">
+							</div>
                             <div>
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-                                        <span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
+                                        <span class="text-sm text-gray-700">{{po_head.po_no}}{{ (po_head.revision_no!=0 && po_head.revision_no!=null) ? '.r'+po_head.revision_no : '' }}</span>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
-                                        <span class="text-sm text-gray-700">05/16/24</span>
+                                        <span class="text-sm text-gray-700">{{moment(po_head.po_date).format('MMMM DD,YYYY')}}</span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
-                                        <span class="text-sm text-gray-700">MF Computer Solutions, Inc.</span>
+                                        <span class="text-sm text-gray-700">{{po_head.vendor_name}} ({{ po_vendor.identifier }})</span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Address:</span>
-                                        <span class="text-sm text-gray-700">February 16, 2024</span>
+                                        <span class="text-sm text-gray-700">{{ po_vendor.address }}</span>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
-                                        <span class="text-sm text-gray-700">(034) 9872-2772</span>
+                                        <span class="text-sm text-gray-700">{{po_vendor.phone }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
-                                        <span class="text-sm text-gray-700">Mary Marie</span>
+                                        <span class="text-sm text-gray-700">{{po_vendor.contact_person}}</span>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
-                                        <span class="text-sm text-gray-700">(034) 9872-2772</span>
+                                        <span class="text-sm text-gray-700">{{po_vendor.fax}}</span>
                                     </div>
                                 </div>
                                 
@@ -115,8 +242,8 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="border-2">
-                                                <table class="table-bordered w-full text-xs">
-                                                    <tr class="bg-gray-100">
+                                                <table class="table-bordered w-full text-xs bg-transparent">
+                                                    <tr class="bg-gray-100 print:bg-transparent">
                                                         <td class="uppercase p-1 text-center" width="3%">#</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Qty</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Unit</td>
@@ -124,50 +251,20 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Unit Price</td>
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
-                                                    <tr class="">
-                                                        <td class="border-y-none p-1 text-center">1</td>
-                                                        <td class="border-y-none p-1 text-center">5</td>
-                                                        <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">
+                                                    <tr class="" v-for="(pd,indeex) in po_details_view">
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
+                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
                                                             <div class="flex justify-between space-x-1">
-                                                                <span class="w-full">Monitor</span>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                <span class="w-full">{{pd.item_description}}</span>
+                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details.length>1 && pd.status!='Cancelled'">
                                                                     <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                                                                 </a>
                                                             </div>
                                                         </td>
-                                                        <td class="border-y-none p-1 text-right">100.00</td>
-                                                        <td class="border-y-none p-1 text-right">500.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-y-none p-1 text-center">2</td>
-                                                        <td class="border-y-none p-1 text-center">5</td>
-                                                        <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">
-                                                            <div class="flex justify-between space-x-1">
-                                                                <span class="w-full">Mouse</span>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                        <td class="border-y-none p-1 text-right">100.00</td>
-                                                        <td class="border-y-none p-1 text-right">500.00</td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td class="border-y-none p-1 text-center">3</td>
-                                                        <td class="border-y-none p-1 text-center">5</td>
-                                                        <td class="border-y-none p-1 text-center">pc</td>
-                                                        <td class="border-y-none p-1" colspan="2">
-                                                            <div class="flex justify-between space-x-1">
-                                                                <span class="w-full">Keyboard</span>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                        <td class="border-y-none p-1 text-right">100.00</td>
-                                                        <td class="border-y-none p-1 text-right">500.00</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class=""></td>
@@ -180,43 +277,43 @@
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
-                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">PR Number:</span>{{po_head.pr_no}}</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>{{pr_head.requestor}}</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>{{pr_head.enduse}}</p>
+                                                            <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
                                                         </td>
                                                         <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-                                                        <td class="p-1 text-right ">200.00</td>
+                                                        <td class="p-1 text-right ">{{ formatNumber(po_head.shipping_cost ?? 0) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-                                                        <td class="p-1 text-right ">200.00</td>
+                                                        <td class="p-1 text-right ">{{ formatNumber(po_head.handling_fee ?? 0) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">100.00</td>
+                                                        <td class="p-1 text-right ">{{formatNumber(po_head.discount ?? 0 ) }}</td>
                                                     </tr>
-                                                    <!-- <tr class="">
+                                                    <tr class="" v-if="po_head.vat==1">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
-                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12%">
+                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatNumber(po_head.vat_amount ?? 0)">
                                                             </div>
                                                         </td>
-                                                    </tr> -->
-                                                    <tr class="">
+                                                    </tr>
+                                                    <tr class="" v-else-if="po_head.vat==0 || po_head.vat==2">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="--">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="0.00">
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-                                                        <td class="p-1 text-right font-bold !text-sm">1000.00</td>
+                                                        <td class="p-1 text-right font-bold !text-sm">{{ formatNumber(po_head.grand_total ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -242,46 +339,28 @@
                                                     <td class="align-top pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
                                                             <span >Price is </span>
-                                                            <span>Exclusive of VAT</span>
+                                                            <span v-if="po_head.vat_in_ex==1">Inclusive of VAT</span>
+                                                            <span v-else-if="po_head.vat_in_ex==2">Exclusive of VAT</span>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">4.</td>
+                                                <tr v-for="(pt,index) in po_terms">
+                                                    <td class="align-top text-center" width="4%">{{ index + 4 }}.</td>
                                                     <td class="align-top  pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
-                                                            <span>Payment </span>
-                                                            <span> COD</span>
+                                                            <span>{{pt.terms}}</span>
                                                         </div>
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">5.</td>
-                                                    <td class="align-top  pl-1" colspan="2">
-                                                        <div class="flex justify-start space-x-1">
-                                                            <span>Delivery Term </span>
-                                                            <span> Sample</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">6.</td>
-                                                    <td class="align-top  pl-1" colspan="2">sample term</td>
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="col-lg-6 col-md-6 col-sm-6" v-if="po_instructions.length!=0">
                                             <table class="table-bordsered text-xs w-full">
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Other Instructions</td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">1.</td>
-                                                    <td class="px-1" colspan="2">sample instructions</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">2.</td>
-                                                    <td class="px-1" colspan="2">sample instructions -Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
+                                                <tr v-for="(pi,indexin) in po_instructions">
+                                                    <td class="px-1" colspan="2">{{pi.instructions}}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -308,13 +387,13 @@
                                                     <td class="text-center border-b"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-center p-1">Henne Tanant</td>
+                                                    <td class="text-center p-1">{{prepared_by}}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Beverly Sy</td>
+                                                    <td class="text-center p-1">{{checked_by}}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                                    <td class="text-center p-1">{{recommended_by}}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Glenn Paulate</td>
+                                                    <td class="text-center p-1">{{approved_by}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-center"><br><br></td>
@@ -337,19 +416,19 @@
                                         </div>
                                     </div>
                                     <hr	class="border-dashed">
-                                    <div class="po_buttons text-xs">
+                                    <div class="po_buttons text-xs" v-if="po_head.status!='Cancelled'">
                                         <span class="w-full block">Internal Comment:</span>
-                                        <span class="w-full block">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. </span>
+                                        <textarea class="bg-yellow-50" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea>
                                         <hr	class="border-dashed">
                                     </div>
                                     <div class="row my-2 po_buttons"> 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="submit" class="btn btn-danger w-36"  @click="openDangerPO()">Cancel PO</button>
-                                                    <div class="flex justify-between">
-                                                        <a href="/pur_po/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
-                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
+                                                    <button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
+                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
+                                                        <a :href="'/pur_po/edit/'+props.id" type="button" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise(props.id)">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
@@ -363,12 +442,12 @@
                                                         </button>
                                                     </div>
                                                     <div class="flex justify-between">
-                                                        <a href="/pur_dr/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
+                                                        <a :href="'/pur_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
+                                                    <button type="button" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
                                             </div>
@@ -382,6 +461,38 @@
 			</div>
 		</div>
         <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+        <Transition
             enter-active-class="transition ease-out duration-500"
             enter-from-class="opacity-0 "
             enter-to-class="opacity-100 "
@@ -394,7 +505,7 @@
                 <div class="modal__content w-3/12 float-right min-h-[690px]">
                     <div class="row mb-3">
                         <div class="col-lg-12 flex justify-between">
-                            <span class="font-bold ">DR List</span>
+                            <span class="font-bold ">Revise List</span>
                             <a href="#" class="text-gray-600" @click="closeModal">
                                 <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                             </a>
@@ -402,18 +513,12 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="">
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
-                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
+                        <div class="" v-for="phv in po_head_rev">
+                            <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
                         </div>
-                        <!-- <div>
-                            <p class="text-center text-sm">No Data</p>
-                        </div> -->
+                        <div>
+                            <a :href="'/pur_po/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_head.po_no }}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} (Current)</a>
+                        </div>
                     </div> 
                 </div>
             </div>
@@ -439,14 +544,8 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="">
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                        <div class="" v-for="pdr in po_dr">
+                            <a :href="'/pur_dr/view/'+pdr.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ pdr.dr_no }}</a>
                         </div>
                         <!-- <div>
                             <p class="text-center text-sm">No Data</p>
@@ -521,7 +620,7 @@
 										If yes, please state your reason.
 									</h5>
 									<label>Cancel Reason: </label>
-									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3" v-model="cancel_reason"></textarea>
 								</div>
 							</div>
 						</div>
@@ -530,7 +629,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelPOitems('yes',po_details_id_view)">Yes</button>
 								</div>
 							</div>
 						</div>
@@ -567,7 +666,7 @@
 										If yes, please state your reason.
 									</h5>
 									<label>Cancel Reason: </label>
-									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+									<textarea name="" id="cancel_all_check" class="form-control !border" rows="3" v-model="cancel_all_reason"></textarea>
 								</div>
 							</div>
 						</div>
@@ -576,7 +675,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelAllPO('yes')">Yes</button>
 								</div>
 							</div>
 						</div>

@@ -27,6 +27,8 @@
 	let count_ccr=ref(0);
 	let LaborDetails=ref([]);
 	let MaterialDetails=ref([]);
+	let all_labor_checkbox=ref(0);
+	let all_material_checkbox=ref(0);
 
 
 	const props = defineProps({
@@ -210,11 +212,15 @@
 					var check_labor=document.getElementsByClassName('checkboxeslabor')[x].checked;
 					if(!check_labor){
 						checkalllabor.value=allSelectedLabor
-						LaborDetails.value[x].labor_checkbox=1;
+						if(all_labor_checkbox.value == 0){
+							LaborDetails.value[x].labor_checkbox=1;
+						}
 						document.getElementById("AddItemsBtn").disabled = false;
 					}else{
 						checkalllabor.value=!allSelectedLabor
-						LaborDetails.value[x].labor_checkbox=0;
+						if(all_labor_checkbox.value == 1){
+							LaborDetails.value[x].labor_checkbox=0;
+						}
 
 						if(material_count>=1){
 							document.getElementById("AddItemsBtn").disabled = false;
@@ -235,17 +241,22 @@
 						labor_count++;
 					}
 				}
-
+				// alert(all_material_checkbox.value)
 				var count_check_material=document.getElementsByClassName('checkboxesmaterial');
 				for(var x=0;x<count_check_material.length;x++){
 					var check_material=document.getElementsByClassName('checkboxesmaterial')[x].checked;
+					count_check_material[x].value = false;
 					if(!check_material){
 						checkallmaterial.value=allSelectedMaterial
-						MaterialDetails.value[x].material_checkbox=1;
+						if(all_material_checkbox.value == 0){
+							MaterialDetails.value[x].material_checkbox=1;
+						}
 						document.getElementById("AddItemsBtn").disabled = false;
 					}else{
 						checkallmaterial.value=!allSelectedMaterial
-						MaterialDetails.value[x].material_checkbox=0;
+						if(all_material_checkbox.value == 1){
+							MaterialDetails.value[x].material_checkbox=0;
+						}
 
 						if(labor_count>=1){
 							document.getElementById("AddItemsBtn").disabled = false;
@@ -387,7 +398,7 @@
 						<div>
 							<div class="rfq_buttons">
 								<div class="w-full flex justify-between space-x-1">
-									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.jo_rfq_vendor_id">{{ rv.vendor_name }} {{ rv.vendor_identifier}}</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.jo_rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier}})</button>
 									<button @click="openModel()" class="btn btn-primary p-1">
 										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 									</button>
@@ -446,6 +457,7 @@
 											</div>
 											<table class="table-bordered w-full text-xs mb-2">
 												<tr class="bg-gray-100">
+													<td class="p-1 text-center" width="5%">#</td>
 													<td class="p-1" width="50%">Scope of Work</td>
 													<td class="p-1" width="35%">Offer</td>
 													<td class="p-1 text-center" width="15%">Unit Price</td>
@@ -453,25 +465,46 @@
 												<tr>
 													<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
 												</tr>
+												<span hidden>{{ labor_no=1 }}</span>
 												<tbody v-for="rld in RFQLaborDetails" class="p-0">
 												<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+													<td class="p-1 align-top text-center">{{ labor_no }}</td>
 													<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
+													<span hidden>{{ labor_no++ }}</span>
 													<template v-if="(rvi.canvassed == 0)">
-														<td class="align-top" ></td>
-														<td class="align-top"></td>
+														<td class="align-top">
+															<div class="border-b p-1 w-full h-10 !align-top"></div>
+															<div class="border-b p-1 w-full h-10 !align-top"></div>
+															<div class="p-1 w-full h-10 !align-top"></div>
+														</td>
+														<td class="align-top">
+															<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+															<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+															<div class="p-1 w-full h-10 !align-top text-center"></div>
+														</td>
 													</template>
 													<template v-if="(rvi.canvassed == 1)">
-														<template v-for="rlo in RFQLaborOffers">
+														<td class="align-top">
+															<template v-for="rlo in RFQLaborOffers">
+																<div class="border-b p-1 w-full h-10 !align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</div>
+															</template>
+														</td>
+														<td class="align-top">
+															<template v-for="rlo in RFQLaborOffers">
+																<div class="border-b p-1 w-full h-10 !align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
+															</template>
+														</td>
+														<!-- <template v-for="rlo in RFQLaborOffers">
 															<td class="align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</td>
 															<td class="align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</td>
-														</template>
+														</template> -->
 													</template>
 												</tr>
 												</tbody>
 											</table>
 											<table class="table-bordered w-full text-xs mb-2">
 												<tr class="bg-gray-100">
-													<td class="p-1 text-center" width="5%">No</td>
+													<td class="p-1 text-center" width="5%">#</td>
 													<td class="p-1 text-center" width="10%">Qty</td>
 													<td class="p-1" width="35%">Item Description</td>
 													<td class="p-1" width="35%">Brand/Offer</td>
@@ -559,8 +592,9 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
-													<tr v-if="vt.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+												<tbody v-for="(vt, index) in rvi.jorfq_vendor_terms" v-else>
+													<!-- <tr v-if="vt.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id"> -->
+													<tr>
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>
@@ -807,7 +841,7 @@
 									<table class="w-full table-bordered !text-xs mt-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor">
+												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase" width="">Scope Of Works</td>
@@ -833,7 +867,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial">
+												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>

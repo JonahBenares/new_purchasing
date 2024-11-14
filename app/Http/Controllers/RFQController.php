@@ -208,8 +208,8 @@ class RFQController extends Controller
 
             $userid = Auth::id();
             // $vendor_terms = VendorTerms::orderBy('order_no','ASC')->get();
-            $rfq_vendor_terms = RFQVendorTerms::whereIn('rfq_vendor_id',RFQVendor::where('rfq_head_id',$rfq_head_id)->pluck('id'))->orderBy('id','ASC')->get();
             $signatories=User::where('id','!=',$userid)->orderBy('name','ASC')->get()->unique('name');
+            $rfq_vendor_terms = RFQVendorTerms::whereIn('rfq_vendor_id',RFQVendor::where('rfq_head_id',$rfq_head_id)->pluck('id'))->orderBy('id','ASC')->get();
             $rfqitems =PRDetails::whereNotIn('id',RFQDetails::where('rfq_head_id',$rfq_head_id)->pluck('pr_details_id'))->where('status','Saved')->get();
             $count_pritems=$rfqitems->count();
             $currency=Config::get('constants.currency');
@@ -239,6 +239,8 @@ class RFQController extends Controller
             $rfq_vendor = RFQVendor::with('vendor_details')->where('rfq_head_id',$rfq_head_id)->orderBy('vendor_name','ASC')->get();
             $rfqvendorid=RFQVendor::where('rfq_head_id',$rfq_head_id)->first()->id;
                 foreach($rfq_vendor AS $v){
+                    $vendorterms = RFQVendorTerms::whereIn('rfq_vendor_id',RFQVendor::where('rfq_head_id',$rfq_head_id)->pluck('id'))->where('rfq_vendor_id',$v->id)->orderBy('id','ASC')->get();
+
                     $rfq_vendorterms = RFQVendorTerms::where('rfq_vendor_id',$v->id)->orderBy('id','ASC')->get();
                     $count_rfq_terms=$rfq_vendorterms->count();
 
@@ -260,6 +262,7 @@ class RFQController extends Controller
                         'noted_by_name'=>User::where('id',$v->noted_by)->value('name'),
                         'approved_by_id'=>$v->approved_by,
                         'approved_by_name'=>User::where('id',$v->approved_by)->value('name'),
+                        'rfq_vendorterms'=>$vendorterms,
                         'count_rfq_terms'=>$count_rfq_terms,
                         'count_vendor_offers'=>$count_vendor_offers,
                     ];

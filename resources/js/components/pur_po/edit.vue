@@ -2,12 +2,19 @@
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+import moment from 'moment';
+    import { reactive, ref , onMounted} from "vue"
     import { useRouter } from "vue-router"
+	const router = useRouter();
 	const vendor =  ref();
 	const buttons_set =  ref()
 	const approval_set =  ref(false)
-
+	const error =  ref('');
+	const success =  ref('');
+	const dangerAlerterrors = ref(false)
+	const dangerAlert_terms = ref(false)
+	const dangerAlert_instructions = ref(false)
+	const successAlertCD = ref(false)
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const warningAlert = ref(false)
@@ -15,6 +22,107 @@
     const approveAlert = ref(false)
 	const hide_button = ref()
 	const hideAlert = ref(true)
+	const po_head =  ref([]);
+	const po_head_temp =  ref([]);
+	const po_head_rev =  ref([]);
+	const po_dr =  ref([]);
+	const po_dr_rev =  ref([]);
+	const po_dr_items =  ref([]);
+	const po_vendor = ref([])
+	const pr_head =  ref([]);
+	const po_details =  ref([]);
+	const po_details_temp =  ref([]);
+	const po_terms = ref([])
+	const po_terms_temp = ref([])
+	const po_instructions = ref([])
+	const po_instructions_temp = ref([])
+	const rfq_terms =  ref([]);
+	const orig_amount =  ref(0);
+	const balance =  ref(0);
+	const balance_overall =  ref(0);
+	const remaining_balance =  ref([]);
+	const prepared_by =  ref('');
+	const checked_by =  ref('');
+	const recommended_by =  ref('');
+	const approved_by =  ref('');
+	const approved_by_rev =  ref(0);
+	const approved_date =  ref('');
+	const approved_reason =  ref('');
+	let signatories=ref([]);
+	const grand_total =  ref(0);
+	const newvat =  ref(0);
+	const totals =  ref(0);
+	const vat =  ref(0);
+	const vat_percent =  ref(12);
+	const vat_amount =  ref(0);
+	const vat_in_ex =  ref(0);
+	const handling_fee =  ref(0);
+	const shipping_cost =  ref(0);
+	const discount =  ref(0);
+	const new_data =  ref(0);
+	const instruction_id =  ref(0);
+	const terms_id =  ref(0);
+	const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+	onMounted(async () => {
+		poRevise()
+		getSignatories()
+	})
+	const formatNumber = (number) => {
+      return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+	const getRevisevalue= async () => {
+		let response = await axios.get("/api/po_viewdetails/"+props.id);
+	}
+	const poRevise= async () => {
+		let response = await axios.get("/api/po_viewdetails/"+props.id);
+		po_head_rev.value = response.data.po_head_array;
+		po_head.value = response.data.po_head;
+		po_dr_rev.value = response.data.po_dr_array;
+		po_dr.value = response.data.po_dr;
+		po_dr_items.value = response.data.po_dr_items;
+		shipping_cost.value = response.data.po_head.shipping_cost;
+		handling_fee.value = response.data.po_head.handling_fee;
+		discount.value = response.data.po_head.discount;
+		vat.value = response.data.po_head.vat;
+		vat_percent.value = (response.data.po_head.vat_percent!=0) ? response.data.po_head.vat_percent : 12;
+		vat_amount.value = response.data.po_head.vat_amount;
+		vat_in_ex.value = response.data.po_head.vat_in_ex;
+		newvat.value= (response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) * (response.data.po_head.vat_percent/100)
+		grand_total.value = (response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
+		totals.value = response.data.grand_total;
+		pr_head.value = response.data.pr_head;
+		po_vendor.value = response.data.po_vendor;
+		po_details.value = response.data.po_details;
+		po_terms.value = response.data.po_terms;
+		po_instructions.value = response.data.po_instructions;
+		prepared_by.value = response.data.prepared_by;
+		checked_by.value = response.data.checked_by;
+		recommended_by.value = response.data.recommended_by;
+		approved_by.value = response.data.approved_by;
+		po_details.value.forEach(function (val, index, theArray) {
+			checkRemainingQty(val.po_head_id,val.pr_details_id,index)
+		});
+		if(po_head.value.status=='Revised'){
+			poReviseTemp()
+			infoAlert.value = !hideAlert.value
+			approval_set.value = !approval_set.value
+			buttons_set.value = !hide_button.value
+		}
+	}
+
+	const poReviseTemp= async () => {
+		let response = await axios.get("/api/po_viewdetails/"+props.id);
+		po_head.value = response.data.po_head;
+		po_head_temp.value = response.data.po_head_temp;
+		po_details_temp.value = response.data.po_details_temp;
+		po_terms_temp.value = response.data.po_terms_temp;
+		po_instructions_temp.value = response.data.po_instructions_temp;
+	}
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -31,6 +139,10 @@
 		warningAlert.value = !warningAlert.value
 	}
 	const closeAlert = () => {
+		dangerAlerterrors.value=!hideAlert.value 
+		dangerAlert_terms.value=!hideAlert.value 
+		dangerAlert_instructions.value=!hideAlert.value 
+		successAlertCD.value=!hideAlert.value 
 		successAlert.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
 		dangerAlert.value = !hideAlert.value
@@ -88,7 +200,7 @@
 	const addRowOther= () => {
 		if(other_text.value!=''){
 			const others = {
-				other_ins:other_text.value,
+				instructions:other_text.value,
 			}
 			other_list.value.push(others)
 			other_text.value='';
@@ -104,6 +216,319 @@
 	}
 	const printDiv = () => {
 		window.print();
+	}
+
+	const getSignatories = async () => {
+		let response = await axios.get("/api/get_signatories");
+		signatories.value = response.data.employees;
+	}
+
+	const isNumber = (evt)=> {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode == 46) {
+			//Check if the text already contains the . character
+			if (evt.target.value.indexOf('.') === -1) {
+				return true;
+			} else {
+				evt.preventDefault();
+			}
+		} else {
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+				evt.preventDefault();
+		}
+		return true;
+    }
+	
+	const additionalCost = () =>{
+		// if(props.id==0){
+		// 	var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		// }else{
+		// 	var total = parseFloat(totals.value)
+		// }
+		var total=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			var pi = p.replace(",", "");
+			total += parseFloat(pi);
+        });
+		var discount_display= (discount.value!='') ? discount.value : 0;
+		var vat_percent = document.getElementById("vat_percent").value;
+		var percent=vat_percent/100;
+		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
+		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
+		new_data.value=parseFloat(new_total)
+		document.getElementById("vat_amount").value=new_vat.toFixed(2);
+		vat_amount.value=new_vat.toFixed(2);
+	}
+
+	const vatChange = () => {
+		// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+		var grandtotal=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			var pi = p.replace(",", "");
+			grandtotal += parseFloat(pi);
+        });
+		var discount_display= (discount.value!='') ? discount.value : 0;
+		var vat_percent = document.getElementById("vat_percent").value;
+        var percent=vat_percent/100;
+        var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+        document.getElementById("vat_amount").value = new_vat.toFixed(2);
+        var new_total=(parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
+		// new_data.value=parseFloat(new_total)
+	} 
+
+	const selectVat = () => {
+		if(vat.value==1){
+			var vat_percent = document.getElementById("vat_percent").value;
+			var percent=vat_percent/100;
+			// var total = (orig_amount.value==0) ? grand_total.value : orig_amount.value;
+			var total=0;
+			po_details.value.forEach(function (val, index, theArray) {
+				var p = document.getElementById('tprice'+index).value;
+				var pi = p.replace(",", "");
+				total += parseFloat(pi);
+			});
+			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			// vat_amount.value=new_data.value * percent;
+			additionalCost()
+		}else{
+			vat_amount.value=0
+			additionalCost()
+		}
+	}
+
+	// const checkBalance = async (pr_details_id,qty,count) => {
+	// 	var grandtotal=0;
+	// 	po_details.value.forEach(function (val, index, theArray) {
+	// 		var p = document.getElementById('tprice'+index).value;
+	// 		grandtotal += parseFloat(p);
+    //     });
+	// 	var vat = document.getElementById("vat_percent").value;
+    //     var percent=vat/100;
+	// 	var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+	// 	vat_amount.value=new_vat;
+		
+	// 	var discount_display= (discount.value!='') ? discount.value : 0;
+	// 	var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+	// 	grand_total.value=formatNumber(overall_total);
+
+	// 	// grand_total.value=formatNumber(grandtotal + new_vat);
+	// 	orig_amount.value=formatNumber(grandtotal);
+	// 	let response = await axios.get("/api/check_balance/"+pr_details_id);
+	// 	balance.value = response.data.balance;
+	// 	var po_qty=balance.value.po_qty + balance.value.dpo_qty + balance.value.rpo_qty
+	// 	var all_qty=balance.value.pr_qty - po_qty
+	// 	if(qty>all_qty){
+	// 		document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
+	// 		const btn_draft = document.getElementById("draft");
+	// 		btn_draft.disabled = true;
+	// 		const btn_save = document.getElementById("save");
+	// 		btn_save.disabled = true;
+	// 	}else{
+	// 		document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
+	// 		const btn_draft = document.getElementById("draft");
+	// 		btn_draft.disabled = false;
+	// 		const btn_save = document.getElementById("save");
+	// 		btn_save.disabled = false;
+	// 	}
+	// }
+
+	const checkBalance = async (po_head_id,pr_details_id,qty,count) => {
+		var grandtotal=0;
+		po_details.value.forEach(function (val, index, theArray) {
+			var p = document.getElementById('tprice'+index).value;
+			var pi = p.replace(",", "");
+			grandtotal += parseFloat(pi);
+        });
+
+		var vat = document.getElementById("vat_percent").value;
+        var percent=vat/100;
+		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+		vat_amount.value=new_vat;
+		
+		var discount_display= (discount.value!='') ? discount.value : 0;
+		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+		grand_total.value=overall_total.toFixed(2);
+		orig_amount.value=grandtotal.toFixed(2);
+		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
+		balance.value = response.data.balance;
+		balance_overall.value = response.data.balance_overall;
+		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
+		var all_qty=balance_overall.value.pr_qty - po_qty
+		var total_qty = all_qty + po_qty;
+		// alert(all_qty)
+		// if(total_qty==balance_overall.value.pr_qty){
+		// 	var over_all_total=all_qty
+		// }else{
+		// 	var over_all_total=total_qty
+		// }
+	
+		if(qty>total_qty){
+			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
+	const checkRemainingQty = async (po_head_id,pr_details_id,count) => {
+		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
+		remaining_balance.value[count] = response.data.balance.quantity;
+	}
+
+	const deleteTerms = (id,option) => {
+		if(option=='yes'){
+			axios.get(`/api/delete_terms/`+id).then(function () {
+				dangerAlert_terms.value = !hideAlert.value
+				success.value='Successfully deleted term!'
+				successAlertCD.value = !successAlertCD.value
+				poRevise()
+				terms_list.value=[]
+				setTimeout(() => {
+					closeAlert()
+				}, 2000);
+			}).catch(function(err){
+				success.value=''
+				error.value=''
+			});
+		}else{
+			terms_id.value=id
+			dangerAlert_terms.value = !dangerAlert_terms.value
+		}
+	}
+
+	const deleteInstructions = (id,option) => {
+		if(option=='yes'){
+			axios.get(`/api/delete_instructions/`+id).then(function () {
+				dangerAlert_instructions.value = !hideAlert.value
+				success.value='Successfully deleted instruction!'
+				successAlertCD.value = !successAlertCD.value
+				poRevise()
+				other_list.value=[]
+				setTimeout(() => {
+					closeAlert()
+				}, 2000);
+			}).catch(function(err){
+				success.value=''
+				error.value=''
+			});
+		}else{
+			instruction_id.value=id
+			dangerAlert_instructions.value = !dangerAlert_instructions.value
+		}
+	}
+
+	const onSave = () => {
+		const formData= new FormData()
+		var total = document.querySelector("#grand_total").textContent;
+		var total_replace = total.replace(",", "");
+		formData.append('po_head', JSON.stringify(po_head_rev.value))
+		formData.append('shipping_cost', shipping_cost.value)
+		formData.append('handling_fee', handling_fee.value)
+		formData.append('discount', discount.value)
+		formData.append('vat', vat.value)
+		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
+		formData.append('vat_amount', vat_amount.value)
+		formData.append('vat_in_ex', vat_in_ex.value)
+		formData.append('grand_total', total_replace)
+		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
+		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
+		formData.append('terms_list', JSON.stringify(terms_list.value))
+		formData.append('po_terms', JSON.stringify(po_terms.value))
+		formData.append('po_instructions', JSON.stringify(po_instructions.value))
+		formData.append('other_list', JSON.stringify(other_list.value))
+		formData.append('po_details', JSON.stringify(po_details.value))
+		formData.append('internal_comment', po_head.value.internal_comment ?? '')
+		formData.append('props_id', props.id)
+		po_details.value.forEach(function (val, index, theArray) {
+			formData.append('quantity'+index, remaining_balance.value[index])
+		});
+		axios.post(`/api/save_change_po`,formData).then(function (response) {
+			infoAlert.value = !hideAlert.value
+			approval_set.value = !approval_set.value
+			buttons_set.value = !hide_button.value
+			success.value='You have successfully revise po, please fill in approve form below.'
+			successAlertCD.value=!successAlertCD.value
+			const btn_save = document.getElementById("confirm_alert");
+			btn_save.disabled = true;
+			poReviseTemp()
+			setTimeout(() => {
+				closeAlert()
+			}, 2000);
+		}, function (err) {
+			error.value='Error! Please try again.';
+			dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+    }
+
+	const onSaveApprove = () => {
+		const formData= new FormData()
+		var total = document.querySelector("#grand_total").textContent;
+		formData.append('po_head', JSON.stringify(po_head_rev.value))
+		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
+		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
+		formData.append('approved_by_rev', approved_by_rev.value)
+		formData.append('approved_date', approved_date.value)
+		formData.append('approved_reason', approved_reason.value)
+		formData.append('shipping_cost', shipping_cost.value)
+		formData.append('handling_fee', handling_fee.value)
+		formData.append('discount', discount.value)
+		formData.append('vat', vat.value)
+		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
+		formData.append('vat_amount', vat_amount.value)
+		formData.append('vat_in_ex', vat_in_ex.value)
+		formData.append('grand_total', total)
+		formData.append('internal_comment', po_head.value.internal_comment ?? '')
+		formData.append('terms_list', JSON.stringify(terms_list.value))
+		formData.append('po_terms', JSON.stringify(po_terms.value))
+		formData.append('po_instructions', JSON.stringify(po_instructions.value))
+		formData.append('other_list', JSON.stringify(other_list.value))
+		formData.append('po_details', JSON.stringify(po_details.value))
+		formData.append('props_id', props.id)
+		po_details.value.forEach(function (val, index, theArray) {
+			formData.append('quantity'+index, remaining_balance.value[index])
+		});
+		if(approved_by_rev.value!=0 && approved_date.value!=''){
+			axios.post(`/api/save_approved_revision`,formData).then(function (response) {
+				success.value='You have successfully revised po'
+				successAlertCD.value=!successAlertCD.value
+				const btn_save = document.getElementById("save_approve");
+				btn_save.disabled = true;
+				setTimeout(() => {
+					router.push('/pur_po/view/'+props.id)
+				}, 1000);
+			}, function (err) {
+				error.value='Error! Please try again.';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			if(approved_by_rev.value==0){
+				document.getElementById('approved_by_rev').style.backgroundColor = '#FAA0A0';
+			}
+			if(approved_date.value==0){
+				document.getElementById('approved_date').style.backgroundColor = '#FAA0A0';
+			}
+			const btn_save = document.getElementById("save_approve");
+			btn_save.disabled = true;
+		}
+    }
+
+	const resetError = (button) => {
+		if(button==='button1'){
+			document.getElementById('approved_date').style.backgroundColor = '#FFFFFF';
+		}
+
+		if(button==='button2'){
+			document.getElementById('approved_by_rev').style.backgroundColor = '#FFFFFF';
+		}
+		const btn_save = document.getElementById("save_approve");
+		btn_save.disabled = false;
 	}
 </script>
 <template>
@@ -145,37 +570,37 @@
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8 ">
 									<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-									<span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
+									<span class="text-sm text-gray-700">{{po_head.po_no}}</span>
 								</div>
 								<div class="col-lg-4 col-md-4 col-sm-4">
 									<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
-									<span class="text-sm text-gray-700">05/16/24</span>
+									<span class="text-sm text-gray-700">{{moment(po_head.po_date).format('MMMM DD,YYYY')}}</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8 ">
 									<span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
-									<span class="text-sm text-gray-700">MF Computer Solutions, Inc.</span>
+									<span class="text-sm text-gray-700">{{po_vendor.vendor_name }} ({{ po_vendor.identifier }})</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8 ">
 									<span class="text-sm text-gray-700 font-bold pr-1">Address:</span>
-									<span class="text-sm text-gray-700">February 16, 2024</span>
+									<span class="text-sm text-gray-700">{{po_vendor.address }}</span>
 								</div>
 								<div class="col-lg-4 col-md-4 col-sm-4">
 									<span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
-									<span class="text-sm text-gray-700">(034) 9872-2772</span>
+									<span class="text-sm text-gray-700">{{po_vendor.phone }}</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8 ">
 									<span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
-									<span class="text-sm text-gray-700">Mary Marie</span>
+									<span class="text-sm text-gray-700">{{po_vendor.contact_person }}</span>
 								</div>
 								<div class="col-lg-4 col-md-4 col-sm-4">
 									<span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
-									<span class="text-sm text-gray-700">(034) 9872-2772</span>
+									<span class="text-sm text-gray-700">{{po_vendor.fax }}</span>
 								</div>
 							</div>
 							
@@ -194,29 +619,13 @@
 													<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 													<td class="uppercase p-1 text-center" width="12%">Total</td>
 												</tr>
-												<tr class="">
-													<td class="border-y-none p-1 text-center">1</td>
-													<td class="border-y-none p-1 text-center">5</td>
-													<td class="border-y-none p-1 text-center">pc</td>
-													<td class="border-y-none p-1" colspan="2">Monitor</td>
-													<td class="border-y-none p-1 text-right">100.00</td>
-													<td class="border-y-none p-1 text-right">500.00</td>
-												</tr>
-												<tr class="">
-													<td class="border-y-none p-1 text-center">2</td>
-													<td class="border-y-none p-1 text-center">5</td>
-													<td class="border-y-none p-1 text-center">pc</td>
-													<td class="border-y-none p-1" colspan="2">Mouse</td>
-													<td class="border-y-none p-1 text-right">100.00</td>
-													<td class="border-y-none p-1 text-right">500.00</td>
-												</tr>
-												<tr class="">
-													<td class="border-y-none p-1 text-center">3</td>
-													<td class="border-y-none p-1 text-center">5</td>
-													<td class="border-y-none p-1 text-center">pc</td>
-													<td class="border-y-none p-1" colspan="2">Keyboard</td>
-													<td class="border-y-none p-1 text-right">100.00</td>
-													<td class="border-y-none p-1 text-right">500.00</td>
+												<tr class="" v-for="(pd,index) in po_details">
+													<td class="border-y-none p-1 text-center">{{index+1}}</td>
+													<td class="border-y-none p-1 text-center">{{ pd.quantity }}</td>
+													<td class="border-y-none p-1 text-center">{{pd.uom}}</td>
+													<td class="border-y-none p-1" colspan="2">{{pd.item_description}}</td>
+													<td class="border-y-none p-1 text-center">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-center">{{formatNumber(pd.unit_price * pd.quantity)}}</td>
 												</tr>
 												<tr class="">
 													<td class=""></td>
@@ -229,43 +638,43 @@
 												</tr>
 												<tr class="">
 													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>{{po_head.pr_no}}</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>{{pr_head.requestor}}</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>{{pr_head.enduse}}</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
 													</td>
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-													<td class="p-1 text-right ">200.00</td>
+													<td class="p-1 text-right ">{{formatNumber(po_head.shipping_cost ?? 0)}}</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-													<td class="p-1 text-right ">200.00</td>
+													<td class="p-1 text-right ">{{formatNumber(po_head.handling_fee ?? 0)}}</td>
 												</tr>
 												<tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">100.00</td>
+                                                        <td class="p-1 text-right ">{{formatNumber(po_head.discount ?? 0)}}</td>
                                                     </tr>
-                                                    <!-- <tr class="">
+                                                    <tr class="" v-if="po_head.vat==1">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
-                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12%">
+                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatNumber(po_head.vat_amount ?? 0)">
                                                             </div>
                                                         </td>
-                                                    </tr> -->
-                                                    <tr class="">
+                                                    </tr>
+                                                    <tr class="" v-else>
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="--">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled value="0.00">
                                                             </div>
                                                         </td>
                                                     </tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-													<td class="p-1 text-right font-bold !text-sm">1000.00</td>
+													<td class="p-1 text-right font-bold !text-sm">{{formatNumber(po_head.grand_total ?? 0)}}</td>
 												</tr>
 											</table>
 										</div>
@@ -288,59 +697,29 @@
 													<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 													<td class="uppercase p-1 text-center" width="12%">Total</td>
 												</tr>
-												<tr class="">
-													<td class="align-top  p-1 text-center">1</td>
-													<td class="align-top ">
-                                                        <input type="text" class="w-full  p-1 text-center" name="" id="" value="5">
-                                                    </td>
-													<td class="align-top ">
-                                                        <input type="text" class="w-full  p-1 text-center" name="" id="" value="pc">
-                                                    </td>
-													<td class="align-top leading-none p-0" colspan="2">
-                                                        <textarea type="text" class="w-full p-1 leading-tight resize p-1 text-left" name="" id="" value="Monitor" rows="1"></textarea>
-                                                    </td>
-													<td class="align-top p-0 text-right">
-                                                        <input type="text" class="w-full  p-1 text-right" name="" id="" value="100.00">
-                                                    </td>
-													<td class="align-top p-0 text-right">
-                                                        <input type="text" class="w-full  p-1 text-right" name="" id="" value="500.00">
-                                                    </td>
+												<tr class="" v-for="(pd, index) in po_details" v-if="po_head.status!='Revised'">
+													<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
+													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
+													<td class="border-y-none p-0 text-center">
+														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
+														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+													</td>
+													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
+													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
+													<td class="border-y-none p-1 text-right">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 												</tr>
-												<tr class="">
-													<td class="align-top  p-1 text-center">2</td>
-													<td class="align-top ">
-                                                        <input type="text" class="w-full  p-1 text-center" name="" id="" value="5">
-                                                    </td>
-													<td class="align-top ">
-                                                        <input type="text" class="w-full  p-1 text-center" name="" id="" value="pc">
-                                                    </td>
-													<td class="align-top leading-none p-0" colspan="2">
-                                                        <textarea type="text" class="w-full p-1 leading-tight resize p-1 text-left" name="" id="" value="Mouse" rows="1"></textarea>
-                                                    </td>
-													<td class="align-top p-0 text-right">
-                                                        <input type="text" class="w-full  p-1 text-right" name="" id="" value="100.00">
-                                                    </td>
-													<td class="align-top p-0 text-right">
-                                                        <input type="text" class="w-full  p-1 text-right" name="" id="" value="500.00">
-                                                    </td>
-												</tr>
-                                                <tr class="">
-													<td class="align-top  p-1 text-center">3</td>
-													<td class="align-top ">
-                                                        <input type="text" class="w-full  p-1 text-center" name="" id="" value="5">
-                                                    </td>
-													<td class="align-top ">
-                                                        <input type="text" class="w-full  p-1 text-center" name="" id="" value="pc">
-                                                    </td>
-													<td class="align-top leading-none p-0" colspan="2">
-                                                        <textarea type="text" class="w-full p-1 leading-tight resize p-1 text-left" name="" id="" value="KeyBoard" rows="1"></textarea>
-                                                    </td>
-													<td class="align-top p-0 text-right">
-                                                        <input type="text" class="w-full  p-1 text-right" name="" id="" value="100.00">
-                                                    </td>
-													<td class="align-top p-0 text-right">
-                                                        <input type="text" class="w-full  p-1 text-right" name="" id="" value="500.00">
-                                                    </td>
+												<tr class="" v-for="(pd, index) in po_details_temp" v-else>
+													<span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.quantity) }}</span>
+													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
+													<td class="border-y-none p-0 text-center">
+														{{ pd.quantity }}
+														<!-- <input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,pd.quantity, index)" @change="checkBalance(pd.pr_details_id,pd.quantity, index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="pd.quantity"> -->
+													</td>
+													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
+													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
+													<td class="border-y-none p-1 text-right">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 												</tr>
 												<tr class="">
 													<td class=""></td>
@@ -353,21 +732,31 @@
 												</tr>
 												<tr class="">
 													<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="5">
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>PR-19772-8727</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PR Number:</span>{{po_head.pr_no}}</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>{{pr_head.requestor}}</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>{{pr_head.enduse}}</p>
+														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
 													</td>
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1"></td>
+													<td class="p-0">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="shipping_cost"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-0.5 text-right pr-1" :value="po_head_temp.shipping_cost"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right"></td>
+													<td class="p-0">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="handling_fee"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.handling_fee"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-													<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right"></td>
+													<td class="p-0">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount"  @keyup="additionalCost()" @change="additionalCost()" v-if="po_head.status!='Revised'">
+														<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" v-model="po_head_temp.discount"  @keyup="additionalCost()" @change="additionalCost()" readonly v-else>
+													</td>
 												</tr>
 												<!-- <tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
@@ -383,29 +772,40 @@
 													<td class="border-l-none border-y-none p-0 text-right" colspan="2">
 														<div class="flex justify-end">
 															<!-- <span class="p-1" >VAT</span> -->
-															<select name="" class="border px-1 text-xs" id="">
-																<option value="">VAT</option>
-																<option value="">NON-VAT</option>
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat" v-if="po_head.status!='Revised'">
+																<option value="0">--Select--</option>
+																<option value="1">VAT</option>
+																<option value="2">NON-VAT</option>
+															</select>
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat()" v-model="vat" disabled v-else>
+																<option value="0">--Select--</option>
+																<option value="1">VAT</option>
+																<option value="2">NON-VAT</option>
 															</select>
 														</div>
 													</td>
 													<!-- Kamo na bahala mag hide sang duwa ka input sa dalom kung Non VAT-->
-													<td class="p-0">
+													<td class="p-0" v-if="vat==1">
 														<div class="flex p-0">
-															<input type="text" class="w-10 border-r bg-yellow-50 text-center" value="12%">
-															<input type="text" class="w-10 border-r bg-yellow-50 text-center" value="12" hidden>
-															<input type="text" class="w-full bg-yellow-50 p-1 text-right" value="">
+															<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange()">%
+															<input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
+															<input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost()" @change="additionalCost()">
 														</div>
 													</td>
-													<!-- <td class="p-0">
+													<!-- NON-VAT -->
+													<td class="p-0" v-else>
 														<div class="flex">
-															<input type="text" class="w-full bg-white p-1 text-right" disabled value="--">
+															<input type="number" class="w-full bg-white p-1 text-right" id="vat_percent" readonly value="0">
+															<input type="hidden" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-center" id="vat_amount" v-model="vat_amount">
 														</div>
-													</td> -->
+													</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-													<td class="p-1 text-right font-bold !text-sm">2000.00</td>
+													<td class="p-1 text-right font-bold !text-sm">
+														<span id="grand_total">{{ formatNumber(grand_total) }}</span>
+														<input type="hidden" v-model="orig_amount">
+													</td>
 												</tr>
 											</table>
 										</div>
@@ -441,29 +841,24 @@
 												<td class="align-top pl-1" colspan="2">
 													<div class="flex justify-between">
 														<span class="w-14">Price is </span>
-														<select name="" class="w-full bg-yellow-50" id="">
-															<option value="">Inclusive of VAT</option>
-															<option value="">Exclusive of VAT</option>
+														<select name="" class="w-full bg-yellow-50" id="" v-model="vat_in_ex">
+															<option value="1">Inclusive of VAT</option>
+															<option value="2">Exclusive of VAT</option>
 														</select>
 													</div>
 												</td>
 											</tr>
-											<tr>
-												<td class="align-top text-center" width="4%">4.</td>
-												<td class="align-top  pl-1" colspan="2">
+											<tr v-for="(pt,indexes) in po_terms">
+												<td class="align-top text-center" width="4%">{{ indexes+4 }}.</td>
+												<td class="align-top" colspan="2">
 													<div class="flex justify-between">
-														<span class="w-32">Item Warranty </span>
-														<input name="" class="w-full bg-yellow-50 px-1" id="">
+														<textarea class="w-full bg-yellow-50 px-1" id="" v-model="pt.terms"></textarea>
 													</div>
 												</td>
-											</tr>
-											<tr>
-												<td class="align-top text-center" width="4%">5.</td>
-												<td class="align-top  pl-1" colspan="2">
-													<div class="flex justify-between">
-														<span class="w-32">Delivery Term </span>
-														<input name="" class="w-full bg-yellow-50 px-1" id="">
-													</div>
+												<td>
+													<button type="button" @click="deleteTerms(pt.id,'no')" class="btn btn-danger p-1">
+														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+													</button>
 												</td>
 											</tr>
 											<tr v-for="(t,index) in terms_list">
@@ -494,8 +889,20 @@
 													</button>
 												</td>
 											</tr>
+											<tr v-for="(pi,indexpi) in po_instructions">
+												<td class="align-top" colspan="2">
+													<div class="flex justify-between">
+														<textarea class="w-full bg-yellow-50 px-1" id="" v-model="pi.instructions"></textarea>
+													</div>
+												</td>
+												<td>
+													<button type="button" @click="deleteInstructions(pi.id,'no')" class="btn btn-danger p-1">
+														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+													</button>
+												</td>
+											</tr>
 											<tr v-for="(o, indexes) in other_list">
-												<td class="px-1" colspan="2">{{ o.other_ins }}</td>
+												<td class="px-1" colspan="2">{{ o.instructions }}</td>
 												<td class="p-0 align-top" width="1">
 													<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
@@ -527,13 +934,13 @@
 												<td class="text-center border-b"></td>
 											</tr>
 											<tr>
-												<td class="text-center p-1">Henne Tanant</td>
+												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
-												<td class="text-center p-1">Beverly Sy</td>
+												<td class="text-center p-1">{{checked_by}}</td>
 												<td></td>
-												<td class="text-center p-1">Jonah Marie Dy</td>
+												<td class="text-center p-1">{{recommended_by}}</td>
 												<td></td>
-												<td class="text-center p-1">Glenn Paulate</td>
+												<td class="text-center p-1">{{approved_by}}</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>
@@ -559,7 +966,7 @@
 								<div class="row mt-2 po_buttons">
 									<div class="col-lg-12">
 										<span class="text-xs">Internal Comment</span>
-										<textarea name="" id=""  rows="2" class="w-full bg-yellow-50 text-xs border p-1"></textarea>
+										<textarea name="" id=""  rows="3" class="w-full bg-yellow-50 text-xs border p-1" v-model="po_head.internal_comment"></textarea>
 									</div>
 								</div>
 								<hr	class="border-dashed">
@@ -575,21 +982,25 @@
 										<div class="row my-2 bg-yellow-50 px-2 py-3"> 
 											<div class="col-lg-2 col-md-3 pl-0">
 												<span class="text-sm p-1">Approve Date</span>
-												<input type="date" class="form-control">
+												<input type="date" v-model="approved_date" class="form-control" id="approved_date" @click="resetError('button1')">
 											</div>
 											<div class="col-lg-3 col-md-3">
 												<span class="text-sm p-1">Approve By</span>
-												<select class="form-control">
-													<option value="">Beverly Espareal</option>
+												<select class="form-control" v-model="approved_by_rev" id="approved_by_rev" @click="resetError('button2')">
+													<option value='0'>--Select Approve by--</option>
+													<option :value="revsig.id" v-for="revsig in signatories" :key="revsig.id">{{ revsig.name }}</option>
 												</select>
+												<!-- <select class="form-control">
+													<option value="">Beverly Espareal</option>
+												</select> -->
 											</div>
 											<div class="col-lg-6 col-md-6">
 												<span class="text-sm p-1">Reason</span>
-												<textarea name="" class="form-control" rows="1"></textarea>
+												<textarea name="" class="form-control" rows="1" v-model="approved_reason" ></textarea>
 											</div>
 											<div class="col-lg-1 col-md-1">
 												<span class="text-sm p-1"><br></span>
-												<button @click="openApproveAlert()" class="btn btn-primary btn-sm" >Approve</button>
+												<button @click="onSaveApprove()" class="btn btn-primary btn-sm" id="save_approve">Approve</button>
 											</div>
 										</div>
 									</div>
@@ -598,8 +1009,8 @@
 											<div class="col-lg-12 col-md-12">
 												<div class="flex justify-center space-x-2">
 													<div class="flex justify-between space-x-1">
-														<button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()">Save as Draft</button>
-														<button  class="btn btn-primary w-36"  @click="openInfoAlert()">Save</button>
+														<!-- <button type="submit" class="btn btn-warning w-26 !text-white" @click="openWarningAlert()" id="draft">Save as Draft</button> -->
+														<button  type="button" class="btn btn-primary w-36"  @click="openInfoAlert()" id="save">Save</button>
 													</div>
 													
 												</div>
@@ -614,7 +1025,38 @@
 				</div>
 			</div>
 		</div>
-
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlertCD }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 		<Transition
             enter-active-class="transition ease-out !duration-1000"
             enter-from-class="opacity-0 scale-95"
@@ -649,7 +1091,7 @@
 								<div class="flex justify-center space-x-2">
 									<!-- <a href="/pur_aoq/new" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Create New</a> -->
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
-									<button @click="closeInfoAlert2()" class="btn !bg-blue-500 !text-white btn-sm !rounded-full w-full">Save</button>
+									<button @click="onSave()" class="btn !bg-blue-500 !text-white btn-sm !rounded-full w-full" id="confirm_alert">Save</button>
 								</div>
 							</div>
 						</div>
@@ -734,6 +1176,128 @@
 									<button @click="closeAlert()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
 									<!-- <a href="/pur_po/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New</a> -->
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_terms }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Are you sure you want to remove this term?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
+									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteTerms(terms_id,'yes')" >Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert_instructions }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">Are you sure you want to remove this instruction?</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
+									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteInstructions(instruction_id,'yes')" >Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlerterrors }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
+									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
 						</div>

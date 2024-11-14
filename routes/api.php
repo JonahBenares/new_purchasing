@@ -14,6 +14,7 @@ use App\Http\Controllers\JORController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POController;
 use App\Http\Controllers\JORFQController;
+use App\Http\Controllers\JOAOQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -161,10 +162,32 @@ Route::get('/complete_reminder/{id}',[DashboardController::class,'complete_remin
 Route::post('/complete_all_todo',[DashboardController::class,'complete_all_todo']);
 Route::post('/complete_all_reminder',[DashboardController::class,'complete_all_reminder']);
 
+Route::get('/get_allpo',[POController::class,'get_allpo']);
 Route::get('/supplier_dropdown', [POController::class,'supplier_dropdown']);
 Route::get('/get_prno/{vendor_details_id}', [POController::class,'get_prno']);
 Route::get('/generate_po/{vendor_details_id}/{pr_no}', [POController::class,'generate_po']);
 Route::get('/check_balance/{pr_details_id}', [POController::class,'check_balance']);
+Route::post('/save_po', [POController::class,'save_po']);
+Route::get('/po_viewdetails/{po_head_id}', [POController::class,'po_viewdetails']);
+Route::post('/insert_internalcomment/{id}',[POController::class,'insert_internalcomment']);
+Route::post('/cancel_po_items/{po_details_id}',[POController::class,'cancel_po_items']);
+Route::post('/cancel_all_po/{po_head_id}',[POController::class,'cancel_all_po']);
+Route::get('/delete_terms/{id}',[POController::class,'delete_terms']);
+Route::get('/delete_instructions/{id}',[POController::class,'delete_instructions']);
+Route::get('/check_balance_rev/{po_head_id}/{pr_details_id}', [POController::class,'check_balance_rev']);
+Route::post('/save_change_po', [POController::class,'save_change_po']);
+Route::post('/save_approved_revision', [POController::class,'save_approved_revision']);
+Route::get('/old_revision_data/{id}',[POController::class,'old_revision_data']);
+Route::get('/view_revision_data/{id}',[POController::class,'view_revision_data']);
+Route::get('/po_dropdown', [POController::class,'po_dropdown']);
+Route::get('/generate_dr/{po_head_id}', [POController::class,'generate_dr']);
+Route::get('/get_offer/{rfq_offer_id}', [POController::class,'get_offer']);
+Route::get('/check_dr_balance/{po_dr_id}/{po_details_id}', [POController::class,'check_dr_balance']);
+Route::get('/check_remaining_dr_balance/{po_details_id}', [POController::class,'check_remaining_dr_balance']);
+Route::post('/save_dr', [POController::class,'save_dr']);
+Route::get('/get_dr_view/{po_dr_id}', [POController::class,'get_dr_view']);
+Route::get('/get_alldr', [POController::class,'get_alldr']);
+
 
 
 Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);
@@ -184,4 +207,23 @@ Route::post('/draft_jo_vendor',[JORFQController::class,'draft_jo_vendor']);
 Route::post('/add_additional_jo_terms',[JORFQController::class,'add_additional_jo_terms']);
 Route::post('/update_jo_terms', [JORFQController::class,'update_jo_terms']);
 Route::get('/remove_jo_terms/{jo_rfq_terms_id}', [JORFQController::class,'remove_jo_terms']);
+
+Route::get('/get_all_jo_aoq', [JOAOQController::class,'get_all_jo_aoq']);
+Route::get('/jo_rfq_jor_list', [JOAOQController::class,'all_jo_rfq_jor']);
+Route::get('/jo_rfq_list/{jor_no}', [JOAOQController::class,'all_jo_rfq']);
+Route::get('/create_new_jo_aoq_details/{jo_rfq_head_id}', [JOAOQController::class,'create_new_jo_aoq']);
+Route::post('/add_jo_aoq_head',[JOAOQController::class,'add_jo_aoq_head']);
+Route::get('/jo_aoq_head_details/{jo_aoq_head_id}', [JOAOQController::class,'jo_aoq_head_details']);
+Route::get('/joaoq_donete_details/{jo_aoq_head_id}/{jo_aoq_details_id}', [JOAOQController::class,'joaoq_donete_details']);
+Route::get('/cancel_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'cancel_jo_aoq']);
+Route::post('/update_labor_offers_awarded',[JOAOQController::class,'update_labor_offers_awarded']);
+Route::post('/update_labor_offers_comments',[JOAOQController::class,'update_labor_offers_comments']);
+Route::post('/update_material_offers_awarded',[JOAOQController::class,'update_material_offers_awarded']);
+Route::post('/update_material_offers_comments',[JOAOQController::class,'update_material_offers_comments']);
+Route::post('/update_jo_aoq_draft/{jo_aoq_head_id}',[JOAOQController::class,'update_jo_aoq_draft']);
+Route::post('/save_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'save_jo_aoq']);
+// // Route::get('/export-aoq/{aoq_head_id}', [JOAOQController::class, 'export_aoq']);
+Route::get('/jo_vendor_offers/{jo_rfq_vendor_id}/{jo_rfq_head_id}',[JOAOQController::class,'jo_vendor_offers']);
+Route::post('/add_jo_aoq_vendor',[JOAOQController::class,'add_jo_aoq_vendor']);
+Route::post('/done_te_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'done_te_jo_aoq']);
 

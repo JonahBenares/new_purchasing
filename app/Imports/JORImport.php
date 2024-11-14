@@ -8,6 +8,7 @@ use App\Models\JORMaterialDetails;
 use App\Models\JORSeries;
 use App\Models\JORNotes;
 use App\Models\Departments;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
@@ -45,7 +46,8 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
             'completion_date' => 'I8',
             'delivery_date' => 'I9',
             'urgency_no' => 'I10',
-            'general_description' => 'B13',
+            'project_activity' => 'B13',
+            'general_description' => 'B14',
         ];
     }
 
@@ -58,8 +60,11 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
     {
         if(count($row)!=0){
             $company=Config::get('constants.company');
-            $department_id=Departments::where('department_name',$row['department'])->value('id');
-            $department_code=Departments::where('department_name',$row['department'])->value('department_code');
+            $department=trim($row['department']);
+            $requestor=trim($row['requestor']);
+            $requestor_id=User::where('name',$requestor)->value('id');
+            $department_id=Departments::where('department_name',$department)->value('id');
+            $department_code=Departments::where('department_name',$department)->value('department_code');
             if($row['jo_request']!=''){
                 $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                 $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
@@ -76,6 +81,7 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                 $series['series']=$jor_series;
                 $jor_series_insert=JORSeries::create($series);
                 if($jor_series_insert){
+                    $jorhead['project_activity']=$row['project_activity'];
                     $jorhead['general_description']=$row['general_description'];
                     $jorhead['location']=$row['jo_request'];
                     $jorhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
@@ -85,10 +91,11 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                     $jorhead['jor_no']=$jor_no;
                     $jorhead['site_jor']=$row['jo_no'];
                     $jorhead['department_id']=$department_id;
-                    $jorhead['department_name']=$row['department'];
+                    $jorhead['department_name']=$department;
                     $jorhead['dept_code']=$department_code;
-                    $jorhead['requestor']=$row['requestor'];
-                    $jorhead['urgency']=$row['urgency_no'];
+                    $jorhead['requestor_id']=$requestor_id;
+                    $jorhead['requestor']=$requestor;
+                    $jorhead['urgency']=$row['urgency_no'] ?? 0;
                     $jorhead['purpose']=$row['purpose'];
                     $jorhead['process_code']='';
                     $jorhead['user_id']= $this->user_id;

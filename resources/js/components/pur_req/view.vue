@@ -215,7 +215,7 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card print:h-screen">
 					<div class="py-2 px-2 bg-red-500" v-if="get_prhead.status=='Cancelled'">
-						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by_all }}  || Cancelled Date: {{moment().format('MMM. DD,YYYY')}} </span>
+						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by_all }}  || Cancelled Date: {{moment(get_prhead.cancelled_date).format('MMM. DD,YYYY')}} </span>
 					</div>
 					<div class="card-body">
 						<div class="pt-1 " id="printable">
@@ -365,8 +365,8 @@
 							<div class="row my-2 po_buttons" > 
 								<div class="col-lg-12 col-md-12">
 									<div class="flex justify-center space-x-2">
-										<button type="submit" class="btn btn-danger mr-2 w-36" @click="cancelAllpr('no')" v-if="get_prhead.status!='Cancelled' && get_prhead.status!='Closed'">Cancel</button>
-										<button type="submit" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
+										<button type="button" class="btn btn-danger mr-2 w-36" @click="cancelAllpr('no')" v-if="get_prhead.status!='Cancelled' && get_prhead.status!='Closed'">Cancel</button>
+										<button type="button" class="btn btn-primary mr-2 w-36" @click="printDiv()">Print</button>
 									</div>
 								</div>
 							</div>

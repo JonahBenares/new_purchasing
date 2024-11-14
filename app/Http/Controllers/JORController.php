@@ -153,6 +153,7 @@ class JORController extends Controller
         $jornotes=$request->input("jornotes");
         $notes_list=$request->input("notes_list");
         $insertjorhead=JORHead::where('id',$request->id)->first();
+        $requestor=User::where('id',$request->requestor)->value('name');
         $department_name=Departments::where('id',$request->department_id)->value('department_name');
         $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $data_head=[
@@ -168,7 +169,8 @@ class JORController extends Controller
             'dept_code'=>$department_code,
             'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
             'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
-            'requestor'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
+            'requestor_id'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
+            'requestor'=>$requestor,
             'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
             'status'=>'Saved',
             'project_activity'=>($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '',
@@ -244,6 +246,7 @@ class JORController extends Controller
         $item_list=$request->input("item_list");
         $jornotes=$request->input("jornotes");
         $notes_list=$request->input("notes_list");
+        $requestor=User::where('id',$request->requestor)->value('name');
         $insertjorrhead=JORHead::where('id',$request->id)->first();
         if($request->props_id!=0){
             $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
@@ -285,7 +288,8 @@ class JORController extends Controller
             'dept_code'=>$department_code,
             'urgency'=>($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '',
             'process_code'=>($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '',
-            'requestor'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '',
+            'requestor_id'=>($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '',
+            'requestor'=>$requestor,
             'purpose'=>($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '',
             'status'=>'Draft',
             'project_activity'=>($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '',
@@ -391,7 +395,7 @@ class JORController extends Controller
             'urgency'=>0,
             'process_code'=>'',
             'purpose'=>'',
-            'requestor'=>'',
+            'requestor'=>0,
             'project_activity'=>'',
             'general_description'=>'',
         ];
@@ -400,6 +404,7 @@ class JORController extends Controller
 
     public function save_jor_manual(Request $request){
         $scope_list=$request->input("scope_list");
+        $requestor=User::where('id',$request->requestor)->value('name');
         $item_list=$request->input("item_list");
         $notes_list=$request->input("notes_list");
         $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
@@ -413,18 +418,20 @@ class JORController extends Controller
                 'department_id'=>'required|integer',
                 'location'=>'required|string',
                 'date_prepared'=>'required|string',
-                'requestor'=>'required|string',
+                // 'requestor'=>'required|string',
+                'requestor'=>'required|integer|gt:0',
                 'purpose'=>'required|string',
                 'general_description'=>'required|string'
 
             ],
             [
                'department_id.required'=> 'The department field is required.',
-               'location.required'=> 'The location field is required.',
-               'date_prepared.required'=> 'The date prepared field is required.',
-               'requestor.required'=> 'The requestor field is required.',
-               'purpose.required'=> 'The purpose field is required.',
-               'general_description.required'=> 'The general description field is required.',
+               'gt'=> 'The :attribute field is required.',
+            //    'location.required'=> 'The location field is required.',
+            //    'date_prepared.required'=> 'The date prepared field is required.',
+            //    'requestor.required'=> 'The requestor field is required.',
+            //    'purpose.required'=> 'The purpose field is required.',
+            //    'general_description.required'=> 'The general description field is required.',
             ]
         );
         // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
@@ -437,6 +444,8 @@ class JORController extends Controller
         $data_head['dept_code']=$department_code;
         $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
         $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '';
+        $data_head['requestor']=$requestor;
         // $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
         // $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';
@@ -591,6 +600,7 @@ class JORController extends Controller
         $department_name=Departments::where('id',$request->department_id)->value('department_name');
         $department_code=Departments::where('id',$request->department_id)->value('department_code');
         $series_rows = JORSeries::where('year',$year)->count();
+        $requestor=User::where('id',$request->requestor)->value('name');
         $data_head=$this->validate($request,
             [
                 'jor_no'=>'required|string',
@@ -610,7 +620,8 @@ class JORController extends Controller
         $data_head['dept_code']=$department_code;
         $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
         $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '';
+        $data_head['requestor']=$requestor;
         $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
         $data_head['method']='Manual';
         $data_head['status']='Saved';
