@@ -560,6 +560,9 @@ class POController extends Controller
         $po_details = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
         })->get();
+        $po_details_view = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
         $po_details_temp = PoDetailsTemp::where('po_head_id',$po_head_id)->get();
         $cancelled_by=User::where('id',$po_head->cancelled_by)->value('name');
         $po_terms = POTerms::where('po_head_id',$po_head_id)->get();
@@ -583,6 +586,7 @@ class POController extends Controller
             'pr_head'=>$pr_head,
             'po_vendor'=>$po_vendor,
             'po_details'=>$po_details,
+            'po_details_view'=>$po_details_view,
             'po_details_temp'=>$po_details_temp,
             'po_terms'=>$po_terms,
             'po_terms_temp'=>$po_terms_temp,

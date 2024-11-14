@@ -22,6 +22,7 @@
 	const pr_head = ref([])
 	const po_vendor = ref([])
 	const po_details = ref([])
+	const po_details_view = ref([])
 	const po_terms = ref([])
 	const po_instructions = ref([])
 	const po_dr = ref([])
@@ -52,6 +53,7 @@
 		pr_head.value = response.data.pr_head;
 		po_vendor.value = response.data.po_vendor;
 		po_details.value = response.data.po_details;
+		po_details_view.value = response.data.po_details_view;
 		po_terms.value = response.data.po_terms;
 		po_instructions.value = response.data.po_instructions;
 		prepared_by.value = response.data.prepared_by;
@@ -249,7 +251,7 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Unit Price</td>
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
-                                                    <tr class="" v-for="(pd,indeex) in po_details">
+                                                    <tr class="" v-for="(pd,indeex) in po_details_view">
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
