@@ -116,7 +116,6 @@
 		jo_options.value='';
 		try {
 			axios.post("/api/import_jor",formData).then(function (response) {
-				console.log(response.data)
 				jor_head_id.value=response.data.jor_head_id
 				getImportdata(jor_head_id.value)
 				jo_options.value='jo_upload';
@@ -984,7 +983,7 @@
 											<td class="p-1 align-top text-center">{{ jl.quantity }}</td>
 											<td class="p-1 align-top text-center">{{ jl.uom }}</td>
 											<td class="p-1 align-top text-center">{{ jl.unit_cost }}</td>
-											<td class="p-1 align-top text-center">{{ jl.unit_cost * jl.quantity  }}</td>
+											<td class="p-1 align-top text-center">{{ jl.total_cost  }}</td>
 											<td class="p-1">
 												<input placeholder="Recom Date" type="text" v-model="recom_date_update_labor[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(jl.id,'Labors')" v-if="props.id==0 && (jl.recom_date==null || jl.recom_date=='')">
 
@@ -1005,6 +1004,7 @@
 											<td class="p-1 align-top text-center">{{ x.scope_uom }}</td>
 											<td class="p-1 align-top text-center">{{ x.scope_unit_cost }}</td>
 											<td class="p-1 align-top text-center">{{ x.scope_unit_cost * x.scope_qty  }}</td>
+											<!-- <td class="p-1 align-top text-center">{{ x.scope_unit_cost * x.scope_qty  }}</td> -->
 											<td class="p-1"><input type="date" class="w-full" v-model="x.scope_recom_date"></td>
 											<td class="text-center">
 												<button class="btn btn-danger p-1" @click="removeScopeitem(indexes)">
