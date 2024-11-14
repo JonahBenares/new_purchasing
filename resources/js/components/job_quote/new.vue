@@ -18,6 +18,8 @@
 	let rfq_no=ref('');
 	let date_created=ref('');
 	let vendor=ref('');
+	let all_labor_checkbox=ref(0);
+	let all_material_checkbox=ref(0);
 
 	const props = defineProps({
         id:{
@@ -81,11 +83,15 @@
 				var check_labor=document.getElementsByClassName('checkboxeslabor')[x].checked;
 				if(!check_labor){
 					checkalllabor.value=allSelectedLabor
-					LaborDetails.value[x].labor_checkbox=1;
+					if(all_labor_checkbox.value == 0){
+						LaborDetails.value[x].labor_checkbox=1;
+					}
 					document.getElementById("AddVendorButton").style.display="block"
 				}else{
 					checkalllabor.value=!allSelectedLabor
-					LaborDetails.value[x].labor_checkbox=0;
+					if(all_labor_checkbox.value == 1){
+						LaborDetails.value[x].labor_checkbox=0;
+					}
 
 					if(material_count>=1){
 						document.getElementById("AddVendorButton").style.display="block"
@@ -112,12 +118,16 @@
 				var check_material=document.getElementsByClassName('checkboxesmaterial')[x].checked;
 				if(!check_material){
 					checkallmaterial.value=allSelectedMaterial
-					MaterialDetails.value[x].material_checkbox=1;
+					if(all_material_checkbox.value == 0){
+						MaterialDetails.value[x].material_checkbox=1;
+					}
 					document.getElementById("AddVendorButton").style.display="block"
 				}else{
 					checkallmaterial.value=!allSelectedMaterial
-					MaterialDetails.value[x].material_checkbox=0;
-
+					if(all_material_checkbox.value == 1){
+						MaterialDetails.value[x].material_checkbox=0;
+					}
+					
 					if(labor_count>=1){
 						document.getElementById("AddVendorButton").style.display="block"
 					}else{
@@ -386,7 +396,7 @@
 									<table class="w-full table-bordered !text-xs mt-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor">
+												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase" width="">Scope Of Works</td>
@@ -412,7 +422,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial">
+												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>

@@ -201,9 +201,9 @@ class JORFQController extends Controller
 
                     // $update_status = PrReportDetails::where('pr_details_id','=', $ri->pr_details_id)->update(['status' => 'For Canvass']);
 
-                    // for($l=0;$l<3;$l++){
+                    for($l=0;$l<3;$l++){
                         JORFQLaborOffers::create([
-                            // 'offer_no'=>$l+1,
+                            'offer_no'=>$l+1,
                             'jo_rfq_head_id'=>$jo_rfq_head_id,
                             'jo_rfq_vendor_id'=>$jo_rfq_vendor_id,
                             'jo_rfq_labor_details_id'=>$jo_rfq_labor_details_id,
@@ -212,7 +212,7 @@ class JORFQController extends Controller
                             // 'remaining_qty'=>$rl->remaining_qty,
                             'uom'=>$rl->uom,
                         ]);
-                    // }
+                    }
                 }
 
                 foreach(json_decode($rfq_materials) as $rm){
@@ -455,8 +455,9 @@ class JORFQController extends Controller
                 $rfq_l['created_at']=date('Y-m-d H:i:s');
                 $jo_rfq_labor_details_id=JORFQLaborDetails::insertGetId($rfq_l);
 
+                for($l=0;$l<3;$l++){
                     JORFQLaborOffers::create([
-                        // 'offer_no'=>$x+1,
+                        // 'offer_no'=>$l+1,
                         'jo_rfq_head_id'=>$jo_rfq_head_id,
                         'jo_rfq_vendor_id'=>$jo_rfq_vendor_id,
                         'jo_rfq_labor_details_id'=>$jo_rfq_labor_details_id,
@@ -465,6 +466,7 @@ class JORFQController extends Controller
                         // 'remaining_qty'=>$remaining_qty,
                         'uom'=>$jrld->jor_labor_details->uom,
                     ]);
+                }
             }
 
             $jo_rfq_material_details = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->where('status',null)->get()->unique('jor_material_details_id');
@@ -563,8 +565,9 @@ class JORFQController extends Controller
     
                             // $update_status = PrReportDetails::where('jor_labor_details_id','=', $al->jor_labor_details_id)->update(['status' => 'For Canvass']);
 
+                            for($l=0;$l<3;$l++){
                                 JORFQLaborOffers::create([
-                                    // 'offer_no'=>$x+1,
+                                    'offer_no'=>$l+1,
                                     'jo_rfq_head_id'=>$jo_rfq_head_id,
                                     'jo_rfq_vendor_id'=>$jrv->id,
                                     'jo_rfq_labor_details_id'=>$jo_rfq_labor_details_id,
@@ -573,6 +576,7 @@ class JORFQController extends Controller
                                     // 'remaining_qty'=>$ai->remaining_qty,
                                     'uom'=>$al->uom,
                                 ]);
+                            }
                         }
                     }
 

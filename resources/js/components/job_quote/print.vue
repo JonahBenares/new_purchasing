@@ -27,6 +27,8 @@
 	let count_ccr=ref(0);
 	let LaborDetails=ref([]);
 	let MaterialDetails=ref([]);
+	let all_labor_checkbox=ref(0);
+	let all_material_checkbox=ref(0);
 
 
 	const props = defineProps({
@@ -210,11 +212,15 @@
 					var check_labor=document.getElementsByClassName('checkboxeslabor')[x].checked;
 					if(!check_labor){
 						checkalllabor.value=allSelectedLabor
-						LaborDetails.value[x].labor_checkbox=1;
+						if(all_labor_checkbox.value == 0){
+							LaborDetails.value[x].labor_checkbox=1;
+						}
 						document.getElementById("AddItemsBtn").disabled = false;
 					}else{
 						checkalllabor.value=!allSelectedLabor
-						LaborDetails.value[x].labor_checkbox=0;
+						if(all_labor_checkbox.value == 1){
+							LaborDetails.value[x].labor_checkbox=0;
+						}
 
 						if(material_count>=1){
 							document.getElementById("AddItemsBtn").disabled = false;
@@ -235,17 +241,22 @@
 						labor_count++;
 					}
 				}
-
+				// alert(all_material_checkbox.value)
 				var count_check_material=document.getElementsByClassName('checkboxesmaterial');
 				for(var x=0;x<count_check_material.length;x++){
 					var check_material=document.getElementsByClassName('checkboxesmaterial')[x].checked;
+					count_check_material[x].value = false;
 					if(!check_material){
 						checkallmaterial.value=allSelectedMaterial
-						MaterialDetails.value[x].material_checkbox=1;
+						if(all_material_checkbox.value == 0){
+							MaterialDetails.value[x].material_checkbox=1;
+						}
 						document.getElementById("AddItemsBtn").disabled = false;
 					}else{
 						checkallmaterial.value=!allSelectedMaterial
-						MaterialDetails.value[x].material_checkbox=0;
+						if(all_material_checkbox.value == 1){
+							MaterialDetails.value[x].material_checkbox=0;
+						}
 
 						if(labor_count>=1){
 							document.getElementById("AddItemsBtn").disabled = false;
@@ -461,14 +472,32 @@
 													<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
 													<span hidden>{{ labor_no++ }}</span>
 													<template v-if="(rvi.canvassed == 0)">
-														<td class="align-top" ></td>
-														<td class="align-top"></td>
+														<td class="align-top">
+															<div class="border-b p-1 w-full h-10 !align-top"></div>
+															<div class="border-b p-1 w-full h-10 !align-top"></div>
+															<div class="p-1 w-full h-10 !align-top"></div>
+														</td>
+														<td class="align-top">
+															<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+															<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+															<div class="p-1 w-full h-10 !align-top text-center"></div>
+														</td>
 													</template>
 													<template v-if="(rvi.canvassed == 1)">
-														<template v-for="rlo in RFQLaborOffers">
+														<td class="align-top">
+															<template v-for="rlo in RFQLaborOffers">
+																<div class="border-b p-1 w-full h-10 !align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</div>
+															</template>
+														</td>
+														<td class="align-top">
+															<template v-for="rlo in RFQLaborOffers">
+																<div class="border-b p-1 w-full h-10 !align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
+															</template>
+														</td>
+														<!-- <template v-for="rlo in RFQLaborOffers">
 															<td class="align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</td>
 															<td class="align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</td>
-														</template>
+														</template> -->
 													</template>
 												</tr>
 												</tbody>
@@ -812,7 +841,7 @@
 									<table class="w-full table-bordered !text-xs mt-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor">
+												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="2%">#</td>
 											<td class="p-1 uppercase" width="">Scope Of Works</td>
@@ -838,7 +867,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial">
+												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>

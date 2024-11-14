@@ -156,7 +156,7 @@
                                 </thead>
                                 <template #column-2="props">
                                     <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc">
-                                        <li :class="(ven.count_labor_awarded != 0 || ven.count_material_awarded != 0) ? 'px-1 bg-lime-500' : 'px-1'">
+                                        <li :class="((ven.count_labor_awarded != 0 || ven.count_material_awarded != 0) && props.rowData.status != 'Cancelled') ? 'px-1 bg-lime-500' : 'px-1'">
                                             {{ ven.vendor_name }} ({{ ven.identifier }})
                                         </li>
                                     </ul>
