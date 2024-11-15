@@ -103,15 +103,15 @@
 		@foreach($first_labor_offers AS $flo)
 			@if($flo['jor_labor_details_id']==$ald['jor_labor_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$flo['offer'];}}</td>
-			@if($ald['min_price']==$flo['unit_price'] && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $flo['currency'] }} {{ number_format($flo['unit_price'],2) }}</td>
+			@if($ald['min_price']==$flo['unit_price'] && $flo['unit_price'] != 0 && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($flo['unit_price'] != 0) ? $flo['currency'] : '' }} {{ ($flo['unit_price'] != 0) ? number_format($flo['unit_price'],2) : '' }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $flo['currency'] }} {{ number_format($flo['unit_price'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($flo['unit_price'] != 0) ? $flo['currency'] : '' }} {{ ($flo['unit_price'] != 0) ? number_format($flo['unit_price'],2) : '' }}</td>
 			@endif
 			@if($flo['awarded'] == 1 && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $flo['currency'] }}  {{ number_format($flo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($flo['unit_price'] != 0) ? $flo['currency'] : '' }}  {{ ($flo['unit_price'] != 0) ? number_format($flo['unit_price'] * $ald['quantity'],2) : '' }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $flo['currency']}}  {{ number_format($flo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($flo['unit_price'] != 0) ? $flo['currency'] : '' }}  {{ ($flo['unit_price'] != 0) ? number_format($flo['unit_price'] * $ald['quantity'],2) : '' }}</td>
 			@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$flo['comments'];}}</td>
 			@endif
@@ -121,15 +121,15 @@
 		@foreach($second_labor_offers AS $slo)
 			@if($slo['jor_labor_details_id']==$ald['jor_labor_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$slo['offer'];}}</td>
-			@if($ald['min_price']==$slo['unit_price'] && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $slo['currency'] }} {{ number_format($slo['unit_price'],2) }}</td>
+			@if($ald['min_price']==$slo['unit_price'] && $slo['unit_price'] != 0 && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($slo['unit_price'] != 0) ? $slo['currency'] : '' }} {{ ($slo['unit_price'] != 0) ? number_format($slo['unit_price'],2) : '' }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $slo['currency'] }} {{ number_format($slo['unit_price'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($slo['unit_price'] != 0) ? $slo['currency'] : '' }} {{ ($slo['unit_price'] != 0) ? number_format($slo['unit_price'],2) : '' }}</td>
 			@endif
 			@if($slo['awarded'] == 1 && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $slo['currency'] }}  {{ number_format($slo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($slo['unit_price'] != 0) ? $slo['currency'] : '' }}  {{ ($slo['unit_price'] != 0) ? number_format($slo['unit_price'] * $ald['quantity'],2) : '' }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $slo['currency']}}  {{ number_format($slo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($slo['unit_price'] != 0) ? $slo['currency'] : '' }}  {{ ($slo['unit_price'] != 0) ? number_format($slo['unit_price'] * $ald['quantity'],2) : '' }}</td>
 			@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$slo['comments'];}}</td>
 			@endif
@@ -139,15 +139,15 @@
 		@foreach($third_labor_offers AS $tlo)
 			@if($tlo['jor_labor_details_id']==$ald['jor_labor_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$tlo['offer'];}}</td>
-			@if($ald['min_price']==$tlo['unit_price'] && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $tlo['currency'] }} {{ number_format($tlo['unit_price'],2) }}</td>
+			@if($ald['min_price']==$tlo['unit_price'] && $tlo['unit_price'] != 0 && $status != 'Cancelled')
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($tlo['unit_price'] != 0) ? $tlo['currency'] : '' }} {{ ($tlo['unit_price'] != 0) ? number_format($tlo['unit_price'],2) : '' }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $tlo['currency'] }} {{ number_format($tlo['unit_price'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($tlo['unit_price'] != 0) ? $tlo['currency'] : '' }} {{ ($tlo['unit_price'] != 0) ? number_format($tlo['unit_price'],2) : '' }}</td>
 			@endif
 			@if($tlo['awarded'] == 1 && $status != 'Cancelled')
-				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $tlo['currency'] }}  {{ number_format($tlo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($tlo['unit_price'] != 0) ? $tlo['currency'] : '' }}  {{ ($tlo['unit_price'] != 0) ? number_format($tlo['unit_price'] * $ald['quantity'],2) : '' }}</td>
 			@else
-				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $tlo['currency']}}  {{ number_format($tlo['unit_price'] * $ald['quantity'],2) }}</td>
+				<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($tlo['unit_price'] != 0) ? $tlo['currency'] : '' }}  {{ ($tlo['unit_price'] != 0) ? number_format($tlo['unit_price'] * $ald['quantity'],2) : '' }}</td>
 			@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$tlo['comments'];}}</td>
 			@endif
@@ -173,15 +173,15 @@
 		@foreach($first_offers AS $fo)
 		@if($amd['jor_material_details_id']==$fo['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['offer'];}}</td>
-		@if($amd['min_price']==$fo['unit_price'] && $status != 'Cancelled')
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $fo['currency'] }} {{ number_format($fo['unit_price'],2) }}</td>
+		@if($amd['min_price']==$fo['unit_price'] && $fo['unit_price'] != 0 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }} {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency'] }} {{ number_format($fo['unit_price'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }} {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'],2) : '' }}</td>
 		@endif
 		@if($fo['awarded'] == 1 && $status != 'Cancelled')
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $fo['currency'] }}  {{ number_format($fo['unit_price'] * $amd['quantity'],2) }}</td>
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }}  {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'] * $amd['quantity'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency']}}  {{ number_format($fo['unit_price'] * $amd['quantity'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }}  {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'] * $amd['quantity'],2) : '' }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['remarks'];}}</td>
 		@endif
@@ -191,15 +191,15 @@
 	@foreach($second_offers AS $so)
 		@if($amd['jor_material_details_id']==$so['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['offer'];}}</td>
-		@if($amd['min_price']==$so['unit_price'] && $status != 'Cancelled')
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $so['currency'] }} {{ number_format($so['unit_price'],2) }}</td>
+		@if($amd['min_price']==$so['unit_price'] && $so['unit_price'] != 0 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }} {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency'] }} {{ number_format($so['unit_price'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }} {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'],2) : '' }}</td>
 		@endif
 		@if($so['awarded'] == 1 && $status != 'Cancelled')
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $so['currency'] }}  {{ number_format($so['unit_price'] * $amd['quantity'],2) }}</td>
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }}  {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'] * $amd['quantity'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency']}}  {{ number_format($so['unit_price'] * $amd['quantity'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }}  {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'] * $amd['quantity'],2) : '' }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['remarks'];}}</td>
 		@endif
@@ -209,15 +209,15 @@
 	@foreach($third_offers AS $to)
 		@if($amd['jor_material_details_id']==$to['jor_material_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['offer'];}}</td>
-		@if($amd['min_price']==$to['unit_price'] && $status != 'Cancelled')
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $to['currency'] }} {{ number_format($to['unit_price'],2) }}</td>
+		@if($amd['min_price']==$to['unit_price'] && $to['unit_price'] != 0&& $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }} {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency'] }} {{ number_format($to['unit_price'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }} {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'],2) : '' }}</td>
 		@endif
 		@if($to['awarded'] == 1 && $status != 'Cancelled')
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $to['currency'] }}  {{ number_format($to['unit_price'] * $amd['quantity'],2) }}</td>
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }}  {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'] * $amd['quantity'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency']}}  {{ number_format($to['unit_price'] * $amd['quantity'],2) }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }}  {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'] * $amd['quantity'],2) : '' }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['remarks'];}}</td>
 		@endif

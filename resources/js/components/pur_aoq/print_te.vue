@@ -258,14 +258,14 @@
 											</td>
 											<td :class="(ai.min_price == fo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
-													<span>{{ fo.currency }}</span>
-													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
+												<span>{{ (fo.unit_price != 0) ? fo.currency : '' }}</span>
+												<span>{{  (fo.unit_price != 0) ? parseFloat(fo.unit_price).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td colspan="2" :class="(fo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
-													<span>{{ fo.currency }}</span>
-													<span>{{  parseFloat(fo.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{ (fo.unit_price != 0) ? fo.currency : '' }}</span>
+													<span>{{  (fo.unit_price != 0) ? parseFloat(fo.unit_price * ai.quantity).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td class="p-1 align-top">{{ fo.remarks }}</td>
@@ -283,14 +283,14 @@
 											</td>
 											<td :class="(ai.min_price == so.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
-													<span>{{ so.currency }}</span>
-													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
+												<span>{{ (so.unit_price != 0) ? so.currency : '' }}</span>
+												<span>{{  (so.unit_price != 0) ? parseFloat(so.unit_price).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td :class="(so.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
-													<span>{{ so.currency }}</span>
-													<span>{{  parseFloat(so.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{ (so.unit_price != 0) ? so.currency : '' }}</span>
+													<span>{{  (so.unit_price != 0) ? parseFloat(so.unit_price * ai.quantity).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td class="p-1 align-top">{{ so.remarks }}</td>
@@ -307,15 +307,15 @@
 											</td>
 											<td :class="(ai.min_price == to.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
 												<div class="flex justify-between space-x-1">
-													<span>{{ to.currency }}</span>
-													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
+												<span>{{ (to.unit_price != 0) ? to.currency : '' }}</span>
+												<span>{{  (to.unit_price != 0) ? parseFloat(to.unit_price).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<!-- <td class="p-1 align-top" colspan="2"> -->
 											<td :class="(to.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
-													<span>{{ to.currency }}</span>
-													<span>{{  parseFloat(to.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{ (to.unit_price != 0) ? to.currency : '' }}</span>
+													<span>{{  (to.unit_price != 0) ? parseFloat(to.unit_price * ai.quantity).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td class="p-1 align-top">{{ to.remarks }}</td>
