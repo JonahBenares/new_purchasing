@@ -13,6 +13,7 @@ use App\Http\Controllers\PRController;
 use App\Http\Controllers\JORController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POController;
+use App\Http\Controllers\JOIController;
 use App\Http\Controllers\JORFQController;
 use App\Http\Controllers\JOAOQController;
 /*
@@ -227,3 +228,7 @@ Route::get('/jo_vendor_offers/{jo_rfq_vendor_id}/{jo_rfq_head_id}',[JOAOQControl
 Route::post('/add_jo_aoq_vendor',[JOAOQController::class,'add_jo_aoq_vendor']);
 Route::post('/done_te_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'done_te_jo_aoq']);
 
+Route::get('/get_alljo',[JOIController::class,'get_alljo']);
+Route::get('/jo_supplier_dropdown', [JOIController::class,'jo_supplier_dropdown']);
+Route::get('/get_jorno/{vendor_details_id}', [JOIController::class,'get_jorno']);
+Route::get('/generate_joi/{vendor_details_id}/{jor_no}', [JOIController::class,'generate_joi']);
