@@ -440,7 +440,7 @@
 											<div class="flex justify-between space-x-1" v-if="(head.status != 'Awarded')">
 												<button type="submit" class="btn btn-warning w-26 !text-white" @click="openDraftAlert()">Save as Draft</button>
 												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_aoq_details_id != props.aoq_details_id)">Back</button>
-												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded == 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26" disabled>Save AOQ</button> 
+												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded == 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26" style="pointer-events: none;">Save AOQ</button> 
 												<button v-if="(max_id == latest_aoq_details_id) && vendordets.count_awarded != 0" type="submit" id="saveaoqbtn" @click="openSaveAlert()" class="btn btn-primary w-26">Save AOQ</button> 
 												<button v-if="(max_id != latest_aoq_details_id)" @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
 											</div>

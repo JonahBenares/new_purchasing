@@ -515,8 +515,8 @@
 	}
 
 	const openAOQ = () => {
-		if(aoq_status == 'Done TE'){
-            router.push('/job_aoq/view/'+props.aoq_id+'/'+aoq_details_id)
+		if(aoq_status.value == 'Done TE'){
+            router.push('/job_aoq/view/'+props.aoq_id+'/'+aoq_details_id.value)
         }else{
             router.push(`/job_aoq/print_te/${props.aoq_id}`)
         }

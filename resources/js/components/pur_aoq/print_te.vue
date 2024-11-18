@@ -457,13 +457,13 @@
 				<div class="col-lg-12" v-else>
 					<div class="flex justify-center space-x-1">
 						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
+						<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-12" v-else>
 				<div class="flex justify-center space-x-1">
-					<a :href="'/export-jo-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
-					<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
+					<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Update Vendor/s</button>
 				</div>
 			</div>
 		</div>

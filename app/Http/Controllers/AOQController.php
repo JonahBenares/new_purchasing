@@ -562,6 +562,11 @@ class AOQController extends Controller
     }
 
     public function open_aoq($aoq_head_id){
+        $update_awarded_open_aoq=AOQHead::where('id',$aoq_head_id)->update([
+            'status'=>null,
+            'aoq_status'=>'Done TE',
+        ]);
+
         $update_canvass_open_aoq=RFQVendor::whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->update([
             'canvassed'=>0,
         ]);
