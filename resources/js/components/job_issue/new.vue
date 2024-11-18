@@ -1,16 +1,38 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
-
+	const error =  ref('');
+	const success =  ref('');
+	const jorno_dropdown =  ref([]);
+	const suppliers =  ref([]);
 	const dangerAlert = ref(false)
 	const successAlert = ref(false)
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	const vendor_details_id =  ref('');
+	const jor_no =  ref('');
+	onMounted(async () => {
+		getSupplier()
+	})
+	const formatNumber = (number) => {
+      return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+	const getSupplier = async () => {
+		let response = await axios.get("/api/jo_supplier_dropdown");
+		suppliers.value = response.data.suppliers;
+	}
+
+	const getSupplierJOR = async () => {
+		let response = await axios.get("/api/get_jorno/"+vendor_details_id.value);
+		jorno_dropdown.value = response.data.jorno_dropdown;
+		// po_head.value=[]
+	}
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -85,6 +107,23 @@
 	const removeOthers = (index) => {
 		other_list.value.splice(index,1)
 	}
+
+	const generateJO = async () => {
+		let response = await axios.get("/api/generate_po/"+vendor_details_id.value+'/'+pr_no.value);
+		dr_no.value = response.data.dr_no;
+		po_no.value = response.data.po_no;
+		po_head.value = response.data.po_head;
+		pr_head.value = response.data.pr_head;
+		po_details.value = response.data.po_details;
+		rfq_terms.value = response.data.rfq_terms;
+		vendor.value = response.data.vendor;
+		
+		grand_total.value = response.data.grand_total;
+		prepared_by.value = response.data.prepared_by;
+		po_details.value.forEach(function (val, index, theArray) {
+			checkRemainingQty(val.pr_details_id,index)
+		});
+	}
 </script>
 <template>
 	<navigation>
@@ -114,13 +153,13 @@
 									<label class="text-gray-500 m-0" for="">Choose Supplier and JOR No</label>
 									<input type="file" name="img[]" class="file-upload-default">
 									<div class="input-group col-xs-12">
-										<select class="form-control file-upload-info">
-											<option value="">Select Supplier</option>
-											<option value="">MF Computer Solutions, Inc. </option>
+										<select class="form-control file-upload-info" @change="getSupplierJOR()" v-model="vendor_details_id">
+											<option value="">--Select Supplier--</option>
+											<option :value="sup.id" v-for="sup in suppliers" :key="sup.id">{{ sup.vendor_name }} ({{ sup.identifier }})</option>
 										</select>
-										<select class="form-control file-upload-info">
-											<option value="">JOR Number</option>
-											<option value="">JOR-19772-8727</option>
+										<select class="form-control file-upload-info" v-model="jor_no">
+											<option value="">--Select JOR Number--</option>
+											<option :value="j.jor_no+'+'+j.id" v-for="j in jorno_dropdown" :key="j.jor_no+'+'+j.id">{{ j.jor_no }} ({{ j.aoq_date }} - {{ j.id }})</option>
 										</select>
 										<span class="input-group-append">
 											<button class="btn btn-primary" type="button" @click="jor_det = !jor_det">Select</button>
@@ -131,7 +170,8 @@
 						</div>
 						<hr class="border-dashed">
 						<div class="pt-1">
-							<div v-show="jor_det">
+							<div v-if="jo_head && jo_head.length!=0">
+								<!-- <div v-show="jor_det"> -->
 								<div class="row">
 									<div class="col-lg-1">
 										<span class="text-sm">TO:</span>

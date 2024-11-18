@@ -64,7 +64,8 @@ class POController extends Controller
         ],200);
     }
     public function supplier_dropdown(){
-        $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('status','=','Active')->get();
+        // $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('status','=','Active')->get();
+        $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_head.vendor_name')->distinct()->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->join('rfq_vendor', 'vendor_details.id', '=', 'rfq_vendor.vendor_details_id')->join('rfq_offers', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_head', 'rfq_offers.rfq_head_id', '=', 'aoq_head.rfq_head_id')->where('vendor_details.status','=','Active')->where('aoq_status','=','Awarded')->where('awarded','=','1')->get();
         return response()->json([
             'suppliers'=>$suppliers,
         ],200);
@@ -1241,7 +1242,14 @@ class POController extends Controller
                     'to_deliver'=>$remaining_delivery - $to_deliver,
                 ]);
                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+                $check_delivered=$update_prreport->delivered_qty + $quantity;
+                if($update_prreport->pr_qty > $check_delivered){
+                    $delivery_status='Partially Delivered';
+                }else if($update_prreport->pr_qty == $check_delivered){
+                    $delivery_status='Fully Delivered';
+                }
                 $update_prreport->delivered_qty += $to_deliver;
+                $update_prreport->status = $delivery_status;
                 $update_prreport->update();
                 $y++;
             }
@@ -1293,7 +1301,14 @@ class POController extends Controller
                         $po_dr_itmins['delivered_qty']=$to_deliver;
                         $po_drinsertitem=PoDrItems::create($po_dr_itmins);
                         $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+                        $check_delivered=$update_prreport->delivered_qty + $quantity;
+                        if($update_prreport->pr_qty > $check_delivered){
+                            $delivery_status='Partially Delivered';
+                        }else if($update_prreport->pr_qty == $check_delivered){
+                            $delivery_status='Fully Delivered';
+                        }
                         $update_prreport->delivered_qty += $to_deliver;
+                        $update_prreport->status = $delivery_status;
                         $update_prreport->update();
                     }
                     $y++;
