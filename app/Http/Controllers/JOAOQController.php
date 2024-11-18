@@ -234,7 +234,11 @@ class JOAOQController extends Controller
         $rfq_vendors = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereNotIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
         $count_rfq_vendors =$rfq_vendors->count();
 
+        $canvassed_aoq_vendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
         $aoq_details = JOAOQDetails::with('jo_rfq_vendor')->where('jo_aoq_head_id',$jo_aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
         foreach($aoq_details AS $ad){
             $vendor_data[] = [
                 'jo_rfq_vendor_id'=>$ad->jo_rfq_vendor->id,
@@ -311,6 +315,8 @@ class JOAOQController extends Controller
             'letters'=>$letters,
             'currency'=>$currency,
             'count_rfq_vendors'=>$count_rfq_vendors,
+            'count_canvassed_aoq_v'=>$count_canvassed_aoq_v,
+            'count_aoq_vendors'=>$count_aoq_vendors,
         ],200);
     }
 
@@ -436,6 +442,12 @@ class JOAOQController extends Controller
                 ];
             }
 
+        $canvassed_aoq_vendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
+        $aoq_details = JOAOQDetails::with('jo_rfq_vendor')->where('jo_aoq_head_id',$jo_aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
+
         return response()->json([
             'aoq_head_data'=>$head_data,
             'aoq_vendor_data'=>$vendor_data,
@@ -450,6 +462,8 @@ class JOAOQController extends Controller
             'next'=>$next,
             'count_labor_awarded'=>$count_labor_awarded,
             'count_material_awarded'=>$count_material_awarded,
+            'count_canvassed_aoq_v'=>$count_canvassed_aoq_v,
+            'count_aoq_vendors'=>$count_aoq_vendors,
         ],200);
     }
 
@@ -587,6 +601,12 @@ class JOAOQController extends Controller
 
     }
 
+    public function open_jo_aoq($jo_aoq_head_id){
+        $update_canvass_open_aoq=JORFQVendor::whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->update([
+            'canvassed'=>0,
+        ]);
+    }
+
     public function save_jo_aoq($jo_aoq_head_id){
         $userid = Auth::id();
         $update_joaoq_head=JOAOQHead::where('id',$jo_aoq_head_id)->update([
@@ -616,6 +636,24 @@ class JOAOQController extends Controller
 
     public function export_jo_aoq($jo_aoq_head_id){
         return Excel::download(new JOAOQExport($jo_aoq_head_id), 'JO Abstract of Quotation.xlsx');
+    }
+
+    public function joaoq_status($jo_aoq_head_id){
+        $aoq_status = JOAOQHead::where('id',$jo_aoq_head_id)->value('aoq_status');
+        $jo_rfq_head_id = JOAOQHead::where('id',$jo_aoq_head_id)->value('jo_rfq_head_id');
+        $aoq_details_id = JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->orderBy('id', 'ASC')->value('id');
+        $aoq_vendor = JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->get();
+        $count_aoq_vendor=$aoq_vendor->count();
+        $canvassed_aoq_vendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
+
+        return response()->json([
+            'aoq_status'=>$aoq_status,
+            'aoq_details_id'=>$aoq_details_id,
+            'count_aoq_vendor'=>$count_aoq_vendor,
+            'count_canvassed'=>$count_canvassed_aoq_v,
+        ],200);
     }
 
 }

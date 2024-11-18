@@ -22,6 +22,8 @@
 	let latest_jo_aoq_details_id=ref('');
 	let count_labor_awarded=ref(0);
 	let count_material_awarded=ref(0);
+	let count_canvassed_aoq_v=ref(0);
+	let count_aoq_vendors=ref(0);
 
 	let previewhead=ref([]);
 	let aoq_vendor=ref([]);
@@ -70,6 +72,8 @@
 			latest_jo_aoq_details_id.value = jo_aoq_details_id
 			count_labor_awarded.value = response.data.count_labor_awarded
 			count_material_awarded.value = response.data.count_material_awarded
+			count_canvassed_aoq_v.value = response.data.count_canvassed_aoq_v
+			count_aoq_vendors.value = response.data.count_aoq_vendors
 		}else{
 			let response = await axios.get(`/api/joaoq_donete_details/${props.id}/${props.jo_aoq_details_id}`)
 			head.value = response.data.aoq_head_data
@@ -86,6 +90,14 @@
 			latest_jo_aoq_details_id.value = props.jo_aoq_details_id
 			count_labor_awarded.value = response.data.count_labor_awarded
 			count_material_awarded.value = response.data.count_material_awarded
+			count_canvassed_aoq_v.value = response.data.count_canvassed_aoq_v
+			count_aoq_vendors.value = response.data.count_aoq_vendors
+		}
+
+		if(count_canvassed_aoq_v.value != count_canvassed_aoq_v.value ){
+			openAOQAlert.value = !openAOQAlert.value
+		}else{
+			openAOQAlert.value = !hideModal.value
 		}
 
 	}
@@ -187,6 +199,7 @@
 	const draftAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
+	const openAOQAlert = ref(false)
 	
 	const openDangerAlert = () => {
 		dangerAlert.value = !dangerAlert.value
@@ -205,8 +218,12 @@
 		axios.post(`/api/save_jo_aoq/${props.id}`).then(function (response) {
 			router.push(`/job_aoq/print_te/${props.id}`)
 		});
+	}
 
-		
+	const openAOQ = (jo_rfq_head_id) => {
+		axios.post(`/api/open_jo_aoq/${props.id}`).then(function () {
+			router.push('/job_quote/view/'+jo_rfq_head_id+'/'+props.id)
+		});
 	}
 
 	const openDraftAlert = () => {
@@ -220,6 +237,7 @@
 		draftAlert.value = !hideAlert.value
 		infoAlert.value = !hideAlert.value
 		saveAlert.value = !hideAlert.value
+		openAOQAlert.value = !hideModal.value
 	}
 
 
@@ -544,12 +562,13 @@
 									</div>
 								</div>
 								<br>
-								<div class="row my-2"> 
+								<div class="row my-2" v-if="(count_canvassed_aoq_v == count_aoq_vendors)"> 
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-between space-x-2">
 											<div class="flex justify-between space-x-1">
 												<button type="submit" class="btn btn-danger mr-2 w-36" @click="CancelAlert()" v-if="(head.status != 'Awarded')">Cancel</button>
 												<button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
+												<button type="submit" @click="openAOQ(head.jo_rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 												<!-- <button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button> -->
 											</div>
 											<div class="flex justify-between space-x-1" v-if="(head.status != 'Awarded')">
@@ -563,6 +582,13 @@
 												<button @click="getAOQDoneTEDetails(previous.id)" type="submit" class="btn btn-primary w-26" title="Previous Vendor" v-if="(latest_jo_aoq_details_id != props.jo_aoq_details_id)">Back</button>
 												<button v-else @click="getAOQDoneTEDetails(next.id)" type="submit" class="btn btn-primary w-26" title="Next Vendor">Next</button>
 											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" v-else>
+									<div class="col-lg-12">
+										<div class="flex justify-center space-x-1">
+											<button type="submit" @click="openAOQ(head.jo_rfq_head_id)" class="btn btn-warning ">Update Vendor/s</button>
 										</div>
 									</div>
 								</div>
@@ -1242,6 +1268,46 @@
 								<div class="flex justify-center space-x-2">
 									<button class="btn btn-gray btn-sm !rounded-full w-full"  @click="closeModal()">No</button>
 									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="CancelTransaction()">Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:openAOQAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">This is an open AOQ please update vendor/s to proceed.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="openAOQ(head.jo_rfq_head_id)">Update Vendor/s</button>
 								</div>
 							</div>
 						</div>

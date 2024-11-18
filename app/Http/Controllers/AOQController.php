@@ -230,7 +230,11 @@ class AOQController extends Controller
         $rfq_vendors = RFQVendor::where('rfq_head_id',$rfq_head_id)->whereNotIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
         $count_rfq_vendors =$rfq_vendors->count();
 
+        $canvassed_aoq_vendor = RFQVendor::where('rfq_head_id',$rfq_head_id)->whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
         $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
         foreach($aoq_details AS $ad){
             // $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ad->pr_details_id)->min('unit_price');
             // $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('pr_details_id',$ad->rfq_vendor->pr_details_id)->min('unit_price');
@@ -303,6 +307,8 @@ class AOQController extends Controller
             'letters'=>$letters,
             'currency'=>$currency,
             'count_rfq_vendors'=>$count_rfq_vendors,
+            'count_canvassed_aoq_v'=>$count_canvassed_aoq_v,
+            'count_aoq_vendors'=>$count_aoq_vendors,
         ],200);
     }
 
@@ -449,6 +455,12 @@ class AOQController extends Controller
                 ];
             }
 
+        $canvassed_aoq_vendor = RFQVendor::where('rfq_head_id',$rfq_head_id)->whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
+        $aoq_details = AOQDetails::with('rfq_vendor')->where('aoq_head_id',$aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
+
         return response()->json([
             'aoq_head_data'=>$head_data,
             'aoq_vendor_data'=>$vendor_data,
@@ -460,6 +472,8 @@ class AOQController extends Controller
             'previous'=>$previous,
             'next'=>$next,
             'count_awarded'=>$count_awarded,
+            'count_canvassed_aoq_v'=>$count_canvassed_aoq_v,
+            'count_aoq_vendors'=>$count_aoq_vendors,
         ],200);
     }
 
@@ -524,5 +538,29 @@ class AOQController extends Controller
 
     public function export_aoq($aoq_head_id){
         return Excel::download(new AOQExport($aoq_head_id), 'Abstract of Quotation.xlsx');
+    }
+
+    public function open_aoq($aoq_head_id){
+        $update_canvass_open_aoq=RFQVendor::whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->update([
+            'canvassed'=>0,
+        ]);
+    }
+
+    public function aoq_status($aoq_head_id){
+        $aoq_status = AOQHead::where('id',$aoq_head_id)->value('aoq_status');
+        $rfq_head_id = AOQHead::where('id',$aoq_head_id)->value('rfq_head_id');
+        $aoq_details_id = AOQDetails::where('aoq_head_id',$aoq_head_id)->orderBy('id', 'ASC')->value('id');
+        $aoq_vendor = AOQDetails::where('aoq_head_id',$aoq_head_id)->get();
+        $count_aoq_vendor=$aoq_vendor->count();
+        $canvassed_aoq_vendor = RFQVendor::where('rfq_head_id',$rfq_head_id)->whereIn('id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
+
+        return response()->json([
+            'aoq_status'=>$aoq_status,
+            'aoq_details_id'=>$aoq_details_id,
+            'count_aoq_vendor'=>$count_aoq_vendor,
+            'count_canvassed'=>$count_canvassed_aoq_v,
+        ],200);
     }
 }

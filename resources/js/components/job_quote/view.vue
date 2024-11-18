@@ -36,6 +36,11 @@
 	let all_labor_checkbox=ref(0);
 	let all_material_checkbox=ref(0);
 
+	let aoq_status=ref('');
+	let aoq_details_id=ref(0);
+	let count_aoq_vendor=ref(0);
+	let count_canvassed_aoq_v=ref(0);
+
 	let aoq_no=ref('');
 	let head=ref([]);
 	let vendors=ref([]);
@@ -50,6 +55,10 @@
         id:{
             type:String,
             default:''
+        },
+		aoq_id:{
+            type:String,
+            default:''
         }
     })
 
@@ -59,6 +68,7 @@
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		getAOQHeadDetails()
+		GetAOQStatus()
 	})
 
 	const GetRFQDetails = async () => {
@@ -401,6 +411,7 @@
 			CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 			GetPerVendorDetails()
 			getAOQHeadDetails()
+			GetAOQStatus()
 		});
 	}
 
@@ -493,6 +504,22 @@
 			axios.post("/api/add_jo_aoq_head", formAOQHead).then(function (response) {
 			router.push('/job_aoq/print_te/'+response.data)
 			});
+	}
+
+	const GetAOQStatus = async () => {
+		let response = await axios.get(`/api/joaoq_status/${props.aoq_id}`)
+		aoq_status.value=response.data.aoq_status
+		aoq_details_id.value=response.data.aoq_details_id
+		count_aoq_vendor.value=response.data.count_aoq_vendor
+		count_canvassed_aoq_v.value=response.data.count_canvassed
+	}
+
+	const openAOQ = () => {
+		if(aoq_status == 'Done TE'){
+            router.push('/job_aoq/view/'+props.aoq_id+'/'+aoq_details_id)
+        }else{
+            router.push(`/job_aoq/print_te/${props.aoq_id}`)
+        }
 	}
 
 	const vendor =  ref(rfqvendorid);
@@ -905,9 +932,16 @@
 									</li>
 									<li class="!w-30">
 										<!-- <a href="" class="btn !bg-gray-200 !w-36">Pasdrint TE</a> -->
-										<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
-										<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
-										<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
+										<template v-if="props.aoq_id != 0">
+											<button type="submit" class="btn !bg-green-500 text-white !w-36"  v-if="(count_aoq_vendor == count_canvassed_aoq_v && count_canvassed_aoq_v != 0)" @click="openAOQ()">Proceed AOQ</button>
+											<button type="submit" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else @click="openAOQ()">Proceed AOQ</button>
+										 </template>
+										 <template v-if="props.aoq_id == 0">
+											<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
+											<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
+											<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
+										 </template>
+										
 									</li>
 								</ol>
 							</div>

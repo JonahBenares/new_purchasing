@@ -335,7 +335,7 @@ const routes = [
         }
     },
     {
-        path:'/pur_quote/view/:id',
+        path:'/pur_quote/view/:id/:aoq_id',
         component: pur_quoteView,
         props:true,
         meta:{
@@ -550,7 +550,7 @@ const routes = [
         }
     },
     {
-        path:'/job_quote/view/:id',
+        path:'/job_quote/view/:id/:aoq_id',
         component: job_quoteView,
         props:true,
         meta:{
