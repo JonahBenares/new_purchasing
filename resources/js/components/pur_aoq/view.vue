@@ -81,7 +81,7 @@
 			count_aoq_vendors.value = response.data.count_aoq_vendors
 		}
 
-		if(count_canvassed_aoq_v.value != count_canvassed_aoq_v.value ){
+		if(count_aoq_vendors.value != count_canvassed_aoq_v.value ){
 			openAOQAlert.value = !openAOQAlert.value
 		}else{
 			openAOQAlert.value = !hideModal.value
