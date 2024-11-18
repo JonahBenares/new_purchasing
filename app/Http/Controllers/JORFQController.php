@@ -457,7 +457,7 @@ class JORFQController extends Controller
 
                 for($l=0;$l<3;$l++){
                     JORFQLaborOffers::create([
-                        // 'offer_no'=>$l+1,
+                        'offer_no'=>$l+1,
                         'jo_rfq_head_id'=>$jo_rfq_head_id,
                         'jo_rfq_vendor_id'=>$jo_rfq_vendor_id,
                         'jo_rfq_labor_details_id'=>$jo_rfq_labor_details_id,

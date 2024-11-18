@@ -258,9 +258,30 @@ class AOQController extends Controller
             }
         }
 
-        $first_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',1)->get();
-        $second_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',2)->get();
-        $third_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',3)->get();
+        // $first_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',1)->get();
+        // $second_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',2)->get();
+        // $third_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->where('offer_no',3)->get();
+        $first_offers = RFQOffers::join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')
+        ->where('rfq_offers.rfq_head_id',$rfq_head_id)
+        ->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))
+        ->where('rfq_offers.offer_no',1)
+        ->select('rfq_offers.*') // Select necessary columns
+        ->orderBy('rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
+        $second_offers = RFQOffers::join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')
+        ->where('rfq_offers.rfq_head_id',$rfq_head_id)
+        ->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))
+        ->where('rfq_offers.offer_no',2)
+        ->select('rfq_offers.*') // Select necessary columns
+        ->orderBy('rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
+        $third_offers = RFQOffers::join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')
+        ->where('rfq_offers.rfq_head_id',$rfq_head_id)
+        ->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))
+        ->where('rfq_offers.offer_no',3)
+        ->select('rfq_offers.*') // Select necessary columns
+        ->orderBy('rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
         $aoq_items = RFQDetails::with('pr_details')->where('rfq_head_id',$rfq_head_id)->get()->unique('pr_details_id');
         foreach($aoq_items AS $ai){
             $min_price = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('unit_price','!=',0)->where('pr_details_id',$ai->pr_details_id)->whereIn('rfq_vendor_id',AOQDetails::where('aoq_head_id',$aoq_head_id)->pluck('rfq_vendor_id'))->min('unit_price');
