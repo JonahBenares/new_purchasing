@@ -77,7 +77,7 @@
 		approved_by.value = response.data.joi_head.approved_by;
 		joi_head.value = response.data.joi_head;
 		joi_no.value = response.data.joi_head.joi_no;
-		dr_no.value = response.data.po_dr.dr_no;
+		dr_no.value = response.data.joi_dr.dr_no;
 		discount_labor.value = response.data.joi_head.discount;
 		discount_material.value = response.data.joi_head.discount_material;
 		vat.value = response.data.joi_head.vat;

@@ -14,7 +14,7 @@ use App\Models\JOIDrSeries;
 use App\Models\JOIDr;
 use App\Models\JOIDrLabor;
 use App\Models\JOIDrMaterial;
-use App\Models\JOIInstruction;
+use App\Models\JOIInstructions;
 use App\Models\JOITerms;
 use App\Models\JORFQLaborOffers;
 use App\Models\JORFQMaterialOffers;
@@ -99,7 +99,9 @@ class JOIController extends Controller
             // $balance = PrReportDetails::where('jo_labor_details_id',$jld->jo_labor_details_id)->where('status','!=','Cancelled')->first();
             // $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
             // $totals = $balance->pr_qty - $total_po;
-            $total_labor[]=$jld->unit_price * $jld->jor_labor_details->quantity;
+            $sum_joi_labor=JOILaborDetails::where('jor_labor_details_id',$jld->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$jld->id)->sum('quantity');
+            $deduct = $jld->jor_labor_details->quantity - $sum_joi_labor;
+            $total_labor[]=$jld->unit_price * $deduct;
             // $total[]=$jld->unit_price * $balance->pr_qty;
             $jo_rfq_terms=JORFQTerms::where('jo_rfq_vendor_id',$jld->jo_rfq_vendor_id)->get();
         }
@@ -109,7 +111,9 @@ class JOIController extends Controller
             // $balance = PrReportDetails::where('jo_labor_details_id',$jmd->jo_labor_details_id)->where('status','!=','Cancelled')->first();
             // $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
             // $totals = $balance->pr_qty - $total_po;
-            $total_material[]=$jmd->unit_price * $jmd->jor_material_details->quantity;
+            $sum_joi_material=JOIMaterialDetails::where('jor_material_details_id',$jmd->jor_material_details_id)->where('jo_rfq_material_offer_id',$jmd->id)->sum('quantity');
+            $deducted = $jmd->jor_material_details->quantity - $sum_joi_material;
+            $total_material[]=$jmd->unit_price * $deducted;
             // $total[]=$jmd->unit_price * $balance->pr_qty;
             // $jo_rfq_terms=RFQVendorTerms::where('jo_rfq_vendor_id',$jmd->jo_rfq_vendor_id)->get();
         }
@@ -154,7 +158,7 @@ class JOIController extends Controller
     }
 
     public function delete_jo_instructions($id){
-        $deleted = JOIInstruction::find($id);
+        $deleted = JOIInstructions::find($id);
         $deleted->delete();
     }
 
@@ -187,7 +191,7 @@ class JOIController extends Controller
         // $po_details_temp = PoDetailsTemp::where('joi_head_id',$joi_head_id)->get();
         $cancelled_by=User::where('id',$joi_head->cancelled_by)->value('name');
         $joi_terms = JOITerms::where('joi_head_id',$joi_head_id)->get();
-        $joi_instructions = JOIInstruction::where('joi_head_id',$joi_head_id)->get();
+        $joi_instructions = JOIInstructions::where('joi_head_id',$joi_head_id)->get();
         $prepared_by= User::where('id',$joi_head->prepared_by)->value('name');
         $checked_by= User::where('id',$joi_head->checked_by)->value('name');
         $recommended_by= User::where('id',$joi_head->recommended_by)->value('name');
@@ -345,7 +349,7 @@ class JOIController extends Controller
                 }else if(($request->joi_head_id==0 || $request->joi_head_id!=0) && $request->props_id==0 && $request->status=='Draft'){
                     $data=[
                         'joi_head_id'=>$insertjoihead->id,
-                        'jor_material_details_id'=>$pd->jor_material_details_id,
+                        'jor_labor_details_id'=>$pd->jor_labor_details_id,
                         'jo_rfq_labor_offer_id'=>$pd->id,
                         'item_no'=>$x,
                         // 'item_description'=> ($request->po_head_id==0) ? $pd->offer : (($request->status=='Saved') ? $pd->offer : (($request->props_id!=0) ? $pd->item_description : $pd->offer)),
@@ -471,20 +475,170 @@ class JOIController extends Controller
                                 );
                             }
                         }
-                        // $joi_dr_items=PoDrItems::updateOrCreate(
-                        //     [
-                        //         'po_details_id'=>$po_details_id->id,
-                        //         'rfq_offer_id'=>$pd->id,
-                        //         'pr_details_id'=>$pd->pr_details_id,
-                        //     ],
-                        //     [
-                        //         'quantity'=>($request->po_head_id==0) ? $quantity : (($request->status=='Saved') ? $quantity : (($request->props_id!=0) ? $pd->quantity : $quantity)),
-                        //     ]
-                        // );
                     }
                 }
                 $x++;
                 $y++;
+            }
+        }
+
+        $v=1;
+        $z=0;
+        $quantity_materials=array();
+        foreach(json_decode($joi_material_details) AS $jmd){
+            if(count(json_decode($joi_material_details))>0){
+                $quantity_material = $request->input("quantity_material"."$z");
+                $quantity_materials[] = $request->input("quantity_material"."$z");
+                if(($request->joi_head_id==0 || $request->joi_head_id!=0) && $request->props_id==0 && $request->status=='Saved'){
+                    $data=[
+                        'joi_head_id'=>$insertjoihead->id,
+                        'jor_material_details_id'=>$jmd->jor_material_details_id,
+                        'jo_rfq_material_offer_id'=>$jmd->id,
+                        'item_no'=>$v,
+                        // 'item_description'=> ($request->po_head_id==0) ? $jmd->offer : (($request->status=='Saved') ? $jmd->offer : (($request->props_id!=0) ? $jmd->item_description : $jmd->offer)),
+                        'item_description'=> $jmd->offer,
+                        'quantity'=>  $quantity_material,
+                        // 'quantity'=>  ($request->po_head_id==0) ? $quantity_material : (($request->status=='Saved') ? $quantity_material : (($request->props_id!=0) ? $jmd->quantity : $quantity_material)),
+                        'uom'=>$jmd->uom,
+                        'unit_price'=>$jmd->unit_price,
+                        'currency'=>$jmd->currency,
+                        'total_cost'=> $jmd->unit_price * $quantity_material,
+                        // 'total_cost'=> ($request->po_head_id==0) ? $jmd->unit_price * $quantity_material : (($request->status=='Saved') ? $jmd->unit_price * $quantity_material : (($request->props_id!=0) ? $jmd->unit_price * $jmd->quantity : $jmd->unit_price * $quantity_material)),
+                        'status'=>$request->status,
+                    ];
+                }else if(($request->joi_head_id==0 || $request->joi_head_id!=0) && $request->props_id==0 && $request->status=='Draft'){
+                    $data=[
+                        'joi_head_id'=>$insertjoihead->id,
+                        'jor_material_details_id'=>$jmd->jor_material_details_id,
+                        'jo_rfq_material_offer_id'=>$jmd->id,
+                        'item_no'=>$v,
+                        // 'item_description'=> ($request->po_head_id==0) ? $jmd->offer : (($request->status=='Saved') ? $jmd->offer : (($request->props_id!=0) ? $jmd->item_description : $jmd->offer)),
+                        'item_description'=> $jmd->offer,
+                        'quantity'=> $quantity_material,
+                        'uom'=>$jmd->uom,
+                        'unit_price'=>$jmd->unit_price,
+                        'currency'=>$jmd->currency,
+                        'total_cost'=> $jmd->unit_price * $quantity_material,
+                        'status'=>$request->status,
+                    ];
+                }else if($request->props_id!=0 && $request->status=='Saved'){
+                    $data=[
+                        'joi_head_id'=>$insertjoihead->id,
+                        'jor_material_details_id'=>$jmd->jor_material_details_id,
+                        'jo_rfq_material_offer_id'=>$jmd->id,
+                        'item_no'=>$v,
+                        // 'item_description'=> ($request->po_head_id==0) ? $jmd->offer : (($request->status=='Saved') ? $jmd->offer : (($request->props_id!=0) ? $jmd->item_description : $jmd->offer)),
+                        'item_description'=> $jmd->item_description,
+                        'quantity'=> $jmd->quantity,
+                        'uom'=>$jmd->uom,
+                        'unit_price'=>$jmd->unit_price,
+                        'currency'=>$jmd->currency,
+                        'total_cost'=> $jmd->unit_price * $jmd->quantity,
+                        'status'=>$request->status,
+                    ];
+                }else if($request->props_id!=0 && $request->status=='Draft'){
+                    $data=[
+                        'joi_head_id'=>$insertjoihead->id,
+                        'jor_material_details_id'=>$jmd->jor_material_details_id,
+                        'jo_rfq_material_offer_id'=>$jmd->id,
+                        'item_no'=>$v,
+                        // 'item_description'=> ($request->po_head_id==0) ? $jmd->offer : (($request->status=='Saved') ? $jmd->offer : (($request->props_id!=0) ? $jmd->item_description : $jmd->offer)),
+                        'item_description'=> $jmd->item_description,
+                        'quantity'=> $jmd->quantity,
+                        'uom'=>$jmd->uom,
+                        'unit_price'=>$jmd->unit_price,
+                        'currency'=>$jmd->currency,
+                        'total_cost'=> $jmd->unit_price * $jmd->quantity,
+                        'status'=>$request->status,
+                    ];
+                }
+                if($request->joi_head_id==0){
+                    if($quantity_material!=0){
+                        $joi_material_details_id=JOIMaterialDetails::create($data);
+                        if($request->joi_head_id==0 && $request->status=='Saved'){
+                            $data_dr_details=[
+                                'joi_dr_id'=>$insertdrhead->id,
+                                'joi_material_details_id'=>$joi_material_details_id->id,
+                                'jor_material_details_id'=>$jmd->jor_material_details_id,
+                                'jo_rfq_material_offer_id'=>$jmd->id,
+                                'to_deliver'=>$quantity_material,
+                                'quantity'=>$quantity_material,
+                            ];
+                        }else if($request->joi_head_id==0 && $request->status=='Draft'){
+                            $data_dr_details=[
+                                'joi_dr_id'=>$insertdrhead->id,
+                                'joi_material_details_id'=>$joi_material_details_id->id,
+                                'jor_material_details_id'=>$jmd->jor_material_details_id,
+                                'jo_rfq_material_offer_id'=>$jmd->id,
+                                'to_deliver'=>$quantity_material,
+                                'quantity'=>$quantity_material,
+                            ];
+                        }
+                    }
+                }else{
+                    if($request->props_id==0){
+                        if($quantity_material!=0){
+                            $joi_material_details_id=JOIMaterialDetails::updateOrCreate(
+                                [
+                                    'joi_head_id' => $insertjoihead->id,
+                                    'jo_rfq_material_offer_id'=>$jmd->id,
+                                    'jor_material_details_id'=>$jmd->jor_material_details_id,
+                                ],
+                                [
+                                    'joi_head_id'=>$insertjoihead->id,
+                                    'jor_material_details_id'=>$jmd->jor_material_details_id,
+                                    'jo_rfq_material_offer_id'=>$jmd->id,
+                                    'item_no'=>$v,
+                                    'item_description'=>$jmd->offer,
+                                    'quantity'=>$quantity_material,
+                                    'uom'=>$jmd->uom,
+                                    'unit_price'=>$jmd->unit_price,
+                                    'currency'=>$jmd->currency,
+                                    'total_cost'=>$jmd->unit_price * $quantity_material,
+                                    'status'=>$request->status,
+                                ]
+                            );
+                            $joi_dr_items=JOIDrMaterial::updateOrCreate(
+                                [
+                                    'joi_material_details_id'=>$joi_material_details_id->id,
+                                    'jo_rfq_material_offer_id'=>$jmd->id,
+                                    'jor_material_details_id'=>$jmd->jor_material_details_id,
+                                ],
+                                [
+                                    'to_deliver'=>$quantity_material,
+                                    'quantity'=>$quantity_material,
+                                ]
+                            );
+                        }
+                    }else{
+                        if($jmd->quantity!=0){
+                            $joi_material_details_id=JOIMaterialDetails::where('id',$jmd->id)->update([
+                                    'joi_head_id'=>$insertjoihead->id,
+                                    'jor_material_details_id'=>$jmd->jor_material_details_id,
+                                    'jo_rfq_material_offer_id'=>$jmd->jo_rfq_material_offer_id,
+                                    'item_no'=>$v,
+                                    'item_description'=>$jmd->item_description,
+                                    'quantity'=>$jmd->quantity,
+                                    'uom'=>$jmd->uom,
+                                    'unit_price'=>$jmd->unit_price,
+                                    'currency'=>$jmd->currency,
+                                    'total_cost'=> $jmd->unit_price * $jmd->quantity,
+                                    'status'=>$request->status,
+                                ]
+                            );
+                            $joidritems=JOIDrMaterial::where('jor_material_details_id',$jmd->id)->where('jor_material_details_id',$jmd->jor_material_details_id)->where('jo_rfq_material_offer_id',$jmd->jo_rfq_material_offer_id)->get();
+                            foreach($joidritems AS $jmdi){
+                                $joi_dr_items=JOIDrMaterial::where('id',$jmdi->id)->update([
+                                        'to_deliver'=>$jmd->quantity,
+                                        'quantity'=>$jmd->quantity,
+                                    ]
+                                );
+                            }
+                        }
+                    }
+                }
+                $v++;
+                $z++;
             }
         }
 
@@ -534,10 +688,10 @@ class JOIController extends Controller
                         'joi_head_id'=>$insertjoihead->id,
                         'instructions'=>$ol->instructions
                     ];
-                    if(!JOIInstruction::where('joi_head_id',$insertjoihead->id)->where('instructions',$ol->instructions)->exists()){
-                        $otherinstructions=JOIInstruction::create($data_instructions);
+                    if(!JOIInstructions::where('joi_head_id',$insertjoihead->id)->where('instructions',$ol->instructions)->exists()){
+                        $otherinstructions=JOIInstructions::create($data_instructions);
                     }else{
-                        $otherinstructions=JOIInstruction::where('joi_head_id',$insertjoihead->id)->where('instructions',$ol->instructions)->update($data_instructions);
+                        $otherinstructions=JOIInstructions::where('joi_head_id',$insertjoihead->id)->where('instructions',$ol->instructions)->update($data_instructions);
                     }
                 }else{
                     if($ol->id==0){
@@ -545,9 +699,9 @@ class JOIController extends Controller
                             'joi_head_id'=>$insertjoihead->id,
                             'instructions'=>$ol->instructions
                         ];
-                        $otherinstructions=JOIInstruction::create($data_instructions);
+                        $otherinstructions=JOIInstructions::create($data_instructions);
                     }else{
-                        $otherinstructions = JOIInstruction::where('id',$ol->id)->first();
+                        $otherinstructions = JOIInstructions::where('id',$ol->id)->first();
                         $otherinstructions->instructions = $ol->instructions;
                         $otherinstructions->update();
                     }
