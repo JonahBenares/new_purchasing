@@ -23,6 +23,8 @@
 	let vendor_aoq_items=ref([]);
 	let currency=ref([]);
 	let count_rfq_vendors=ref(0);
+	let count_canvassed_aoq_v=ref(0);
+	let count_aoq_vendors=ref(0);
 	let aoq_details_id=ref(0);
 
 	const props = defineProps({
@@ -53,6 +55,14 @@
 		letters.value=response.data.letters
 		currency.value = response.data.currency
 		count_rfq_vendors.value = response.data.count_rfq_vendors
+		count_canvassed_aoq_v.value = response.data.count_canvassed_aoq_v
+		count_aoq_vendors.value = response.data.count_aoq_vendors
+
+		if(count_canvassed_aoq_v.value != count_aoq_vendors.value){
+			openAOQAlert.value = !openAOQAlert.value
+		}else{
+			openAOQAlert.value = !hideModal.value
+		}
 	}
 
 	const VendorItemsOffer = async () => {
@@ -125,6 +135,7 @@
 	const cancelAlert = ref(false)
 	const AddVendorAlert = ref(false)
 	const donetealert = ref(false)
+	const openAOQAlert = ref(false)
 	const printbutton = ref(false)
 	const signatories = ref(false)
 	const showAddVendor = ref(false)
@@ -138,6 +149,7 @@
 		cancelAlert.value = !hideModal.value
 		AddVendorAlert.value = !hideModal.value
 		donetealert.value = !hideModal.value
+		openAOQAlert.value = !hideModal.value
 	}
 
 	const DoneTEAlert = () => {
@@ -157,6 +169,12 @@
 	const CancelTransaction = () => {
 		axios.get(`/api/cancel_aoq/${props.id}`).then(function () {
 			router.push('/pur_aoq')
+		});
+	}
+
+	const openAOQ = (rfq_head_id) => {
+		axios.post(`/api/open_aoq/${props.id}`).then(function (response) {
+			router.push('/pur_quote/view/'+rfq_head_id+'/'+props.id)
 		});
 	}
 
@@ -422,12 +440,13 @@
 				</div>
 			</div>
 			<br>
-			<div class="row">
+			<div class="row" v-if="(count_canvassed_aoq_v == count_aoq_vendors)">
 				<div class="col-lg-12" v-if="(head.status != 'Cancelled' && head.aoq_status != 'Awarded' && head.aoq_status != 'Done TE')">
 					<div class="flex justify-between space-x-1">
 						<div class="flex justify-start space-x-1">
 							<button type="button" @click="CancelAlert()" class="btn btn-danger">Cancel</button>
 							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 0">Add Vendor</button>
+							<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 						</div>
 						<div class="flex justify-end space-x-1">
 							<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary ">Export</a>
@@ -438,7 +457,13 @@
 				<div class="col-lg-12" v-else>
 					<div class="flex justify-center space-x-1">
 						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
+						<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 					</div>
+				</div>
+			</div>
+			<div class="col-lg-12" v-else>
+				<div class="flex justify-center space-x-1">
+					<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Update Vendor/s</button>
 				</div>
 			</div>
 		</div>
@@ -639,6 +664,46 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:openAOQAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">This is an open AOQ please update vendor/s to proceed.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="openAOQ(head.rfq_head_id)">Update Vendor/s</button>
+								</div>
+							</div>
+						</div>
+					</div> 
 				</div>
 			</div>
 		</Transition>

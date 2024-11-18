@@ -234,7 +234,11 @@ class JOAOQController extends Controller
         $rfq_vendors = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereNotIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->orderby('vendor_name', 'ASC')->get();
         $count_rfq_vendors =$rfq_vendors->count();
 
+        $canvassed_aoq_vendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
         $aoq_details = JOAOQDetails::with('jo_rfq_vendor')->where('jo_aoq_head_id',$jo_aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
         foreach($aoq_details AS $ad){
             $vendor_data[] = [
                 'jo_rfq_vendor_id'=>$ad->jo_rfq_vendor->id,
@@ -257,9 +261,30 @@ class JOAOQController extends Controller
         }
 
         $aoq_labor_items = JORFQLaborDetails::with('jor_labor_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get()->unique('jor_labor_details_id');
-        $first_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',1)->get();
-        $second_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
-        $third_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
+        // $first_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',1)->get();
+        // $second_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
+        // $third_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
+        $first_labor_offers = JORFQLaborOffers::join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')
+        ->where('jo_rfq_labor_offer.jo_rfq_head_id',$jo_rfq_head_id)
+        ->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))
+        ->where('jo_rfq_labor_offer.offer_no',1)
+        ->select('jo_rfq_labor_offer.*') // Select necessary columns
+        ->orderBy('jo_rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
+        $second_labor_offers = JORFQLaborOffers::join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')
+        ->where('jo_rfq_labor_offer.jo_rfq_head_id',$jo_rfq_head_id)
+        ->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))
+        ->where('jo_rfq_labor_offer.offer_no',2)
+        ->select('jo_rfq_labor_offer.*') // Select necessary columns
+        ->orderBy('jo_rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
+        $third_labor_offers = JORFQLaborOffers::join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')
+        ->where('jo_rfq_labor_offer.jo_rfq_head_id',$jo_rfq_head_id)
+        ->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))
+        ->where('jo_rfq_labor_offer.offer_no',3)
+        ->select('jo_rfq_labor_offer.*') // Select necessary columns
+        ->orderBy('jo_rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
         foreach($aoq_labor_items AS $al){
             $min_price = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('unit_price','!=',0)->where('jor_labor_details_id',$al->jor_labor_details_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->min('unit_price');
             $labor_data[] = [
@@ -275,9 +300,30 @@ class JOAOQController extends Controller
         }
 
         $aoq_material_items = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get()->unique('jor_material_details_id');
-        $first_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',1)->get();
-        $second_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
-        $third_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
+        // $first_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',1)->get();
+        // $second_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',2)->get();
+        // $third_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
+        $first_offers = JORFQMaterialOffers::join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_material_offer.jo_rfq_vendor_id')
+        ->where('jo_rfq_material_offer.jo_rfq_head_id',$jo_rfq_head_id)
+        ->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))
+        ->where('jo_rfq_material_offer.offer_no',1)
+        ->select('jo_rfq_material_offer.*') // Select necessary columns
+        ->orderBy('jo_rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
+        $second_offers = JORFQMaterialOffers::join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_material_offer.jo_rfq_vendor_id')
+        ->where('jo_rfq_material_offer.jo_rfq_head_id',$jo_rfq_head_id)
+        ->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))
+        ->where('jo_rfq_material_offer.offer_no',2)
+        ->select('jo_rfq_material_offer.*') // Select necessary columns
+        ->orderBy('jo_rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
+        $third_offers = JORFQMaterialOffers::join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_material_offer.jo_rfq_vendor_id')
+        ->where('jo_rfq_material_offer.jo_rfq_head_id',$jo_rfq_head_id)
+        ->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))
+        ->where('jo_rfq_material_offer.offer_no',3)
+        ->select('jo_rfq_material_offer.*') // Select necessary columns
+        ->orderBy('jo_rfq_vendor.vendor_name', 'asc') // Order by column in related table
+        ->get();
         foreach($aoq_material_items AS $am){
             $min_price = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('unit_price','!=',0)->where('jor_material_details_id',$am->jor_material_details_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->min('unit_price');
             $material_data[] = [
@@ -311,6 +357,8 @@ class JOAOQController extends Controller
             'letters'=>$letters,
             'currency'=>$currency,
             'count_rfq_vendors'=>$count_rfq_vendors,
+            'count_canvassed_aoq_v'=>$count_canvassed_aoq_v,
+            'count_aoq_vendors'=>$count_aoq_vendors,
         ],200);
     }
 
@@ -436,6 +484,12 @@ class JOAOQController extends Controller
                 ];
             }
 
+        $canvassed_aoq_vendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
+        $aoq_details = JOAOQDetails::with('jo_rfq_vendor')->where('jo_aoq_head_id',$jo_aoq_head_id)->get();
+        $count_aoq_vendors =$aoq_details->count();
+
         return response()->json([
             'aoq_head_data'=>$head_data,
             'aoq_vendor_data'=>$vendor_data,
@@ -450,6 +504,8 @@ class JOAOQController extends Controller
             'next'=>$next,
             'count_labor_awarded'=>$count_labor_awarded,
             'count_material_awarded'=>$count_material_awarded,
+            'count_canvassed_aoq_v'=>$count_canvassed_aoq_v,
+            'count_aoq_vendors'=>$count_aoq_vendors,
         ],200);
     }
 
@@ -587,6 +643,17 @@ class JOAOQController extends Controller
 
     }
 
+    public function open_jo_aoq($jo_aoq_head_id){
+        $update_awarded_open_aoq=JOAOQHead::where('id',$jo_aoq_head_id)->update([
+            'status'=>null,
+            'aoq_status'=>'Done TE',
+        ]);
+
+        $update_canvass_open_aoq=JORFQVendor::whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->update([
+            'canvassed'=>0,
+        ]);
+    }
+
     public function save_jo_aoq($jo_aoq_head_id){
         $userid = Auth::id();
         $update_joaoq_head=JOAOQHead::where('id',$jo_aoq_head_id)->update([
@@ -616,6 +683,24 @@ class JOAOQController extends Controller
 
     public function export_jo_aoq($jo_aoq_head_id){
         return Excel::download(new JOAOQExport($jo_aoq_head_id), 'JO Abstract of Quotation.xlsx');
+    }
+
+    public function joaoq_status($jo_aoq_head_id){
+        $aoq_status = JOAOQHead::where('id',$jo_aoq_head_id)->value('aoq_status');
+        $jo_rfq_head_id = JOAOQHead::where('id',$jo_aoq_head_id)->value('jo_rfq_head_id');
+        $aoq_details_id = JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->orderBy('id', 'ASC')->value('id');
+        $aoq_vendor = JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->get();
+        $count_aoq_vendor=$aoq_vendor->count();
+        $canvassed_aoq_vendor = JORFQVendor::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('canvassed',1)->get();
+        $count_canvassed_aoq_v=$canvassed_aoq_vendor->count();
+
+
+        return response()->json([
+            'aoq_status'=>$aoq_status,
+            'aoq_details_id'=>$aoq_details_id,
+            'count_aoq_vendor'=>$count_aoq_vendor,
+            'count_canvassed'=>$count_canvassed_aoq_v,
+        ],200);
     }
 
 }
