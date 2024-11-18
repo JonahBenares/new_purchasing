@@ -11,6 +11,7 @@ class JOIDr extends Model
     protected $table="joi_dr";
     protected $fillable=[
         'joi_head_id',
+        'jor_head_id',
         'joi_no',
         'jor_no',
         'dr_no',

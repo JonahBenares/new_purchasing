@@ -134,15 +134,15 @@ class POController extends Controller
     }
 
     public function check_balance($pr_details_id){
-        $balance = PrReportDetails::where('pr_details_id',$pr_details_id)->where('status','!=','Cancelled')->first();
+        $balance = PrReportDetails::where('pr_details_id',$pr_details_id)->first();
         return response()->json([
             'balance'=>$balance,
         ],200);
     }
 
     public function check_balance_rev($po_head_id,$pr_details_id){
-        $balance_overall = PrReportDetails::where('pr_details_id',$pr_details_id)->where('status','!=','Cancelled')->first();
-        $balance = PoDetails::where('po_head_id',$po_head_id)->where('pr_details_id',$pr_details_id)->where('status','!=','Cancelled')->first();
+        $balance_overall = PrReportDetails::where('pr_details_id',$pr_details_id)->first();
+        $balance = PoDetails::where('po_head_id',$po_head_id)->where('pr_details_id',$pr_details_id)->first();
         return response()->json([
             'balance'=>$balance,
             'balance_overall'=>$balance_overall,

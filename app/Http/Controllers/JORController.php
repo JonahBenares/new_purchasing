@@ -60,19 +60,19 @@ class JORController extends Controller
         if($series_rows==0){
             $max_series='1';
             $jor_series='0001';
-            $jor_no = $department_code.$year_short."-".$jor_series;
+            $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
         } else {
             $max_series=JORSeries::where('year',$year)->max('series');
             $jor_series=$max_series+1;
             $exp=explode('-',$request->jor_no);
             if($request->props_id==0){
                 if($request->jor_no!='' && $request->jor_no!='undefined'){
-                    $jor_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+                    $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
                 }else{
-                    $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000');
+                    $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($jor_series, 4,'000');
                 }
             }else{
-                $jor_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+                $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
             }
         }
         return $jor_no."-".$company;
@@ -259,11 +259,11 @@ class JORController extends Controller
             if($series_rows==0){
                 $max_series='1';
                 $jor_series='0001';
-                $jor_no = $department_code.$year_short."-".$jor_series;
+                $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
             } else {
                 $max_series=JORSeries::where('year',$year)->max('series');
                 $jor_series=$max_series+1;
-                $jor_no = $department_code.$year_short."-".$exp[1];
+                $jor_no = 'JOR'.$department_code.$year_short."-".$exp[1];
                 // Str::padLeft($exp, 4,'000')
             }
             if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
@@ -463,11 +463,11 @@ class JORController extends Controller
         if($series_rows==0){
             $max_series='1';
             $jor_series='0001';
-            $jor_no = $department_code.$year_short."-".$jor_series;
+            $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
         } else {
             $max_series=JORSeries::where('year',$year)->max('series');
             $jor_series=$max_series+1;
-            $jor_no = $department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+            $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
         }
         if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
             $series['year']=$year;
@@ -638,11 +638,11 @@ class JORController extends Controller
         if($series_rows==0){
             $max_series='1';
             $jor_series='0001';
-            $jor_no = $department_code.$year_short."-".$jor_series;
+            $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
         } else {
             $max_series=JORSeries::where('year',$year)->max('series');
             $jor_series=$max_series+1;
-            $jor_no = $department_code.$year_short."-".$exp[1];
+            $jor_no = 'JOR'.$department_code.$year_short."-".$exp[1];
         }
         if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
             $series['year']=$year;

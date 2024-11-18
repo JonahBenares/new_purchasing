@@ -33,4 +33,8 @@ class JORFQMaterialOffers extends Model
     public function jo_rfq_vendor(){
         return $this->belongsTo(JORFQVendor::class, 'jo_rfq_vendor_id');
     }
+
+    public function jor_material_details(){
+        return $this->belongsTo(JORMaterialDetails::class, 'jor_material_details_id');
+    }
 }
