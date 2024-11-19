@@ -613,15 +613,17 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/new',
+        path:'/job_issue/new/:id',
         component: job_issueNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/job_issue/view',
+        path:'/job_issue/view/:id',
         component: job_issueView,
+        props:true,
         meta:{
             requiresAuth:true
         }

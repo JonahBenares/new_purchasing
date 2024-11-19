@@ -264,7 +264,8 @@
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		// var vat_percent = document.getElementById("vat_percent").value;
-		var percent=vat_percent/100;
+
+		var percent= (vat.value==1) ? vat_percent/100 : 0;
 		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
 		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
@@ -285,7 +286,7 @@
 		// var vat_percent = document.getElementById("vat_percent").value;
 		// var vat_percent = vat_percent.value;
 		// alert(vat_percent)
-        var percent=vat_percent/100;
+        var percent= (vat.value==1) ? vat_percent/100 : 0;
         var new_vat = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
         var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
@@ -314,15 +315,15 @@
 		}
 	}
 
-	const checkBalance = async (pr_details_id,qty,count) => {
+	const checkBalance = async (pr_details_id,vat_percent,qty,count) => {
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
 			var pi = p.replace(",", "");
 			grandtotal += parseFloat(pi);
         });
-		var vat = document.getElementById("vat_percent").value;
-        var percent=vat/100;
+		// var vat = document.getElementById("vat_percent").value;
+        var percent= (vat.value==1) ? vat_percent/100 : 0
 		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
 		vat_amount.value=new_vat;
 		
@@ -637,7 +638,7 @@
 														<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
 														<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 														<td class="border-y-none p-0 text-center">
-															<input type="text" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+															<input type="text" min="0" @keyup="checkBalance(pd.pr_details_id,vat_percent,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 															<!-- <input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,remaining_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]" readonly disabled v-else> -->
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
@@ -649,7 +650,7 @@
 														<span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.quantity) }}</span>
 														<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 														<td class="border-y-none p-0 text-center">
-															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,pd.quantity, index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="pd.quantity">
+															<input type="number" min="0" @keyup="checkBalance(pd.pr_details_id,vat_percent,pd.quantity, index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="pd.quantity">
 														</td>
 														<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 														<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
@@ -805,7 +806,7 @@
 												<tr v-for="(o, indexes) in other_list">
 													<td class="px-1" colspan="2">{{ o.instructions }}</td>
 													<td class="p-0 align-top" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1" v-if="props.id==0">
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1" v-if="props.id==0 || pohead_id==0">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
 														<button type="button" @click="deleteInstructions(o.id)" class="btn btn-danger p-1" v-else>

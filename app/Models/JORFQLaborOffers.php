@@ -33,4 +33,8 @@ class JORFQLaborOffers extends Model
     public function jo_rfq_vendor(){
         return $this->belongsTo(JORFQVendor::class, 'jo_rfq_vendor_id');
     }
+
+    public function jor_labor_details(){
+        return $this->belongsTo(JORLaborDetails::class, 'jor_labor_details_id');
+    }
 }

@@ -71,11 +71,11 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                 $series_rows = JORSeries::where('year',$year)->count();
                 if($series_rows==0){
                     $jor_series='0001';
-                    $jor_no = $department_code.$year_short."-".$jor_series."-".$company;
+                    $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series."-".$company;
                 } else {
                     $max_series=JORSeries::where('year',$year)->max('series');
                     $jor_series=$max_series+1;
-                    $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000')."-".$company;
+                    $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($jor_series, 4,'000')."-".$company;
                 }
                 $series['year']=$year;
                 $series['series']=$jor_series;

@@ -134,15 +134,15 @@ class POController extends Controller
     }
 
     public function check_balance($pr_details_id){
-        $balance = PrReportDetails::where('pr_details_id',$pr_details_id)->where('status','!=','Cancelled')->first();
+        $balance = PrReportDetails::where('pr_details_id',$pr_details_id)->first();
         return response()->json([
             'balance'=>$balance,
         ],200);
     }
 
     public function check_balance_rev($po_head_id,$pr_details_id){
-        $balance_overall = PrReportDetails::where('pr_details_id',$pr_details_id)->where('status','!=','Cancelled')->first();
-        $balance = PoDetails::where('po_head_id',$po_head_id)->where('pr_details_id',$pr_details_id)->where('status','!=','Cancelled')->first();
+        $balance_overall = PrReportDetails::where('pr_details_id',$pr_details_id)->first();
+        $balance = PoDetails::where('po_head_id',$po_head_id)->where('pr_details_id',$pr_details_id)->first();
         return response()->json([
             'balance'=>$balance,
             'balance_overall'=>$balance_overall,
@@ -1242,7 +1242,7 @@ class POController extends Controller
                     'to_deliver'=>$remaining_delivery - $to_deliver,
                 ]);
                 $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
-                $check_delivered=$update_prreport->delivered_qty + $quantity;
+                $check_delivered=$update_prreport->delivered_qty + $to_deliver;
                 if($update_prreport->pr_qty > $check_delivered){
                     $delivery_status='Partially Delivered';
                 }else if($update_prreport->pr_qty == $check_delivered){
@@ -1301,7 +1301,7 @@ class POController extends Controller
                         $po_dr_itmins['delivered_qty']=$to_deliver;
                         $po_drinsertitem=PoDrItems::create($po_dr_itmins);
                         $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
-                        $check_delivered=$update_prreport->delivered_qty + $quantity;
+                        $check_delivered=$update_prreport->delivered_qty + $to_deliver;
                         if($update_prreport->pr_qty > $check_delivered){
                             $delivery_status='Partially Delivered';
                         }else if($update_prreport->pr_qty == $check_delivered){
