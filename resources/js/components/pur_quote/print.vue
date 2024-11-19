@@ -380,7 +380,7 @@
 	}
 
 	const openEncodeOffer = () => {
-		router.push(`/pur_quote/view/${props.id}`)
+		router.push(`/pur_quote/view/${props.id}/0`)
 	}
 	
 </script>

@@ -84,10 +84,10 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                     $jorhead['project_activity']=$row['project_activity'];
                     $jorhead['general_description']=$row['general_description'];
                     $jorhead['location']=$row['jo_request'];
-                    $jorhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
+                    $jorhead['date_prepared']= ($row['date_prepared']!='') ? date('Y-m-d',strtotime($this->transformDate($row['date_prepared']))) : '';
                     $jorhead['duration']=$row['duration'];
-                    $jorhead['completion_date']=date('Y-m-d',strtotime($this->transformDate($row['completion_date'])));
-                    $jorhead['delivery_date']=date('Y-m-d',strtotime($this->transformDate($row['delivery_date'])));
+                    $jorhead['completion_date']= ($row['completion_date']!='') ? date('Y-m-d',strtotime($this->transformDate($row['completion_date']))) : '';
+                    $jorhead['delivery_date']= ($row['delivery_date']!='') ? date('Y-m-d',strtotime($this->transformDate($row['delivery_date']))) : '';
                     $jorhead['jor_no']=$jor_no;
                     $jorhead['site_jor']=$row['jo_no'];
                     $jorhead['department_id']=$department_id;

@@ -33,7 +33,7 @@ class JORController extends Controller
             $labor_details = $jorlaborImportdetails->data;
             return response()->json([
                 'jor_head_id'=>$jor_head_id,
-                'jorhead'=>$head
+                'jorhead'=>$head,
             ],200);
         }
     }

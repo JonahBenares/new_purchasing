@@ -338,7 +338,7 @@
 	}
 
 	const openEncodeOffer = () => {
-		router.push(`/job_quote/view/${props.id}`)
+		router.push(`/job_quote/view/${props.id}/0`)
 	}
 </script>
 <template>
