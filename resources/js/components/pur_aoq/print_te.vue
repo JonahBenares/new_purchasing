@@ -23,6 +23,8 @@
 	let vendor_aoq_items=ref([]);
 	let currency=ref([]);
 	let count_rfq_vendors=ref(0);
+	let count_canvassed_aoq_v=ref(0);
+	let count_aoq_vendors=ref(0);
 	let aoq_details_id=ref(0);
 
 	const props = defineProps({
@@ -53,6 +55,14 @@
 		letters.value=response.data.letters
 		currency.value = response.data.currency
 		count_rfq_vendors.value = response.data.count_rfq_vendors
+		count_canvassed_aoq_v.value = response.data.count_canvassed_aoq_v
+		count_aoq_vendors.value = response.data.count_aoq_vendors
+
+		if(count_canvassed_aoq_v.value != count_aoq_vendors.value){
+			openAOQAlert.value = !openAOQAlert.value
+		}else{
+			openAOQAlert.value = !hideModal.value
+		}
 	}
 
 	const VendorItemsOffer = async () => {
@@ -125,6 +135,7 @@
 	const cancelAlert = ref(false)
 	const AddVendorAlert = ref(false)
 	const donetealert = ref(false)
+	const openAOQAlert = ref(false)
 	const printbutton = ref(false)
 	const signatories = ref(false)
 	const showAddVendor = ref(false)
@@ -138,6 +149,7 @@
 		cancelAlert.value = !hideModal.value
 		AddVendorAlert.value = !hideModal.value
 		donetealert.value = !hideModal.value
+		openAOQAlert.value = !hideModal.value
 	}
 
 	const DoneTEAlert = () => {
@@ -160,6 +172,12 @@
 		});
 	}
 
+	const openAOQ = (rfq_head_id) => {
+		axios.post(`/api/open_aoq/${props.id}`).then(function (response) {
+			router.push('/pur_quote/view/'+rfq_head_id+'/'+props.id)
+		});
+	}
+
 	const openAddVendor = () => {
 		showAddVendor.value = !showAddVendor.value
 	}
@@ -175,10 +193,10 @@
 </script>
 <template>
 	<navigation>
-		<div class="bg-yellow-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'For TE')">For Technical Evaluation</div>
-		<div class="bg-blue-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Done TE')">Done Technical Evaluation</div>
-		<div class="bg-lime-500 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Awarded')">Awarded</div>
-		<div class="bg-red-500 text-white px-3 py-2 font-bold" v-if="(head.status == 'Cancelled')">Cancelled</div>
+		<div class="bg-yellow-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'For TE')">For Technical Evaluation (AOQ - {{props.id}})</div>
+		<div class="bg-blue-400 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Done TE')">Done Technical Evaluation (AOQ - {{props.id}})</div>
+		<div class="bg-lime-500 text-white px-3 py-2 font-bold" v-if="(head.status != 'Cancelled' && head.aoq_status == 'Awarded')">Awarded (AOQ - {{props.id}})</div>
+		<div class="bg-red-500 text-white px-3 py-2 font-bold" v-if="(head.status == 'Cancelled')">CANCELLED (AOQ - {{props.id}}) Cancelled date: {{head.cancelled_date}}, Cancelled by: {{head.cancelled_name}}</div>
 		<div class="bg-white p-4 ">
 			<div class="overflow-x-scroll">
 				<div class="">
@@ -214,7 +232,7 @@
 							<!-- loop vendors here start -->
 							<template v-for="av in aoq_vendor">
 								<td class="bg-gray-50 p-1 text-center py-2" colspan="5">
-								<p class="m-0 text-xs font-bold">{{ av.vendor_name }}</p>
+								<p class="m-0 text-xs font-bold">{{ av.vendor_name }} ({{ av.vendor_identifier }})</p>
 								<!-- <p class="m-0 text-xs font-bold">MF Computer Solutions, Inc.</p>
 								<p class="m-0 text-xs font-bold">Nexus Industrial Prime Solutions Corp.</p> -->
 								<div class="flex justify-center space-x-2">
@@ -245,7 +263,7 @@
 							<tr>
 								<td class="p-1 align-top text-center" rowspan="4">{{ index + 1 }}</td>
 								<td class="p-1 align-top" rowspan="4">{{ ai.item_description }}</td>
-								<td class="p-1 align-top text-center" rowspan="4">{{ ai.quantity }}</td>
+								<td class="p-1 align-top text-center" rowspan="4">{{  parseFloat(ai.quantity).toFixed(2) }}</td>
 								<td class="p-1 align-top text-center" rowspan="4">{{ ai.uom }}</td>
 							</tr>
 							<!-- loop here if 3 and below offers here -->
@@ -256,16 +274,16 @@
 											<td class="p-1">
 												{{ fo.offer }}
 											</td>
-											<td :class="(ai.min_price == fo.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(ai.min_price == fo.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
-													<span>{{ fo.currency }}</span>
-													<span>{{  parseFloat(fo.unit_price).toFixed(2) }}</span>
+												<span>{{ (fo.unit_price != 0) ? fo.currency : '' }}</span>
+												<span>{{  (fo.unit_price != 0) ? parseFloat(fo.unit_price).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
-											<td colspan="2" :class="(fo.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
+											<td colspan="2" :class="(fo.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
-													<span>{{ fo.currency }}</span>
-													<span>{{  parseFloat(fo.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{ (fo.unit_price != 0) ? fo.currency : '' }}</span>
+													<span>{{  (fo.unit_price != 0) ? parseFloat(fo.unit_price * ai.quantity).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td class="p-1 align-top">{{ fo.remarks }}</td>
@@ -281,16 +299,16 @@
 											<td class="p-1">
 												{{ so.offer }}
 											</td>
-											<td :class="(ai.min_price == so.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
+											<td :class="(ai.min_price == so.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top '">
 												<div class="flex justify-between space-x-1">
-													<span>{{ so.currency }}</span>
-													<span>{{  parseFloat(so.unit_price).toFixed(2) }}</span>
+												<span>{{ (so.unit_price != 0) ? so.currency : '' }}</span>
+												<span>{{  (so.unit_price != 0) ? parseFloat(so.unit_price).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
-											<td :class="(so.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
+											<td :class="(so.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
-													<span>{{ so.currency }}</span>
-													<span>{{  parseFloat(so.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{ (so.unit_price != 0) ? so.currency : '' }}</span>
+													<span>{{  (so.unit_price != 0) ? parseFloat(so.unit_price * ai.quantity).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td class="p-1 align-top">{{ so.remarks }}</td>
@@ -305,17 +323,17 @@
 											<td class="p-1">
 												{{ to.offer }}
 											</td>
-											<td :class="(ai.min_price == to.unit_price) ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
+											<td :class="(ai.min_price == to.unit_price && head.status != 'Cancelled') ? 'p-1 align-top bg-yellow-300' : 'p-1 align-top'">
 												<div class="flex justify-between space-x-1">
-													<span>{{ to.currency }}</span>
-													<span>{{  parseFloat(to.unit_price).toFixed(2) }}</span>
+												<span>{{ (to.unit_price != 0) ? to.currency : '' }}</span>
+												<span>{{  (to.unit_price != 0) ? parseFloat(to.unit_price).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<!-- <td class="p-1 align-top" colspan="2"> -->
-											<td :class="(to.awarded == 1) ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
+											<td :class="(to.awarded == 1 && head.status != 'Cancelled') ? 'p-1 align-top bg-lime-500' : 'p-1 align-top '" colspan="2">
 												<div class="flex justify-between space-x-1">
-													<span>{{ to.currency }}</span>
-													<span>{{  parseFloat(to.unit_price * ai.quantity).toFixed(2) }}</span>
+													<span>{{ (to.unit_price != 0) ? to.currency : '' }}</span>
+													<span>{{  (to.unit_price != 0) ? parseFloat(to.unit_price * ai.quantity).toFixed(2) : ''  }}</span>
 												</div>
 											</td>
 											<td class="p-1 align-top">{{ to.remarks }}</td>
@@ -422,12 +440,13 @@
 				</div>
 			</div>
 			<br>
-			<div class="row">
+			<div class="row" v-if="(count_canvassed_aoq_v == count_aoq_vendors)">
 				<div class="col-lg-12" v-if="(head.status != 'Cancelled' && head.aoq_status != 'Awarded' && head.aoq_status != 'Done TE')">
 					<div class="flex justify-between space-x-1">
 						<div class="flex justify-start space-x-1">
 							<button type="button" @click="CancelAlert()" class="btn btn-danger">Cancel</button>
-							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 1">Add Vendor</button>
+							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 0">Add Vendor</button>
+							<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 						</div>
 						<div class="flex justify-end space-x-1">
 							<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary ">Export</a>
@@ -438,7 +457,13 @@
 				<div class="col-lg-12" v-else>
 					<div class="flex justify-center space-x-1">
 						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
+						<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 					</div>
+				</div>
+			</div>
+			<div class="col-lg-12" v-else>
+				<div class="flex justify-center space-x-1">
+					<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Update Vendor/s</button>
 				</div>
 			</div>
 		</div>
@@ -639,6 +664,46 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:openAOQAlert }">
+				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">This is an open AOQ please update vendor/s to proceed.</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="openAOQ(head.rfq_head_id)">Update Vendor/s</button>
+								</div>
+							</div>
+						</div>
+					</div> 
 				</div>
 			</div>
 		</Transition>

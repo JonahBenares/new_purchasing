@@ -360,13 +360,13 @@
 										</td>
 									</tr>
 									<tr v-for="(jl,index) in get_jorlabordetails" id="scope">
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ index + 1 }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top print:!bg-transparent print:!text-red-500' : 'p-1 align-top'">{{ jl.scope_of_work }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.quantity }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.uom }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost }}</td>
-										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost * jl.quantity  }}</td>
-										<td class="p-1" :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 align-top text-center print:!bg-transparent'">{{ index + 1 }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 align-top'">{{ jl.scope_of_work }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.quantity }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.uom }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost }}</td>
+										<td :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 align-top text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 align-top text-center print:!bg-transparent'">{{ jl.unit_cost * jl.quantity  }}</td>
+										<td class="p-1" :class="(jl.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 print:!bg-transparent'">
 											<input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')"  v-if="jl.status!='Cancelled'">
 											<span v-else>{{ jl.recom_date }}</span>
 											<!-- <input type="date" class="w-full bg-transparent" v-model="jl.recom_date" @change="updateRecomdate(jl.id,'Labors')" readonly v-else> -->
@@ -407,14 +407,14 @@
 										</td>
 									</tr>
 									<tr v-for="(jm,indexed) in get_jormaterialdetails" id="item1">
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500' : 'p-1 text-center print:!bg-transparent'">{{ indexed + 1 }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500' : 'p-1 text-center print:!bg-transparent'">{{ jm.quantity }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500' : 'p-1 text-center print:!bg-transparent'">{{ jm.uom }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.pn_no }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.item_description }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.wh_stocks }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">{{ jm.date_needed }}</td>
-										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500' : 'p-1 print:!bg-transparent'">
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 text-center print:!bg-transparent'">{{ indexed + 1 }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 text-center print:!bg-transparent'">{{ jm.quantity }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 text-center print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 text-center print:!bg-transparent'">{{ jm.uom }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 print:!bg-transparent'">{{ jm.pn_no }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 print:!bg-transparent'">{{ jm.item_description }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 print:!bg-transparent'">{{ jm.wh_stocks }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 print:!bg-transparent'">{{ jm.date_needed }}</td>
+										<td :class="(jm.status=='Cancelled') ? 'bg-red-100 p-1 print:!bg-transparent print:!text-red-500 print:hidden' : 'p-1 print:!bg-transparent'">
 											<input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')"  v-if="jm.status!='Cancelled'">
 											<!-- <input type="date" class="w-full bg-transparent" v-model="jm.recom_date" @change="updateRecomdate(jm.id,'Materials')" readonly v-else> -->
 											 <span v-else>{{ jm.recom_date }}</span>

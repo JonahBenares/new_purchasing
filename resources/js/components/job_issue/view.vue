@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PrinterIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
     import { reactive, ref } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
@@ -59,6 +59,26 @@
                 </div>
             </div>
         </div>
+        <div class="row d-flex" id="proBanner">
+            <div class="col-md-12 mb-3">
+                <div class="card bg-gradient-primary border-0">
+                    <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
+                        <div class="flex justify-start space-x-2">
+                            <span class="text-white">
+                                <PrinterIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></PrinterIcon>
+                            </span>
+                            <p class="mb-0 text-white font-weight-medium">Please Print COC!</p>
+                        </div>
+                        <div class="d-flex">
+                            <a href="" target="_blank" class="btn btn-outline-light mr-2 bg-gradient-danger border-0">View COC</a>
+                            <button id="bannerClose" class="btn border-0 p-0 ml-auto">
+                            <i class="mdi mdi-close text-white"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
@@ -437,18 +457,20 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-start space-x-1">
-                                                    <button type="submit" class="btn btn-danger w-36"  @click="openDangerPO()">Cancel PO</button>
+                                                    <button type="submit" class="btn btn-danger"  @click="openDangerPO()">Cancel PO</button>
                                                     <div class="flex justify-between">
-                                                        <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise JOI</a>
+                                                        <a href="/job_issue/edit" type="submit" class="btn btn-info  !rounded-r-none">Revise JOI</a>
                                                         <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
+                                                    <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
+                                                    <a href="/job_issue/print_coc" class="btn btn-warning text-white">Print COC</a>
                                                     <div class="flex justify-between">
-                                                        <a href="/job_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
-                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD 2</a>
+                                                        <!-- <a href="/job_disburse/new" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a> -->
+                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
@@ -459,7 +481,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print JOI</button>
+                                                    <button type="submit" class="btn btn-primary" @click="printDiv()">Print JOI</button>
                                                 </div>
                                                 
                                             </div>

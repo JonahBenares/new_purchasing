@@ -8,6 +8,7 @@ use App\Models\JORMaterialDetails;
 use App\Models\JORSeries;
 use App\Models\JORNotes;
 use App\Models\Departments;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
@@ -45,7 +46,8 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
             'completion_date' => 'I8',
             'delivery_date' => 'I9',
             'urgency_no' => 'I10',
-            'general_description' => 'B13',
+            'project_activity' => 'B13',
+            'general_description' => 'B14',
         ];
     }
 
@@ -58,37 +60,42 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
     {
         if(count($row)!=0){
             $company=Config::get('constants.company');
-            $department_id=Departments::where('department_name',$row['department'])->value('id');
-            $department_code=Departments::where('department_name',$row['department'])->value('department_code');
+            $department=trim($row['department']);
+            $requestor=trim($row['requestor']);
+            $requestor_id=User::where('name',$requestor)->value('id');
+            $department_id=Departments::where('department_name',$department)->value('id');
+            $department_code=Departments::where('department_name',$department)->value('department_code');
             if($row['jo_request']!=''){
                 $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                 $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
                 $series_rows = JORSeries::where('year',$year)->count();
                 if($series_rows==0){
                     $jor_series='0001';
-                    $jor_no = $department_code.$year_short."-".$jor_series."-".$company;
+                    $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series."-".$company;
                 } else {
                     $max_series=JORSeries::where('year',$year)->max('series');
                     $jor_series=$max_series+1;
-                    $jor_no = $department_code.$year_short."-".Str::padLeft($jor_series, 4,'000')."-".$company;
+                    $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($jor_series, 4,'000')."-".$company;
                 }
                 $series['year']=$year;
                 $series['series']=$jor_series;
                 $jor_series_insert=JORSeries::create($series);
                 if($jor_series_insert){
+                    $jorhead['project_activity']=$row['project_activity'];
                     $jorhead['general_description']=$row['general_description'];
                     $jorhead['location']=$row['jo_request'];
-                    $jorhead['date_prepared']=date('Y-m-d',strtotime($this->transformDate($row['date_prepared'])));
+                    $jorhead['date_prepared']= ($row['date_prepared']!='') ? date('Y-m-d',strtotime($this->transformDate($row['date_prepared']))) : '';
                     $jorhead['duration']=$row['duration'];
-                    $jorhead['completion_date']=date('Y-m-d',strtotime($this->transformDate($row['completion_date'])));
-                    $jorhead['delivery_date']=date('Y-m-d',strtotime($this->transformDate($row['delivery_date'])));
+                    $jorhead['completion_date']= ($row['completion_date']!='') ? date('Y-m-d',strtotime($this->transformDate($row['completion_date']))) : '';
+                    $jorhead['delivery_date']= ($row['delivery_date']!='') ? date('Y-m-d',strtotime($this->transformDate($row['delivery_date']))) : '';
                     $jorhead['jor_no']=$jor_no;
                     $jorhead['site_jor']=$row['jo_no'];
                     $jorhead['department_id']=$department_id;
-                    $jorhead['department_name']=$row['department'];
+                    $jorhead['department_name']=$department;
                     $jorhead['dept_code']=$department_code;
-                    $jorhead['requestor']=$row['requestor'];
-                    $jorhead['urgency']=$row['urgency_no'];
+                    $jorhead['requestor_id']=$requestor_id;
+                    $jorhead['requestor']=$requestor;
+                    $jorhead['urgency']=$row['urgency_no'] ?? 0;
                     $jorhead['purpose']=$row['purpose'];
                     $jorhead['process_code']='';
                     $jorhead['user_id']= $this->user_id;

@@ -32,7 +32,7 @@
 </table>
 <table style="border:2px solid #000">
 	<tr>
-		<td colspan="16" style="height: 30px;text-align:center;vertical-align:middle">
+		<td colspan="{{ $colspan }}" style="height: 30px;text-align:center;vertical-align:middle">
 			<b>ABSTRACT OF QUOTATION</b>
 		</td>
 	</tr>
@@ -98,15 +98,15 @@
 		@foreach($first_offers AS $fo)
 		@if($ai['pr_details_id']==$fo['pr_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['offer'];}}</td>
-		@if($ai['min_price']==$fo['unit_price'])
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $fo['currency'] }} {{ $fo['unit_price'] }}</td>
+		@if($ai['min_price']==$fo['unit_price'] && $fo['unit_price'] != 0 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }} {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency'] }} {{ $fo['unit_price'] }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }} {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'],2) : '' }}</td>
 		@endif
-		@if($fo['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $fo['currency'] }}  {{ $fo['unit_price'] * $ai['quantity'] }}</td>
+		@if($fo['awarded'] == 1 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }}  {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'] * $ai['quantity'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $fo['currency']}}  {{$fo['unit_price'] * $ai['quantity']}}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($fo['unit_price'] != 0) ? $fo['currency'] : '' }}  {{ ($fo['unit_price'] != 0) ? number_format($fo['unit_price'] * $ai['quantity'],2) : '' }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$fo['remarks'];}}</td>
 		@endif
@@ -116,15 +116,15 @@
 	@foreach($second_offers AS $so)
 		@if($ai['pr_details_id']==$so['pr_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['offer'];}}</td>
-		@if($ai['min_price']==$so['unit_price'])
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $so['currency'] }} {{ $so['unit_price'] }}</td>
+		@if($ai['min_price']==$so['unit_price'] && $so['unit_price'] != 0 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }} {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency'] }} {{ $so['unit_price'] }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }} {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'],2) : '' }}</td>
 		@endif
-		@if($so['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $so['currency'] }}  {{ $so['unit_price'] * $ai['quantity'] }}</td>
+		@if($so['awarded'] == 1 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }}  {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'] * $ai['quantity'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $so['currency']}}  {{$so['unit_price'] * $ai['quantity']}}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($so['unit_price'] != 0) ? $so['currency'] : '' }}  {{ ($so['unit_price'] != 0) ? number_format($so['unit_price'] * $ai['quantity'],2) : '' }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$so['remarks'];}}</td>
 		@endif
@@ -134,24 +134,24 @@
 	@foreach($third_offers AS $to)
 		@if($ai['pr_details_id']==$to['pr_details_id'])
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['offer'];}}</td>
-		@if($ai['min_price']==$to['unit_price'])
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ $to['currency'] }} {{ $to['unit_price'] }}</td>
+		@if($ai['min_price']==$to['unit_price'] && $to['unit_price'] != 0 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #FDE047'>{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }} {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency'] }} {{ $to['unit_price'] }}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }} {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'],2) : '' }}</td>
 		@endif
-		@if($to['awarded'] == 1)
-			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ $to['currency'] }}  {{ $to['unit_price'] * $ai['quantity'] }}</td>
+		@if($to['awarded'] == 1 && $status != 'Cancelled')
+			<td style='border: 1px solid gray;vertical-align: text-top;text-align:center;background-color: #84CC16'>{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }}  {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'] * $ai['quantity'],2) : '' }}</td>
 		@else
-			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ $to['currency']}}  {{$to['unit_price'] * $ai['quantity']}}</td>
+			<td style="border: 1px solid gray;vertical-align: text-top;text-align:center;">{{ ($to['unit_price'] != 0) ? $to['currency'] : '' }}  {{ ($to['unit_price'] != 0) ? number_format($to['unit_price'] * $ai['quantity'],2) : '' }}</td>
 		@endif
 			<td style="border: 1px solid gray;vertical-align: text-top;word-wrap: break-word;">{{$to['remarks'];}}</td>
 		@endif
 		@endforeach
 	</tr>
+	@endforeach
 	@php
 		$itemno++;
 	@endphp
-	@endforeach
 	<tr>
 		<td><br></td>
 	</tr>
@@ -199,10 +199,16 @@
 		<td></td>
 		<td></td>
 		@foreach($aoq_vendor_data AS $av)
-		<td colspan="4" style="vertical-align: text-top; height: 150px;">			
+		<td colspan="4" style="vertical-align: text-top; height: 150px;">
+				@php
+					$letter = 'a'; // Starting letter
+				@endphp				
 				@foreach($all_terms AS $at)
 					@if($av['rfq_vendor_id']==$at['rfq_vendor_id'])
-						<p>{{ $at['terms'] }}</p>
+						<p>{{ $letter }}. {{ $at['terms'] }}</p>
+						@php
+							$letter = chr(ord($letter) + 1); // Increment letter
+						@endphp
 					@endif
 				@endforeach
 			</td>

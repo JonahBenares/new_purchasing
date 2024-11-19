@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon , MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -16,21 +16,43 @@
     import moment from 'moment'
     const drawer_revise = ref(false)
 	const hideModal = ref(true)
-    const openDrawerRevise = () => {
+	const po_head_rev = ref([])
+	const po_nos = ref('')
+	const po_head_id = ref(0)
+	const revision_nos = ref('')
+    const openDrawerRevise = async (id,po_no,revision_no) => {
 		drawer_revise.value = !drawer_revise.value
+        let response = await axios.get("/api/old_revision_data/"+id);
+		po_head_rev.value = response.data.po_head_rev;
+		po_nos.value = po_no;
+		revision_nos.value = revision_no;
+		po_head_id.value = id;
+		// po_details_rev.value = response.data.po_details_rev;
+		// po_dr_rev.value = response.data.po_dr_rev;
+		// po_dritems_rev.value = response.data.po_dritems_rev;
+		// po_terms_rev.value = response.data.po_terms_rev;
+		// po_instructions_rev.value = response.data.po_instructions_rev;
 	}
     const closeModal = () => {
 		drawer_revise.value = !hideModal.value
 	}
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
-    const data = [
-        ['2024-08-15','','MF Computer Solutions, Inc.','PR-19772-8727','Purchase Request','Pending',''],
-        ['2024-08-16','','A-one Industrial Sales','FLM22-2020','Direct Purchase','Pending',''],
-        ['2024-08-16','','7RJ Brothers Sand & Gravel & Gen. Mdse.','ENV24-1359','Purchase Request','Fully Delivered',''],
-        ['2024-08-17','','A.C. Parts Merchandising','OPE24-1355','Repeat Order','Cancelled',''],
-        ['2024-08-20','','Bacolod General Parts Marketing','HAS24-1354','Purchase Request','Fully Delivered',''],
-    ];
+    let get_allpo=ref([]);
+    onMounted(async () => {
+		getallPO()
+	})
+	const getallPO = async () => {
+		let response = await axios.get("/api/get_allpo");
+		get_allpo.value = response.data.poall;
+	}
+    // const data = [
+    //     ['2024-08-15','','MF Computer Solutions, Inc.','PR-19772-8727','Purchase Request','Pending',''],
+    //     ['2024-08-16','','A-one Industrial Sales','FLM22-2020','Direct Purchase','Pending',''],
+    //     ['2024-08-16','','7RJ Brothers Sand & Gravel & Gen. Mdse.','ENV24-1359','Purchase Request','Fully Delivered',''],
+    //     ['2024-08-17','','A.C. Parts Merchandising','OPE24-1355','Repeat Order','Cancelled',''],
+    //     ['2024-08-20','','Bacolod General Parts Marketing','HAS24-1354','Purchase Request','Fully Delivered',''],
+    // ];
     const options = {
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
@@ -121,12 +143,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/pur_po/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                            <a href="/pur_po/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                 <span>Add New PO</span>
                             </a>
                         </div>
                         <div class="pt-3">
-                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                            <DataTable :data="get_allpo" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" width="8%"> PO Date</th>
@@ -142,13 +164,28 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-1="">
-                                        <span class="text-left z-50 !w-full p-1 px-2 cursor-pointer btn-link" @click="openDrawerRevise()">
-                                            POPE19-1000-1001.r1
+                                <template #column-1="props">
+                                        <span class="text-left z-50 !w-full p-1 px-2 cursor-pointer btn-link" @click="openDrawerRevise(props.rowData.id, props.rowData.po_no, props.rowData.revision_no)">
+                                            
+                                            {{props.rowData.po_no}}{{ (props.rowData.revision_no!=0 && props.rowData.revision_no!=null && props.rowData.revision_no!='') ? '.r'+props.rowData.revision_no : '' }} 
                                         </span>
 								</template>
-                                <template #column-6="">
-                                    <a href="/pur_po/view" class="btn btn-xs btn-warning text-white p-1">
+                                <template #column-5="props">
+                                    <div class="flex justify-center">
+                                        <span class="badge bg-green-500 text-white !rounded-xl px-2 p-1" v-if="props.rowData.status=='Saved'">PO Issued</span>
+                                        <span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Draft'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-red-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Cancelled'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-blue-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Revised'">{{props.rowData.status}}</span>
+                                    </div>
+                                </template>
+                                <template #column-6="props">
+                                    <a :href="'/pur_po/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="props.rowData.status=='Saved'|| props.rowData.status=='Cancelled'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/pur_po/edit/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Revised'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/pur_po/new/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else>
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>
@@ -181,14 +218,11 @@
                 </div>
                 <hr class="m-0">
                 <div class="modal_s_items ">
-                    <div class="">
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
-                        <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
-                        <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
+                    <div class="" v-for="phv in po_head_rev">
+                        <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
+                    </div>
+                    <div>
+                        <a :href="'/pur_po/view/'+po_head_id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_nos }}{{ (revision_nos!=0) ? '.r'+revision_nos : '' }} (Current)</a>
                     </div>
                     <!-- <div>
                         <p class="text-center text-sm">No Data</p>

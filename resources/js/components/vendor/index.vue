@@ -78,6 +78,9 @@
 		router.push('/vendor/edit/'+id)
 	}
 </script>
+<style>
+    td {text-wrap: wrap!important;}
+</style>
 <template>
 	<navigation>
         <div class="row">

@@ -13,6 +13,7 @@ class AOQHead extends Model
         'rfq_head_id',
         'aoq_no',
         'aoq_date',
+        'date_needed',
         'pr_no',
         'status',
         'user_id',
@@ -24,6 +25,7 @@ class AOQHead extends Model
         'aoq_status',
         'prepared_by',
         'received_by',
+        'award_recommended_by',
         'recommended_by',
         'approved_by',
     ];

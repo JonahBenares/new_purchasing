@@ -54,6 +54,7 @@ import pur_poIndex from '../components/pur_po/index.vue'
 import pur_poNew from '../components/pur_po/new.vue'
 import pur_poEdit from '../components/pur_po/edit.vue'
 import pur_poView from '../components/pur_po/view.vue'
+import pur_poViewRevised from '../components/pur_po/view_revised.vue'
 import pur_poPrint from '../components/pur_po/print.vue'
 
 import pur_poDirect from '../components/pur_direct/index.vue'
@@ -89,7 +90,8 @@ import job_issueIndex from '../components/job_issue/index.vue'
 import job_issueNew from '../components/job_issue/new.vue'
 import job_issueEdit from '../components/job_issue/edit.vue'
 import job_issueView from '../components/job_issue/view.vue'
-import job_issuePrint from '../components/job_issue/print.vue'
+import job_issuePrintCOC from '../components/job_issue/print_coc.vue'
+import job_issuePrintAR from '../components/job_issue/print_ar.vue'
 
 import job_issueDirect from '../components/job_direct/index.vue'
 import job_issueDirectView from '../components/job_direct/view.vue'
@@ -334,7 +336,7 @@ const routes = [
         }
     },
     {
-        path:'/pur_quote/view/:id',
+        path:'/pur_quote/view/:id/:aoq_id',
         component: pur_quoteView,
         props:true,
         meta:{
@@ -364,7 +366,6 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
         path:'/pur_aoq/view/:id/:aoq_details_id',
         component: pur_aoqView,
@@ -373,7 +374,6 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
         path:'/pur_aoq/print_te/:id',
         component: pur_aoqPrintTe,
@@ -398,22 +398,33 @@ const routes = [
         }
     },
     {
-        path:'/pur_po/new',
+        path:'/pur_po/new/:id',
         component: pur_poNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_po/view',
+        path:'/pur_po/view/:id',
         component: pur_poView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_po/edit',
+        path:'/pur_po/view_revised/:id',
+        component: pur_poViewRevised,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_po/edit/:id',
         component: pur_poEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -462,15 +473,20 @@ const routes = [
         }
     },
     {
-        path:'/pur_dr/new',
+        path:'/pur_dr/new/:id',
         component: pur_drNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_dr/view',
+        path:'/pur_dr/view/:id',
         component: pur_drView,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
     },
 
     {
@@ -535,20 +551,21 @@ const routes = [
         }
     },
     {
-        path:'/job_quote/view',
+        path:'/job_quote/view/:id/:aoq_id',
         component: job_quoteView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/job_quote/print',
+        path:'/job_quote/print/:id',
         component: job_quotePrint,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
-
     {
         path:'/job_aoq',
         component: job_aoqIndex,
@@ -563,18 +580,19 @@ const routes = [
             requiresAuth:true
         }
     },
-
     {
-        path:'/job_aoq/view',
+        path:'/job_aoq/view/:id/:jo_aoq_details_id',
         component: job_aoqView,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
 
     {
-        path:'/job_aoq/print_te',
+        path:'/job_aoq/print_te/:id',
         component: job_aoqPrintTe,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -595,15 +613,17 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/new',
+        path:'/job_issue/new/:id',
         component: job_issueNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/job_issue/view',
+        path:'/job_issue/view/:id',
         component: job_issueView,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -616,13 +636,19 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/print',
-        component: job_issuePrint,
+        path:'/job_issue/print_coc',
+        component: job_issuePrintCOC,
         meta:{
             requiresAuth:true
         }
     },
-
+    {
+        path:'/job_issue/print_ar',
+        component: job_issuePrintAR,
+        meta:{
+            requiresAuth:true
+        }
+    },
     {
         path:'/job_direct',
         component: job_issueDirect,

@@ -658,7 +658,7 @@
 		formData.append('item_list', JSON.stringify(item_list.value))
 		axios.post(`/api/save_manual_draft`,formData).then(function (response) {
 			// console.log(response.data)
-			success.value='You have successfully saved new pr.'
+			success.value='You have successfully draft new pr.'
 			warningAlert.value=!warningAlert.value
 			prheadid.value=response.data;
 			const btn_draft = document.getElementById("btn_draft");

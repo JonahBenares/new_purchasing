@@ -25,6 +25,7 @@
     const joiDrop = ref(false);
     const jobDrDrop = ref(false);
     const jobRfdDrop = ref(false);
+    const jobJOAOQDrop = ref(false);
 
     const jobReportDrop = ref(false);
     const weeklyPORecomDrop = ref(false);
@@ -189,6 +190,27 @@
         jobRfqDrop.value = !jobRfqDrop.value
         aoqDrop.value = !hideDrop.value
         jobDrop.value = !hideDrop.value
+		masterfileDrop.value = !hideDrop.value
+		prDrop.value = !hideDrop.value
+        rfqDrop.value = !hideDrop.value
+        poDrop.value = !hideDrop.value
+        drDrop.value = !hideDrop.value
+        rfdDrop.value = !hideDrop.value
+        joiDrop.value = !hideDrop.value
+        jobRfdDrop.value = !hideDrop.value
+        jobDrDrop.value = !hideDrop.value
+        jobReportDrop.value = !hideDrop.value 
+        weeklyPORecomDrop.value = !hideDrop.value 
+        weeklyJORRecomDrop.value = !hideDrop.value
+        monthlyPORecomDrop.value = !hideDrop.value
+        monthlyJORRecomDrop.value = !hideDrop.value 
+        
+	}
+    const openJOAOQ = () => {
+        jobJOAOQDrop.value = !jobJOAOQDrop.value
+        jobRfqDrop.value = !hideDrop.value
+        jobDrop.value = !hideDrop.value
+        aoqDrop.value = !hideDrop.value
 		masterfileDrop.value = !hideDrop.value
 		prDrop.value = !hideDrop.value
         rfqDrop.value = !hideDrop.value
@@ -643,7 +665,7 @@
                                 <div class="!hidden"  :class="{ show:poDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_po/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_po/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_po">Show List</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/po_direct">Direct PO</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li>
@@ -670,7 +692,7 @@
                                 <div class="!hidden"  :class="{ show:drDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_dr">Show List</a></li>
                                     </ul>
                                 </div>
@@ -755,13 +777,37 @@
                             </Transition>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link !text-gray-600 cursor-pointer" @click="openJOAOQ()" >
+                                <i class="mdi mdi-home menu-icon !text-gray-600">
+                                    <Square3Stack3DIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></Square3Stack3DIcon>
+                                </i>
+                                <span class="menu-title">Abstract of Quotation</span>
+                            </a>
+                            <Transition
+                                enter-active-class="transition ease-out duration-500"
+                                enter-from-class="opacity-0 h-1/2"
+                                enter-to-class="opacity-100 h-full"
+                                leave-active-class="transition ease-in duration-500"
+                                leave-from-class="opacity-100 h-full"
+                                leave-to-class="opacity-0 h-1/2"
+                            >
+                                <div class="!hidden"  :class="{ show:jobJOAOQDrop }">
+                                    <ul class="nav flex-column sub-menu">
+                                        <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_aoq/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_aoq">Show List</a></li>
+                                    </ul>
+                                </div>
+                            </Transition>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a class="nav-link !text-gray-600" href="/job_aoq">
                                 <i class="mdi mdi-home menu-icon !text-gray-600">
                                     <NewspaperIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></NewspaperIcon >
                                 </i>
                                 <span class="menu-title">Abstract of Quotation</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link !text-gray-600 cursor-pointer" @click="openJobIssue()" >
                                 <i class="mdi mdi-circle-outline menu-icon !text-gray-600">
@@ -781,7 +827,7 @@
                                 <div class="!hidden"  :class="{ show:joiDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_issue/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_issue/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_issue">Show List</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_direct">Direct JOI</a></li>
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li> -->

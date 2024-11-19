@@ -531,31 +531,34 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-12 col-md-12">
-							<table class="table-bordered !text-xs w-full mb-3">
-								<tr>
-									<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
-								</tr>
-								<tr>
-									<td class="p-0" colspan="2">
-										<input type="text" class="p-1 w-full bg-yellow-50" v-model="term_desc">
-									</td>
-									<td class="p-0" width="1">
-										<button type="button" class="btn btn-primary p-1" @click="AddTerms">
-											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+						<br>
+						<div class="row">
+							<div class="col-lg-12 col-md-12">
+								<table class="table-bordered !text-xs w-full mb-3">
+									<tr>
+										<td class="p-1 bg-gray-100" colspan="3">Terms and Conditions</td>
+									</tr>
+									<tr>
+										<td class="p-0" colspan="2">
+											<input type="text" class="p-1 w-full bg-yellow-50" v-model="term_desc">
+										</td>
+										<td class="p-0" width="1">
+											<button type="button" class="btn btn-primary p-1" @click="AddTerms">
+												<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+											</button>
+										</td>
+									</tr>
+									<tr v-for="(tl, index) in term_list">
+										<td class="p-0 align-top" width="5%"><input type="text" class="w-full p-1 text-center" v-model="tl.order_no"></td>
+										<td class="p-0 align-top" colspan="1"><input type="text" class="w-full p-1" v-model="tl.term_desc"></td>
+										<td class="p-0 align-top" colspan="1">
+										<button class="btn btn-danger p-1" @click="RemoveTerms(index)">
+											<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 										</button>
-									</td>
-								</tr>
-								<tr v-for="(tl, index) in term_list">
-									<td class="p-1 align-top" width="6%"><input type="text" class="form-control" v-model="tl.order_no"></td>
-									<td class="p-1 align-top" colspan="1"><input type="text" class="form-control" v-model="tl.term_desc"></td>
-									<td class="p-1 align-top" colspan="1">
-									<button class="btn btn-danger p-1" @click="RemoveTerms(index)">
-										<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-									</button>
-									</td>
-								</tr>
-							</table>
+										</td>
+									</tr>
+								</table>
+							</div>
 						</div>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">

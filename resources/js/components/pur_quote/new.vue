@@ -17,6 +17,7 @@
 	let rfq_no=ref('');
 	let date_created=ref('');
 	let vendor=ref('');
+	let all_checkbox=ref(0);
 
 	const props = defineProps({
         id:{
@@ -87,11 +88,15 @@
 				var check=document.getElementsByClassName('checkboxes')[x].checked;
 				if(!check){
 					checkall.value=allSelected
-					PRDetails.value[x].checkbox=1;
+					if(all_checkbox.value == 0){
+						PRDetails.value[x].checkbox=1;
+					}
 					document.getElementById("AddVendorButton").style.display="block"
 				}else{
-					PRDetails.value[x].checkbox=0;
 					checkall.value=!allSelected
+					if(all_checkbox.value == 1){
+						PRDetails.value[x].checkbox=0;
+					}
 					document.getElementById("AddVendorButton").style.display="none"
 				}
 			}
@@ -245,16 +250,16 @@
 						<div class="row">							
 							<div class="col-lg-6 offset-lg-3 col-md-3">
 								<div class="form-group">
-								<label class="text-gray-500 m-0" for="">Choose PR Number</label>
-								<!-- <input type="file" name="img[]" class="file-upload-default"> -->
-								<div class="input-group col-xs-12">
-									<select class="form-control file-upload-info" v-model="pr_no">
-                                        <option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }} (Total RFQ:{{ (pr.count_pr_in_rfq != '') ? pr.count_pr_in_rfq : 0  }})</option>
-                                    </select>
-									<span class="input-group-append">
-										<button class="btn btn-primary" type="button" @click="getPRDetails()">Select</button>
-									</span>
-								</div>
+									<label class="text-gray-500 m-0" for="">Choose PR Number</label>
+									<!-- <input type="file" name="img[]" class="file-upload-default"> -->
+									<div class="input-group col-xs-12">
+										<select class="form-control file-upload-info" v-model="pr_no">
+											<option :value="pr.id" v-for="pr in prnolist" :key="pr.id">{{ pr.pr_no }} (Total RFQ:{{ (pr.count_pr_in_rfq != '') ? pr.count_pr_in_rfq : 0  }})</option>
+										</select>
+										<span class="input-group-append">
+											<button class="btn btn-primary" type="button" @click="getPRDetails()">Select</button>
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -311,7 +316,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">
-												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
+												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>

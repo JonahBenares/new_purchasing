@@ -31,6 +31,13 @@
 	let count_ccr=ref(0);
 	let rfqvendorid=ref('');
 	let due_date=ref('');
+	let all_vendor_checkbox=ref(0);
+	let all_checkbox=ref(0);
+
+	let aoq_status=ref('');
+	let aoq_details_id=ref(0);
+	let count_aoq_vendor=ref(0);
+	let count_canvassed_aoq_v=ref(0);
 
 	let aoq_no=ref('');
 	let head=ref([]);
@@ -46,6 +53,10 @@
         id:{
             type:String,
             default:''
+        },
+		aoq_id:{
+            type:String,
+            default:''
         }
     })
 
@@ -56,6 +67,7 @@
 		GetAdditionalItems()
 		GetAdditionalVendors()
 		getAOQHeadDetails()
+		GetAOQStatus()
 	})
 
 	const GetRFQDetails = async () => {
@@ -220,6 +232,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesVendor").disabled = false;
+				document.getElementById("NoVendor").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -233,10 +247,15 @@
 			var check=document.getElementsByClassName('checkboxes')[x].checked;
 			if(!check){
 				checkall.value=allSelected
-				checkbox.value=1;
+				if(all_checkbox.value == 0){
+					pritem_list.value[x].checkbox=1;
+				}
 				document.getElementById("AddItemsBtn").disabled = false;
 			}else{
 				checkall.value=!allSelected
+				if(all_checkbox.value == 1){
+					pritem_list.value[x].checkbox=0;
+				}
 				document.getElementById("AddItemsBtn").disabled = true;
 			}
 		}
@@ -274,6 +293,8 @@
 				GetAdditionalItems()
 				GetAdditionalVendors()
 				closeModal()
+				document.getElementById("YesItem").disabled = false;
+				document.getElementById("NoItem").disabled = false;
 				// successAlert.value = !successAlert.value
 			});
 	// }
@@ -416,6 +437,8 @@
 			axios.post("/api/canvass_complete_vendor", formCanvass).then(function () {
 				CanvassCompleteAlert.value = !CanvassCompleteAlert.value
 				GetDraftCanvassDetails()
+				getAOQHeadDetails()
+				GetAOQStatus()
 			});
 	}
 
@@ -488,11 +511,15 @@
 			var check_vendor=document.getElementsByClassName('vendor_checkboxes')[x].checked;
 			if(!check_vendor){
 				checkallven.value=allSelectedVendor
-				vendors.value[x].vendor_checkbox=1;
+				if(all_vendor_checkbox.value == 0){
+					vendors.value[x].vendor_checkbox=1;
+				}
 				document.getElementById("CreateAOQBtn").disabled = false;
 			}else{
 				checkallven.value=!allSelectedVendor
-				vendors.value[x].vendor_checkbox=0;
+				if(all_vendor_checkbox.value == 1){
+					vendors.value[x].vendor_checkbox=0;
+				}
 				document.getElementById("CreateAOQBtn").disabled = true;
 			}
 		}
@@ -580,6 +607,22 @@
 			router.push('/pur_aoq/print_te/'+response.data)
 			});
 	}
+
+	const GetAOQStatus = async () => {
+		let response = await axios.get(`/api/aoq_status/${props.aoq_id}`)
+		aoq_status.value=response.data.aoq_status
+		aoq_details_id.value=response.data.aoq_details_id
+		count_aoq_vendor.value=response.data.count_aoq_vendor
+		count_canvassed_aoq_v.value=response.data.count_canvassed
+	}
+
+	const openAOQ = () => {
+		if(aoq_status.value == 'Done TE'){
+            router.push('/pur_aoq/view/'+props.aoq_id+'/'+aoq_details_id.value)
+        }else{
+            router.push(`/pur_aoq/print_te/${props.aoq_id}`)
+        }
+	}
 </script>
 <template>
 	<navigation>
@@ -638,7 +681,7 @@
 						<div>
 							<div class="rfq_buttons">
 								<div class="w-full flex justify-between space-x-1  ">
-									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} {{ (rv.vendor_identifier != '') ? '('+rv.vendor_identifier+')' : '' }}</button>
+									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier }})</button>
 									<button @click="openVendorModel()" class="btn btn-primary p-1">
 										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 									</button>
@@ -756,8 +799,8 @@
 														<td width="10%"></td>
 													</tr>
 												</tbody>
-												<tbody v-for="(vt, index) in rfq_vendor_terms" v-else>
-													<tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+												<tbody v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
+													<tr>
 														<td width="10%"></td>
 														<td width="1%">{{ letters[index] }}.</td>
 														<td width="40%">{{ vt.terms }}</td>
@@ -813,9 +856,9 @@
 									<div class="row my-2 po_buttons" v-if="vendor == rvi.rfq_vendor_id"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 0">
+												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" v-if="rvi.count_vendor_offers != 0">Canvass Complete</button>
 												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.rfq_vendor_id)" v-else disabled>Canvass Complete</button>
-												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.rfq_vendor_id)">Save as Draft</button>
 											</div>
 											<div class="flex justify-center space-x-2" v-if="vendor == rvi.rfq_vendor_id && rvi.canvassed == 1">
 												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
@@ -847,10 +890,16 @@
 										</li>
 									</li>
 									<li class="!w-30">
-										<!-- <a href="" class="btn !bg-gray-200 !w-36">Pasdrint TE</a> -->
-										<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
-										<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
-										<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
+										<template v-if="props.aoq_id != 0">
+											<button type="submit" class="btn !bg-green-500 text-white !w-36"  v-if="(count_aoq_vendor == count_canvassed_aoq_v && count_canvassed_aoq_v != 0)" @click="openAOQ()">Proceed AOQ</button>
+											<button type="submit" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else @click="openAOQ()">Proceed AOQ</button>
+										 </template>
+										 <template v-if="props.aoq_id == 0">
+											<!-- <a href="" class="btn !bg-gray-200 !w-36">Pasdrint TE</a> -->
+											<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
+											<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
+											<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
+										</template>
 									</li>
 								</ol>
 							</div>
@@ -943,7 +992,7 @@
 								<div class="flex justify-center space-x-2">
 									<button @click="closeModal()" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close</button>
 									<!-- <a href="/pur_quote/new" class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full">Proceed</a> -->
-									<a href="/pur_quote/new" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New RFQ</a>
+									<a href="/pur_quote/new/0" class="btn !text-white !bg-yellow-400 btn-sm !rounded-full w-full">Create New RFQ</a>
 								</div>
 							</div>
 						</div>
@@ -1024,7 +1073,7 @@
 									<table class="w-full table-bordered !text-xs mb-3">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">
-												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected">
+												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
 											</td>
 											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
@@ -1349,7 +1398,7 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered text-sm" >
 									<tr class="bg-gray-100">
-										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor"></td>
+										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
 										<td class="p-1">List of Vendors</td>
 									</tr>
 									<tr class="bg-yellow-50" v-for="(v, i) in vendors" >

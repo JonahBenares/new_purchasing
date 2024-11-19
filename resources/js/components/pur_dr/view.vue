@@ -1,10 +1,54 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
+	import moment from 'moment'
 	const printDiv = () => {
 		window.print();
+	}
+	const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+	const po_dr =  ref([]);
+	const po_dr_items =  ref([]);
+	const vendor =  ref([]);
+	const enduse =  ref('');
+	const purpose =  ref('');
+	const requestor =  ref('');
+	const prepared_by =  ref('');
+	const offer =  ref([]);
+	const uom =  ref([]);
+	const total_sumdelivered =  ref([]);
+	onMounted(async () => {
+		drLoad()
+	})
+	const drLoad = async () => {
+		let response = await axios.get("/api/get_dr_view/"+props.id);
+		po_dr.value = response.data.po_dr;
+		po_dr_items.value = response.data.po_dr_items;
+		vendor.value = response.data.vendor;
+		enduse.value = response.data.enduse;
+		purpose.value = response.data.purpose;
+		requestor.value = response.data.requestor;
+		prepared_by.value = response.data.prepared_by;
+		po_dr_items.value.forEach(function (val, index, theArray) {
+			getOffer(val.rfq_offer_id,index)
+			checkRemainingQty(val.po_details_id,val.quantity,index)
+		});
+	}
+	const getOffer = async (rfq_offer_id,count) => {
+		let response = await axios.get("/api/get_offer/"+rfq_offer_id);
+		offer.value[count] = response.data.offer.offer;
+		uom.value[count] = response.data.offer.uom;
+	}
+
+	const checkRemainingQty = async (po_details_id,qty,count) => {
+		let response = await axios.get("/api/check_remaining_dr_balance/"+po_details_id);
+		total_sumdelivered.value[count] = response.data.balance_sum
 	}
 </script>
 <template>
@@ -34,37 +78,37 @@
 						<div class="row">
 							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-								<span class="text-sm text-gray-700">PO-CENPRI24-1001</span>
+								<span class="text-sm text-gray-700">{{po_dr.po_no}}{{ (po_dr.revision_no!=0 && po_dr.revision_no!=null) ? '.r'+po_dr.revision_no : '' }}</span>
 							</div>
 							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">DR No: </span>
-								<span class="text-sm text-gray-700">DR-CENPRI24-1001</span>
+								<span class="text-sm text-gray-700">{{po_dr.dr_no}}</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
-								<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+								<span class="text-sm text-gray-700">{{po_dr.pr_no}}</span>
 							</div>
 							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
-								<span class="text-sm text-gray-700">05/16/24</span>
+								<span class="text-sm text-gray-700">{{moment(po_dr.dr_date).format('MMM. DD,YYYY')}}</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-8 col-sm-8 col-md-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">End-use: </span>
-								<span class="text-sm text-gray-700">IT Department</span>
+								<span class="text-sm text-gray-700">{{enduse}}</span>
 							</div>
 							<div class="col-lg-4 col-sm-4 col-md-4">
 								<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
-								<span class="text-sm text-gray-700">Henne Marie Tanan</span>
+								<span class="text-sm text-gray-700">{{requestor}}</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
 								<span class="text-sm text-gray-700 font-bold pr-1">Purpose:</span>
-								<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
+								<span class="text-sm text-gray-700">{{purpose}}</span>
 							</div>
 						</div>
 						                               
@@ -73,43 +117,21 @@
 								<table class="w-full table-bordered text-xs mt-3">
 									<tr class="bg-gray-100">
 										<td class="p-1 uppercase text-center" width="2%">#</td>
-										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
-										<td class="p-1 uppercase text-center" width="25%">Description</td>
+										<td class="p-1 uppercase" width="25%">Supplier</td>
+										<td class="p-1 uppercase" width="25%">Description</td>
 										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
 										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
-										<td class="p-1 uppercase" width="5%">UOM</td>
-										<td class="p-1 uppercase" width="5%">Remarks</td>
+										<td class="p-1 uppercase text-center" width="5%">UOM</td>
 									</tr>
-									<tr>
-										<td class="p-1 text-center">1</td>
-										<td class="p-1 ">MF Computer Solutions, Inc.</td>
-										<td class="p-1 ">Monitor</td>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1"></td>
-										<td class="p-1"></td>
-										<td class="p-1">remarks</td>
-									</tr>
-									<tr>
-										<td class="p-1 text-center">2</td>
-										<td class="p-1 ">MF Computer Solutions, Inc.</td>
-										<td class="p-1 ">Mouse</td>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1"></td>
-										<td class="p-1"></td>
-										<td class="p-1">remarks</td>
-									</tr>
-									<tr>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1 ">MF Computer Solutions, Inc.</td>
-										<td class="p-1 ">Keyboard</td>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1 text-center">3</td>
-										<td class="p-1"></td>
-										<td class="p-1"></td>
-										<td class="p-1">remarks</td>
+									<tr v-for="(pdi,index) in po_dr_items">
+										<td class="p-1 text-center">{{ index+1 }}</td>
+										<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
+										<td class="p-1 ">{{offer[index]}}</td>
+										<td class="p-1 text-center">{{ pdi.to_deliver }}</td>
+										<td class="p-1 text-center">{{ pdi.delivered_qty }}</td>
+										<td class="p-1 text-center">{{ pdi.quantity }}</td>
+										<td class="p-1 text-center">{{ uom[index] }}</td>
 									</tr>
 								</table>
 							</div>
@@ -134,9 +156,9 @@
 									</tr>
 									<tr>
 										<td></td>
-										<td class="text-center p-1">Henne Tanant</td>
+										<td class="text-center p-1">{{ prepared_by }}</td>
 										<td></td>
-										<td class="text-center p-1">Glenn Paul Marie</td>
+										<td class="text-center p-1">{{po_dr.driver}}</td>
 										<td></td>
 									</tr>
 								</table>
