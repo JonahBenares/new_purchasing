@@ -63,12 +63,15 @@
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
                     <div class="card-body">
+                        <div class="print:hidden mb-2">
+                            <span class="font-bold text-gray-500 text-base">CERTIFICATE OF COMPLETION</span>
+                        </div>
                         <hr class="border-dashed mt-0">
                         <div class="pt-1" id="printable">
                             <div class="hidden print:block">
 								<printheader ></printheader>
 								<div class="flex justify-center mt-1">
-									<span class="uppercase">Job Order</span>
+									<span class="uppercase">CERTIFICATE OF COMPLETION</span>
 								</div>
 								<hr class="print:block border-dashed mt-2">
 							</div>
@@ -178,52 +181,7 @@
 														<td class="border-y-none p-1 text-right">100.00</td>
 														<td class="border-y-none p-1 text-right">500.00</td>
 													</tr>
-													<tr class="bg-gray-100">
-														<td class="p-1 text-center" width="3%">#</td>
-														<td class="p-1" colspan="2">Materials:</td>
-                                                        <td class="uppercase p-1 text-center" width="7%">Qty</td>
-														<td class="uppercase p-1 text-center" width="7%">Unit</td>
-														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
-														<td class="uppercase p-1 text-center" width="10%">Total</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">1</td>
-														<td class="border-y-none p-1" colspan="2">
-                                                            <div class="flex justify-between space-x-2">
-                                                                <div class="w-full">
-                                                                    Monitor
-                                                                </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
-                                                        </td>
-														<td class="border-y-none p-1 text-center">lot</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">2</td>
-														<td class="border-y-none p-1" colspan="2">
-                                                            <div class="flex justify-between space-x-2">
-                                                                <div class="w-full">
-                                                                    Mouse
-                                                                </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
-                                                        </td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
+													
 													<tr class="">
 														<td class=""></td>
 														<td class=""></td>
@@ -446,8 +404,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="submit" class="btn btn-warning text-white"  @click="openDangerPO()">Print AC</button>
-                                                    <button type="submit" class="btn btn-warning text-white"  @click="openDangerPO()">Print COC</button>
+                                                    <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
+                                                    <button type="submit" class="btn btn-primary text-white" @click="printDiv()">Print COC</button>
                                                     <div class="flex justify-between">
                                                         <!-- <a href="/job_disburse/new" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a> -->
                                                         <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a>
@@ -461,7 +419,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary" @click="printDiv()">Print JOI</button>
+                                                    <a href="/job_issue/view" class="btn btn-warning text-white" >Print JOI</a>
                                                 </div>
                                                 
                                             </div>
