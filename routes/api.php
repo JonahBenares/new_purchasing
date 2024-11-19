@@ -242,3 +242,8 @@ Route::get('/delete_jo_terms/{id}',[JOIController::class,'delete_jo_terms']);
 Route::get('/delete_jo_instructions/{id}',[JOIController::class,'delete_jo_instructions']);
 Route::post('/save_joi', [JOIController::class,'save_joi']);
 Route::get('/jo_viewdetails/{joi_head_id}', [JOIController::class,'jo_viewdetails']);
+Route::get('/delete_jo_terms/{id}',[JOIController::class,'delete_jo_terms']);
+Route::get('/delete_jo_instructions/{id}',[JOIController::class,'delete_jo_instructions']);
+Route::post('/cancel_all_jo/{joi_head_id}',[JOIController::class,'cancel_all_jo']);
+Route::post('/cancel_jo_items/{joi_labor_details_id}',[JOIController::class,'cancel_jo_items']);
+Route::post('/cancel_jo_material_items/{joi_material_details_id}',[JOIController::class,'cancel_jo_material_items']);

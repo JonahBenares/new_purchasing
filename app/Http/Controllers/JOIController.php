@@ -99,7 +99,7 @@ class JOIController extends Controller
             // $balance = PrReportDetails::where('jo_labor_details_id',$jld->jo_labor_details_id)->where('status','!=','Cancelled')->first();
             // $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
             // $totals = $balance->pr_qty - $total_po;
-            $sum_joi_labor=JOILaborDetails::where('jor_labor_details_id',$jld->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$jld->id)->sum('quantity');
+            $sum_joi_labor=JOILaborDetails::where('jor_labor_details_id',$jld->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$jld->id)->where('status','Saved')->sum('quantity');
             $deduct = $jld->jor_labor_details->quantity - $sum_joi_labor;
             $total_labor[]=$jld->unit_price * $deduct;
             // $total[]=$jld->unit_price * $balance->pr_qty;
@@ -111,7 +111,7 @@ class JOIController extends Controller
             // $balance = PrReportDetails::where('jo_labor_details_id',$jmd->jo_labor_details_id)->where('status','!=','Cancelled')->first();
             // $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
             // $totals = $balance->pr_qty - $total_po;
-            $sum_joi_material=JOIMaterialDetails::where('jor_material_details_id',$jmd->jor_material_details_id)->where('jo_rfq_material_offer_id',$jmd->id)->sum('quantity');
+            $sum_joi_material=JOIMaterialDetails::where('jor_material_details_id',$jmd->jor_material_details_id)->where('jo_rfq_material_offer_id',$jmd->id)->where('status','Saved')->sum('quantity');
             $deducted = $jmd->jor_material_details->quantity - $sum_joi_material;
             $total_material[]=$jmd->unit_price * $deducted;
             // $total[]=$jmd->unit_price * $balance->pr_qty;
@@ -135,8 +135,8 @@ class JOIController extends Controller
     }
 
     public function check_labor_balance($jor_labor_details_id,$jo_rfq_labor_offer_id){
-        $total_sum_labor = JOILaborDetails::where('jor_labor_details_id',$jor_labor_details_id)->where('jo_rfq_labor_offer_id',$jo_rfq_labor_offer_id)->sum('quantity');
-        $total_sum_pr_labor = JORLaborDetails::where('id',$jor_labor_details_id)->sum('quantity');
+        $total_sum_labor = JOILaborDetails::where('jor_labor_details_id',$jor_labor_details_id)->where('jo_rfq_labor_offer_id',$jo_rfq_labor_offer_id)->where('status','Saved')->sum('quantity');
+        $total_sum_pr_labor = JORLaborDetails::where('id',$jor_labor_details_id)->where('status','Saved')->sum('quantity');
         return response()->json([
             'total_sum_labor'=>$total_sum_labor,
             'total_sum_pr_labor'=>$total_sum_pr_labor,
@@ -144,8 +144,8 @@ class JOIController extends Controller
     }
 
     public function check_material_balance($jor_material_details_id,$jo_rfq_material_offer_id){
-        $total_sum_material = JOIMaterialDetails::where('jor_material_details_id',$jor_material_details_id)->where('jo_rfq_material_offer_id',$jo_rfq_material_offer_id)->sum('quantity');
-        $total_sum_pr_material = JORMaterialDetails::where('id',$jor_material_details_id)->sum('quantity');
+        $total_sum_material = JOIMaterialDetails::where('jor_material_details_id',$jor_material_details_id)->where('jo_rfq_material_offer_id',$jo_rfq_material_offer_id)->where('status','Saved')->sum('quantity');
+        $total_sum_pr_material = JORMaterialDetails::where('id',$jor_material_details_id)->where('status','Saved')->sum('quantity');
         return response()->json([
             'total_sum_material'=>$total_sum_material,
             'total_sum_pr_material'=>$total_sum_pr_material,
@@ -292,11 +292,11 @@ class JOIController extends Controller
             if($series_dr_rows==0){
                 $max_dr_series='1';
                 $dr_series='0001';
-                $dr_no = $year."-".$dr_series.'-'.$company;
+                $dr_no = "JO".$year."-".$dr_series.'-'.$company;
             } else {
                 $max_dr_series=JOIDrSeries::where('year',$year)->max('series');
                 $dr_series=$max_dr_series+1;
-                $dr_no = $year."-".Str::padLeft($exp_dr[1], 4,'000').'-'.$company;
+                $dr_no = "JO".$year."-".Str::padLeft($exp_dr[1], 4,'000').'-'.$company;
             }
             if(!JOIDrSeries::where('year',$year)->where('series',$exp_dr[1])->exists()){
                 $series['year']=$year;
@@ -418,7 +418,9 @@ class JOIController extends Controller
                                 'quantity'=>$quantity_labor,
                             ];
                         }
+                        $joi_dr_items=JOIDrLabor::create($data_dr_details);
                     }
+                   
                 }else{
                     if($request->props_id==0){
                         if($quantity_labor!=0){
@@ -578,6 +580,7 @@ class JOIController extends Controller
                                 'quantity'=>$quantity_material,
                             ];
                         }
+                        $joi_dr_items=JOIDrMaterial::create($data_dr_details);
                     }
                 }else{
                     if($request->props_id==0){
@@ -713,5 +716,75 @@ class JOIController extends Controller
             }
         }
         echo $insertjoihead->id;
+    }
+
+    public function cancel_all_jo(Request $request, $joi_head_id){
+        $jolabordetails=JOILaborDetails::where('joi_head_id',$joi_head_id)->where('status','!=','Cancelled')->get();
+        $jomaterialdetails=JOIMaterialDetails::where('joi_head_id',$joi_head_id)->where('status','!=','Cancelled')->get();
+        $update_head=JOIHead::where('id',$joi_head_id)->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_all_reason
+        ]);
+        $update_head=JOIDr::where('joi_head_id',$joi_head_id)->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_all_reason
+        ]);
+        $update_jolabordetails=JOILaborDetails::where('joi_head_id',$joi_head_id)->where('status','!=','Cancelled')->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_all_reason
+        ]);
+
+        $update_jomaterialdetails=JOIMaterialDetails::where('joi_head_id',$joi_head_id)->where('status','!=','Cancelled')->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_all_reason
+        ]);
+        if($update_jomaterialdetails){
+            foreach($jolabordetails AS $pd){
+                $update_jolabordetails=JOIDrLabor::where('jor_labor_details_id',$pd->jor_labor_details_id)->where('joi_labor_details_id',$pd->id)->where('status','!=','Cancelled')->update([
+                    'status'=>'Cancelled',
+                ]);
+            }
+            foreach($jomaterialdetails AS $md){
+                $update_jolabordetails=JOIDrMaterial::where('jor_labor_details_id',$md->jor_labor_details_id)->where('joi_labor_details_id',$md->id)->where('status','!=','Cancelled')->update([
+                    'status'=>'Cancelled',
+                ]);
+            }
+        }
+    }
+
+    public function cancel_jo_items(Request $request, $joi_labor_details_id){
+        $update_joi_labordetails=JOILaborDetails::where('id',$joi_labor_details_id)->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_reason
+        ]);
+        if($update_joi_labordetails){
+            $update_joi_dr_labordetails=JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->update([
+                'status'=>'Cancelled',
+            ]);
+        }
+    }
+
+    public function cancel_jo_material_items(Request $request, $joi_material_details_id){
+        $update_joi_labordetails=JOIMaterialDetails::where('id',$joi_material_details_id)->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_reason
+        ]);
+        if($update_joi_labordetails){
+            $update_joi_dr_labordetails=JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->update([
+                'status'=>'Cancelled',
+            ]);
+        }
     }
 }

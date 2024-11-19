@@ -2,10 +2,14 @@
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted} from "vue"
     import { useRouter } from "vue-router"
+    import moment from 'moment'
 	const vendor =  ref();
 	const preview =  ref();
+	const success =  ref();
+	const error =  ref();
+    const successAlert = ref(false)
     const dangerAlert = ref(false)
 	const dangerAlert_item = ref(false)
 	const drawer_dr = ref(false)
@@ -13,6 +17,55 @@
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
+    const joi_dr = ref([])
+    const joi_head = ref([])
+    const jor_head = ref([])
+    const joi_vendor = ref([])
+    const joi_labor_details = ref([])
+    const joi_details_view = ref([])
+    const joi_material_details = ref([])
+    const joi_material_details_view = ref([])
+    const joi_terms = ref([])
+    const joi_instructions = ref([])
+    const prepared_by = ref('')
+    const checked_by = ref(0)
+    const recommended_by = ref(0)
+    const approved_by = ref(0)
+    const cancelled_by = ref(0)
+    let jo_details_id_view=ref("")
+    let cancel_reason=ref("")
+    let cancel_all_reason=ref("")
+    let selection=ref("")
+    const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+    onMounted(async () => {
+		joView()
+	})
+    const formatNumber = (number) => {
+        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    const joView = async () => {
+		let response = await axios.get("/api/jo_viewdetails/"+props.id);
+		joi_dr.value = response.data.joi_dr_array;
+		joi_head.value = response.data.joi_head;
+		jor_head.value = response.data.jor_head;
+		joi_vendor.value = response.data.joi_vendor;
+		joi_labor_details.value = response.data.joi_labor_details;
+		joi_details_view.value = response.data.joi_details_view;
+        joi_material_details.value = response.data.joi_material_details;
+		joi_material_details_view.value = response.data.joi_material_details_view;
+		joi_terms.value = response.data.joi_terms;
+		joi_instructions.value = response.data.joi_instructions;
+		prepared_by.value = response.data.prepared_by;
+		checked_by.value = response.data.checked_by;
+		recommended_by.value = response.data.recommended_by;
+		approved_by.value = response.data.approved_by;
+		cancelled_by.value = response.data.cancelled_by;
+	}
     const openDangerPO = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -40,7 +93,102 @@
     const printDiv = () => {
 		window.print();
 	}
+
+    const cancelJOitems = (option, id, selections) => {
+        selection.value=selections
+        if(selections=='labor'){
+            if(option=='yes'){
+                if(cancel_reason.value!=''){
+                    const formData= new FormData()
+                    formData.append('cancel_reason', cancel_reason.value)
+                    axios.post(`/api/cancel_jo_items/`+id,formData).then(function (response) {
+                        dangerAlert_item.value = !hideAlert.value
+                        success.value='Successfully cancelled item!'
+                        successAlert.value = !successAlert.value
+                        cancel_reason.value=''
+                        document.getElementById('cancel_check').placeholder=""
+                        document.getElementById('cancel_check').style.backgroundColor = '#FFFFFF';
+                        joView()
+                        setTimeout(() => {
+                            closeAlert()
+                        }, 2000);
+                    })
+                }else{
+                    document.getElementById('cancel_check').placeholder="Cancel Reason must not be empty!"
+                    document.getElementById('cancel_check').style.backgroundColor = '#FAA0A0';
+                }
+            }else{
+                jo_details_id_view.value=id
+                dangerAlert_item.value = !dangerAlert_item.value
+            }
+        }else{
+            if(option=='yes'){
+                if(cancel_reason.value!=''){
+                    const formData= new FormData()
+                    formData.append('cancel_reason', cancel_reason.value)
+                    axios.post(`/api/cancel_jo_material_items/`+id,formData).then(function (response) {
+                        dangerAlert_item.value = !hideAlert.value
+                        success.value='Successfully cancelled item!'
+                        successAlert.value = !successAlert.value
+                        cancel_reason.value=''
+                        document.getElementById('cancel_check').placeholder=""
+                        document.getElementById('cancel_check').style.backgroundColor = '#FFFFFF';
+                        joView()
+                        setTimeout(() => {
+                            closeAlert()
+                        }, 2000);
+                    })
+                }else{
+                    document.getElementById('cancel_check').placeholder="Cancel Reason must not be empty!"
+                    document.getElementById('cancel_check').style.backgroundColor = '#FAA0A0';
+                }
+            }else{
+                jo_details_id_view.value=id
+                dangerAlert_item.value = !dangerAlert_item.value
+            }
+        }
+	}
+
+    const cancelAllJO = (option) => {
+		if(option=='yes'){
+			if(cancel_all_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_all_reason', cancel_all_reason.value)
+				axios.post(`/api/cancel_all_jo/`+props.id,formData).then(function (response) {
+                    dangerAlert.value = !hideAlert.value
+                    success.value='Successfully cancelled PO!'
+                    successAlert.value = !successAlert.value
+                    cancel_all_reason.value=''
+                    document.getElementById('cancel_all_check').placeholder=""
+                    document.getElementById('cancel_all_check').style.backgroundColor = '#FFFFFF';
+                    poView()
+                    setTimeout(() => {
+                        closeAlert()
+                    }, 2000);
+				})
+			}else{
+				document.getElementById('cancel_all_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('cancel_all_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			dangerAlert.value = !dangerAlert.value
+		}
+	}
 </script>
+<style>
+    @media print {
+        .print-only {
+            display: block !important; /* Show only during print */
+        }
+        .no-print {
+            display: none !important; /* Hide during print */
+        }
+        .in-print-only {
+            display: block !important; /* Show only during print */
+        }
+    }
+    
+</style>
 <template>
 	<navigation>
 		<div class="row" id="breadcrumbs">
@@ -78,10 +226,10 @@
 										<span class="text-sm">TO:</span>
 									</div>
 									<div class="col-lg-11 col-sm-11 col-md-11">
-										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
-										<p class="m-0">Beverly Marie Dy</p>
-										<p class="m-0">Taculing Road, Bacolod City 6100</p>
-										<p class="m-0">(034) 434 9823 / 704-2063</p>
+										<p class="m-0 font-bold capitalize">{{ joi_vendor.vendor_name }} ({{ joi_vendor.identifier }})</p>
+										<p class="m-0">{{ joi_vendor.contact_person }}</p>
+										<p class="m-0">{{ joi_vendor.address }}</p>
+										<p class="m-0">{{ joi_vendor.phone }}</p>
 									</div>
 								</div>
 								<hr class="border-dashed print:block">
@@ -89,13 +237,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.date_needed).format('MMM. DD,YYYY')">
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.completion_work).format('MMM. DD,YYYY')">
 										</div>	
 									</div>
 								</div>
@@ -103,13 +251,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.date_prepared).format('MMM. DD,YYYY')">
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" disabled :value="jor_head.site_jor">
 										</div>
 									</div>
 								</div>
@@ -117,13 +265,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.start_work).format('MMM. DD,YYYY')">
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" disabled :value="joi_head.joi_no">
 										</div>
 									</div>
 								</div>
@@ -135,7 +283,7 @@
 												<table class="table-bordered w-full !text-xs">
 													<tr class="!border-b-3">
 														<td colspan="7" class="py-2">
-															<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
+															<p class="text-sm font-bold text-gray-600 text-center m-0">{{jor_head.project_activity}}</p>
 															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 														</td>
 													</tr>
@@ -146,37 +294,34 @@
 														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
 														<td class="uppercase p-1 text-center" width="10%">Total</td>
 													</tr>
-													<tr class="">
-														<td class="border-y-none p-1" colspan="3">
+                                                    <tr>
+														<td colspan="7"><span class="font-bold">{{ jor_head.general_description}} </span></td>
+													</tr>
+                                                    <span hidden>{{ grand_totall=0 }}</span>
+                                                    <span hidden>{{ cancelled_qty=0 }}</span>
+													<tr class="" v-for="jld in joi_labor_details">
+                                                        <span hidden>{{ cancelled_qty+=(jld.status=='Cancelled') ? jld.total_cost : 0 }}</span>
+                                                        <span hidden>{{ grand_totall+=jld.unit_price * jld.quantity  }}</span>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1'" colspan="3">
                                                             <div class="flex justify-between space-x-2">
                                                                 <div class="w-full">
-                                                                    <span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
-                                                                    technical expertise for the following:</span>
-                                                                    <br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-                                                                    <br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-                                                                    <br>3. Repair and replacement of parts as seen upon inspection.
-                                                                    <br>4. Setting of internal parts and mounting of the governor.
-                                                                    <br>5. Calibration and bench testing for:
-                                                                    <br>5.1. Speed Setting and Indicator
-                                                                    <br>5.2. Speed Droop Setting and Indicator
-                                                                    <br>5.3. Load Limit Setting and Indicator
-                                                                    <br>6. Functional test of shut-down solenoid valve
-                                                                    <br>7. Testing and Commissioning
-                                                                    <br>8. Submission of inspection, service, commissioning and bench testing reports.
-                                                                    <br>9. Other works necessary for job completion.
+                                                                    {{ jld.item_description }}
                                                                 </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                <a href="#" @click="cancelJOitems('no',jld.id,'labor')" class="!text-red-500 cursor-pointer po_buttons" v-if="joi_details_view.length>1 && jld.status!='Cancelled'">
                                                                     <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                                                                 </a>
+                                                                <!-- <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a> -->
                                                             </div>
 															
 														</td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">
+                                                            {{jld.quantity}}
                                                         </td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{jld.uom}}</td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jld.unit_price)}} {{ jld.currency }}</td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jld.total_cost)}}</td>
 													</tr>
 													<tr class="bg-gray-100">
 														<td class="p-1 text-center" width="3%">#</td>
@@ -186,43 +331,31 @@
 														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
 														<td class="uppercase p-1 text-center" width="10%">Total</td>
 													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">1</td>
-														<td class="border-y-none p-1" colspan="2">
+                                                    <span hidden>{{ grand_totalm=0 }}</span>
+                                                    <span hidden>{{ cancelled_m_qty=0 }}</span>
+													<tr class="" v-for="(jmd, index) in joi_material_details">
+                                                        <span hidden>{{ cancelled_m_qty+=(jmd.status=='Cancelled') ? jmd.total_cost : 0 }}</span>
+                                                        <span hidden>{{ grand_totalm+=jmd.unit_price * jmd.quantity  }}</span>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{ index+1 }}</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1'"  colspan="2">
                                                             <div class="flex justify-between space-x-2">
                                                                 <div class="w-full">
-                                                                    Monitor
+                                                                    {{jmd.item_description}}
                                                                 </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                <!-- <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a> -->
+                                                                <a href="#" @click="cancelJOitems('no',jmd.id,'materials')" class="!text-red-500 cursor-pointer po_buttons" v-if="joi_material_details_view.length>1 && jmd.status!='Cancelled'">
                                                                     <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                                                                 </a>
                                                             </div>
                                                         </td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">
+                                                            {{jmd.quantity}}
                                                         </td>
-														<td class="border-y-none p-1 text-center">lot</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1 text-center">2</td>
-														<td class="border-y-none p-1" colspan="2">
-                                                            <div class="flex justify-between space-x-2">
-                                                                <div class="w-full">
-                                                                    Mouse
-                                                                </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
-                                                        </td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{jmd.uom}}</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jmd.unit_price ?? 0)}} {{ jmd.currency }}</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jmd.total_cost ?? 0)}}</td>
 													</tr>
 													<tr class="">
 														<td class=""></td>
@@ -234,40 +367,37 @@
 														<td class=""></td>
 													</tr>
 													<tr class="">
-														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6">
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-														</td>
+														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"></td>
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" value="200.00"></td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" :value="formatNumber(grand_totall ?? 0)"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(grand_totalm ?? 0)"></td>
 													</tr>
 													
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(joi_head.discount ?? 0)"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(joi_head.discount_material ?? 0)"></td>
 													</tr>
                                                     <tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 														<td class="p-0">
 															<div class="flex">
-																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
-																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
+																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" :value="formatNumber(joi_head.vat ?? 0)">
+																<input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(joi_head.vat_amount ?? 0)">
 															</div>
 														</td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-														<td class="p-1 text-right font-bold !text-sm">1000.00</td>
+
+														<td class="p-1 text-right font-bold !text-sm no-print">{{formatNumber(joi_head.grand_total ?? 0)}}</td>
+														<td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</td>
 													</tr>
 												</table>
 											</div>
@@ -293,31 +423,18 @@
                                                     <td class="align-top pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
                                                             <span >Price is </span>
-                                                            <span>Exclusive of VAT</span>
+                                                            <span v-if="joi_head.vat_in_ex==1">Inclusive of VAT</span>
+                                                            <span v-else-if="joi_head.vat_in_ex==2">Exclusive of VAT</span>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">4.</td>
+                                                <tr v-for="(jt,indexte) in joi_terms">
+                                                    <td class="align-top text-center" width="4%">{{ indexte + 4 }}.</td>
                                                     <td class="align-top  pl-1" colspan="2">
                                                         <div class="flex justify-start space-x-1">
-                                                            <span>Payment </span>
-                                                            <span> COD</span>
+                                                            <span>{{jt.terms}}</span>
                                                         </div>
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">5.</td>
-                                                    <td class="align-top  pl-1" colspan="2">
-                                                        <div class="flex justify-start space-x-1">
-                                                            <span>Delivery Term </span>
-                                                            <span> Sample</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">6.</td>
-                                                    <td class="align-top  pl-1" colspan="2">sample term</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -326,22 +443,9 @@
                                                 <tr>
                                                     <td class="p-1 uppercase" colspan="3">Other Instructions</td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">1.</td>
-                                                    <td class="px-1" colspan="2">sample instructions</td>
+                                                <tr v-for="(pi,indexin) in joi_instructions">
+                                                    <td class="px-1" colspan="2">{{pi.instructions}}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">2.</td>
-                                                    <td class="px-1" colspan="2">sample instructions -Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
-                                                </tr>
-                                                <tr>
-													<td colspan="2" class="p-1">Sample Notes</td>
-													<td class="p-0 align-top po_buttons" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
-															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-														</button>
-													</td>
-												</tr>
                                             </table>
                                         </div>
                                     </div>
@@ -354,13 +458,14 @@
                                                     <td width="12%" class="font-bold text-sm text-gray-500"> Total Project Cost:</td>
                                                     <td  width="20%" class="border-b border-gray-400 px-4 font-bold text-base text-gray-500"> 
                                                         <div class="flex justify-between  text-lg">
-                                                            <span>PHP</span>
-                                                            <span>18,999.99</span>
+                                                            <span></span>
+                                                            <span class="no-print">{{formatNumber(joi_head.grand_total ?? 0)}}</span>
+                                                            <span class="print-only in-print-only" style="display: none;">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</span>
                                                         </div>
                                                     </td>
                                                     <td width="14%"></td>
                                                     <td width="8%" class="font-bold text-sm text-gray-500">Conforme:</td>
-                                                    <td  width="30%" class="border-b border-gray-400 px-4"> </td>
+                                                    <td  width="30%" class="border-b border-gray-400 px-4"><input type="text" class="w-full text-center text-sm capitalize" v-model="joi_head.conforme"></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
@@ -398,13 +503,13 @@
                                                     <td class="text-center border-b"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-center p-1">Henne Tanant</td>
+                                                    <td class="text-center p-1">{{prepared_by}}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Beverly Sy</td>
+                                                    <td class="text-center p-1">{{checked_by}}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                                    <td class="text-center p-1">{{recommended_by}}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Glenn Paulate</td>
+                                                    <td class="text-center p-1">{{approved_by}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-center"><br><br></td>
@@ -427,11 +532,11 @@
                                         </div>
                                     </div>
                                     <hr	class="border-dashed">
-                                    <div class="po_buttons text-xs">
+                                    <!-- <div class="po_buttons text-xs">
                                         <span class="w-full block">Internal Comment:</span>
                                         <span class="w-full block">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. </span>
                                         <hr	class="border-dashed">
-                                    </div>
+                                    </div> -->
                                     
                                     <div class="row my-2 po_buttons" > 
                                         <div class="col-lg-12 col-md-12">
@@ -609,7 +714,7 @@
 										If yes, please state your reason.
 									</h5>
 									<label>Cancel Reason: </label>
-									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+									<textarea name="" id="cancel_check" class="form-control !border" rows="3" v-model="cancel_reason"></textarea>
 								</div>
 							</div>
 						</div>
@@ -618,7 +723,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelJOitems('yes',jo_details_id_view,selection)">Yes</button>
 								</div>
 							</div>
 						</div>
