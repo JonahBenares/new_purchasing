@@ -261,6 +261,10 @@ class JOIController extends Controller
         $data_head['joi_date']=date('Y-m-d');
         $data_head['joi_no']=$joi_no;
         $data_head['jor_no']=$request->jor_no;
+        $data_head['date_needed']=$request->date_needed;
+        $data_head['completion_work']=$request->completion_work;
+        $data_head['date_prepared']=$request->date_prepared;
+        $data_head['start_of_work']=$request->start_of_work;
         $data_head['vendor_details_id']=$request->vendor_details_id;
         $data_head['vendor_name']=$vendor_name->vendor_name;
         $data_head['discount']=$request->discount_labor;
@@ -466,7 +470,7 @@ class JOIController extends Controller
                                     'status'=>$request->status,
                                 ]
                             );
-                            $joidritems=JOIDrLabor::where('jor_labor_details_id',$pd->id)->where('jor_labor_details_id',$pd->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$pd->jo_rfq_labor_offer_id)->get();
+                            $joidritems=JOIDrLabor::where('joi_labor_details_id',$pd->id)->where('jor_labor_details_id',$pd->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$pd->jo_rfq_labor_offer_id)->get();
                             foreach($joidritems AS $pdi){
                                 $joi_dr_items=JOIDrLabor::where('id',$pdi->id)->update([
                                         'to_deliver'=>$pd->quantity,

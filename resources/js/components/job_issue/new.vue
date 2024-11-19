@@ -182,7 +182,8 @@
 	const addRowOther= () => {
 		if(other_text.value!=''){
 			const others = {
-				other_ins:other_text.value,
+				id:0,
+				instructions:other_text.value,
 			}
 			other_list.value.push(others)
 			other_text.value='';
@@ -821,9 +822,15 @@
 													</td>
 												</tr>
 												<tr v-for="(o, indexes) in other_list">
-													<td class="px-1" colspan="2">{{ o.other_ins }}</td>
+													<td class="px-1" colspan="2">{{ o.instructions }}</td>
 													<td class="p-0 align-top" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+														<!-- <button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button> -->
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1" v-if="props.id==0 || pohead_id==0">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button>
+														<button type="button" @click="deleteInstructions(o.id)" class="btn btn-danger p-1" v-else>
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
 													</td>
@@ -1142,7 +1149,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
-									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteTerms(terms_id,'yes')" >Yes</button>
+									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteJOTerms(terms_id,'yes')" >Yes</button>
 								</div>
 							</div>
 						</div>

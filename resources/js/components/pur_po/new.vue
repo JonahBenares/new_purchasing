@@ -806,7 +806,7 @@
 												<tr v-for="(o, indexes) in other_list">
 													<td class="px-1" colspan="2">{{ o.instructions }}</td>
 													<td class="p-0 align-top" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1" v-if="props.id==0">
+														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1" v-if="props.id==0 || pohead_id==0">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
 														<button type="button" @click="deleteInstructions(o.id)" class="btn btn-danger p-1" v-else>
