@@ -628,8 +628,9 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/edit',
+        path:'/job_issue/edit/:id',
         component: job_issueEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }

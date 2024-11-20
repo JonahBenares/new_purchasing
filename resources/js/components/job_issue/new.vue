@@ -91,7 +91,6 @@
 		jor_head.value = response.data.jor_head;
 		vendor.value = response.data.joi_vendor;
 		joi_labor_details.value = response.data.joi_labor_details;
-		console.log(joi_labor_details.value)
 		joi_material_details.value = response.data.joi_material_details;
 		jo_rfq_terms.value = response.data.joi_terms;
 		other_list.value = response.data.joi_instructions;

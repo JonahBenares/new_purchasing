@@ -156,12 +156,12 @@
 				formData.append('cancel_all_reason', cancel_all_reason.value)
 				axios.post(`/api/cancel_all_jo/`+props.id,formData).then(function (response) {
                     dangerAlert.value = !hideAlert.value
-                    success.value='Successfully cancelled PO!'
+                    success.value='Successfully cancelled JO!'
                     successAlert.value = !successAlert.value
                     cancel_all_reason.value=''
                     document.getElementById('cancel_all_check').placeholder=""
                     document.getElementById('cancel_all_check').style.backgroundColor = '#FFFFFF';
-                    poView()
+                    joView()
                     setTimeout(() => {
                         closeAlert()
                     }, 2000);
@@ -210,6 +210,9 @@
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
+                    <div class="py-2 px-2 bg-red-500" v-if="joi_head.status=='Cancelled'">
+						<span class="font-bold text-white">CANCELLED || Cancelled By: {{ cancelled_by }}  || Cancelled Date: {{moment().format('MMM. DD,YYYY')}} </span>
+					</div>
                     <div class="card-body">
                         <hr class="border-dashed mt-0">
                         <div class="pt-1" id="printable">
@@ -299,7 +302,7 @@
 													</tr>
                                                     <span hidden>{{ grand_totall=0 }}</span>
                                                     <span hidden>{{ cancelled_qty=0 }}</span>
-													<tr class="" v-for="jld in joi_labor_details">
+													<tr class="" v-for="jld in joi_labor_details" v-if="joi_head.status!='Cancelled'">
                                                         <span hidden>{{ cancelled_qty+=(jld.status=='Cancelled') ? jld.total_cost : 0 }}</span>
                                                         <span hidden>{{ grand_totall+=jld.unit_price * jld.quantity  }}</span>
 														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1'" colspan="3">
@@ -323,6 +326,30 @@
 														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jld.unit_price)}} {{ jld.currency }}</td>
 														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jld.total_cost)}}</td>
 													</tr>
+                                                    <tr class="" v-for="jld in joi_labor_details" v-else>
+                                                        <span hidden>{{ cancelled_qty+=(jld.status=='Cancelled') ? jld.total_cost : 0 }}</span>
+                                                        <span hidden>{{ grand_totall+=jld.unit_price * jld.quantity  }}</span>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1'" colspan="3">
+                                                            <div class="flex justify-between space-x-2">
+                                                                <div class="w-full">
+                                                                    {{ jld.item_description }}
+                                                                </div>
+                                                                <a href="#" @click="cancelJOitems('no',jld.id,'labor')" class="!text-red-500 cursor-pointer po_buttons" v-if="joi_details_view.length>1 && jld.status!='Cancelled'">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                                <!-- <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a> -->
+                                                            </div>
+															
+														</td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-center'">
+                                                            {{jld.quantity}}
+                                                        </td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-center'">{{jld.uom}}</td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-right'">{{formatNumber(jld.unit_price)}} {{ jld.currency }}</td>
+														<td :class="(jld.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-right'">{{formatNumber(jld.total_cost)}}</td>
+													</tr>
 													<tr class="bg-gray-100">
 														<td class="p-1 text-center" width="3%">#</td>
 														<td class="p-1" colspan="2">Materials:</td>
@@ -333,7 +360,7 @@
 													</tr>
                                                     <span hidden>{{ grand_totalm=0 }}</span>
                                                     <span hidden>{{ cancelled_m_qty=0 }}</span>
-													<tr class="" v-for="(jmd, index) in joi_material_details">
+													<tr class="" v-for="(jmd, index) in joi_material_details" v-if="joi_head.status!='Cancelled'">
                                                         <span hidden>{{ cancelled_m_qty+=(jmd.status=='Cancelled') ? jmd.total_cost : 0 }}</span>
                                                         <span hidden>{{ grand_totalm+=jmd.unit_price * jmd.quantity  }}</span>
 														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{ index+1 }}</td>
@@ -356,6 +383,30 @@
 														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{jmd.uom}}</td>
 														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jmd.unit_price ?? 0)}} {{ jmd.currency }}</td>
 														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{formatNumber(jmd.total_cost ?? 0)}}</td>
+													</tr>
+                                                    <tr class="" v-for="(jmd, index) in joi_material_details" v-else>
+                                                        <span hidden>{{ cancelled_m_qty+=(jmd.status=='Cancelled') ? jmd.total_cost : 0 }}</span>
+                                                        <span hidden>{{ grand_totalm+=jmd.unit_price * jmd.quantity  }}</span>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-center'">{{ index+1 }}</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1'"  colspan="2">
+                                                            <div class="flex justify-between space-x-2">
+                                                                <div class="w-full">
+                                                                    {{jmd.item_description}}
+                                                                </div>
+                                                                <!-- <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a> -->
+                                                                <a href="#" @click="cancelJOitems('no',jmd.id,'materials')" class="!text-red-500 cursor-pointer po_buttons" v-if="joi_material_details_view.length>1 && jmd.status!='Cancelled'">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-center'">
+                                                            {{jmd.quantity}}
+                                                        </td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-center'">{{jmd.uom}}</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-right'">{{formatNumber(jmd.unit_price ?? 0)}} {{ jmd.currency }}</td>
+														<td :class="(jmd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent ' : 'border-y-none p-1 text-right'">{{formatNumber(jmd.total_cost ?? 0)}}</td>
 													</tr>
 													<tr class="">
 														<td class=""></td>
@@ -397,7 +448,8 @@
 														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
 
 														<td class="p-1 text-right font-bold !text-sm no-print">{{formatNumber(joi_head.grand_total ?? 0)}}</td>
-														<td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</td>
+														<td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="joi_head.status!='Cancelled'">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{formatNumber(joi_head.grand_total ?? 0)}}</td>
 													</tr>
 												</table>
 											</div>
@@ -460,7 +512,8 @@
                                                         <div class="flex justify-between  text-lg">
                                                             <span></span>
                                                             <span class="no-print">{{formatNumber(joi_head.grand_total ?? 0)}}</span>
-                                                            <span class="print-only in-print-only" style="display: none;">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</span>
+                                                            <span class="print-only in-print-only" style="display: none;" v-if="joi_head.status!='Cancelled'">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</span>
+                                                            <span class="print-only in-print-only" style="display: none;" v-else>{{formatNumber(joi_head.grand_total ?? 0)}}</span>
                                                         </div>
                                                     </td>
                                                     <td width="14%"></td>
@@ -542,9 +595,9 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-start space-x-1">
-                                                    <button type="submit" class="btn btn-danger w-36"  @click="openDangerPO()">Cancel PO</button>
-                                                    <div class="flex justify-between">
-                                                        <a href="/job_issue/edit" type="submit" class="btn btn-info w-26 !rounded-r-none">Revise JOI</a>
+                                                    <button type="button" class="btn btn-danger w-36"  @click="cancelAllJO('no')" v-if="joi_head.status!='Cancelled'">Cancel PO</button>
+                                                    <div class="flex justify-between"  v-if="joi_head.status!='Cancelled'">
+                                                        <a :href="'/job_issue/edit/'+props.id" class="btn btn-info w-26 !rounded-r-none">Revise JOI</a>
                                                         <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
@@ -564,7 +617,7 @@
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary w-36" @click="printDiv()">Print JOI</button>
+                                                    <button type="button" class="btn btn-primary w-36" @click="printDiv()">Print JOI</button>
                                                 </div>
                                                 
                                             </div>
@@ -760,7 +813,7 @@
 										If yes, please state your reason.
 									</h5>
 									<label>Cancel Reason: </label>
-									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
+									<textarea name="" id="cancel_all_check" class="form-control !border" rows="3" v-model="cancel_all_reason"></textarea>
 								</div>
 							</div>
 						</div>
@@ -769,53 +822,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
-								</div>
-							</div>
-						</div>
-					</div> 
-				</div>
-			</div>
-		</Transition>
-        <Transition
-            enter-active-class="transition ease-out !duration-1000"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-500"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100 scale-500"
-            leave-to-class="opacity-0 scale-95"
-        >
-			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
-				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
-				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
-					<div class="flex justify-center">
-						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
-							<div class="p-2 text-white">
-								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
-							</div>
-						</div>
-					</div>
-					<div class="py-5 rounded-t-3xl"></div>
-					<div class="modal_s_items pt-0 !px-8 pb-4">
-						<div class="row">
-							<div class="col-lg-12 col-md-3">
-								<div class="text-center">
-									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
-									<h5 class="leading-tight">
-										Are you sure you want to cancel this PO?<br>
-										If yes, please state your reason.
-									</h5>
-									<label>Cancel Reason: </label>
-									<textarea name="" id="cancel_check" class="form-control !border" rows="3"></textarea>
-								</div>
-							</div>
-						</div>
-						<br>
-						<div class="row mt-2"> 
-							<div class="col-lg-12 col-md-12">
-								<div class="flex justify-center space-x-2">
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
-									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="closeAlert()">Yes</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelAllJO('yes')">Yes</button>
 								</div>
 							</div>
 						</div>

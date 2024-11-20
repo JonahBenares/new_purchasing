@@ -173,6 +173,7 @@ class JOIController extends Controller
         $joi_dr_array= JOIDr::where('joi_head_id',$joi_head_id)->get();
         $joi_dr= JOIDr::where('joi_head_id',$joi_head_id)->first();
         $joi_dr_labor= JOIDrLabor::where('joi_dr_id',$joi_dr->id)->get();
+        $joi_dr_material= JOIDrMaterial::where('joi_dr_id',$joi_dr->id)->get();
         $jor_head= JORHead::where('jor_no',$joi_head->jor_no)->first();
         // $po_vendor = VendorDetails::where('id',$joi_head->vendor_details_id)->where('status','=','Active')->first();
         $joi_vendor= VendorDetails::select('vendor_details.id','identifier','vendor_name','fax','phone','contact_person','address')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$joi_head->vendor_details_id)->where('status','=','Active')->first();
@@ -201,8 +202,8 @@ class JOIController extends Controller
             $total[]=$pd->unit_price * $pd->quantity;
         }
         $total_material=[];
-        foreach($joi_labor_details AS $jld){
-            $total_material[]=$jld->unit_price * $jld->quantity;
+        foreach($joi_material_details AS $jmd){
+            $total_material[]=$jmd->unit_price * $jmd->quantity;
         }
         $total_sum=array_sum($total);
         $total_sum_material=array_sum($total_material);
@@ -213,6 +214,7 @@ class JOIController extends Controller
             'joi_dr_array'=>$joi_dr_array,
             'joi_dr'=>$joi_dr,
             'joi_dr_labor'=>$joi_dr_labor,
+            'joi_dr_material'=>$joi_dr_material,
             'jor_head'=>$jor_head,
             'joi_vendor'=>$joi_vendor,
             'joi_labor_details'=>$joi_labor_details,
@@ -753,7 +755,7 @@ class JOIController extends Controller
                 ]);
             }
             foreach($jomaterialdetails AS $md){
-                $update_jolabordetails=JOIDrMaterial::where('jor_labor_details_id',$md->jor_labor_details_id)->where('joi_labor_details_id',$md->id)->where('status','!=','Cancelled')->update([
+                $update_jomaterialdetails=JOIDrMaterial::where('jor_material_details_id',$md->jor_material_details_id)->where('joi_material_details_id',$md->id)->where('status','!=','Cancelled')->update([
                     'status'=>'Cancelled',
                 ]);
             }
