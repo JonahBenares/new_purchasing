@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('revised_joi_dr_material', function (Blueprint $table) {
             $table->id();
+            $table->integer('joi_head_rev_id')->default(0);
+            $table->integer('joi_dr_rev_id')->default(0);
             $table->integer('joi_dr_id')->default(0);
             $table->integer('joi_material_details_id')->default(0);
             $table->integer('jor_material_details_id')->default(0);
