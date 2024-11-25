@@ -211,7 +211,7 @@
                 </div>
             </div>
         </div>
-        <div class="row d-flex" id="proBanner">
+        <div class="row d-flex" id="proBanner" v-if="joi_head.grand_total>=10000">
             <div class="col-md-12 mb-3">
                 <div class="card bg-gradient-primary border-0">
                     <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
@@ -230,7 +230,7 @@
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
