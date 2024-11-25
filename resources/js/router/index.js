@@ -91,7 +91,6 @@ import job_issueNew from '../components/job_issue/new.vue'
 import job_issueEdit from '../components/job_issue/edit.vue'
 import job_issueView from '../components/job_issue/view.vue'
 import job_issueViewRevised from '../components/job_issue/view_revised.vue'
-import job_issuePrint from '../components/job_issue/print.vue'
 import job_issuePrintCOC from '../components/job_issue/print_coc.vue'
 import job_issuePrintAR from '../components/job_issue/print_ar.vue'
 
