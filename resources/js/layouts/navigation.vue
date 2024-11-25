@@ -491,8 +491,8 @@
 						leave-to-class="opacity-0"
 					>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" v-show="templatesDrop">
-                            <a href="storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a>
-                            <a href="storage/upload_format/JORequestForm.xlsx" class="dropdown-item" download> JOR Template </a>
+                            <a href="../../storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a>
+                            <a href="../../storage/upload_format/JORequestForm.xlsx" class="dropdown-item" download> JOR Template </a>
                         </div>
                     </Transition>
                 </li>
