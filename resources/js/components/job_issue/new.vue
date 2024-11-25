@@ -86,7 +86,7 @@
 		vat_amount.value = response.data.joi_head.vat_amount;
 		vat_in_ex.value = response.data.joi_head.vat_in_ex;
 		newvat.value= (response.data.grand_labor_total + response.data.grand_material_total) * (vat.value/100)
-		grand_labor_total.value = response.data.grand_labor_total;
+		grand_labor_total.value = response.data.grand_labor_total.toFixed(2);
 		grand_material_total.value = response.data.grand_material_total;
 		overall_total.value=(response.data.grand_labor_total + response.data.grand_material_total + newvat.value) - (discount_labor.value + discount_material.value)
 		jor_head.value = response.data.jor_head;
@@ -382,8 +382,8 @@
 		joi_material_details.value = response.data.joi_material_details;
 		jo_rfq_terms.value = response.data.jo_rfq_terms;
 		vendor.value = response.data.vendor;
-		grand_labor_total.value = response.data.grand_labor_total;
-		grand_material_total.value = response.data.grand_material_total;
+		grand_labor_total.value = response.data.grand_labor_total.toFixed(2);
+		grand_material_total.value = response.data.grand_material_total.toFixed(2);
 		overall_total.value=response.data.grand_labor_total + response.data.grand_material_total
 		prepared_by.value = response.data.prepared_by;
 		joi_labor_details.value.forEach(function (val, index, theArray) {

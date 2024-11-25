@@ -444,11 +444,19 @@
 													<tr class="">
 														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"></td>
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" :value="formatNumber(grand_totall ?? 0)"></td>
+														<td class="p-0">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 no-print" :value="formatNumber(grand_totall ?? 0)">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall - cancelled_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall ?? 0)" style="display: none;" v-else>
+                                                        </td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(grand_totalm ?? 0)"></td>
+														<td class="p-0">
+                                                            <input disabled type="text" class="w-full bg-white p-1 text-right no-print" :value="formatNumber(grand_totalm ?? 0)">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm - cancelled_m_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm ?? 0)" style="display: none;" v-else>
+                                                        </td>
 													</tr>
 													
 													<tr class="">
