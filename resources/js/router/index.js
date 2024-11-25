@@ -90,13 +90,10 @@ import job_issueIndex from '../components/job_issue/index.vue'
 import job_issueNew from '../components/job_issue/new.vue'
 import job_issueEdit from '../components/job_issue/edit.vue'
 import job_issueView from '../components/job_issue/view.vue'
-<<<<<<< HEAD
 import job_issueViewRevised from '../components/job_issue/view_revised.vue'
 import job_issuePrint from '../components/job_issue/print.vue'
-=======
 import job_issuePrintCOC from '../components/job_issue/print_coc.vue'
 import job_issuePrintAR from '../components/job_issue/print_ar.vue'
->>>>>>> c62cc84c37bd65f4b32bb28c2de64cf1f8148281
 
 import job_issueDirect from '../components/job_direct/index.vue'
 import job_issueDirectView from '../components/job_direct/view.vue'
