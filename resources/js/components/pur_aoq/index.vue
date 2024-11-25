@@ -143,12 +143,12 @@
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" > AOQ Date</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > PR No</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" > Supplier</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="25%"> Supplier</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Department</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Enduse</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Requestor</th>
-                                        <th class="!text-xs bg-gray-100 uppercase" > Status</th>
-                                        <th class="!text-xs bg-gray-100 uppercase"  align="center"> 
+                                        <th class="!text-xs bg-gray-100 uppercase"  width="2%"> Status</th>
+                                        <th class="!text-xs bg-gray-100 uppercase "  width="1%" align="center"> 
                                             <!-- <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
                                             </span> -->
@@ -156,7 +156,7 @@
                                     </tr>
                                 </thead>
                                 <template #column-2="props">
-                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc">
+                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc mb-1">
                                         <!-- <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
                                             <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li>
@@ -169,11 +169,13 @@
                                     </ul>
                                 </template>
                                 <template #column-6="props">
-                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.aoq_status == 'For TE'">{{props.rowData.aoq_status}}</span>
-                                    <span class="bg-blue-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Done TE'">{{props.rowData.aoq_status}}</span>
-                                    <span class="bg-lime-500 px-1 text-white" v-if="props.rowData.aoq_status == 'Awarded'">{{props.rowData.aoq_status}}</span>
-                                    <span class="bg-yellow-500 px-1 text-white" v-if="props.rowData.status == 'Draft'">- {{props.rowData.status}}</span>
-                                    <span class="bg-red-500 px-1 text-white" v-if="props.rowData.status == 'Cancelled'">- {{props.rowData.status}}</span>
+                                    <div class="text-center ">
+                                        <span class="rounded w-full !text-xs bg-yellow-500 px-1 mb-1 text-white block" v-if="props.rowData.aoq_status == 'For TE'">{{props.rowData.aoq_status}}</span>
+                                        <span class="rounded w-full !text-xs bg-blue-500 px-1 mb-1 text-white block" v-if="props.rowData.aoq_status == 'Done TE'">{{props.rowData.aoq_status}}</span>
+                                        <span class="rounded w-full !text-xs bg-lime-500 px-1 mb-1 text-white block" v-if="props.rowData.aoq_status == 'Awarded'">{{props.rowData.aoq_status}}</span>
+                                        <span class="rounded w-full !text-xs bg-yellow-500 px-1 mb-1 text-white block" v-if="props.rowData.status == 'Draft'">{{props.rowData.status}}</span>
+                                        <span class="rounded w-full !text-xs bg-red-500 px-1 mb-1 text-white block" v-if="props.rowData.status == 'Cancelled'">{{props.rowData.status}}</span>
+                                    </div>
                                 </template>
                                 <template #column-7="props">
                                     <button @click="ViewAOQ(props.rowData.id, props.rowData.aoq_details_id, props.rowData.status, props.rowData.aoq_status)" class="btn btn-xs btn-warning text-white p-1">
