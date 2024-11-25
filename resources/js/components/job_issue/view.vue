@@ -1,13 +1,8 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
-<<<<<<< HEAD
 	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted} from "vue"
-=======
-	import{Bars3Icon, PrinterIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
->>>>>>> c62cc84c37bd65f4b32bb28c2de64cf1f8148281
     import { useRouter } from "vue-router"
     import moment from 'moment'
 	const vendor =  ref();
