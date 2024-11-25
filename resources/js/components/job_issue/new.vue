@@ -77,6 +77,7 @@
 		recommended_by.value = response.data.joi_head.recommended_by;
 		approved_by.value = response.data.joi_head.approved_by;
 		joi_head.value = response.data.joi_head;
+		conforme.value = response.data.joi_head.conforme;
 		joi_no.value = response.data.joi_head.joi_no;
 		dr_no.value = response.data.joi_dr.dr_no;
 		discount_labor.value = response.data.joi_head.discount;
@@ -260,8 +261,9 @@
 		// var vat_percent = vat_percent.value;
 		// alert(vat_percent)
         var percent=vat_percent/100;
-        var new_vat = (parseFloat(total) + parseFloat(totalm)) * parseFloat(percent);
-        document.getElementById("vat_amount").value = new_vat.toFixed(2);
+        var new_vat = ((parseFloat(total) + parseFloat(totalm)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value))) * parseFloat(percent);
+        vat_amount.value = new_vat.toFixed(2);
+        // document.getElementById("vat_amount").value = new_vat.toFixed(2);
         var new_total=(parseFloat(total) + parseFloat(totalm) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
         document.getElementById("grand_labor_total").innerHTML=new_total.toFixed(2);
         document.getElementById("overalltotal").innerHTML=new_total.toFixed(2);
@@ -284,8 +286,8 @@
 		// var vat = document.getElementById("vat_percent").value;
 		// alert(vat_percent)
         var percent=vat_percent/100;
-		var new_vat = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) * parseFloat(percent);
-		vat_amount.value=new_vat;
+		var new_vat = ((parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value))) * parseFloat(percent);
+		vat_amount.value=new_vat.toFixed(2);
 		var overall_total = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
 		var labor_total = parseFloat(grandlabortotal);
 		var material_total = parseFloat(grandmaterialtotal);
@@ -330,8 +332,8 @@
 		// var vat = document.getElementById("vat_percent").value;
 		// alert(vat_percent)
         var percent=vat_percent/100;
-		var new_vat = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) * parseFloat(percent);
-		vat_amount.value=new_vat;
+		var new_vat = ((parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value))) * parseFloat(percent);
+		vat_amount.value=new_vat.toFixed(2);
 		var overall_total = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
 		var labor_total = parseFloat(grandlabortotal);
 		var material_total = parseFloat(grandmaterialtotal);
@@ -393,7 +395,6 @@
 	}
 
 	const deleteJOTerms = (id,option) => {
-		alert(id)
 		if(option=='yes'){
 			axios.get(`/api/delete_jo_terms/`+id).then(function () {
 				dangerAlert_terms.value = !hideAlert.value
@@ -456,6 +457,7 @@
 		formData.append('checked_by', checked_by.value)
 		formData.append('approved_by', approved_by.value)
 		formData.append('recommended_by', recommended_by.value)
+		formData.append('conforme', conforme.value)
 		formData.append('terms_list', JSON.stringify(terms_list.value))
 		formData.append('jo_rfq_terms', JSON.stringify(jo_rfq_terms.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
@@ -847,7 +849,7 @@
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
 													<td class="align-top" colspan="2">
 														<div class="flex justify-between">
-															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="jrt.terms" readonly></textarea>
+															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="jrt.terms"></textarea>
 														</div>
 													</td>
 													<td v-if="props.id!=0 || joi_head_id!=0">

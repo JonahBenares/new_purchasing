@@ -29,6 +29,7 @@ return new class extends Migration
             $table->double('discount_material')->default(0);
             $table->integer('vat')->default(0);
             $table->double('vat_amount')->default(0);
+            $table->double('vat_in_ex')->default(0);
             $table->double('grand_total')->default(0);
             $table->string('method')->comment('PO,DPO,RPO')->nullable();
             $table->string('revision_no')->nullable();

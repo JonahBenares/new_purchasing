@@ -17,7 +17,6 @@ class JOIRevisionMaterialDetails extends Model
         'jor_material_details_id',
         'item_description',
         'jo_rfq_material_offer_id',
-        'offer',
         'quantity',
         'uom',
         'unit_price',

@@ -15,7 +15,6 @@ class JOILaborDetails extends Model
         'jor_labor_details_id',
         'item_description',
         'jo_rfq_labor_offer_id',
-        'offer',
         'quantity',
         'uom',
         'unit_price',

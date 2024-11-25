@@ -28,9 +28,9 @@ return new class extends Migration
             $table->string('reference_joi_no')->nullable();
             $table->integer('reference_joi_labor_details_id')->default(0);
             $table->string('status')->nullable();
-            $table->string('cancelled_date');
-            $table->integer('cancelled_by');
-            $table->text('cancelled_reason');
+            $table->string('cancelled_date')->nullable();
+            $table->integer('cancelled_by')->default(0);
+            $table->text('cancelled_reason')->nullable();
             $table->timestamps();
         });
     }

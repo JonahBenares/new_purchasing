@@ -15,5 +15,8 @@ class JOIDrMaterial extends Model
         'jor_material_details_id',
         'jo_rfq_material_offer_id',
         'quantity',
+        'delivered_qty',
+        'to_deliver',
+        'status',
     ];
 }

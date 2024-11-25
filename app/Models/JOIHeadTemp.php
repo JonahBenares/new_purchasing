@@ -24,6 +24,7 @@ class JOIHeadTemp extends Model
         'discount_material',
         'vat',
         'vat_amount',
+        'vat_in_ex',
         'grand_total',
         'method',
         'revision_no',

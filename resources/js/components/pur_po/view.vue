@@ -457,13 +457,13 @@
                                                     
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <div class="flex justify-between">
+                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
                                                         <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <div class="flex justify-between">
+                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
                                                         <a :href="'/pur_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >

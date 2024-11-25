@@ -266,7 +266,7 @@
 		// var vat_percent = document.getElementById("vat_percent").value;
 
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
 		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
 		new_data.value=parseFloat(new_total)
@@ -287,8 +287,9 @@
 		// var vat_percent = vat_percent.value;
 		// alert(vat_percent)
         var percent= (vat.value==1) ? vat_percent/100 : 0;
-        var new_vat = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+        var new_vat = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
+		vat_amount.value=new_vat.toFixed(2);
         var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
         document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
 		new_data.value=parseFloat(new_total)
@@ -305,8 +306,9 @@
 			});
 			// var vat_percent = vat_percent;
 			// var vat_percent = document.getElementById("vat_percent").value;
+			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
-			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 			// vat_amount.value=new_data.value * percent;
 			additionalCost(vat_percent)
 		}else{
@@ -766,7 +768,7 @@
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
 													<td class="align-top" colspan="2">
 														<div class="flex justify-between">
-															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="rt.terms" readonly></textarea>
+															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="rt.terms"></textarea>
 														</div>
 													</td>
 													<td v-if="props.id!=0 || pohead_id!=0">

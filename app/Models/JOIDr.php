@@ -18,10 +18,12 @@ class JOIDr extends Model
         'dr_date',
         'site_pr',
         'delivery_date',
+        'driver',
         'status',
         'cancelled_by',
         'cancelled_date	',
         'cancelled_reason',
+        'identifier',
         'user_id',
     ];
 }

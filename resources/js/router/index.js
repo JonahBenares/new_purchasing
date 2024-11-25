@@ -90,6 +90,7 @@ import job_issueIndex from '../components/job_issue/index.vue'
 import job_issueNew from '../components/job_issue/new.vue'
 import job_issueEdit from '../components/job_issue/edit.vue'
 import job_issueView from '../components/job_issue/view.vue'
+import job_issueViewRevised from '../components/job_issue/view_revised.vue'
 import job_issuePrint from '../components/job_issue/print.vue'
 
 import job_issueDirect from '../components/job_direct/index.vue'
@@ -628,6 +629,14 @@ const routes = [
         }
     },
     {
+        path:'/job_issue/view_revised/:id',
+        component: job_issueViewRevised,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
         path:'/job_issue/edit/:id',
         component: job_issueEdit,
         props:true,
@@ -665,15 +674,17 @@ const routes = [
         }
     },
     {
-        path:'/job_dr/new',
+        path:'/job_dr/new/:id',
         component: job_drNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/job_dr/view',
+        path:'/job_dr/view/:id',
         component: job_drView,
+        props:true,
         meta:{
             requiresAuth:true
         }

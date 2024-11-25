@@ -15,5 +15,8 @@ class JOIDrLabor extends Model
         'jor_labor_details_id',
         'jo_rfq_labor_offer_id',
         'quantity',
+        'delivered_qty',
+        'to_deliver',
+        'status',
     ];
 }
