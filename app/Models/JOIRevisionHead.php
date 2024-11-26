@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JOIHead extends Model
+class JOIRevisionHead extends Model
 {
     use HasFactory;
-    protected $table="joi_head";
+    protected $table="revised_joi_head";
     protected $fillable=[
+        'joi_head_id',
         'jor_no',
         'vendor_details_id',
         'vendor_name',
@@ -23,7 +24,6 @@ class JOIHead extends Model
         'discount_material',
         'vat',
         'vat_amount',
-        'vat_in_ex',
         'grand_total',
         'method',
         'revision_no',

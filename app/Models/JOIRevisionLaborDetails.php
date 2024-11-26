@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JOILaborDetails extends Model
+class JOIRevisionLaborDetails extends Model
 {
     use HasFactory;
-    protected $table="joi_labor_details";
+    protected $table="revised_joi_labor_details";
     protected $fillable=[
+        'joi_head_rev_id',
+        'joi_labor_details_id',
         'joi_head_id',
         'item_no',
         'jor_labor_details_id',

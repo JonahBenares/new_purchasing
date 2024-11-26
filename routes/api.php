@@ -232,7 +232,7 @@ Route::post('/done_te_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'done_te_
 Route::post('/open_jo_aoq/{jo_aoq_head_id}',[JOAOQController::class,'open_jo_aoq']);
 Route::get('/joaoq_status/{jo_aoq_head_id}',[JOAOQController::class,'joaoq_status']);
 
-Route::get('/get_alljo',[JOIController::class,'get_alljo']);
+Route::get('/get_alljoi',[JOIController::class,'get_alljoi']);
 Route::get('/jo_supplier_dropdown', [JOIController::class,'jo_supplier_dropdown']);
 Route::get('/get_jorno/{vendor_details_id}', [JOIController::class,'get_jorno']);
 Route::get('/generate_joi/{vendor_details_id}/{jor_no}', [JOIController::class,'generate_joi']);
@@ -242,3 +242,24 @@ Route::get('/delete_jo_terms/{id}',[JOIController::class,'delete_jo_terms']);
 Route::get('/delete_jo_instructions/{id}',[JOIController::class,'delete_jo_instructions']);
 Route::post('/save_joi', [JOIController::class,'save_joi']);
 Route::get('/jo_viewdetails/{joi_head_id}', [JOIController::class,'jo_viewdetails']);
+Route::get('/delete_jo_terms/{id}',[JOIController::class,'delete_jo_terms']);
+Route::get('/delete_jo_instructions/{id}',[JOIController::class,'delete_jo_instructions']);
+Route::post('/cancel_all_jo/{joi_head_id}',[JOIController::class,'cancel_all_jo']);
+Route::post('/cancel_jo_items/{joi_labor_details_id}',[JOIController::class,'cancel_jo_items']);
+Route::post('/cancel_jo_material_items/{joi_material_details_id}',[JOIController::class,'cancel_jo_material_items']);
+Route::post('/save_change_joi', [JOIController::class,'save_change_joi']);
+Route::post('/save_joi_approved_revision', [JOIController::class,'save_joi_approved_revision']);
+Route::get('/old_jo_revision_data/{id}',[JOIController::class,'old_jo_revision_data']);
+Route::get('/view_jo_revision_data/{id}',[JOIController::class,'view_jo_revision_data']);
+Route::get('/joi_dropdown', [JOIController::class,'joi_dropdown']);
+Route::get('/generate_jo_dr/{joi_head_id}', [JOIController::class,'generate_jo_dr']);
+Route::get('/get_offer_labor/{jo_rfq_labor_offer_id}', [JOIController::class,'get_offer_labor']);
+Route::get('/get_offer_material/{jo_rfq_material_offer_id}', [JOIController::class,'get_offer_material']);
+
+Route::get('/check_jo_labor_dr_balance/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_jo_labor_dr_balance']);
+Route::get('/check_jo_material_dr_balance/{joi_dr_id}/{joi_material_details_id}', [JOIController::class,'check_jo_material_dr_balance']);
+Route::get('/check_remaining_dr_labor_balance/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_labor_balance']);
+Route::get('/check_remaining_dr_material_balance/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_material_balance']);
+Route::post('/save_jo_dr', [JOIController::class,'save_jo_dr']);
+Route::get('/get_jo_alldr', [JOIController::class,'get_jo_alldr']);
+Route::get('/get_jo_dr_view/{joi_dr_id}', [JOIController::class,'get_jo_dr_view']);
