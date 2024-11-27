@@ -16,6 +16,7 @@ use App\Http\Controllers\POController;
 use App\Http\Controllers\JOIController;
 use App\Http\Controllers\JORFQController;
 use App\Http\Controllers\JOAOQController;
+use App\Http\Controllers\PODirectController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -191,7 +192,13 @@ Route::post('/save_dr', [POController::class,'save_dr']);
 Route::get('/get_dr_view/{po_dr_id}', [POController::class,'get_dr_view']);
 Route::get('/get_alldr', [POController::class,'get_alldr']);
 
-
+Route::get('/get_direct_pr', [PODirectController::class,'get_direct_pr']);
+Route::get('/direct_supplier_dropdown', [PODirectController::class,'direct_supplier_dropdown']);
+Route::get('/generate_dpo/{pr_no}/{vendor_details_id}', [PODirectController::class,'generate_dpo']);
+Route::post('/save_direct_po', [PODirectController::class,'save_direct_po']);
+Route::get('/dpo_viewdetails/{po_head_id}', [PODirectController::class,'dpo_viewdetails']);
+Route::get('/delete_dpo_terms/{id}',[PODirectController::class,'delete_dpo_terms']);
+Route::get('/delete_dpo_instructions/{id}',[PODirectController::class,'delete_dpo_instructions']);
 
 Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);
 Route::get('/jor_list', [JORFQController::class,'all_jor']);
