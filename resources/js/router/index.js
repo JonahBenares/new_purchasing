@@ -439,8 +439,9 @@ const routes = [
     },
 
     {
-        path:'/po_direct',
+        path:'/po_direct/:id',
         component: pur_poDirect,
+        props:true,
         meta:{
             requiresAuth:true
         }
