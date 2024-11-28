@@ -491,8 +491,8 @@
 						leave-to-class="opacity-0"
 					>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" v-show="templatesDrop">
-                            <a href="storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a>
-                            <a href="storage/upload_format/JORequestForm.xlsx" class="dropdown-item" download> JOR Template </a>
+                            <a href="../../storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a>
+                            <a href="../../storage/upload_format/JORequestForm.xlsx" class="dropdown-item" download> JOR Template </a>
                         </div>
                     </Transition>
                 </li>
@@ -854,7 +854,7 @@
                                 <div class="!hidden"  :class="{ show:jobDrDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_dr/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_dr/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_dr">Show List</a></li>
                                     </ul>
                                 </div>

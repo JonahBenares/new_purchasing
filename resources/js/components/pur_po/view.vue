@@ -274,7 +274,7 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
                                                     <span hidden>{{ cancelled_qty=0 }}</span>
-                                                    <tr class="" v-for="(pd,indeex) in po_details">
+                                                    <tr class="" v-for="(pd,indeex) in po_details" v-if="po_head.status!='Cancelled'">
                                                         <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
@@ -289,6 +289,22 @@
                                                         </td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
+                                                    </tr>
+                                                    <tr class="" v-for="(pd,indeex) in po_details" v-else>
+                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
+                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
+                                                            <div class="flex justify-between space-x-1">
+                                                                <span class="w-full">{{pd.item_description}}</span>
+                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details_view.length>1 && pd.status!='Cancelled'">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
+                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class=""></td>
@@ -339,7 +355,8 @@
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
 
                                                         <td class="p-1 text-right font-bold !text-sm no-print">{{ formatNumber(po_head.grand_total ?? 0) }}</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;">{{ formatNumber(po_head.grand_total - cancelled_qty ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">{{ formatNumber(po_head.grand_total - cancelled_qty ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatNumber(po_head.grand_total ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -461,13 +478,13 @@
                                                     
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <div class="flex justify-between">
+                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
                                                         <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <div class="flex justify-between">
+                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
                                                         <a :href="'/pur_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >

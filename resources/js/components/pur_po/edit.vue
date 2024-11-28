@@ -93,7 +93,7 @@ import moment from 'moment';
 		vat_percent.value = (response.data.po_head.vat_percent!=0) ? response.data.po_head.vat_percent : 12;
 		vat_amount.value = response.data.po_head.vat_amount;
 		vat_in_ex.value = response.data.po_head.vat_in_ex;
-		newvat.value= (response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) * (response.data.po_head.vat_percent/100)
+		newvat.value= ((response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) - response.data.po_head.discount) * (response.data.po_head.vat_percent/100)
 		
 		totals.value = response.data.grand_total;
 		pr_head.value = response.data.pr_head;
@@ -262,7 +262,7 @@ import moment from 'moment';
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		// var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
 		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
 		new_data.value=parseFloat(new_total)
@@ -281,8 +281,9 @@ import moment from 'moment';
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		// var vat_percent = document.getElementById("vat_percent").value;
         var percent=vat_percent/100;
-        var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+        var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
+		vat_amount.value=new_vat.toFixed(2);
         var new_total=(parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
         document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
 		// new_data.value=parseFloat(new_total)
@@ -299,7 +300,8 @@ import moment from 'moment';
 				var pi = p.replace(",", "");
 				total += parseFloat(pi);
 			});
-			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			var discount_display= (discount.value!='') ? discount.value : 0;
+			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 			// vat_amount.value=new_data.value * percent;
 			additionalCost(vat_percent)
 		}else{
@@ -353,11 +355,10 @@ import moment from 'moment';
         });
 
 		// var vat = document.getElementById("vat_percent").value;
-        var percent=vat_percent/100;
-		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
-		vat_amount.value=new_vat;
-		
 		var discount_display= (discount.value!='') ? discount.value : 0;
+        var percent=vat_percent/100;
+		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+		vat_amount.value=new_vat;
 		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
 		grand_total.value=overall_total.toFixed(2);
 		orig_amount.value=grandtotal.toFixed(2);
@@ -450,14 +451,14 @@ import moment from 'moment';
 		po_details.value.forEach(function (val, index, theArray) {
 			formData.append('quantity'+index, remaining_balance.value[index])
 		});
+		const btn_save = document.getElementById("confirm_alert");
+		btn_save.disabled = true;
 		axios.post(`/api/save_change_po`,formData).then(function (response) {
 			infoAlert.value = !hideAlert.value
 			approval_set.value = !approval_set.value
 			buttons_set.value = !hide_button.value
 			success.value='You have successfully revise po, please fill in approve form below.'
 			successAlertCD.value=!successAlertCD.value
-			const btn_save = document.getElementById("confirm_alert");
-			btn_save.disabled = true;
 			poReviseTemp()
 			setTimeout(() => {
 				closeAlert()
@@ -496,11 +497,11 @@ import moment from 'moment';
 			formData.append('quantity'+index, remaining_balance.value[index])
 		});
 		if(approved_by_rev.value!=0 && approved_date.value!=''){
+			const btn_save = document.getElementById("save_approve");
+			btn_save.disabled = true;
 			axios.post(`/api/save_approved_revision`,formData).then(function (response) {
 				success.value='You have successfully revised po'
 				successAlertCD.value=!successAlertCD.value
-				const btn_save = document.getElementById("save_approve");
-				btn_save.disabled = true;
 				setTimeout(() => {
 					router.push('/pur_po/view/'+props.id)
 				}, 1000);
@@ -778,7 +779,7 @@ import moment from 'moment';
 																<option value="1">VAT</option>
 																<option value="2">NON-VAT</option>
 															</select>
-															<select name="" class="border px-1 text-xs" id="" @change="selectVat(vat_percent)" v-model="vat" disabled v-else>
+															<select name="" class="border px-1 text-xs" id="" @change="selectVat(vat_percent)" v-model="po_head_temp.vat" disabled v-else>
 																<option value="0">--Select--</option>
 																<option value="1">VAT</option>
 																<option value="2">NON-VAT</option>
@@ -788,9 +789,12 @@ import moment from 'moment';
 													<!-- Kamo na bahala mag hide sang duwa ka input sa dalom kung Non VAT-->
 													<td class="p-0" v-if="vat==1">
 														<div class="flex p-0">
-															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)">%
+															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)"  v-if="po_head.status!='Revised'">
+															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="po_head_temp.vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)" v-else disabled>%
 															<input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
-															<input type="text" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)">
+
+															<input type="text" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" v-if="po_head.status!='Revised'">
+															<input type="text" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="po_head_temp.vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" v-else disabled>
 														</div>
 													</td>
 													<!-- NON-VAT -->

@@ -18,7 +18,6 @@
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
     const joi_dr = ref([])
-    const joi_head_rev = ref([])
     const joi_head = ref([])
     const jor_head = ref([])
     const joi_vendor = ref([])
@@ -50,22 +49,20 @@
         return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
     const joView = async () => {
-		let response = await axios.get("/api/jo_viewdetails/"+props.id);
-		joi_dr.value = response.data.joi_dr_array;
-		joi_head.value = response.data.joi_head;
+		let response = await axios.get("/api/view_jo_revision_data/"+props.id);
+		joi_head.value = response.data.joi_head_rev;
 		jor_head.value = response.data.jor_head;
 		joi_vendor.value = response.data.joi_vendor;
-		joi_labor_details.value = response.data.joi_labor_details;
-		joi_details_view.value = response.data.joi_details_view;
-        joi_material_details.value = response.data.joi_material_details;
-		joi_material_details_view.value = response.data.joi_material_details_view;
-		joi_terms.value = response.data.joi_terms;
-		joi_instructions.value = response.data.joi_instructions;
+		joi_labor_details.value = response.data.joi_labor_details_rev;
+		joi_material_details.value = response.data.joi_material_details_rev;
+		joi_terms.value = response.data.joi_terms_rev;
+		joi_instructions.value = response.data.joi_instructions_rev;
 		prepared_by.value = response.data.prepared_by;
 		checked_by.value = response.data.checked_by;
 		recommended_by.value = response.data.recommended_by;
 		approved_by.value = response.data.approved_by;
 		cancelled_by.value = response.data.cancelled_by;
+        cancel_all_reason.value=''
 	}
     const openDangerPO = () => {
 		dangerAlert.value = !dangerAlert.value
@@ -84,10 +81,8 @@
     const openDrawerRFD = () => {
 		drawer_rfd.value = !drawer_rfd.value
 	}
-    const openDrawerRevise = async (id) => {
+    const openDrawerRevise = () => {
 		drawer_revise.value = !drawer_revise.value
-        let response = await axios.get("/api/old_jo_revision_data/"+id);
-		joi_head_rev.value = response.data.joi_head_rev;
 	}
 	const closeModal = () => {
 		drawer_dr.value = !hideModal.value
@@ -208,26 +203,6 @@
                             <li class="breadcrumb-item active" aria-current="page">View</li>
                         </ol>
                     </nav>
-                </div>
-            </div>
-        </div>
-        <div class="row d-flex" id="proBanner" v-if="joi_head.grand_total>=10000">
-            <div class="col-md-12 mb-3">
-                <div class="card bg-gradient-primary border-0">
-                    <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-                        <div class="flex justify-start space-x-2">
-                            <span class="text-white">
-                                <PrinterIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></PrinterIcon>
-                            </span>
-                            <p class="mb-0 text-white font-weight-medium">Please Print COC!</p>
-                        </div>
-                        <div class="d-flex">
-                            <a href="" target="_blank" class="btn btn-outline-light mr-2 bg-gradient-danger border-0">View COC</a>
-                            <button id="bannerClose" class="btn border-0 p-0 ml-auto">
-                            <i class="mdi mdi-close text-white"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -444,19 +419,11 @@
 													<tr class="">
 														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"></td>
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-														<td class="p-0">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 no-print" :value="formatNumber(grand_totall ?? 0)">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall - cancelled_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall ?? 0)" style="display: none;" v-else>
-                                                        </td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" :value="formatNumber(grand_totall ?? 0)"></td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
-														<td class="p-0">
-                                                            <input disabled type="text" class="w-full bg-white p-1 text-right no-print" :value="formatNumber(grand_totalm ?? 0)">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm - cancelled_m_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm ?? 0)" style="display: none;" v-else>
-                                                        </td>
+														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(grand_totalm ?? 0)"></td>
 													</tr>
 													
 													<tr class="">
@@ -627,29 +594,27 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-start space-x-1">
-                                                    <button type="button" class="btn btn-danger w-36"  @click="cancelAllJO('no')" v-if="joi_head.status!='Cancelled'">Cancel JOI</button>
+                                                    <!-- <button type="button" class="btn btn-danger w-36"  @click="cancelAllJO('no')" v-if="joi_head.status!='Cancelled'">Cancel JOI</button>
                                                     <div class="flex justify-between"  v-if="joi_head.status!='Cancelled'">
                                                         <a :href="'/job_issue/edit/'+props.id" class="btn btn-info w-26 !rounded-r-none">Revise JOI</a>
-                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise(props.id)">
+                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
-                                                    <a href="/job_issue/print_coc" class="btn btn-warning text-white">Print COC</a>
                                                     <div class="flex justify-between">
-                                                        <!-- <a href="/job_disburse/new" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a> -->
-                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a>
+                                                        <!-- <a href="/job_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
+                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD 2</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                        </button>
+                                                        </button> -->
                                                     </div>
                                                     <div class="flex justify-between">
-                                                        <a :href="'/job_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
+                                                        <!-- <a :href="'/job_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                        </button>
+                                                        </button> -->
                                                     </div>
                                                     <button type="button" class="btn btn-primary w-36" @click="printDiv()">Print JOI</button>
                                                 </div>
@@ -677,7 +642,7 @@
                 <div class="modal__content w-3/12 float-right min-h-[690px]">
                     <div class="row mb-3">
                         <div class="col-lg-12 flex justify-between">
-                            <span class="font-bold ">Revise List</span>
+                            <span class="font-bold ">DR List</span>
                             <a href="#" class="text-gray-600" @click="closeModal">
                                 <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                             </a>
@@ -685,12 +650,18 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="" v-for="jhv in joi_head_rev">
-                            <a :href="'/job_issue/view_revised/'+jhv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ jhv.joi_no }}{{ (jhv.revision_no!=0 && jhv.revision_no!='' && jhv.revision_no!=null) ? '.r'+jhv.revision_no : '' }}</a>
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662 (Main)</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r1</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r2</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r3</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r4</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r5</a>
+                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">JOI-88270-7662.r6 (Current)</a>
                         </div>
-                        <div>
-                            <a :href="'/job_issue/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ joi_head.joi_no }}{{ (joi_head.revision_no!=0 && joi_head.revision_no!='' && joi_head.revision_no!=null) ? '.r'+joi_head.revision_no : '' }} (Current)</a>
-                        </div>
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
                     </div> 
                 </div>
             </div>
@@ -716,10 +687,19 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="" v-for="jdr in joi_dr">
-                            <a :href="'/job_dr/view/'+jdr.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ jdr.dr_no }}</a>
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
                         </div>
-                    </div> 
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
+                    </div> s
                 </div>
             </div>
         </Transition>

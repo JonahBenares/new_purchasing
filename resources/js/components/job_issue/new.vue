@@ -54,6 +54,7 @@
 	const newvat=ref(0);
 	const instruction_id=ref(0);
 	const terms_id=ref(0);
+	const cancel_all_reason=ref('');
 	const props = defineProps({
 		id:{
 			type:String,
@@ -76,6 +77,7 @@
 		recommended_by.value = response.data.joi_head.recommended_by;
 		approved_by.value = response.data.joi_head.approved_by;
 		joi_head.value = response.data.joi_head;
+		conforme.value = response.data.joi_head.conforme;
 		joi_no.value = response.data.joi_head.joi_no;
 		dr_no.value = response.data.joi_dr.dr_no;
 		discount_labor.value = response.data.joi_head.discount;
@@ -84,7 +86,7 @@
 		vat_amount.value = response.data.joi_head.vat_amount;
 		vat_in_ex.value = response.data.joi_head.vat_in_ex;
 		newvat.value= (response.data.grand_labor_total + response.data.grand_material_total) * (vat.value/100)
-		grand_labor_total.value = response.data.grand_labor_total;
+		grand_labor_total.value = response.data.grand_labor_total.toFixed(2);
 		grand_material_total.value = response.data.grand_material_total;
 		overall_total.value=(response.data.grand_labor_total + response.data.grand_material_total + newvat.value) - (discount_labor.value + discount_material.value)
 		jor_head.value = response.data.jor_head;
@@ -96,7 +98,7 @@
 	}
 
 	const joDraftDisplay = async () => {
-		let response = await axios.get("/api/po_viewdetails/"+joi_head_id.value);
+		let response = await axios.get("/api/jo_viewdetails/"+joi_head_id.value);
 		jo_rfq_terms.value = response.data.joi_terms;
 		other_list.value = response.data.joi_instructions;
 	}
@@ -259,8 +261,9 @@
 		// var vat_percent = vat_percent.value;
 		// alert(vat_percent)
         var percent=vat_percent/100;
-        var new_vat = (parseFloat(total) + parseFloat(totalm)) * parseFloat(percent);
-        document.getElementById("vat_amount").value = new_vat.toFixed(2);
+        var new_vat = ((parseFloat(total) + parseFloat(totalm)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value))) * parseFloat(percent);
+        vat_amount.value = new_vat.toFixed(2);
+        // document.getElementById("vat_amount").value = new_vat.toFixed(2);
         var new_total=(parseFloat(total) + parseFloat(totalm) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
         document.getElementById("grand_labor_total").innerHTML=new_total.toFixed(2);
         document.getElementById("overalltotal").innerHTML=new_total.toFixed(2);
@@ -283,8 +286,8 @@
 		// var vat = document.getElementById("vat_percent").value;
 		// alert(vat_percent)
         var percent=vat_percent/100;
-		var new_vat = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) * parseFloat(percent);
-		vat_amount.value=new_vat;
+		var new_vat = ((parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value))) * parseFloat(percent);
+		vat_amount.value=new_vat.toFixed(2);
 		var overall_total = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
 		var labor_total = parseFloat(grandlabortotal);
 		var material_total = parseFloat(grandmaterialtotal);
@@ -329,8 +332,8 @@
 		// var vat = document.getElementById("vat_percent").value;
 		// alert(vat_percent)
         var percent=vat_percent/100;
-		var new_vat = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) * parseFloat(percent);
-		vat_amount.value=new_vat;
+		var new_vat = ((parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value))) * parseFloat(percent);
+		vat_amount.value=new_vat.toFixed(2);
 		var overall_total = (parseFloat(grandlabortotal) + parseFloat(grandmaterialtotal) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
 		var labor_total = parseFloat(grandlabortotal);
 		var material_total = parseFloat(grandmaterialtotal);
@@ -379,8 +382,8 @@
 		joi_material_details.value = response.data.joi_material_details;
 		jo_rfq_terms.value = response.data.jo_rfq_terms;
 		vendor.value = response.data.vendor;
-		grand_labor_total.value = response.data.grand_labor_total;
-		grand_material_total.value = response.data.grand_material_total;
+		grand_labor_total.value = response.data.grand_labor_total.toFixed(2);
+		grand_material_total.value = response.data.grand_material_total.toFixed(2);
 		overall_total.value=response.data.grand_labor_total + response.data.grand_material_total
 		prepared_by.value = response.data.prepared_by;
 		joi_labor_details.value.forEach(function (val, index, theArray) {
@@ -397,7 +400,7 @@
 				dangerAlert_terms.value = !hideAlert.value
 				success.value='Successfully deleted term!'
 				successAlertCD.value = !successAlertCD.value
-				joDraft()
+				joDraftDisplay()
 				terms_list.value=[]
 				setTimeout(() => {
 					closeAlert()
@@ -418,7 +421,7 @@
 				dangerAlert_instructions.value = !hideAlert.value
 				success.value='Successfully deleted instruction!'
 				successAlertCD.value = !successAlertCD.value
-				joDraft()
+				joDraftDisplay()
 				other_list.value=[]
 				setTimeout(() => {
 					closeAlert()
@@ -438,8 +441,8 @@
 		var total = document.querySelector("#grand_labor_total").textContent;
 		var total_replace = total.replace(",", "");
 		formData.append('date_needed', date_needed.value)
-		formData.append('completion_work', completion_work.value)
-		formData.append('date_prepared', date_prepared.value)
+		formData.append('completion_work', jor_head.value.date_prepared)
+		formData.append('date_prepared', jor_head.value.date_prepared)
 		formData.append('start_of_work', start_of_work.value)
 		formData.append('dr_no', dr_no.value)
 		formData.append('joi_no', joi_no.value)
@@ -454,6 +457,7 @@
 		formData.append('checked_by', checked_by.value)
 		formData.append('approved_by', approved_by.value)
 		formData.append('recommended_by', recommended_by.value)
+		formData.append('conforme', conforme.value)
 		formData.append('terms_list', JSON.stringify(terms_list.value))
 		formData.append('jo_rfq_terms', JSON.stringify(jo_rfq_terms.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
@@ -537,6 +541,46 @@
 		const btn_save = document.getElementById("save");
 		btn_save.disabled = false;
 	}
+
+	const allZeroLabor = () => {
+		if(props.id==0){
+      		return remaining_labor_balance.value.every(value => value === 0);
+		}else{
+			return false;
+		}
+    }
+
+	const allZeroMaterial = () => {
+		if(props.id==0){
+      		return remaining_material_balance.value.every(value => value === 0);
+		}else{
+			return false;
+		}
+    }
+	const cancelAllJO = (option) => {
+		let id = (props.id==0) ? joi_head_id.value : props.id
+		if(option=='yes'){
+			if(cancel_all_reason.value!=''){
+				const formData= new FormData()
+				formData.append('cancel_all_reason', cancel_all_reason.value)
+				axios.post(`/api/cancel_all_jo/`+id,formData).then(function (response) {
+                    dangerAlert.value = !hideAlert.value
+                    success.value='Successfully cancelled PO!'
+                    successAlertCD.value = !successAlertCD.value
+                    cancel_all_reason.value=''
+                    document.getElementById('cancel_all_check').placeholder=""
+                    document.getElementById('cancel_all_check').style.backgroundColor = '#FFFFFF';
+                    joDraft()
+                    router.push('/pur_po/view/'+id)
+				})
+			}else{
+				document.getElementById('cancel_all_check').placeholder="Cancel Reason must not be empty!"
+				document.getElementById('cancel_all_check').style.backgroundColor = '#FAA0A0';
+			}
+		}else{
+			dangerAlert.value = !dangerAlert.value
+		}
+	}
 </script>
 <template>
 	<navigation>
@@ -584,7 +628,7 @@
 						</div>
 						<hr class="border-dashed">
 						<div class="pt-1">
-							<div v-if="joi_head && joi_head.length!=0">
+							<div v-if="joi_head && joi_head.length!=0 && (!allZeroLabor() || !allZeroMaterial())">
 								<!-- <div v-show="jor_det"> -->
 								<div class="row">
 									<div class="col-lg-1">
@@ -662,11 +706,21 @@
 													<tr>
 														<td colspan="6"><span class="font-bold">{{ jor_head.general_description}} </span></td>
 													</tr>
-													<tr class="" v-for="(jld,index) in joi_labor_details">
+													<tr class="" v-for="(jld,index) in joi_labor_details" v-if="props.id == 0">
 														<span hidden>{{ totalprice=formatNumber(jld.unit_price * remaining_labor_balance[index]) }}</span>
 														<td class="border-y-none p-1" colspan="3">{{ jld.offer }}</td>
 														<td class="border-y-none p-0 text-center">
 															<input type="text" @keypress="isNumber($event)" @keyup="checkLaborBalance(jld.jor_labor_details_id,jld.id,vat,remaining_labor_balance[index], index)" :id="'balance_labor_checker'+index" class="w-full bg-yellow-50 border-b p-1 text-center" v-model="remaining_labor_balance[index]">
+														</td>
+														<td class="border-y-none p-1 text-center">{{jld.uom}}</td>
+														<td class="border-y-none p-1 text-right">{{jld.unit_price}} {{ jld.currency }}</td>
+														<td class="border-y-none p-1 text-right"><input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
+													</tr>
+													<tr class="" v-for="(jld,index) in joi_labor_details" v-else>
+														<span hidden>{{ totalprice=formatNumber(jld.unit_price * jld.quantity) }}</span>
+														<td class="border-y-none p-1" colspan="3">{{ jld.item_description }}</td>
+														<td class="border-y-none p-0 text-center">
+															<input type="text" @keypress="isNumber($event)" @keyup="checkLaborBalance(jld.jor_labor_details_id,jld.id,vat,jld.quantity, index)" :id="'balance_labor_checker'+index" class="w-full bg-yellow-50 border-b p-1 text-center" v-model="jld.quantity">
 														</td>
 														<td class="border-y-none p-1 text-center">{{jld.uom}}</td>
 														<td class="border-y-none p-1 text-right">{{jld.unit_price}} {{ jld.currency }}</td>
@@ -680,12 +734,23 @@
 														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
 														<td class="uppercase p-1 text-center" width="10%">Total</td>
 													</tr>
-													<tr class="" v-for="(jml,indexes) in joi_material_details">
+													<tr class="" v-for="(jml,indexes) in joi_material_details" v-if="props.id==0">
 														<span hidden>{{ totalmprice=formatNumber(jml.unit_price * remaining_material_balance[indexes]) }}</span>
 														<td class="border-y-none p-1 text-center">{{indexes+1}}</td>
 														<td class="border-y-none p-1" colspan="2">{{jml.offer}}</td>
 														<td class="border-y-none p-0 text-center">
 															<input type="text" @keypress="isNumber($event)" @keyup="checkMaterialBalance(jml.jor_material_details_id,jml.id,vat,remaining_material_balance[indexes], indexes)" :id="'balance_material_checker'+indexes" class="w-full bg-yellow-50 border-b p-1 text-center" v-model="remaining_material_balance[indexes]">
+														</td>
+														<td class="border-y-none p-1 text-center">{{jml.uom}}</td>
+														<td class="border-y-none p-1 text-right">{{ jml.unit_price }} {{ jml.currency }}</td>
+														<td class="border-y-none p-1 text-right"><input type="text" class="text-center tmprice" :id="'tmprice'+indexes" v-model="totalmprice" readonly></td>
+													</tr>
+													<tr class="" v-for="(jml,indexes) in joi_material_details" v-else>
+														<span hidden>{{ totalmprice=formatNumber(jml.unit_price * jml.quantity) }}</span>
+														<td class="border-y-none p-1 text-center">{{indexes+1}}</td>
+														<td class="border-y-none p-1" colspan="2">{{jml.item_description}}</td>
+														<td class="border-y-none p-0 text-center">
+															<input type="text" @keypress="isNumber($event)" @keyup="checkMaterialBalance(jml.jor_material_details_id,jml.id,vat,jml.quantity, indexes)" :id="'balance_material_checker'+indexes" class="w-full bg-yellow-50 border-b p-1 text-center" v-model="jml.quantity">
 														</td>
 														<td class="border-y-none p-1 text-center">{{jml.uom}}</td>
 														<td class="border-y-none p-1 text-right">{{ jml.unit_price }} {{ jml.currency }}</td>
@@ -784,7 +849,7 @@
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
 													<td class="align-top" colspan="2">
 														<div class="flex justify-between">
-															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="jrt.terms" readonly></textarea>
+															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="jrt.terms"></textarea>
 														</div>
 													</td>
 													<td v-if="props.id!=0 || joi_head_id!=0">
@@ -946,6 +1011,7 @@
 											<div class="flex justify-between space-x-1">
 												<!-- kung wala pa na save -->
 												<!-- <button type="submit" class="btn btn-primary w-26">Back</button> -->
+												<button type="button" class="btn btn-danger w-36"  @click="cancelAllJO('no')" v-if="joi_head.status!='Cancelled' && (props.id!=0 || joi_head_id!=0)">Cancel JO</button>
 												<button type="button"  class="btn btn-warning w-26 !text-white" id="draft" @click="onSave('Draft')">Save as Draft</button>
 												<button  type="button" class="btn btn-primary w-36" id="save" @click="onSave('Saved')">Save</button>
 											</div>
@@ -953,6 +1019,9 @@
 										</div>
 									</div>
 								</div>
+							</div>
+							<div v-else-if="(remaining_labor_balance.length!=0 || remaining_material_balance.length!=0) && (allZeroLabor() || allZeroMaterial())">
+								<center><span><b>No Available Data...</b></span></center>
 							</div>
 						</div>
 					</div>
@@ -1191,6 +1260,52 @@
 								<div class="flex justify-center space-x-2">
 									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="closeAlert()">No</button>
 									<button type="button" class="btn btn-danger btn-sm !rounded-full w-full" @click="deleteInstructions(instruction_id,'yes')" >Yes</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlert }">
+				<div @click="closeAlert()" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Warning!</h2>
+									<h5 class="leading-tight">
+										Are you sure you want to cancel this PO?<br>
+										If yes, please state your reason.
+									</h5>
+									<label>Cancel Reason: </label>
+									<textarea name="" id="cancel_all_check" class="form-control !border" rows="3" v-model="cancel_all_reason"></textarea>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-2"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full" @click="closeAlert()">No</button>
+									<button class="btn btn-danger btn-sm !rounded-full w-full" @click="cancelAllJO('yes')">Yes</button>
 								</div>
 							</div>
 						</div>

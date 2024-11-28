@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JOIHead extends Model
+class JOIHeadTemp extends Model
 {
     use HasFactory;
-    protected $table="joi_head";
+    protected $table="joi_head_temp";
     protected $fillable=[
+        'joi_head_id',
         'jor_no',
         'vendor_details_id',
         'vendor_name',

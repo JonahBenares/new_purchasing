@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JOIDr extends Model
+class JOIRevisionDr extends Model
 {
     use HasFactory;
-    protected $table="joi_dr";
+    protected $table="revised_joi_dr";
     protected $fillable=[
         'joi_head_id',
         'jor_head_id',
@@ -18,12 +18,11 @@ class JOIDr extends Model
         'dr_date',
         'site_pr',
         'delivery_date',
-        'driver',
         'status',
         'cancelled_by',
         'cancelled_date	',
         'cancelled_reason',
-        'identifier',
         'user_id',
+        'revision_no',
     ];
 }
