@@ -636,8 +636,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
-                                                    <a href="/job_issue/print_coc" class="btn btn-warning text-white">Print COC</a>
+                                                    <a href="/job_issue/print_ar" target="_blank" class="btn btn-warning text-white">Print AC</a>
+                                                    <a href="/job_issue/print_coc" target="_blank" class="btn btn-warning text-white">Print COC</a>
                                                     <div class="flex justify-between">
                                                         <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">

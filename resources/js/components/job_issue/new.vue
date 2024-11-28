@@ -847,7 +847,7 @@
 												</tr>
 												<tr v-for="(jrt,indexterms) in jo_rfq_terms">
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
-													<td class="align-top" colspan="2">
+													<td class="align-top" colspan="1">
 														<div class="flex justify-between">
 															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="jrt.terms"></textarea>
 														</div>
@@ -860,7 +860,7 @@
 												</tr>
 												<tr v-for="(t,indexe) in terms_list">
 													<td class="align-top text-center" width="4%">{{ indexe + 4 +jo_rfq_terms.length }}.</td>
-													<td class="px-1" colspan="2">
+													<td class="px-1" colspan="1">
 														<span class="w-32">{{ t.terms_condition }}</span>
 													</td>
 													<td class="p-0 align-top" width="1">
