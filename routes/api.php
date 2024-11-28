@@ -17,6 +17,7 @@ use App\Http\Controllers\JOIController;
 use App\Http\Controllers\JORFQController;
 use App\Http\Controllers\JOAOQController;
 use App\Http\Controllers\PODirectController;
+use App\Http\Controllers\RepeatOrderPOController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -199,6 +200,10 @@ Route::post('/save_direct_po', [PODirectController::class,'save_direct_po']);
 Route::get('/dpo_viewdetails/{po_head_id}', [PODirectController::class,'dpo_viewdetails']);
 Route::get('/delete_dpo_terms/{id}',[PODirectController::class,'delete_dpo_terms']);
 Route::get('/delete_dpo_instructions/{id}',[PODirectController::class,'delete_dpo_instructions']);
+
+Route::get('/get_repeat_pr', [RepeatOrderPOController::class,'get_repeat_pr']);
+Route::get('/repeat_supplier_dropdown', [RepeatOrderPOController::class,'repeat_supplier_dropdown']);
+Route::get('/generate_rpo/{pr_no}/{vendor_details_id}', [RepeatOrderPOController::class,'generate_rpo']);
 
 Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);
 Route::get('/jor_list', [JORFQController::class,'all_jor']);

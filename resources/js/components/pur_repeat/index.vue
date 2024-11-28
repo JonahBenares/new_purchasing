@@ -1,8 +1,103 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+	import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
+	import moment from 'moment'
+	const router = useRouter();
+	const prno_dropdown =  ref([]);
+	const suppliers =  ref([]);
+	const po_details =  ref([]);
+	const pr_head =  ref([]);
+	const po_head =  ref([]);
+	const vendor =  ref([]);
+	const vendor_terms =  ref([]);
+	const pr_no =  ref('');
+	const po_no =  ref('');
+	const dr_no =  ref('');
+	const prepared_by =  ref('');
+	const vendor_details_id =  ref('');
+	const checked_by =  ref(0);
+	const recommended_by =  ref(0);
+	const approved_by =  ref(0);
+	const vat =  ref(0);
+	const total =  ref(0);
+	const balance =  ref(0);
+	const grand_total =  ref(0);
+	const new_data =  ref(0);
+	const vat_percent =  ref(12);
+	const vat_amount =  ref(0);
+	const vat_in_ex =  ref(0);
+	const shipping_cost =  ref(0);
+	const handling_fee =  ref(0);
+	const discount =  ref(0);
+	let formatter=ref('');
+	let currency=ref([]);
+	let signatories=ref([]);
+
+	const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+
+	onMounted(async () => {
+		getRepeatPR()
+		getSignatories()
+		// if(props.id!=0){
+		// 	dpoDraft()
+		// }
+	})
+
+	const getRepeatPR = async () => {
+		let response = await axios.get("/api/get_repeat_pr/");
+		prno_dropdown.value = response.data.prno_dropdown;
+		// suppliers.value=[]
+	}
+
+	const getSupplierRPO = async () => {
+		if(pr_no.value != ''){
+			let response = await axios.get("/api/repeat_supplier_dropdown/");
+			suppliers.value = response.data.suppliers;
+			document.getElementById("rpo_supplier").disabled = false;
+		}else{
+			document.getElementById("rpo_supplier").disabled = true;
+		}
+	}
+
+	const OpenBtn = async () => {
+		if(vendor_details_id.value != ''){
+			document.getElementById("generatepobtn").disabled = false;
+		}else{
+			document.getElementById("generatepobtn").disabled = true;
+		}
+	}
+
+	const getSignatories = async () => {
+		let response = await axios.get("/api/get_signatories");
+		signatories.value = response.data.employees;
+	}
+
+	const generateRPO = async () => {
+		formatter.value = new Intl.NumberFormat('en-US', {
+			minimumFractionDigits: 4,  
+		})
+			document.getElementById("generatepobtn").disabled = false;
+			let response = await axios.get("/api/generate_rpo/"+pr_no.value+'/'+vendor_details_id.value);
+			dr_no.value = response.data.dr_no;
+			po_no.value = response.data.po_no;
+			po_details.value = response.data.po_details;
+			po_head.value = response.data.po_head;
+			vendor_terms.value = response.data.vendor_terms;
+			vendor.value = response.data.vendor;
+			currency.value = response.data.currency
+			pr_head.value = response.data.pr_head;
+			prepared_by.value = response.data.prepared_by;
+			formatter.value = new Intl.NumberFormat('en-US', {
+				minimumFractionDigits: 4,
+			})
+	}
 
 	const showModal = ref(false)
 	const hideModal = ref(true)
@@ -39,40 +134,6 @@
 
 	let vendor_list=ref([]);
 	let vendor_name=ref('');
-
-	const addVendor= () => {
-		for(var x=0; x<vendor_list.value.length; x++){
-			if(document.getElementById("v_name"+x).value == vendor_name.value){
-				var vendor_count = 1;
-			}
-		}
-
-			if(vendor_count != undefined){
-				alert("The vendor is already added!")
-			}else if(vendor_name.value == ''){
-				alert("You must select Vendor!")
-			}else{
-				const vendors = {
-					vendor_name:vendor_name.value,
-					vname:vendor_name.value,
-				}
-				vendor_list.value.push(vendors)
-				vendor_name.value='';
-
-				// vendor_list.value.forEach(function (val, index, theArray) {
-				// 	if(document.getElementById("v_name"+index).value == vendor_name.value){
-				// 		alert("This vendor is already added!")
-				// 		vendor_list.value.splice(index,1)
-				// 	}
-				// });
-				// vendor_name.value='';
-			}
-	}
-
-	const removeVendor = (index) => {
-		vendor_list.value.splice(index,1)
-	}
-
 	let terms_list=ref([]);
 	let terms_text=ref("");
 	let other_list=ref([]);
@@ -141,78 +202,75 @@
 					</span> -->
 					<hr class="border-dashed mt-0">
 					<div class="pt-1">
-						<div class="row">							
-							<div class="col-lg-6 offset-lg-3 col-md-3">
-								<div class="form-group">
-								<label class="text-gray-500 m-0" for="">Choose PR Number</label>
-								<input type="file" name="img[]" class="file-upload-default">
-								<div class="input-group col-xs-12">
-									<select class="form-control file-upload-info">
-                                        <option value="">PR-CENPRI24-1001</option>
-                                        <option value="">PR-CENPRI24-1002</option>
-                                    </select>
-									<span class="input-group-append">
-										<button class="btn btn-primary" type="button" @click="pr_det =!pr_det">Select</button>
-									</span>
-								</div>
-								</div>
+						<div class="col-lg-6 offset-lg-3 col-md-3">
+							<div class="form-group">
+							<label class="text-gray-500 m-0" for="">Choose PR Number & Supplier</label>
+							<input type="file" name="img[]" class="file-upload-default">
+							<div class="input-group col-xs-12">
+								<select class="form-control file-upload-info" v-model="pr_no" @change="getSupplierRPO()">
+									<option value="">--Select PR Number--</option>
+									<option :value="p.pr_no" v-for="p in prno_dropdown" :key="p.pr_no">{{ p.pr_no }}</option>
+								</select>
+								<select class="form-control file-upload-info" id="rpo_supplier" v-model="vendor_details_id" @change="OpenBtn()" disabled>
+									<option value="">--Select Supplier--</option>
+									<option :value="sup.id" v-for="sup in suppliers" :key="sup.id">{{ sup.vendor_name }} ({{ sup.identifier }})</option>
+								</select>
+								<span class="input-group-append">
+									<button class="btn btn-primary" type="button" id="generatepobtn" @click="generateRPO()" disabled>Select</button>
+								</span>
+							</div>
 							</div>
 						</div>
 						<hr class="border-dashed">
-						<div v-show="pr_det">
-							<div class="row">
+						<div v-if="po_head != ''">
+							<!-- <div class="row">
 								<div class="col-lg-6">
 									<select class="form-control !text-gray-600 !w-96 mb-1">
 										<option value="">Supplier 1</option>
 										<option value="">Supplier 2</option>
 									</select>
 								</div>
-							</div>
+							</div> -->
 							<div class="row">
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Purchase Request: </span>
-									<span class="text-sm text-gray-700">Bacolod</span>
+									<div class="col-lg-8">
+										<span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
+										<span class="text-sm text-gray-700">
+											<!-- <input type="hidden" v-model="dr_no"> -->
+											<input type="hidden" v-model="po_no">
+											{{ po_no }}
+										</span>
+									</div>
+									<div class="col-lg-4">
+										<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
+										<span class="text-sm text-gray-700">{{ moment().format('MMM. DD,YYYY') }}</span>
+									</div>
 								</div>
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Prepared Date: </span>
-									<span class="text-sm text-gray-700">01/16/24</span>
+								<div class="row">
+									<div class="col-lg-8">
+										<span class="text-sm text-gray-700 font-bold pr-1">Supplier: </span>
+										<span class="text-sm text-gray-700">{{ vendor.vendor_name }} ({{ vendor.identifier }})</span>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
-									<span class="text-sm text-gray-700">PR-BCD24-1209</span>
+								<div class="row">
+									<div class="col-lg-8">
+										<span class="text-sm text-gray-700 font-bold pr-1">Address:</span>
+										<span class="text-sm text-gray-700">{{vendor.address}}</span>
+									</div>
+									<div class="col-lg-4">
+										<span class="text-sm text-gray-700 font-bold pr-1">Telephone: </span>
+										<span class="text-sm text-gray-700">{{vendor.phone}}</span>
+									</div>
 								</div>
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">New PR Number: </span>
-									<span class="text-sm text-gray-700">PR-CENPRI24-1002</span>
+								<div class="row">
+									<div class="col-lg-8">
+										<span class="text-sm text-gray-700 font-bold pr-1">Contact Person: </span>
+										<span class="text-sm text-gray-700">{{vendor.contact_person}}</span>
+									</div>
+									<div class="col-lg-4">
+										<span class="text-sm text-gray-700 font-bold pr-1">Telefax: </span>
+										<span class="text-sm text-gray-700">{{vendor.fax}}</span>
+									</div>
 								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
-									<span class="text-sm text-gray-700">IT Department</span>
-								</div>
-								<div class="col-lg-4">
-									<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
-									<span class="text-sm text-gray-700">0912</span>
-								</div>
-								<div class="col-lg-2">
-									<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
-									<span class="text-sm text-gray-700">X</span>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-12">
-									<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
-									<span class="text-sm text-gray-700">IT Department</span>
-								</div>
-								<div class="col-lg-12">
-									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
-									<span class="text-sm text-gray-700">Replace damage monitor, mouse and keyboard</span>
-								</div>
-							</div>
 							<br>
 							<div class="row">
 								<div class="col-lg-12">
@@ -555,13 +613,28 @@
 											<td class="text-center border-b"></td>
 										</tr>
 										<tr>
-											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td class="text-center p-1"><input type="text" class="text-center">{{prepared_by}}</td>
 											<td></td>
-											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td class="text-center p-1">
+											<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by" @click="resetError('button1')">
+												<option value='0'>--Select Reviewed/Checked by--</option>
+												<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+											</select>
+											</td>
 											<td></td>
-											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td class="text-center p-1">
+											<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
+												<option value='0'>--Select Recommended by--</option>
+												<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+											</select>
+											</td>
 											<td></td>
-											<td class="text-center p-1"><input type="text" class="text-center" placeholder="Employee Name"></td>
+											<td class="text-center p-1">
+											<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by" @click="resetError('button3')">
+												<option value='0'>--Select Approved by--</option>
+												<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+											</select>
+											</td>
 										</tr>
 										<tr>
 											<td class="text-center"><br><br></td>
@@ -593,6 +666,9 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div v-else>
+							<center><span><b>No Available Data...</b></span></center>
 						</div>
 					</div>
 				</div>

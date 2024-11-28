@@ -447,8 +447,9 @@ const routes = [
         }
     },
     {
-        path:'/po_repeat',
+        path:'/po_repeat/:id',
         component: pur_poRepeat,
+        props:true,
         meta:{
             requiresAuth:true
         }
