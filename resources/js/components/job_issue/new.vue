@@ -646,13 +646,13 @@
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
-											<input type="date" class="border-b w-full" v-model="date_needed">
+											<input type="date" class="border-b w-full text-sm" v-model="date_needed">
 										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
-											<input type="date" class="border-b w-full" v-model="jor_head.completion_date">
+											<input type="date" class="border-b w-full text-sm" v-model="jor_head.completion_date">
 										</div>	
 									</div>
 								</div>
@@ -660,13 +660,13 @@
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
-											<input type="date" class="border-b w-full" v-model="jor_head.date_prepared">
+											<input type="date" class="border-b w-full text-sm" v-model="jor_head.date_prepared">
 										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
-											<input type="text" class="border-b w-full" v-model="jor_head.site_jor" readonly>
+											<input type="text" class="border-b w-full text-sm" v-model="jor_head.site_jor" readonly>
 										</div>
 									</div>
 								</div>
@@ -674,13 +674,13 @@
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
-											<input type="date" class="border-b w-full" v-model="start_of_work"
+											<input type="date" class="border-b w-full text-sm" v-model="start_of_work">
 										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
-											<input type="text" class="border-b w-full" v-model="joi_no" readonly>
+											<input type="text" class="border-b w-full text-sm" v-model="joi_no" readonly>
 										</div>
 									</div>
 								</div>
@@ -704,7 +704,7 @@
 														<td class="uppercase p-1 text-center" width="10%">Total</td>
 													</tr>
 													<tr>
-														<td colspan="6"><span class="font-bold">{{ jor_head.general_description}} </span></td>
+														<td colspan="7" class="px-1 !text-sm"><span class="font-bold">{{ jor_head.general_description}} </span></td>
 													</tr>
 													<tr class="" v-for="(jld,index) in joi_labor_details" v-if="props.id == 0">
 														<span hidden>{{ totalprice=formatNumber(jld.unit_price * remaining_labor_balance[index]) }}</span>

@@ -1,4 +1,5 @@
 <script setup>
+	import printheader from '@/layouts/print_header.vue';
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon} from '@heroicons/vue/24/solid'
 	import axios from 'axios';
@@ -398,72 +399,72 @@
 						<div>
 							<div class="rfq_buttons">
 								<div class="w-full flex justify-between space-x-1">
-									<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.jo_rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier}})</button>
+									<button
+										v-for="rv in RFQVendors"
+										:key="rv.jo_rfq_vendor_id"
+										class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold"
+										:class="{
+											'!text-orange-400 !border-orange-300 !bg-orange-200 border-0': vendor !== rv.jo_rfq_vendor_id,
+											'!text-white !bg-orange-500 !border-orange-500 border-0': vendor === rv.jo_rfq_vendor_id
+										}"
+										@click="vendor = rv.jo_rfq_vendor_id"
+									>
+										{{ rv.vendor_name }} ({{ rv.vendor_identifier }})
+									</button>
 									<button @click="openModel()" class="btn btn-primary p-1">
 										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 									</button>
 								</div>
 							</div>
 							<div class="page-bg">
+								
 								<div v-for="rvi in RFQVendors">
 									<!-- <div class="page"> -->
 									<div class="bg-white !mx-auto w-[21cm] print:!w-full" v-if="(vendor == rvi.jo_rfq_vendor_id)">
 										<div class="subpage">
-											<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
+											<div class="hidden print:block">
+												<printheader ></printheader>
+												<div class="flex justify-center mt-1">
+													<span class="uppercase">Request for Quotation</span>
+												</div>
+												<hr class="print:block border-dashed mt-2">
+											</div>
 											<table class="table-bosrdered w-full text-xs mb-0">
 												<tr>
-													<td class="" width="8%">Date: </td>
+													<td class="font-bold" width="8%">Date: </td>
 													<td class="">{{ RFQHead.rfq_date }}</td>
-													<td class="" width="10%">RFQ No.:</td>
+													<td class="font-bold" width="10%">RFQ No.:</td>
 													<td class="" >{{ RFQHead.rfq_no }}</td>
 												</tr>
 												<tr>
-													<td class="">JOR No:</td>
+													<td class="font-bold">JOR No:</td>
 													<td class="" width="55%">{{ RFQHead.jor_no }}</td>
-													<td class="" >RFQ Name:</td>
+													<td class="font-bold" >RFQ Name:</td>
 													<td class="" >{{ RFQHead.rfq_name }}</td>
 												</tr>
 											</table>
 											<!-- <hr class="border-dashed my-2"> -->
 											<table class="table-bsordered w-full text-xs mb-2">
 												<tr>
-													<td class="" width="8%">Supplier: </td>
+													<td class="font-bold" width="8%">Supplier: </td>
 													<td class="" width="55%">{{ rvi.vendor_name }}</td>
-													<td class="" width="10%">Contact No.:</td>
+													<td class="font-bold" width="10%">Contact No.:</td>
 													<td class="" >{{ rvi.phone_no }}</td>
 												</tr>
-												<!-- <tr>
-													<td class="" width="10%">Contact No.:</td>
-													<td class="" width="40%">(034) 433-8370</td>
-													<td></td>
-													<td class="" width="15%">Duration: </td>
-													<td class="border-b" width="">asd</td>
-												</tr> -->
-												<!-- <tr>
-													<td class="">Warranty: </td>
-													<td class="border-b"></td>
-													<td></td>
-													<td class="">Payment Terms:</td>
-													<td class="border-b" ></td>
-												</tr> -->
-												<!-- <tr>
-													<td class="">Notes: </td>
-													<td class="border-b" colspan="10"></td>
-												</tr> -->
 											</table>
 											<div class="border-y-2 py-1 mb-2">
-												<p class="text-sm font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
+												<p class="text-sm print:!text-base font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
 												<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 											</div>
 											<table class="table-bordered w-full text-xs mb-2">
 												<tr class="bg-gray-100">
-													<td class="p-1 text-center" width="5%">#</td>
+													<td class="p-1 text-center" width="3%">#</td>
 													<td class="p-1" width="50%">Scope of Work</td>
 													<td class="p-1" width="35%">Offer</td>
 													<td class="p-1 text-center" width="15%">Unit Price</td>
 												</tr>
 												<tr>
-													<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
+													<td class="p-1 align-top font-bold" colspan="4">{{ RFQHead.general_description }}</td>
 												</tr>
 												<span hidden>{{ labor_no=1 }}</span>
 												<tbody v-for="rld in RFQLaborDetails" class="p-0">
@@ -494,19 +495,15 @@
 																<div class="border-b p-1 w-full h-10 !align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
 															</template>
 														</td>
-														<!-- <template v-for="rlo in RFQLaborOffers">
-															<td class="align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ rlo.offer }}</td>
-															<td class="align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</td>
-														</template> -->
 													</template>
 												</tr>
 												</tbody>
 											</table>
 											<table class="table-bordered w-full text-xs mb-2">
 												<tr class="bg-gray-100">
-													<td class="p-1 text-center" width="5%">#</td>
-													<td class="p-1 text-center" width="10%">Qty</td>
-													<td class="p-1" width="35%">Item Description</td>
+													<td class="p-1 text-center" width="3%">#</td>
+													<td class="p-1 text-center" width="5%">Qty</td>
+													<td class="p-1" width="45%">Item Description</td>
 													<td class="p-1" width="35%">Brand/Offer</td>
 													<td class="p-1 text-center" width="15%">Unit Price</td>
 												</tr>

@@ -440,7 +440,18 @@
 							<div>
 								<div class="rfq_buttons">
 									<div class="w-full flex justify-between space-x-1 ">
-										<button class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold !text-orange-900 !border-orange-300 !bg-orange-300" v-for="rv in RFQVendors" v-on:click="vendor = rv.rfq_vendor_id">{{ rv.vendor_name }} ({{ rv.vendor_identifier }})</button>
+										<button
+											v-for="rv in RFQVendors"
+											:key="rv.rfq_vendor_id"
+											class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold"
+											:class="{
+												'!text-orange-400 !border-orange-300 !bg-orange-200 border-0': vendor !== rv.rfq_vendor_id,
+												'!text-white !bg-orange-500 !border-orange-500 border-0': vendor === rv.rfq_vendor_id
+											}"
+											@click="vendor = rv.rfq_vendor_id"
+										>
+											{{ rv.vendor_name }} ({{ rv.vendor_identifier }})
+										</button>
 										<button @click="openModel()" class="btn btn-primary p-1">
 											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
 										</button>

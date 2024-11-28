@@ -934,7 +934,7 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12 col-md-6">
-									<div class="form-group mb-0">
+									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Project/Activity</label>
 										<textarea class="form-control !font-bold"  v-model="jorhead.project_activity"></textarea>
 									</div>
@@ -942,7 +942,7 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12 col-md-6">
-									<div class="form-group mb-0">
+									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">General Description</label>
 										<textarea class="form-control !font-bold"  v-model="jorhead.general_description"></textarea>
 									</div>
@@ -1235,7 +1235,7 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12 col-md-6">
-									<div class="form-group mb-0">
+									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Project/Activity</label>
 										<textarea class="form-control !font-bold"  v-model="form.project_activity"></textarea>
 									</div>
@@ -1243,7 +1243,7 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12 col-md-6">
-									<div class="form-group mb-0">
+									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">General Description</label>
 										<textarea class="form-control !font-bold"  v-model="form.general_description"></textarea>
 									</div>
