@@ -100,13 +100,13 @@ class PODirectController extends Controller
             $dr_no = $year."-".Str::padLeft($dr_series, 4,'000').'-'.$company;
         }
 
-        $vendor_details_id_exp=explode('+',$vendor_details_id);
-        $vendordetailsid=$vendor_details_id_exp[0];
+        // $vendor_details_id_exp=explode('+',$vendor_details_id);
+        // $vendordetailsid=$vendor_details_id_exp[0];
 
         // $po_head= AOQHead::where('id',$aoq_head_id)->where('pr_no',$pr_no)->first();
-        $vendor_terms=VendorTerms::where('vendor_details_id',$vendordetailsid)->get();
+        $vendor_terms=VendorTerms::where('vendor_details_id',$vendor_details_id)->get();
         $pr_head= PRHead::where('pr_no',$pr_no)->first();
-        $vendor_list= VendorDetails::with('vendor_head')->where('id',$vendordetailsid)->get();
+        $vendor_list= VendorDetails::with('vendor_head')->where('id',$vendor_details_id)->get();
         foreach($vendor_list AS $vl){
             $vendor = [
                 'vendor_name' =>$vl->vendor_head->vendor_name,
