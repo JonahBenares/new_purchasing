@@ -60,6 +60,8 @@ import pur_poPrint from '../components/pur_po/print.vue'
 import pur_poDirect from '../components/pur_direct/index.vue'
 import pur_poRepeat from '../components/pur_repeat/index.vue'
 import pur_poRepeatView from '../components/pur_repeat/view.vue'
+import pur_poRepeatEdit from '../components/pur_repeat/edit.vue'
+import pur_poRepeatViewRevised from '../components/pur_repeat/view_revised.vue'
 import pur_poDirectView from '../components/pur_direct/view.vue'
 
 import pur_drIndex from '../components/pur_dr/index.vue'
@@ -447,15 +449,33 @@ const routes = [
         }
     },
     {
-        path:'/po_repeat',
+        path:'/po_repeat/:id',
         component: pur_poRepeat,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/po_repeat/view',
+        path:'/po_repeat/view/:id',
         component: pur_poRepeatView,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/po_repeat/view_revised/:id',
+        component: pur_poRepeatViewRevised,
+        props:true,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/po_repeat/edit/:id',
+        component: pur_poRepeatEdit,
+        props:true,
         meta:{
             requiresAuth:true
         }

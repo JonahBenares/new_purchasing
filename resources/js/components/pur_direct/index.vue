@@ -187,7 +187,7 @@
 
 	const selectVat = (vat_percent) => {
 		formatter.value = new Intl.NumberFormat('en-US', {
-			minimumFractionDigits: 4,      
+			minimumFractionDigits: 4,
 		})
 		if(vat.value==1){
 			var total=0;
@@ -414,7 +414,7 @@
 				dangerAlert_terms.value = !hideAlert.value
 				success.value='Successfully deleted term!'
 				successAlertCD.value = !successAlertCD.value
-				poDraft()
+				dpoDraft()
 				terms_list.value=[]
 				setTimeout(() => {
 					closeAlert()
@@ -456,7 +456,7 @@
 				dangerAlert_instructions.value = !hideAlert.value
 				success.value='Successfully deleted instruction!'
 				successAlertCD.value = !successAlertCD.value
-				poDraft()
+				dpoDraft()
 				other_list.value=[]
 				setTimeout(() => {
 					closeAlert()
