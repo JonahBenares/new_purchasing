@@ -27,4 +27,8 @@ class PoDetails extends Model
         'cancelled_by',
         'cancelled_reason'
     ];
+
+    public function po_head(){
+        return $this->belongsTo(POHead::class, 'po_head_id');
+    }
 }

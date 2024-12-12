@@ -204,6 +204,13 @@ Route::get('/delete_dpo_instructions/{id}',[PODirectController::class,'delete_dp
 Route::get('/get_repeat_pr', [RepeatOrderPOController::class,'get_repeat_pr']);
 Route::get('/repeat_supplier_dropdown', [RepeatOrderPOController::class,'repeat_supplier_dropdown']);
 Route::get('/generate_rpo/{pr_no}/{vendor_details_id}', [RepeatOrderPOController::class,'generate_rpo']);
+Route::get('/get_po_items/{item_desc}/{vendor_details_id}', [RepeatOrderPOController::class,'get_po_items']);
+Route::post('/save_repeat_po', [RepeatOrderPOController::class,'save_repeat_po']);
+Route::get('/rpo_viewdetails/{po_head_id}', [RepeatOrderPOController::class,'rpo_viewdetails']);
+Route::get('/delete_rpo_terms/{id}',[RepeatOrderPOController::class,'delete_rpo_terms']);
+Route::get('/delete_rpo_instructions/{id}',[RepeatOrderPOController::class,'delete_rpo_instructions']);
+Route::post('/save_approved_repeat_revision', [RepeatOrderPOController::class,'save_approved_repeat_revision']);
+Route::post('/save_change_rpo', [RepeatOrderPOController::class,'save_change_rpo']);
 
 Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);
 Route::get('/jor_list', [JORFQController::class,'all_jor']);

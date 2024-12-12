@@ -179,16 +179,25 @@
                                     </div>
                                 </template>
                                 <template #column-6="props">
-                                    <a :href="'/pur_po/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="props.rowData.status=='Saved'|| props.rowData.status=='Cancelled'">
+                                    <a :href="'/pur_po/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="(props.rowData.status=='Saved'|| props.rowData.status=='Cancelled') && (props.rowData.method=='PO' || props.rowData.method=='DPO')">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
-                                    <a :href="'/pur_po/edit/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Revised'">
+                                    <a :href="'/po_repeat/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-if="(props.rowData.status=='Saved'|| props.rowData.status=='Cancelled') && props.rowData.method=='RPO'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/pur_po/edit/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Revised' && (props.rowData.method=='PO' || props.rowData.method=='DPO')">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/po_repeat/edit/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Revised' && props.rowData.method=='RPO'">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                     <a :href="'/pur_po/new/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Draft' && props.rowData.method=='PO'">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                     <a :href="'/po_direct/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Draft' && props.rowData.method=='DPO'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/po_repeat/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Draft' && props.rowData.method=='RPO'">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>

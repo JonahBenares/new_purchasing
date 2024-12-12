@@ -17,15 +17,12 @@
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
-    const po_head_rev = ref([])
 	const po_head = ref([])
 	const pr_head = ref([])
 	const po_vendor = ref([])
 	const po_details = ref([])
-	const po_details_view = ref([])
 	const po_terms = ref([])
 	const po_instructions = ref([])
-	const po_dr = ref([])
     const prepared_by =  ref('');
     const checked_by =  ref('');
     const recommended_by =  ref('');
@@ -34,9 +31,12 @@
     let po_details_id_view=ref("")
     let cancel_reason=ref("")
     let cancel_all_reason=ref("")
-    const formatter = new Intl.NumberFormat('en-US', {
-		minimumFractionDigits: 4,   
-	})
+
+    const po_head_rev = ref([])
+	const po_details_rev = ref([])
+	const po_terms_rev = ref([])
+	const po_instructions_rev = ref([])
+    
     const props = defineProps({
 		id:{
 			type:String,
@@ -46,16 +46,17 @@
     onMounted(async () => {
 		poView()
 	})
+    const formatNumber = (number) => {
+        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
     const poView = async () => {
-		let response = await axios.get("/api/rpo_viewdetails/"+props.id);
-		po_head.value = response.data.po_head;
-		po_dr.value = response.data.po_dr_array;
+		let response = await axios.get("/api/view_revision_data/"+props.id);
+		po_head.value = response.data.po_head_rev;
 		pr_head.value = response.data.pr_head;
 		po_vendor.value = response.data.po_vendor;
-		po_details.value = response.data.po_details;
-		po_details_view.value = response.data.po_details_view;
-		po_terms.value = response.data.po_terms;
-		po_instructions.value = response.data.po_instructions;
+		po_details.value = response.data.po_details_rev;
+		po_terms.value = response.data.po_terms_rev;
+		po_instructions.value = response.data.po_instructions_rev;
 		prepared_by.value = response.data.prepared_by;
 		checked_by.value = response.data.checked_by;
 		recommended_by.value = response.data.recommended_by;
@@ -85,10 +86,8 @@
     const openDrawerRFD = () => {
 		drawer_rfd.value = !drawer_rfd.value
 	}
-    const openDrawerRevise = async (id) => {
+    const openDrawerRevise = () => {
 		drawer_revise.value = !drawer_revise.value
-        let response = await axios.get("/api/old_revision_data/"+id);
-		po_head_rev.value = response.data.po_head_rev;
 	}
 	const closeModal = () => {
 		drawer_dr.value = !hideModal.value
@@ -161,40 +160,22 @@
 			dangerAlert.value = !dangerAlert.value
 		}
 	}
-
-    const wordExists = () => {
-      return po_details.value.includes('Cancelled'); // Check if the word exists in the array
-    }
 </script>
-<style>
-    @media print {
-        .print-only {
-            display: block !important; /* Show only during print */
-        }
-        .no-print {
-            display: none !important; /* Hide during print */
-        }
-        .in-print-only {
-            display: block !important; /* Show only during print */
-        }
-    }
-    
-</style>
 <template>
 	<navigation>
 		<div class="row" id="breadcrumbs">
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'PO'">Purchase Order <small>View</small></h3>
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'DPO'">Direct PO <small>View</small></h3>
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'RPO'">Repeat Order <small>View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Order <small>Revised View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'DPO'">Direct PO <small>Revised View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'RPO'">Repeat Order <small>Revised View</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li class="breadcrumb-item"><a href="/pur_po">Purchase Order</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">View</li>
+                            <li class="breadcrumb-item active" aria-current="page">Revised View</li>
                         </ol>
                     </nav>
                 </div>
@@ -213,7 +194,7 @@
 								<printheader ></printheader>
 								<div class="flex justify-center mt-1">
 									<span class="uppercase">Purchase Order</span>
-									<!-- <span class="uppercase" v-if="po_head.method == 'DPO'">Direct</span>
+                                    <!-- <span class="uppercase" v-if="po_head.method == 'DPO'">Direct</span>
 									<span class="uppercase" v-if="po_head.method == 'RPO'">Repeat Order</span> -->
 								</div>
 								<hr class="print:block border-dashed mt-2">
@@ -225,7 +206,7 @@
                                 <div class="row">
                                     <div class="col-lg-8 col-md-8 col-sm-8">
                                         <span class="text-sm text-gray-700 font-bold pr-1">PO No: </span>
-                                        <span class="text-sm text-gray-700">{{po_head.po_no}}{{ (po_head.revision_no!=0 && po_head.revision_no!=null) ? '.r'+po_head.revision_no : '' }}</span>
+                                        <span class="text-sm text-gray-700">{{po_head.po_no}}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} </span>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
@@ -273,38 +254,17 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Unit Price</td>
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
-                                                    <span hidden>{{ cancelled_qty=0 }}</span>
-                                                    <tr class="" v-for="(pd,indeex) in po_details" v-if="po_head.status!='Cancelled'">
-                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
-                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1'" colspan="2">
+                                                    <tr class="" v-for="(pd,indeex) in po_details">
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
+                                                        <td :class=" (po_head.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
                                                             <div class="flex justify-between space-x-1">
                                                                 <span class="w-full">{{pd.item_description}}</span>
-                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details_view.length>1 && pd.status!='Cancelled'">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
                                                             </div>
                                                         </td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatter.format(pd.unit_price) }} {{pd.currency}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatter.format(pd.totalprice) }}</td>
-                                                    </tr>
-                                                    <tr class="" v-for="(pd,indeex) in po_details" v-else>
-                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
-                                                        <td :class=" (pd.status=='Cancelled') ? 'border-y-none p-1 bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1'" colspan="2">
-                                                            <div class="flex justify-between space-x-1">
-                                                                <span class="w-full">{{pd.item_description}}</span>
-                                                                <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details_view.length>1 && pd.status!='Cancelled'">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatter.format(pd.unit_price) }} {{pd.currency}}</td>
-                                                        <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatter.format(pd.totalprice) }}</td>
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.unit_price) }} {{pd.currency}}</td>
+                                                        <td :class="(po_head.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-right'">{{ formatNumber(pd.total_cost) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class=""></td>
@@ -323,15 +283,15 @@
                                                             <p class="m-0 mb-1 text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
                                                         </td>
                                                         <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-                                                        <td class="p-1 text-right ">{{ formatter.format(po_head.shipping_cost ?? 0) }}</td>
+                                                        <td class="p-1 text-right ">{{ formatNumber(po_head.shipping_cost ?? 0) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-                                                        <td class="p-1 text-right ">{{ formatter.format(po_head.handling_fee ?? 0) }}</td>
+                                                        <td class="p-1 text-right ">{{ formatNumber(po_head.handling_fee ?? 0) }}</td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">{{formatter.format(po_head.discount ?? 0 ) }}</td>
+                                                        <td class="p-1 text-right ">{{formatNumber(po_head.discount ?? 0 ) }}</td>
                                                     </tr>
                                                     <tr class="" v-if="po_head.vat==1">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
@@ -339,7 +299,7 @@
                                                             <div class="flex">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatter.format(po_head.vat_amount ?? 0)">
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatNumber(po_head.vat_amount ?? 0)">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -353,24 +313,13 @@
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-
-                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">{{ formatter.format(po_head.grand_total - cancelled_qty ?? 0) }}</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm">{{ formatNumber(po_head.grand_total ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-2">
-                                        <div class="col-lg-12">
-                                            <div class="flex space-x-1" >
-                                                <template v-for="(por, r) in po_details" :key="index">
-                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
-                                                </template>
-                                            </div> 
-                                        </div>
-                                    </div>
+                                    
                                     <div class="row mt-2">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <table class="table-bordsered text-xs w-full">
@@ -469,35 +418,36 @@
                                     <hr	class="border-dashed">
                                     <div class="po_buttons text-xs" v-if="po_head.status!='Cancelled'">
                                         <span class="w-full block">Internal Comment:</span>
-                                        <textarea class="bg-yellow-50" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea>
+                                        {{ (po_head.internal_comment!='null') ? po_head.internal_comment : '' }}
+                                        <!-- <textarea class="bg-yellow-50" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea> -->
                                         <hr	class="border-dashed">
                                     </div>
                                     <div class="row my-2 po_buttons"> 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-between space-x-2">
                                                 <div class="flex justify-between space-x-1">
-                                                    <button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
+                                                    <!-- <button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="po_head.status!='Cancelled'">Cancel PO</button>
                                                     <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
-                                                        <a :href="'/po_repeat/edit/'+props.id" type="button" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
-                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise(props.id)">
+                                                        <a :href="'/pur_po/edit/'+props.id" type="button" class="btn btn-info w-26 !rounded-r-none">Revise PO</a>
+                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                     
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
+                                                    <!-- <div class="flex justify-between">
                                                         <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
-                                                    <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
-                                                        <a :href="'/pur_dr/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
+                                                    <div class="flex justify-between">
+                                                        <a href="/pur_dr/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                     <button type="button" class="btn btn-primary w-36"  @click="printDiv()">Print PO</button>
                                                 </div>
                                                 
@@ -556,7 +506,7 @@
                 <div class="modal__content w-3/12 float-right min-h-[690px]">
                     <div class="row mb-3">
                         <div class="col-lg-12 flex justify-between">
-                            <span class="font-bold ">Revise List</span>
+                            <span class="font-bold ">DR List</span>
                             <a href="#" class="text-gray-600" @click="closeModal">
                                 <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
                             </a>
@@ -564,12 +514,18 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="" v-for="phv in po_head_rev">
-                            <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662 (Main)</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r1</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r2</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r3</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r4</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r5</a>
+                            <a href="#"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">PO-88270-7662.r6 (Current)</a>
                         </div>
-                        <div>
-                            <a :href="'/pur_po/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_head.po_no }}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} (Current)</a>
-                        </div>
+                        <!-- <div>
+                            <p class="text-center text-sm">No Data</p>
+                        </div> -->
                     </div> 
                 </div>
             </div>
@@ -595,8 +551,14 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="" v-for="pdr in po_dr">
-                            <a :href="'/pur_dr/view/'+pdr.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ pdr.dr_no }}</a>
+                        <div class="">
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
+                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">DR-88270-7662</a>
                         </div>
                         <!-- <div>
                             <p class="text-center text-sm">No Data</p>
