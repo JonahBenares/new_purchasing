@@ -18,6 +18,10 @@ class JORFQLaborDetails extends Model
         'remaining_qty',
     ];
 
+    public function jor_head(){
+        return $this->belongsTo(JORHead::class, 'jor_head_id');
+    }
+
     public function jo_rfq_vendor(){
         return $this->belongsTo(JORFQVendor::class, 'rfq_vendor_id');
     }

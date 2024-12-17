@@ -14,6 +14,7 @@ use App\Http\Controllers\JORController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POController;
 use App\Http\Controllers\JOIController;
+use App\Http\Controllers\JOIDirectController;
 use App\Http\Controllers\JORFQController;
 use App\Http\Controllers\JOAOQController;
 use App\Http\Controllers\PODirectController;
@@ -282,3 +283,8 @@ Route::get('/check_remaining_dr_material_balance/{joi_labor_details_id}', [JOICo
 Route::post('/save_jo_dr', [JOIController::class,'save_jo_dr']);
 Route::get('/get_jo_alldr', [JOIController::class,'get_jo_alldr']);
 Route::get('/get_jo_dr_view/{joi_dr_id}', [JOIController::class,'get_jo_dr_view']);
+
+Route::get('/get_direct_jorno', [JOIDirectController::class,'get_direct_jorno']);
+Route::get('/generate_direct_joi/{jor_no}/{vendor_details_id}', [JOIDirectController::class,'generate_direct_joi']);
+Route::get('/djo_supplier_dropdown', [JOIDirectController::class,'djo_supplier_dropdown']);
+Route::post('/save_direct_joi', [JOIDirectController::class,'save_direct_joi']);

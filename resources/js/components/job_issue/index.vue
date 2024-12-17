@@ -185,7 +185,10 @@
                                     <a :href="'/job_issue/edit/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Revised'">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
-                                    <a :href="'/job_issue/new/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else>
+                                    <a :href="'/job_issue/new/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Draft' && props.rowData.method=='JO'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/job_direct/'+props.rowData.id" class="btn btn-xs btn-warning text-white text-white p-1" v-else-if="props.rowData.status=='Draft' && props.rowData.method=='DJO'">
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>

@@ -681,8 +681,9 @@ const routes = [
         }
     },
     {
-        path:'/job_direct',
+        path:'/job_direct/:id',
         component: job_issueDirect,
+        props:true,
         meta:{
             requiresAuth:true
         }
