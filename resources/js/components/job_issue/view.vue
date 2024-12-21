@@ -28,6 +28,7 @@
     const joi_material_details_view = ref([])
     const joi_terms = ref([])
     const joi_instructions = ref([])
+    const rfd_head = ref([])
     const prepared_by = ref('')
     const checked_by = ref(0)
     const recommended_by = ref(0)
@@ -81,8 +82,10 @@
 	const openDrawerDR = () => {
 		drawer_dr.value = !drawer_dr.value
 	}
-    const openDrawerRFD = () => {
+    const openDrawerRFD = async (id) => {
 		drawer_rfd.value = !drawer_rfd.value
+        let response = await axios.get("/api/rfd_jo_data/"+id);
+		rfd_head.value = response.data.rfd_head;
 	}
     const openDrawerRevise = async (id) => {
 		drawer_revise.value = !drawer_revise.value
@@ -639,9 +642,9 @@
                                                     <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
                                                     <a href="/job_issue/print_coc" class="btn btn-warning text-white">Print COC</a>
                                                     <div class="flex justify-between">
-                                                        <!-- <a href="/job_disburse/new" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a> -->
-                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a>
-                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
+                                                        <a :href="'/job_disburse/new/'+props.id" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a>
+                                                        <!-- <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a> -->
+                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD(props.id)">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>
@@ -744,14 +747,9 @@
                     </div>
                     <hr class="m-0">
                     <div class="modal_s_items ">
-                        <div class="">
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
-                            <a href="" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">RFD-88270-7662</a>
+                        <div class="" v-for="rh in rfd_head">
+                            <a :href="'/job_disburse/new/'+joi_head.id" v-if="rh.status=='Draft'" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{rh.rfd_no}}</a>
+                            <a :href="'/job_disburse/view/'+rh.id" v-else class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{rh.rfd_no}}</a>
                         </div>
                     </div> 
                 </div>

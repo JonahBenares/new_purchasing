@@ -33,6 +33,9 @@ use App\Models\JOIRevisionInstructions;
 use App\Models\JOIRevisionTerms;    
 use App\Models\JORFQLaborOffers;
 use App\Models\JORFQMaterialOffers;
+use App\Models\JOIRfd;
+use App\Models\JOIRfdPayment;
+use App\Models\JOIRfdSeries;
 use App\Models\VendorDetails;
 use App\Models\JOAOQHead;
 use App\Models\JORFQTerms;
@@ -1465,6 +1468,290 @@ class JOIController extends Controller
             'general_description'=>$general_description,
             'prepared_by'=>$prepared_by,
             'joi_vendor'=>$joi_vendor,
+        ],200);
+    }
+
+    public function get_rfd_joi_dropdown(){
+        $rfd_joi_dropdown = JOIHead::select('id','joi_no','revision_no')->distinct()->where('status','Saved')->get();
+        return response()->json([
+            'rfd_joi_dropdown'=>$rfd_joi_dropdown,
+        ],200);
+    }
+
+    public function generate_rfd_joi($joi_head_id){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $rfd_series_rows = JOIRfdSeries::where('year',$year)->count();
+        if($rfd_series_rows==0){
+            $max_rfd_series='1';
+            $rfd_series='0001';
+            $rfd_no = 'JRFD'.$year."-".$rfd_series.'-'.$company;
+        } else {
+            $max_rfd_series=JOIRfdSeries::where('year',$year)->max('series');
+            $rfd_series=$max_rfd_series+1;
+            $rfd_no = 'JRFD'.$year."-".Str::padLeft($rfd_series, 4,'000').'-'.$company;
+        }
+        $joi_head= JOIHead::where('id',$joi_head_id)->where('status','Saved')->first();
+        $vendor= VendorDetails::where('id',$joi_head->vendor_details_id)->where('status','Active')->first();
+        $jor_head= JORHead::where('jor_no',$joi_head->jor_no)->first();
+        $joi_labor = JOILaborDetails::where('joi_head_id',$joi_head_id)->where('status','Saved')->get();
+        $joi_material = JOIMaterialDetails::where('joi_head_id',$joi_head_id)->where('status','Saved')->get();
+        $rfd_head = JOIRfd::where('joi_head_id',$joi_head_id)->where('status','Saved')->first();
+        $rfd_payments = JOIRfdPayment::with('joi_rfd')->whereHas('joi_rfd', function ($joirfd) {
+            $joirfd->where('status','Saved')->Orwhere('status','Draft');
+        })->where('joi_id',$joi_head_id)->get();
+        $total_labor=[];
+        foreach($joi_labor AS $jl){
+            $total_labor[]=$jl->unit_price * $jl->quantity;
+        }
+        $total_material=[];
+        foreach($joi_material AS $jm){
+            $total_material[]=$jm->unit_price * $jm->quantity;
+        }
+        $total_sum_labor=array_sum($total_labor);
+        $total_sum_material=array_sum($total_material);
+
+        $total_payments=0;
+        foreach($rfd_payments AS $rp){
+            $total_payments+=$rp->payment_amount;
+        }
+        return response()->json([
+            'joi_head'=>$joi_head,
+            'jor_head'=>$jor_head,
+            'joi_labor'=>$joi_labor,
+            'joi_material'=>$joi_material,
+            'vendor'=>$vendor,
+            'rfd_head'=>$rfd_head,
+            'rfd_no'=>$rfd_no,
+            'rfd_payments'=>$rfd_payments,
+            'total_sum_labor'=>$total_sum_labor,
+            'total_sum_material'=>$total_sum_material,
+            'total_payments'=>$total_payments,
+            'prepared_by'=>Auth::user()?->name
+        ],200);
+    }
+
+    public function joi_rfd_viewdetails($joi_head_id){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $rfd_series_rows = JOIRfdSeries::where('year',$year)->count();
+        if($rfd_series_rows==0){
+            $max_rfd_series='1';
+            $rfd_series='0001';
+            $rfd_no = 'JRFD'.$year."-".$rfd_series.'-'.$company;
+        } else {
+            $max_rfd_series=JOIRfdSeries::where('year',$year)->max('series');
+            $rfd_series=$max_rfd_series+1;
+            $rfd_no = 'JRFD'.$year."-".Str::padLeft($rfd_series, 4,'000').'-'.$company;
+        }
+        $joi_head= JOIHead::where('id',$joi_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->first();
+        $vendor= VendorDetails::where('id',$joi_head->vendor_details_id)->where('status','Active')->first();
+        $jor_head= JORHead::where('jor_no',$joi_head->jor_no)->first();
+        $joi_labor = JOILaborDetails::where('joi_head_id',$joi_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
+        $joi_material = JOIMaterialDetails::where('joi_head_id',$joi_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
+        $rfd_head = JOIRfd::where('joi_head_id',$joi_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft');
+        })->orderByDesc('id')->first();
+        $rfd_payments = JOIRfdPayment::with('joi_rfd')->whereHas('joi_rfd', function ($porfd) {
+            $porfd->where('status','Saved')->Orwhere('status','Draft');
+        })->where('joi_id',$joi_head_id)->get();
+        $total_labor=[];
+        foreach($joi_labor AS $jl){
+            $total_labor[]=$jl->unit_price * $jl->quantity;
+        }
+        $total_material=[];
+        foreach($joi_material AS $jm){
+            $total_material[]=$jm->unit_price * $jm->quantity;
+        }
+        $total_sum_labor=array_sum($total_labor);
+        $total_sum_material=array_sum($total_material);
+
+        $total_payments=0;
+        foreach($rfd_payments AS $rp){
+            $total_payments+=$rp->payment_amount;
+        }
+        return response()->json([
+            'joi_head'=>$joi_head,
+            'jor_head'=>$jor_head,
+            'joi_labor'=>$joi_labor,
+            'joi_material'=>$joi_material,
+            'rfd_head'=>$rfd_head,
+            'rfd_no'=>$rfd_no,
+            'rfd_payments'=>$rfd_payments,
+            'vendor'=>$vendor,
+            'total_sum_labor'=>$total_sum_labor,
+            'total_sum_material'=>$total_sum_material,
+            'total_payments'=>$total_payments,
+            'prepared_by'=>Auth::user()?->name
+        ],200);
+    }
+
+    public function save_joi_rfd(Request $request){
+        $payment_list=$request->input("payment_list");
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $series_rows = JOIRfdSeries::where('year',$year)->count();
+        $exp=explode('-',$request->rfd_no);
+        if($series_rows==0){
+            $max_series='1';
+            $rfd_series='0001';
+            $rfd_no = 'JRFD'.$year."-".$rfd_series.'-'.$company;
+        } else {
+            $max_series=JOIRfdSeries::where('year',$year)->max('series');
+            $rfd_series=$max_series+1;
+            $rfd_no = 'JRFD'.$year."-".Str::padLeft($exp[1], 4,'000').'-'.$company;
+        }
+        if(!JOIRfdSeries::where('year',$year)->where('series',$exp[1])->exists()){
+            $series['year']=$year;
+            $series['series']=$rfd_series;
+            $rfd_series_ins=JOIRfdSeries::create($series);
+        }
+        $checked_by_name= User::where('id',$request->checked_by)->value('name');
+        $noted_by_name= User::where('id',$request->noted_by)->value('name');
+        $endorsed_by_name= User::where('id',$request->endorsed_by)->value('name');
+        $approved_by_name= User::where('id',$request->approved_by)->value('name');
+        $received_by_name= User::where('id',$request->received_by)->value('name');
+        $data_rfd_head['joi_head_id']=$request->joi_head_id;
+        $data_rfd_head['joi_no']=$request->joi_no;
+        $data_rfd_head['jor_no']=$request->jor_no;
+        $data_rfd_head['rfd_date']=$request->rfd_date ?? '';
+        $data_rfd_head['rfd_no']=$rfd_no;
+        $data_rfd_head['due_date']=$request->due_date ?? '';
+        $data_rfd_head['check_due']=$request->check_due ?? '';
+        $data_rfd_head['check_name']=$request->check_name ?? '';
+        $data_rfd_head['company']=$request->company ?? '';
+        $data_rfd_head['bank_no']=$request->bank_no ?? '';
+        $data_rfd_head['pay_to']=$request->pay_to ?? '';
+        $data_rfd_head['mode']=$request->mode;
+        $data_rfd_head['notes']=$request->notes;
+        $data_rfd_head['grand_total']=$request->grand_total;
+        $data_rfd_head['sub_total']=$request->subtotal;
+        $data_rfd_head['balance']=$request->balance;
+        $data_rfd_head['checked_by']=$request->checked_by;
+        $data_rfd_head['checked_by_name']=$checked_by_name;
+        $data_rfd_head['noted_by']=$request->noted_by;
+        $data_rfd_head['noted_by_name']=$noted_by_name;
+        $data_rfd_head['endorsed_by']=$request->endorsed_by;
+        $data_rfd_head['endorsed_by_name']=$endorsed_by_name;
+        $data_rfd_head['approved_by']=$request->approved_by;
+        $data_rfd_head['approved_by_name']=$approved_by_name;
+        $data_rfd_head['received_by']=$request->received_by;
+        $data_rfd_head['received_by_name']=$received_by_name;
+        $data_rfd_head['status']=$request->status;
+        $data_rfd_head['user_id']=Auth::id();
+        if($request->rfd_id==0){
+            $insertrfdhead=JOIRfd::create($data_rfd_head);
+        }else{
+            $insertrfdhead=JOIRfd::where('id',$request->rfd_id)->first();
+            $insertrfdhead->update($data_rfd_head);
+        }
+        foreach(json_decode($payment_list) AS $pl){
+            if(count(json_decode($payment_list))>0){
+                $payments = JOIRfdPayment::where('joi_id',$request->joi_head_id)->where('payment_description', $pl->payment_description)->first();
+                if(is_null($payments)) {
+                    $data_payments=[
+                        'joi_rfd_id'=>$insertrfdhead->id,
+                        'joi_id'=>$request->joi_head_id,
+                        'rfd_date'=>$request->rfd_date,
+                        'payment_description'=>$pl->payment_description,
+                        'payment_details'=>$pl->payment_details,
+                        'payment_amount'=> $pl->payment_amount,
+                        'ewt_vat'=> $pl->ewt_vat,
+                        'ewt_percent'=> $pl->ewt_percent,
+                        'ewt_amount'=> $pl->ewt_amount,
+                        'retention_percent'=> $pl->retention_percent,
+                        'retention_amount'=> $pl->retention_amount,
+                        'user_id'=> Auth::id(),
+                    ];
+                    $rfd_payment_id=JOIRfdPayment::create($data_payments);
+                }
+            }
+        }
+        echo $insertrfdhead->id;
+    }
+
+    public function delete_joi_payment($id){
+        $deleted = JOIRfdPayment::find($id);
+        $deleted->delete();
+    }
+
+    public function cancel_all_joi_rfd(Request $request, $joi_head_id){
+        $update_head=JOIRfd::where('joi_head_id',$joi_head_id)->where('status','!=','Cancelled')->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_all_reason
+        ]);
+    }
+
+    public function get_alljoirfd(){
+        $rfd=JOIRfd::orderBy('rfd_no','ASC')->get();
+        $rfdall=[];
+        foreach($rfd AS $r){
+            $rfd_payment = JOIRfdPayment::where('joi_rfd_id',$r->id)->get();
+            $total_due=0;
+            foreach($rfd_payment AS $rp){
+                $total_due += $rp->payment_amount - $rp->ewt_amount - $rp->retention_amount;
+            }
+            $rfdall[]=[
+                'id'=>$r->id,
+                'joi_head_id'=>$r->joi_head_id,
+                'status'=>$r->status,
+                ($r->rfd_date!=null && $r->rfd_date!='' && $r->rfd_date!='null') ? date('Y-m-d',strtotime($r->rfd_date)) : '',
+                $r->company,
+                $r->pay_to,
+                $r->rfd_no,
+                number_format($total_due,4),
+                ($r->mode==1) ? 'Check' : 'Cash',
+                '',
+                ''
+            ];
+        }
+        return response()->json([
+            'rfdall'=>$rfdall,
+        ],200);
+    }
+
+    public function rfd_joi_displayview($rfd_id){
+        $rfd_head = JOIRfd::where('id',$rfd_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Cancelled');
+        })->orderBy('id')->first();
+        $rfd_payments = JOIRfdPayment::with('joi_rfd')->where('joi_rfd_id',$rfd_head->id)->get();
+        $joi_head= JOIHead::where('id',$rfd_head->joi_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->first();
+        $vendor= VendorDetails::where('id',$joi_head->vendor_details_id)->where('status','Active')->first();
+        $jor_head= JORHead::where('jor_no',$joi_head->jor_no)->first();
+
+        $joi_labor = JOILaborDetails::where('joi_head_id',$joi_head->id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
+        $joi_material = JOIMaterialDetails::where('joi_head_id',$joi_head->id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
+        $prepared_by=User::where('id',$rfd_head->user_id)->value('name');
+        return response()->json([
+            'joi_head'=>$joi_head,
+            'jor_head'=>$jor_head,
+            'joi_labor'=>$joi_labor,
+            'joi_material'=>$joi_material,
+            'vendor'=>$vendor,
+            'rfd_head'=>$rfd_head,
+            'rfd_payments'=>$rfd_payments,
+            'prepared_by'=>$prepared_by,
+        ],200);
+    }
+
+    public function rfd_jo_data($id){
+        $rfd_head = JOIRfd::where('joi_head_id',$id)->get();
+        return response()->json([
+            'rfd_head'=>$rfd_head,
         ],200);
     }
 }

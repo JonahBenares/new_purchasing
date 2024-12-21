@@ -283,6 +283,7 @@
 												<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 												<td class="p-1 uppercase text-center" width="5%">Received</td>
 												<td class="p-1 uppercase text-center" width="5%">UOM</td>
+												<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 											</tr>
 											<tr v-for="(pdi,index) in po_dr_items">
 												<td class="p-1 text-center">{{index+1}}</td>
@@ -292,6 +293,7 @@
 												<td class="p-1 text-center">{{ total_sumdelivered1[index] }}</td>
 												<td class="p-1 text-center">{{ pdi.quantity }}</td>
 												<td class="p-1 text-center">{{ uom[index] }}</td>
+												<td class="p-1 text-center"></td>
 											</tr>
 										</table>
 									</div>

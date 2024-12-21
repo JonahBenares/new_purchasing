@@ -42,11 +42,11 @@ class PRDetailsImport implements ToModel, WithHeadingRow, WithMultipleSheets
     {
         if(count($row)!=0){
             $item_no=$row['item_no'] ?? '';
-            $qty=$row['qty'] ?? '';
+            $qty=$row['qty'] ?? 0;
             $uom=$row['uom'] ?? '';
             $part_no=$row['part_no'] ?? '';
             $description=$row['description'] ?? '';
-            $wh_stocks=$row['wh_stocks'] ?? '';
+            $wh_stocks=$row['wh_stocks'] ?? 0;
             $date_needed=$row['date_needed'] ?? 0;
             $date_needed_disp=date('Y-m-d',strtotime($this->transformDate($date_needed)));
             if($item_no!=''){

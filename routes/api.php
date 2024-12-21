@@ -190,7 +190,16 @@ Route::get('/check_remaining_dr_balance/{po_details_id}', [POController::class,'
 Route::post('/save_dr', [POController::class,'save_dr']);
 Route::get('/get_dr_view/{po_dr_id}', [POController::class,'get_dr_view']);
 Route::get('/get_alldr', [POController::class,'get_alldr']);
-
+Route::get('/get_rfd_po_dropdown',[POController::class,'get_rfd_po_dropdown']);
+Route::get('/generate_rfd_po/{po_head_id}', [POController::class,'generate_rfd_po']);
+Route::get('/po_rfd_viewdetails/{po_head_id}', [POController::class,'po_rfd_viewdetails']);
+Route::post('/save_rfd_po', [POController::class,'save_rfd_po']);
+Route::get('/delete_payment/{id}',[POController::class,'delete_payment']);
+Route::get('/rfd_displayview/{rfd_id}', [POController::class,'rfd_displayview']);
+Route::get('/rfd_list', [POController::class,'rfd_list']);
+Route::post('/cancel_all_rfd/{po_head_id}',[POController::class,'cancel_all_rfd']);
+Route::get('/get_allrfd',[POController::class,'get_allrfd']);
+Route::get('/rfd_po_data/{id}',[POController::class,'rfd_po_data']);
 
 
 Route::get('/get_all_jo_rfq', [JORFQController::class,'get_all_jo_rfq']);
@@ -255,6 +264,16 @@ Route::get('/joi_dropdown', [JOIController::class,'joi_dropdown']);
 Route::get('/generate_jo_dr/{joi_head_id}', [JOIController::class,'generate_jo_dr']);
 Route::get('/get_offer_labor/{jo_rfq_labor_offer_id}', [JOIController::class,'get_offer_labor']);
 Route::get('/get_offer_material/{jo_rfq_material_offer_id}', [JOIController::class,'get_offer_material']);
+Route::get('/get_rfd_joi_dropdown',[JOIController::class,'get_rfd_joi_dropdown']);
+Route::get('/generate_rfd_joi/{joi_head_id}', [JOIController::class,'generate_rfd_joi']);
+Route::get('/joi_rfd_viewdetails/{joi_head_id}', [JOIController::class,'joi_rfd_viewdetails']);
+Route::post('/save_joi_rfd', [JOIController::class,'save_joi_rfd']);
+Route::get('/delete_joi_payment/{id}',[JOIController::class,'delete_joi_payment']);
+Route::post('/cancel_all_joi_rfd/{joi_head_id}',[JOIController::class,'cancel_all_joi_rfd']);
+Route::get('/get_alljoirfd',[JOIController::class,'get_alljoirfd']);
+Route::get('/rfd_joi_displayview/{rfd_id}', [JOIController::class,'rfd_joi_displayview']);
+Route::get('/rfd_jo_data/{id}',[JOIController::class,'rfd_jo_data']);
+
 
 Route::get('/check_jo_labor_dr_balance/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_jo_labor_dr_balance']);
 Route::get('/check_jo_material_dr_balance/{joi_dr_id}/{joi_material_details_id}', [JOIController::class,'check_jo_material_dr_balance']);

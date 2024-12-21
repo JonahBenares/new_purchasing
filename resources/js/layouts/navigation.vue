@@ -717,7 +717,7 @@
                                 <div class="!hidden"  :class="{ show:rfdDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_disburse">Show List</a></li>
                                     </ul>
                                 </div>
@@ -879,7 +879,7 @@
                                 <div class="!hidden"  :class="{ show:jobRfdDrop }">
                                     <ul class="nav flex-column sub-menu">
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_disburse/new">Add New</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_disburse/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_disburse">Show List</a></li>
                                     </ul>
                                 </div>

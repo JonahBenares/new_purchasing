@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import{ Bars3Icon, EyeIcon , MagnifyingGlassIcon} from '@heroicons/vue/24/solid'
 	import{ArrowUpOnSquareIcon} from '@heroicons/vue/24/outline'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
     import DataTable from 'datatables.net-vue3';
     import DataTablesCore from 'datatables.net-bs5';
@@ -16,13 +16,21 @@
     import moment from 'moment'
 	DataTablesCore.Buttons.jszip(jszip);
     DataTable.use(DataTablesCore);
-    const data = [
-        ['2024-08-15','CENPRI','MF Computer Solutions, Inc.','APV-1001','₱ 20,000','Purchase Request',''],
-        ['2024-08-16','CENPRI','A-one Industrial Sales','APV-1002','₱ 1,350','Purchase Request',''],
-        ['2024-08-16','CENPRI','7RJ Brothers Sand & Gravel & Gen. Mdse.','APV-1003','₱ 572.76','Repeat Order',''],
-        ['2024-08-17','CENPRI','A.C. Parts Merchandising','APV-1004','₱ 45,320.56','Direct Purchase',''],
-        ['2024-08-20','CENPRI','Bacolod General Parts Marketing','APV-1005','₱ 1,670.39','Purchase Request',''],
-    ];
+    let get_allrfd=ref([]);
+    onMounted(async () => {
+		getallRFD()
+	})
+	const getallRFD = async () => {
+		let response = await axios.get("/api/get_allrfd");
+		get_allrfd.value = response.data.rfdall;
+	}
+    // const data = [
+    //     ['2024-08-15','CENPRI','MF Computer Solutions, Inc.','APV-1001','₱ 20,000','Purchase Request',''],
+    //     ['2024-08-16','CENPRI','A-one Industrial Sales','APV-1002','₱ 1,350','Purchase Request',''],
+    //     ['2024-08-16','CENPRI','7RJ Brothers Sand & Gravel & Gen. Mdse.','APV-1003','₱ 572.76','Repeat Order',''],
+    //     ['2024-08-17','CENPRI','A.C. Parts Merchandising','APV-1004','₱ 45,320.56','Direct Purchase',''],
+    //     ['2024-08-20','CENPRI','Bacolod General Parts Marketing','APV-1005','₱ 1,670.39','Purchase Request',''],
+    // ];
     const options = {
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
@@ -113,12 +121,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/pur_disburse/new" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                            <a href="/pur_disburse/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                 <span>Add New RFD</span>
                             </a>
                         </div>
                         <div class="pt-3">
-                            <DataTable :data="data" :options="options" class="display table table-bordered table-hover !border nowrap">
+                            <DataTable :data="get_allrfd" :options="options" class="display table table-bordered table-hover !border nowrap">
                                 <thead>
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase" width="8%"> RFD Date</th>
@@ -127,6 +135,7 @@
                                         <th class="!text-xs bg-gray-100 uppercase" width="20%"> APV NO</th>
                                         <th class="!text-xs bg-gray-100 uppercase text-right" width="10%"> Amount</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="15%"> Mode</th>
+                                        <th class="!text-xs bg-gray-100 uppercase" width="15%"> Status</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
@@ -134,8 +143,18 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <template #column-6="">
-                                    <a href="/pur_disburse/view" class="btn btn-xs btn-warning text-white p-1">
+                                <template #column-6="props">
+                                    <div class="flex justify-center">
+                                        <span class="badge bg-green-500 text-white !rounded-xl px-2 p-1" v-if="props.rowData.status=='Saved'">Saved</span>
+                                        <span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Draft'">{{props.rowData.status}}</span>
+                                        <span class="badge bg-red-500 text-white !rounded-xl px-2 p-1" v-else-if="props.rowData.status=='Cancelled'">{{props.rowData.status}}</span>
+                                    </div>
+                                </template>
+                                <template #column-7="props">
+                                    <a :href="'/pur_disburse/view/'+props.rowData.id" class="btn btn-xs btn-warning text-white p-1" v-if="props.rowData.status=='Saved'|| props.rowData.status=='Cancelled'">
+                                        <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
+                                    </a>
+                                    <a :href="'/pur_disburse/new/'+props.rowData.po_head_id" class="btn btn-xs btn-warning text-white text-white p-1" v-else>
                                         <EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></EyeIcon>
                                     </a>
                                 </template>

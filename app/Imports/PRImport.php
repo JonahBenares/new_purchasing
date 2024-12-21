@@ -88,7 +88,7 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                     $prhead['dept_code']=$department_code;
                     $prhead['requestor_id']=$requestor_id;
                     $prhead['requestor']=$requestor;
-                    $prhead['urgency']=$row['urgency'];
+                    $prhead['urgency']=$row['urgency'] ?? 0;
                     $prhead['purpose']=$row['purpose'];
                     $prhead['enduse']=$row['enduse'];
                     $prhead['petty_cash']=0;

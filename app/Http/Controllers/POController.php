@@ -11,6 +11,9 @@ use App\Models\PoDr;
 use App\Models\PoDrItems;
 use App\Models\POInstruction;
 use App\Models\POTerms;
+use App\Models\PORfd;
+use App\Models\PoRfdPayments;
+use App\Models\PORfdSeries;
 
 use App\Models\POHeadTemp;
 use App\Models\PoDetailsTemp;
@@ -1316,5 +1319,270 @@ class POController extends Controller
                 echo $po_drinsert->id;
             }
         }
+    }
+
+    public function get_rfd_po_dropdown(){
+        $rfd_po_dropdown = PoHead::select('id','po_no','revision_no')->distinct()->where('status','Saved')->get();
+        return response()->json([
+            'rfd_po_dropdown'=>$rfd_po_dropdown,
+        ],200);
+    }
+
+    public function generate_rfd_po($po_head_id){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $rfd_series_rows = PORfdSeries::where('year',$year)->count();
+        if($rfd_series_rows==0){
+            $max_rfd_series='1';
+            $rfd_series='0001';
+            $rfd_no = 'RFD'.$year."-".$rfd_series.'-'.$company;
+        } else {
+            $max_rfd_series=PORfdSeries::where('year',$year)->max('series');
+            $rfd_series=$max_rfd_series+1;
+            $rfd_no = 'RFD'.$year."-".Str::padLeft($rfd_series, 4,'000').'-'.$company;
+        }
+        $po_head= POHead::where('id',$po_head_id)->where('status','Saved')->first();
+        $vendor= VendorDetails::where('id',$po_head->vendor_details_id)->where('status','Active')->first();
+        $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
+        $po_details = PODetails::where('po_head_id',$po_head_id)->where('status','Saved')->get();
+        $rfd_head = PORfd::where('po_head_id',$po_head_id)->where('status','Saved')->first();
+        $rfd_payments = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
+            $porfd->where('status','Saved')->Orwhere('status','Draft');
+        })->where('po_head_id',$po_head_id)->get();
+        $total=[];
+        foreach($po_details AS $pd){
+            $total[]=$pd->unit_price * $pd->quantity;
+        }
+        $total_sum=array_sum($total);
+
+        $total_payments=0;
+        foreach($rfd_payments AS $rp){
+            $total_payments+=$rp->payment_amount;
+        }
+        return response()->json([
+            'po_head'=>$po_head,
+            'pr_head'=>$pr_head,
+            'po_details'=>$po_details,
+            'vendor'=>$vendor,
+            'rfd_head'=>$rfd_head,
+            'rfd_no'=>$rfd_no,
+            'rfd_payments'=>$rfd_payments,
+            'grand_total'=>$total_sum,
+            'total_payments'=>$total_payments,
+            'prepared_by'=>Auth::user()?->name
+        ],200);
+    }
+
+    public function po_rfd_viewdetails($po_head_id){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $rfd_series_rows = PORfdSeries::where('year',$year)->count();
+        if($rfd_series_rows==0){
+            $max_rfd_series='1';
+            $rfd_series='0001';
+            $rfd_no = 'RFD'.$year."-".$rfd_series.'-'.$company;
+        } else {
+            $max_rfd_series=PORfdSeries::where('year',$year)->max('series');
+            $rfd_series=$max_rfd_series+1;
+            $rfd_no = 'RFD'.$year."-".Str::padLeft($rfd_series, 4,'000').'-'.$company;
+        }
+        $po_head= POHead::where('id',$po_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->first();
+        $vendor= VendorDetails::where('id',$po_head->vendor_details_id)->where('status','Active')->first();
+        $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
+        $po_details = PODetails::where('po_head_id',$po_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
+        $rfd_head = PORfd::where('po_head_id',$po_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft');
+        })->orderByDesc('id')->first();
+        $rfd_payments = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
+            $porfd->where('status','Saved')->Orwhere('status','Draft');
+        })->where('po_head_id',$po_head_id)->get();
+        $rfd_payments_cancelled = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
+            $porfd->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Cancelled');
+        })->where('po_head_id',$po_head_id)->get();
+        $total=[];
+        foreach($po_details AS $pd){
+            $total[]=$pd->unit_price * $pd->quantity;
+        }
+        $total_sum=array_sum($total);
+        $total_payments=0;
+        foreach($rfd_payments AS $rp){
+            $total_payments+=$rp->payment_amount;
+        }
+         return response()->json([
+            'po_head'=>$po_head,
+            'pr_head'=>$pr_head,
+            'po_details'=>$po_details,
+            'rfd_head'=>$rfd_head,
+            'rfd_no'=>$rfd_no,
+            'rfd_payments'=>$rfd_payments,
+            'vendor'=>$vendor,
+            'grand_total'=>$total_sum,
+            'total_payments'=>$total_payments,
+            'prepared_by'=>Auth::user()?->name
+        ],200);
+    }
+
+    public function rfd_displayview($rfd_id){
+        $rfd_head = PORfd::where('id',$rfd_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Cancelled');
+        })->orderBy('id')->first();
+        $rfd_payments = PoRfdPayments::with('po_rfd')->where('po_rfd_id',$rfd_head->id)->get();
+        // $rfd_payments = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
+        //     $porfd->where('status','Saved')->Orwhere('status','Draft');
+        // })->where('po_rfd_id',$rfd_head->id)->get();
+        $po_head= POHead::where('id',$rfd_head->po_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->first();
+        $vendor= VendorDetails::where('id',$po_head->vendor_details_id)->where('status','Active')->first();
+        $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
+        $po_details = PODetails::where('po_head_id',$po_head->id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        })->get();
+        $prepared_by=User::where('id',$rfd_head->user_id)->value('name');
+        return response()->json([
+            'po_head'=>$po_head,
+            'pr_head'=>$pr_head,
+            'po_details'=>$po_details,
+            'vendor'=>$vendor,
+            'rfd_head'=>$rfd_head,
+            'rfd_payments'=>$rfd_payments,
+            'prepared_by'=>$prepared_by,
+        ],200);
+    }
+    
+    public function save_rfd_po(Request $request){
+        $payment_list=$request->input("payment_list");
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $series_rows = PORfdSeries::where('year',$year)->count();
+        $exp=explode('-',$request->apv_no);
+        if($series_rows==0){
+            $max_series='1';
+            $rfd_series='0001';
+            $apv_no = 'RFD'.$year."-".$rfd_series.'-'.$company;
+        } else {
+            $max_series=PORfdSeries::where('year',$year)->max('series');
+            $rfd_series=$max_series+1;
+            $apv_no = 'RFD'.$year."-".Str::padLeft($exp[1], 4,'000').'-'.$company;
+        }
+        if(!PORfdSeries::where('year',$year)->where('series',$exp[1])->exists()){
+            $series['year']=$year;
+            $series['series']=$rfd_series;
+            $rfd_series_ins=PORfdSeries::create($series);
+        }
+        $checked_by_name= User::where('id',$request->checked_by)->value('name');
+        $noted_by_name= User::where('id',$request->noted_by)->value('name');
+        $endorsed_by_name= User::where('id',$request->endorsed_by)->value('name');
+        $approved_by_name= User::where('id',$request->approved_by)->value('name');
+        $received_by_name= User::where('id',$request->received_by)->value('name');
+        $data_rfd_head['po_head_id']=$request->po_head_id;
+        $data_rfd_head['po_no']=$request->po_no;
+        $data_rfd_head['pr_no']=$request->pr_no;
+        $data_rfd_head['rfd_date']=$request->rfd_date ?? '';
+        $data_rfd_head['apv_no']=$apv_no;
+        $data_rfd_head['due_date']=$request->due_date ?? '';
+        $data_rfd_head['check_due']=$request->check_due ?? '';
+        $data_rfd_head['check_name']=$request->check_name ?? '';
+        $data_rfd_head['company']=$request->company ?? '';
+        $data_rfd_head['bank_no']=$request->bank_no ?? '';
+        $data_rfd_head['pay_to']=$request->pay_to ?? '';
+        $data_rfd_head['mode']=$request->mode;
+        $data_rfd_head['notes']=$request->notes;
+        $data_rfd_head['grand_total']=$request->grand_total;
+        $data_rfd_head['sub_total']=$request->subtotal;
+        $data_rfd_head['balance']=$request->balance;
+        $data_rfd_head['show_ewt']=$request->show_ewt;
+        $data_rfd_head['ewt_amount']=$request->ewt_amount;
+        $data_rfd_head['checked_by']=$request->checked_by;
+        $data_rfd_head['checked_by_name']=$checked_by_name;
+        $data_rfd_head['noted_by']=$request->noted_by;
+        $data_rfd_head['noted_by_name']=$noted_by_name;
+        $data_rfd_head['endorsed_by']=$request->endorsed_by;
+        $data_rfd_head['endorsed_by_name']=$endorsed_by_name;
+        $data_rfd_head['approved_by']=$request->approved_by;
+        $data_rfd_head['approved_by_name']=$approved_by_name;
+        $data_rfd_head['received_by']=$request->received_by;
+        $data_rfd_head['received_by_name']=$received_by_name;
+        $data_rfd_head['status']=$request->status;
+        $data_rfd_head['user_id']=Auth::id();
+        if($request->rfd_id==0){
+            $insertrfdhead=PORfd::create($data_rfd_head);
+        }else{
+            $insertrfdhead=PORfd::where('id',$request->rfd_id)->first();
+            $insertrfdhead->update($data_rfd_head);
+        }
+        foreach(json_decode($payment_list) AS $pl){
+            if(count(json_decode($payment_list))>0){
+                $payments = PORfdPayments::where('po_head_id',$request->po_head_id)->where('payment_description', $pl->payment_description)->first();
+                if(is_null($payments)) {
+                    $data_payments=[
+                        'po_rfd_id'=>$insertrfdhead->id,
+                        'po_head_id'=>$request->po_head_id,
+                        'rfd_date'=>$request->rfd_date,
+                        'payment_description'=>$pl->payment_description,
+                        'payment_amount'=> $pl->payment_amount,
+                        'user_id'=> Auth::id(),
+                    ];
+                    $rfd_payment_id=PORfdPayments::create($data_payments);
+                }
+            }
+        }
+        echo $insertrfdhead->id;
+    }
+
+    public function delete_payment($id){
+        $deleted = PORfdPayments::find($id);
+        $deleted->delete();
+    }
+
+    public function rfd_list(){
+        $rfd_list = PORfd::where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft');
+        })->orderBy('apv_no')->get();
+        return response()->json([
+            'rfd_list'=>$rfd_list,
+        ],200);
+    }
+    public function cancel_all_rfd(Request $request, $po_head_id){
+        $update_head=PORfd::where('po_head_id',$po_head_id)->where('status','!=','Cancelled')->update([
+            'status'=>'Cancelled',
+            'cancelled_by'=>Auth::id(),
+            'cancelled_date'=>date('Y-m-d h:i:s'),
+            'cancelled_reason'=>$request->cancel_all_reason
+        ]);
+    }
+
+    public function get_allrfd(){
+        $rfd=PORfd::orderBy('apv_no','ASC')->get();
+        $rfdall=[];
+        foreach($rfd AS $r){
+            $rfdall[]=[
+                'id'=>$r->id,
+                'po_head_id'=>$r->po_head_id,
+                'status'=>$r->status,
+                ($r->rfd_date!=null && $r->rfd_date!='' && $r->rfd_date!='null') ? date('Y-m-d',strtotime($r->rfd_date)) : '',
+                $r->company,
+                $r->pay_to,
+                $r->apv_no,
+                number_format($r->grand_total,4),
+                ($r->mode==1) ? 'Check' : 'Cash',
+                '',
+                ''
+            ];
+        }
+        return response()->json([
+            'rfdall'=>$rfdall,
+        ],200);
+    }
+
+    public function rfd_po_data($id){
+        $rfd_head = PORfd::where('po_head_id',$id)->get();
+        return response()->json([
+            'rfd_head'=>$rfd_head,
+        ],200);
     }
 }

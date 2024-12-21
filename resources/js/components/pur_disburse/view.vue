@@ -1,14 +1,43 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+	import{Bars3Icon, PlusIcon, XMarkIcon, CheckIcon} from '@heroicons/vue/24/solid';
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
-	const vendor =  ref();
 	const preview =  ref();
-
+    const pr_head = ref([]);
+    const po_head=ref([]);
+    const po_details = ref([])
+    const vendor = ref([])
+	const rfd_head =  ref([]);
+	const rfd_payments =  ref([]);
+    // let formatter=ref('');
+    const prepared_by=ref('');
 	const showAddVendor = ref(false)
 	const showPreview = ref(false)
 	const hideModal = ref(true)
+    const formatter = new Intl.NumberFormat('en-US', { 
+        minimumFractionDigits: 4 
+    });
+    const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	});
+	onMounted(async () => {
+		POviewRFD()
+	})
+    const POviewRFD = async () => {
+		let response = await axios.get("/api/rfd_displayview/"+props.id);
+        pr_head.value = response.data.pr_head;
+        po_head.value = response.data.po_head;
+        po_details.value = response.data.po_details;
+        vendor.value = response.data.vendor;
+        rfd_head.value=response.data.rfd_head;
+        rfd_payments.value=response.data.rfd_payments;
+        prepared_by.value=response.data.prepared_by;
+	}
+
 	const openAddVendor = () => {
 		showAddVendor.value = !showAddVendor.value
 	}
@@ -51,21 +80,21 @@
                             <table class="w-full text-sm table-borsdered">
                                 <tr>
                                     <td class="px-1 font-bold" width="10%">Company:</td>
-                                    <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b bg-white" disabled></td>
+                                    <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.company" disabled></td>
                                     <td class="px-1 font-bold pl-4" width="12%">APV/RFD No.:</td>
-                                    <td class="p-0" width="25%"><input type="text" class="w-full px-1 border-b bg-white" disabled></td>
+                                    <td class="p-0" width="25%"><input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.apv_no" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="px-1 font-bold">Pay To:</td>
-                                    <td class="p-0"><input type="text" class="w-full px-1 border-b bg-white" disabled></td>
+                                    <td class="p-0"><input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.pay_to" disabled></td>
                                     <td class="px-1 font-bold pl-4">Date:</td>
-                                    <td class="p-0"><input type="text" class="w-full px-1 border-b"></td>
+                                    <td class="p-0"><input type="text" class="w-full px-1 border-b" v-model="rfd_head.rfd_date" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="px-1 font-bold">Check Name:</td>
-                                    <td class="p-0"><input type="text" class="w-full px-1 border-b bg-white" disabled></td>
+                                    <td class="p-0"><input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.check_name" disabled></td>
                                     <td class="px-1 font-bold pl-4">Due Date:</td>
-                                    <td class="p-0"><input type="text" class="w-full px-1 border-b"></td>
+                                    <td class="p-0"><input type="text" class="w-full px-1 border-b" v-model="rfd_head.due_date" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-1" colspan="2">
@@ -73,19 +102,22 @@
                                             <div class="flex justify-between space-x-2 ml-5">
                                                 <span class="border-b w-5"></span>
                                                 <span class="font-bold">Check</span>
-                                                <span class="border-b w-5 text-green-600">
+                                                <span class="border-b w-5 text-green-600" v-if="rfd_head.mode==1">
                                                     <CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></CheckIcon>
                                                 </span>
                                                 <span class="font-bold">Cash</span>
+                                                <span class="border-b w-5 text-green-600" v-if="rfd_head.mode==2">
+                                                    <CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></CheckIcon>
+                                                </span>
                                             </div>
                                             <div class="flex justify-between space-x-1 w-full">
                                                 <span class="font-bold w-20">Bank No.:</span>
-                                                <input type="text" class="w-full px-1 border-b bg-white" disabled>
+                                                <input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.bank_no" disabled>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-1 font-bold pl-4">Check Due:</td>
-                                    <td class="p-0"><input type="text"  class="w-full px-1 border-b bg-white" disabled></td>
+                                    <td class="p-0"><input type="text"  class="w-full px-1 border-b bg-white" v-model="rfd_head.check_due" disabled></td>
                                 </tr>
                             </table>
                             <br>
@@ -103,36 +135,14 @@
                                                 </td>
                                                 <td class="border-y-none p-1 text-right"></td>
                                             </tr>
-                                            <tr class="">
+                                            <tr class="" v-for="pd in po_details">
                                                 <td class="border-y-none p-1 text-left" colspan="6">
-                                                    5 pc/s Monitor Brand:Asus @ 100.00 per pc/s
+                                                    {{ pd.quantity }} {{pd.uom}} {{pd.item_description}}, @ {{formatter.format(pd.unit_price)}} per {{pd.uom}}
                                                 </td>
                                                 <td class="border-y-none p-1 text-center">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
-                                                        <span>500.00</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="border-y-none p-1 text-left" colspan="6">
-                                                    5 pc/s Mouse Brand:A4tech @ 100.00 per pc/s
-                                                </td>
-                                                <td class="border-y-none p-1 text-center">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="">
-                                                <td class="border-y-none p-1 text-left" colspan="6">
-                                                    5 pc/s Keyboard Brand:A4tech @ 100.00 per pc/s
-                                                </td>
-                                                <td class="border-y-none p-1 text-center">
-                                                    <div class="flex justify-between w-full">
-                                                        <span>₱</span>
-                                                        <span>500.00</span>
+                                                        <span>{{formatter.format(pd.total_cost)}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -145,19 +155,37 @@
                                                 <td class=""></td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="7">
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
+                                                <span hidden>{{ rowspan=9+rfd_payments.length }}</span>
+                                                <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rowspan">
+                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>{{pr_head.requestor}}</p>
+                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>{{pr_head.enduse}}</p>
+                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
                                                     <br>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PO Number:</span>PO-CENPRI-1001</p>
-                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p>
+                                                    <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">PO Number:</span>{{po_head.po_no}}</p>
                                                 </td>
-                                                <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
+                                                <!-- <td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
-                                                        <span>500.00</span>
+                                                        <span>{{po_head.shipping_cost}}</span>
+                                                    </div>
+                                                </td> -->
+                                            </tr>
+                                            <tr v-for="(pl,index) in rfd_payments">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">{{pl.payment_description}}</td>
+                                                <td class="p-0 align-top" width="1">
+                                                    <div class="flex justify-between w-full">
+                                                        <span>₱</span>
+                                                        <span><input type="text" min="0" @keypress="isNumber($event)" class="w-full text-right p-1" id="check_amount" v-model="pl.payment_amount" placeholder="Payment Amount" readonly></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="">
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Shipping Cost</td>
+                                                <td class="p-1 border-y-none">
+                                                    <div class="flex justify-between w-full">
+                                                        <span>₱</span>
+                                                        <span>{{formatter.format(po_head.shipping_cost)}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -166,7 +194,7 @@
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
-                                                        <span>500.00</span>
+                                                        <span>{{ formatter.format(po_head.handling_fee) }}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -175,7 +203,7 @@
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
-                                                        <span>500.00</span>
+                                                        <span>{{ formatter.format(po_head.discount) }}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -184,37 +212,41 @@
                                                 <td class="p-1 border-t">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
-                                                        <span>500.00</span>
+                                                        <span>{{ formatter.format(rfd_head.sub_total) }}</span>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: 0% EWT</td>
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: {{vendor.ewt}}% EWT</td>
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>
-                                                        <span>500.00</span>
+                                                        <span>{{formatter.format(rfd_head.ewt_amount)}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right" colspan="2">Vatable</td>
                                                 <td class="p-1 border-y-none">
-                                                    <div class="flex justify-between w-full">
+                                                    <!-- <div class="flex justify-between w-full">
                                                         <span>₱</span>
                                                         <span>500.00</span>
-                                                    </div>
+                                                    </div> -->
                                                 </td>
                                             </tr>
+                                            <!-- <tr class="">
+                                                <td class="border-l-none border-y-none p-1 text-right font-bold " colspan="2">Total Amount Due</td>
+                                                <td class="p-1 text-right font-bold !text-sm">{{formatter.format(rfd_head.grand_total)}}</td>
+                                            </tr> -->
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right font-bold " colspan="2">Total Amount Due</td>
-                                                <td class="p-1 text-right font-bold !text-sm">1000.00</td>
+                                                <td class="p-1 text-right font-bold !text-sm">{{ formatter.format(rfd_head.balance) }}</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="7">
+                                                <td colspan="8">
                                                     <div class="flex justify-start space-x-1">
                                                         <span class="p-1">Notes:</span>
-                                                        <span class="p-1">sample note</span>
+                                                        <span class="p-1">{{rfd_head.notes}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -239,11 +271,11 @@
                                     <td class="text-center border-b"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center p-1"><input class="w-full"></td>
+                                    <td class="text-center p-1">{{prepared_by}}</td>
                                     <td></td>
-                                    <td class="text-center p-1"><input class="w-full"></td>
+                                    <td class="text-center p-1">{{rfd_head.checked_by_name}}</td>
                                     <td></td>
-                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                    <td class="text-center p-1">{{rfd_head.noted_by_name}}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-center"><br><br></td>
@@ -267,11 +299,11 @@
                                     <td class="text-center border-b"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center p-1">Henne Tanant</td>
+                                    <td class="text-center p-1">{{rfd_head.endorsed_by_name}}</td>
                                     <td></td>
-                                    <td class="text-center p-1">Beverly Sy</td>
+                                    <td class="text-center p-1">{{rfd_head.approved_by_name}}</td>
                                     <td></td>
-                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                    <td class="text-center p-1">{{rfd_head.received_by_name}}</td>
                                 </tr>
                             </table>
                             <hr	class="border-dashed">

@@ -56,6 +56,7 @@ import moment from 'moment';
 	const vat =  ref(0);
 	const vat_percent =  ref(12);
 	const vat_amount =  ref(0);
+	const vat_amount_old =  ref(0);
 	const vat_in_ex =  ref(0);
 	const handling_fee =  ref(0);
 	const shipping_cost =  ref(0);
@@ -63,6 +64,9 @@ import moment from 'moment';
 	const new_data =  ref(0);
 	const instruction_id =  ref(0);
 	const terms_id =  ref(0);
+	const formatter = new Intl.NumberFormat('en-US', { 
+        minimumFractionDigits: 4 
+    });
 	const props = defineProps({
 		id:{
 			type:String,
@@ -93,7 +97,7 @@ import moment from 'moment';
 		vat_percent.value = (response.data.po_head.vat_percent!=0) ? response.data.po_head.vat_percent : 12;
 		vat_amount.value = response.data.po_head.vat_amount;
 		vat_in_ex.value = response.data.po_head.vat_in_ex;
-		newvat.value= ((response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) - response.data.po_head.discount) * (response.data.po_head.vat_percent/100)
+		// newvat.value= ((response.data.grand_total + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) - response.data.po_head.discount) * (response.data.po_head.vat_percent/100)
 		
 		totals.value = response.data.grand_total;
 		pr_head.value = response.data.pr_head;
@@ -105,9 +109,18 @@ import moment from 'moment';
 		checked_by.value = response.data.checked_by;
 		recommended_by.value = response.data.recommended_by;
 		approved_by.value = response.data.approved_by;
+
+		var percent= vat_percent.value/100;
+      
+
 		var cancelled_qty=0;
 		response.data.po_details.forEach(function (val, index, theArray) {
 			cancelled_qty +=(val.status=='Cancelled') ? val.total_cost : ''
+			
+			newvat.value= ((parseFloat(response.data.grand_total - parseFloat(cancelled_qty)) + parseFloat(response.data.po_head.shipping_cost) + parseFloat(response.data.po_head.handling_fee)) - parseFloat(response.data.po_head.discount)) * percent;
+        	vat_amount.value=parseFloat(newvat.value)
+        	vat_amount_old.value=parseFloat(newvat.value)
+
 			grand_total_old.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
 			grand_total.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
 		});
@@ -621,13 +634,21 @@ import moment from 'moment';
 													<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 													<td class="uppercase p-1 text-center" width="12%">Total</td>
 												</tr>
+												<span hidden>
+													{{ cancelled_qty=0 }}
+													{{ total_cost=0 }}
+												</span>
 												<tr class="" v-for="(pd,index) in po_details">
+													<span hidden>
+														{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}
+														{{ total_cost+=pd.total_cost}}
+													</span>
 													<td class="border-y-none p-1 text-center">{{index+1}}</td>
 													<td class="border-y-none p-1 text-center">{{ pd.quantity }}</td>
 													<td class="border-y-none p-1 text-center">{{pd.uom}}</td>
 													<td class="border-y-none p-1" colspan="2">{{pd.item_description}}</td>
-													<td class="border-y-none p-1 text-center">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
-													<td class="border-y-none p-1 text-center">{{formatNumber(pd.unit_price * pd.quantity)}}</td>
+													<td class="border-y-none p-1 text-center">{{formatter.format(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-center">{{formatter.format(pd.unit_price * pd.quantity)}}</td>
 												</tr>
 												<tr class="">
 													<td class=""></td>
@@ -646,23 +667,29 @@ import moment from 'moment';
 														<p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Purpose:</span>{{pr_head.purpose}}</p>
 													</td>
 													<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Shipping Cost</td>
-													<td class="p-1 text-right ">{{formatNumber(po_head.shipping_cost ?? 0)}}</td>
+													<td class="p-1 text-right ">{{formatter.format(po_head.shipping_cost ?? 0)}}</td>
 												</tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">Packing and Handling Fee</td>
-													<td class="p-1 text-right ">{{formatNumber(po_head.handling_fee ?? 0)}}</td>
+													<td class="p-1 text-right ">{{formatter.format(po_head.handling_fee ?? 0)}}</td>
 												</tr>
 												<tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: Discount</td>
-                                                        <td class="p-1 text-right ">{{formatNumber(po_head.discount ?? 0)}}</td>
+                                                        <td class="p-1 text-right ">{{formatter.format(po_head.discount ?? 0)}}</td>
                                                     </tr>
                                                     <tr class="" v-if="po_head.vat==1">
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
-                                                                <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatNumber(po_head.vat_amount ?? 0)">
+                                                                <!-- <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
+																<span hidden>
+                                                                    {{ percent_vat=  po_head.vat_percent/100 }} 
+                                                                    {{ new_vat_old= ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount)) * parseFloat(percent_vat) }}
+                                                                    {{  vat_amount =parseFloat(new_vat_old) }}
+                                                                    {{ grand_total_old = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
+                                                                </span> -->
+                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatter.format(vat_amount_old ?? 0)">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -676,7 +703,8 @@ import moment from 'moment';
                                                     </tr>
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-													<td class="p-1 text-right font-bold !text-sm">{{formatNumber(grand_total_old ?? 0)}}</td>
+													<td class="p-1 text-right font-bold !text-sm">{{formatter.format(grand_total_old ?? 0)}}</td>
+													<!-- <td class="p-1 text-right font-bold !text-sm">{{formatNumber(grand_total_old ?? 0)}}</td> -->
 												</tr>
 											</table>
 										</div>
@@ -699,8 +727,17 @@ import moment from 'moment';
 													<td class="uppercase p-1 text-center" width="12%">Unit Price</td>
 													<td class="uppercase p-1 text-center" width="12%">Total</td>
 												</tr>
+												<span hidden>
+													{{ cancelled_qty=0 }}
+													{{ total_cost=0 }}
+													{{ totalprice=0 }}
+												</span>
 												<tr class="" v-for="(pd, index) in po_details" v-if="po_head.status!='Revised'">
-													<span hidden>{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}</span>
+													<span hidden>
+														{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}
+														{{ total_cost+=pd.total_cost}}
+														{{ totalprice=formatter.format(pd.unit_price * remaining_balance[index]) }}
+													</span>
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
 														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
@@ -708,11 +745,16 @@ import moment from 'moment';
 													</td>
 													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
-													<td class="border-y-none p-1 text-right">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-right">{{formatter.format(pd.unit_price)}} {{ pd.currency }}</td>
 													<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 												</tr>
 												<tr class="" v-for="(pd, index) in po_details_temp" v-else>
-													<span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.quantity) }}</span>
+													<!-- <span hidden>{{ totalprice=formatNumber(pd.unit_price * pd.quantity) }}</span> -->
+													<span hidden>
+														{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}
+														{{ total_cost+=pd.total_cost}}
+														{{ totalprice=formatNumber(pd.unit_price * remaining_balance[index]) }}
+													</span>
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
 														{{ pd.quantity }}
@@ -808,7 +850,7 @@ import moment from 'moment';
 												<tr class="">
 													<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
 													<td class="p-1 text-right font-bold !text-sm">
-														<span id="grand_total">{{ formatNumber(grand_total) }}</span>
+														<span id="grand_total">{{ formatter.format(grand_total) }}</span>
 														<input type="hidden" v-model="orig_amount">
 													</td>
 												</tr>

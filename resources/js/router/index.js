@@ -498,15 +498,17 @@ const routes = [
         }
     },
     {
-        path:'/pur_disburse/new',
+        path:'/pur_disburse/new/:id',
         component: pur_disburseNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
     },
     {
-        path:'/pur_disburse/view',
+        path:'/pur_disburse/view/:id',
         component: pur_disburseView,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -705,8 +707,9 @@ const routes = [
         }
     },
     {
-        path:'/job_disburse/new',
+        path:'/job_disburse/new/:id',
         component: job_disburseNew,
+        props:true,
         meta:{
             requiresAuth:true
         }
@@ -719,8 +722,9 @@ const routes = [
         }
     },
     {
-        path:'/job_disburse/view',
+        path:'/job_disburse/view/:id',
         component: job_disburseView,
+        props:true,
         meta:{
             requiresAuth:true
         }

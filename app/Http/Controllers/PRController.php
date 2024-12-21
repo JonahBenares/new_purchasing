@@ -192,7 +192,7 @@ class PRController extends Controller
                             'uom'=>$il->uom,
                             'pn_no'=>$il->pn_no,
                             'item_description'=>$il->item_desc,
-                            'wh_stocks'=>$il->wh_stocks,
+                            'wh_stocks'=>$il->wh_stocks ?? 0,
                             'date_needed'=>$il->date_needed,
                             'recom_date'=>$il->recom_date,
                             'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
