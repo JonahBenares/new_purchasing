@@ -51,6 +51,7 @@ class POController extends Controller
             $poall[]=[
                 'id'=>$p->id,
                 'status'=>$p->status,
+                'method'=>$p->method,
                 'po_no'=>$p->po_no,
                 'revision_no'=>$p->revision_no,
                 date('Y-m-d',strtotime($p->po_date)),

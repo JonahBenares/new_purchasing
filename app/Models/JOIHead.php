@@ -41,4 +41,12 @@ class JOIHead extends Model
         'cancelled_by',
         'cancelled_reason',
     ];
+
+    public function jor_labor_details(){
+        return $this->hasMany(JOILaborDetails::class, 'jor_head_id');
+    }
+
+    public function jor_material_details(){
+        return $this->hasMany(JOIMaterialDetails::class, 'jor_head_id');
+    }
 }

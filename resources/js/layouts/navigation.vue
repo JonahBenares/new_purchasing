@@ -667,8 +667,8 @@
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_po/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/pur_po">Show List</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/po_direct">Direct PO</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/po_direct/0">Direct PO</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat/0">Repeat PO</a></li>
                                     </ul>
                                 </div>
                             </Transition>
@@ -829,7 +829,7 @@
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_issue/new/0">Add New</a></li>
                                         <li class="nav-item list-none"> <a class="nav-link" href="/job_issue">Show List</a></li>
-                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_direct">Direct JOI</a></li>
+                                        <li class="nav-item list-none"> <a class="nav-link" href="/job_direct/0">Direct JOI</a></li>
                                         <!-- <li class="nav-item list-none"> <a class="nav-link" href="/po_repeat">Repeat PO</a></li> -->
                                     </ul>
                                 </div>

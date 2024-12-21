@@ -108,6 +108,7 @@ class JORFQController extends Controller
         }
 
         $labor_details = JORLaborDetails::where('jor_head_id',$jor_head_id)->where('status','Saved')->orderBy('scope_of_work','ASC')->get();
+            $LaborDetails=array();
             foreach($labor_details AS $ld){
                 // $deliver_qty = JORReportDetails::where('jor_labor_details_id',$ld->id)->value('delivered_qty');
                 // $remaining_qty = $ld->quantity - $deliver_qty;
@@ -127,6 +128,7 @@ class JORFQController extends Controller
             }
 
         $material_details = JORMaterialDetails::where('jor_head_id',$jor_head_id)->where('status','Saved')->orderBy('item_description','ASC')->get();
+            $MaterialDetails=array();
             foreach($material_details AS $md){
                 // $deliver_qty = JORReportDetails::where('jor_material_details_id',$md->id)->value('delivered_qty');
                 // $remaining_qty = $md->quantity - $deliver_qty;
@@ -323,6 +325,7 @@ class JORFQController extends Controller
                 }
 
             $jo_rfq_labor_details = JORFQLaborDetails::with('jor_labor_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get();
+                $RFQLaborDetails=array();
                 foreach($jo_rfq_labor_details AS $jrld){
                     $RFQLaborDetails[] = [
                         'jo_rfq_labor_details_id'=>$jrld->id,
@@ -334,6 +337,7 @@ class JORFQController extends Controller
                     ];
 
                 $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jo_rfq_labor_details_id',$jrld->id)->get();
+                    $RFQLaborOffers=array();
                     foreach($rfq_labor_offers AS $rlo){
                         $RFQLaborOffers[] = [
                             'jo_rfq_labor_offer_id'=>$rlo->id,
@@ -346,6 +350,7 @@ class JORFQController extends Controller
                 }
 
             $jo_rfq_material_details = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get();
+                 $RFQMaterialDetails=array();
                 foreach($jo_rfq_material_details AS $jrld){
                     $RFQMaterialDetails[] = [
                         'jo_rfq_material_details_id'=>$jrld->id,
@@ -357,6 +362,7 @@ class JORFQController extends Controller
                     ];
 
                 $rfq_material_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jo_rfq_material_details_id',$jrld->id)->get();
+                    $RFQMaterialOffers=array();
                     foreach($rfq_material_offers AS $rmo){
                         $RFQMaterialOffers[] = [
                             'jo_rfq_material_offer_id'=>$rmo->id,

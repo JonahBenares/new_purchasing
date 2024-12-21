@@ -58,7 +58,7 @@
 		<td class="" colspan="4" style="border-bottom:1px solid white"></td>
 		@foreach($aoq_vendor_data AS $av)
 			<td class="" colspan="4" style="text-align: center;vertical-align: text-top;border-right:1px solid gray;border-left:1px solid gray; border-top:1px solid gray;  border-bottom:1px solid white">
-				<b>{{ $av['vendor_name']; }}</b>
+				<b>{{ $av['vendor_name']; }} ({{ $av['vendor_identifier']; }})</b>
 			</td>
 		@endforeach
 	</tr>

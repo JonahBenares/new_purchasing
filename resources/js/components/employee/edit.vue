@@ -1,6 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
-	import{HomeIcon, UserIcon} from '@heroicons/vue/24/solid'
+	import{HomeIcon, UserIcon, CheckIcon, XMarkIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	const props = defineProps({

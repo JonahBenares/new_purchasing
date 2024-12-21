@@ -285,18 +285,32 @@
 									</button> -->
 								</div>
 								<div class="border" v-for="(b, index) in branches" :class="(b.status=='Inactive') ? 'bg-red-100' : ''">
-									<div class="flex justify-between p-2 ">
+									<div class="flex justify-between px-3 py-2  ">
 										<!-- <button class="w-full !text-left" @click="moreDetails =!moreDetails"> -->
 											<button class="w-full !text-left" @click="ShowBranchDetails(index)">
-											<div class=" w-full bg-gren-50">
-												<p class="mb-1 text-gray-600 font-bold text-xs">{{ b.address}}</p>
-												<div class="flex justify-start space-x-4 text-xs text-gray-600">
-													<span class="pr-1" ><span class="text-gray-800">TIN :</span> {{ b.tin}}</span>
-													<span class="pr-1" ><span class="text-gray-800">Contact Person :</span> {{ b.contact_person}}</span>
-													<span class="pr-1" ><span class="text-gray-800">Contact Number :</span> {{ b.phone}}</span>
-													<span class="pr-1" ><span class="text-gray-800">Fax :</span> {{ b.fax}}</span>
-													<span class="pr-1" ><span class="text-gray-800">Email :</span> {{ b.email}}</span>
-												</div>
+												<div class=" w-full bg-gren-50">
+												<p class="mb-1 text-gray-600 font-bold text-sm">{{ b.address}}</p>
+												<table class="w-full text-xs">
+													<tr>
+														<td width="20%">
+															<span class="pr-1"><span class="text-gray-800">TIN :</span> {{ b.tin}}</span>
+														</td>
+														<td width="20%">
+															<span class="pr-1"><span class="text-gray-800">Email :</span> {{ b.email}}</span>
+														</td>
+													</tr>
+													<tr>
+														<td width="20%">
+															<span class="pr-1"><span class="text-gray-800">Contact Person :</span> {{ b.contact_person}}</span>
+														</td>
+														<td width="20%">
+															<span class="pr-1"><span class="text-gray-800">Contact Number :</span> {{ b.phone}}</span>
+														</td>
+														<td width="20%">
+															<span class="pr-1"><span class="text-gray-800">Fax :</span> {{ b.fax}}</span>
+														</td>
+													</tr>
+												</table>
 											</div>
 										</button>
 										<div class="w-4 pr-2">
@@ -304,45 +318,50 @@
 												<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 											</button>
 										</div>
-										
 									</div>
 									<!-- <div class="" v-show="moreDetails"> -->
 									<div class="" style="display: none;" :id="'branch_dets_disp'+index">
 										<hr class="border-dashed m-0">
 										<div class="row">
 											<div class="col-lg-5 border-r">
-												<div class="p-2 ">
+												<div class="px-3 py-2">
 													<table class="w-full text-xs">
 														<tr>
 															<td class="!text-gray-800" width="13%">Identifier </td>
-															<td>: {{ b.identifier}}</td>
+															<td></td>
+															<td>{{ b.identifier}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Type</td>
-															<td>: {{ b.type}}</td>
+															<td></td>
+															<td>{{ b.type}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">EWT</td>
-															<td>: {{ b.ewt}}</td>
+															<td></td>
+															<td>{{ b.ewt}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">VAT</td>
-															<td>: {{ (b.vat == '1') ? 'Vat' : 'Non-vat'}}</td>
+															<td></td>
+															<td>{{ (b.vat == '1') ? 'Vat' : 'Non-vat'}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Status</td>
-															<td>: {{ b.status}}</td>
+															<td></td>
+															<td>{{ b.status}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Notes</td>
-															<td>: {{ b.notes}}</td>
+															<td></td>
+															<td>{{ b.notes}}</td>
 														</tr>
 													</table>
 												</div>
 											</div>
 											<div class="col-lg-7 pl-0">
-												<div class="">
-													<table class="table-bordered text-xs w-full">
+												<div class="px-3 py-2">
+													<table class="table-borderedd text-xs w-full">
 														<tr>
 															<td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
 														</tr>

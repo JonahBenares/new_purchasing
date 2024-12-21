@@ -39,4 +39,8 @@ class POHead extends Model
         'approved_by_rev',
         'approved_reason',
     ];
+
+    public function po_details(){
+        return $this->hasMany(PODetails::class, 'po_head_id');
+    }
 }

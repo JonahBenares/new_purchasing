@@ -202,7 +202,8 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Issuance <small>View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="joi_head.method == 'JO'">JO Issuance <small>View</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="joi_head.method == 'DJO'">Direct JOI <small>View</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
@@ -267,13 +268,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
-											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.date_needed).format('MMM. DD,YYYY')">
+											<input type="text" class="border-b bg-white w-full text-sm py-0" disabled :value="moment(joi_head.date_needed).format('MMM. DD,YYYY')">
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
-											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.completion_work).format('MMM. DD,YYYY')">
+											<input type="text" class="border-b bg-white w-full  text-sm py-0" disabled :value="moment(joi_head.completion_work).format('MMM. DD,YYYY')">
 										</div>	
 									</div>
 								</div>
@@ -281,13 +282,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
-											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.date_prepared).format('MMM. DD,YYYY')">
+											<input type="text" class="border-b bg-white w-full  text-sm py-0" disabled :value="moment(joi_head.date_prepared).format('MMM. DD,YYYY')">
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
-											<input type="text" class="border-b bg-white w-full" disabled :value="jor_head.site_jor">
+											<input type="text" class="border-b bg-white w-full  text-sm py-0" disabled :value="jor_head.site_jor">
 										</div>
 									</div>
 								</div>
@@ -295,13 +296,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
-											<input type="text" class="border-b bg-white w-full" disabled :value="moment(joi_head.start_work).format('MMM. DD,YYYY')">
+											<input type="text" class="border-b bg-white w-full  text-sm py-0" disabled :value="moment(joi_head.start_work).format('MMM. DD,YYYY')">
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
-											<input type="text" class="border-b bg-white w-full" disabled :value="joi_head.joi_no">
+											<input type="text" class="border-b bg-white w-full  text-sm py-0" disabled :value="joi_head.joi_no">
 										</div>
 									</div>
 								</div>
@@ -325,7 +326,7 @@
 														<td class="uppercase p-1 text-center" width="10%">Total</td>
 													</tr>
                                                     <tr>
-														<td colspan="7"><span class="font-bold">{{ jor_head.general_description}} </span></td>
+														<td colspan="7" class="text-sm px-1"><span class="font-bold">{{ jor_head.general_description}} </span></td>
 													</tr>
                                                     <span hidden>{{ grand_totall=0 }}</span>
                                                     <span hidden>{{ cancelled_qty=0 }}</span>
@@ -639,12 +640,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
-                                                    <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
-                                                    <a href="/job_issue/print_coc" class="btn btn-warning text-white">Print COC</a>
+                                                    <a href="/job_issue/print_ar" target="_blank" class="btn btn-warning text-white">Print AC</a>
+                                                    <a href="/job_issue/print_coc" target="_blank" class="btn btn-warning text-white">Print COC</a>
                                                     <div class="flex justify-between">
+<<<<<<< HEAD
                                                         <a :href="'/job_disburse/new/'+props.id" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a>
                                                         <!-- <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a> -->
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD(props.id)">
+=======
+                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a>
+                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
+>>>>>>> 0738e0ad3bc6aa65a191e6ba4b84decd5ef78ac1
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
                                                     </div>

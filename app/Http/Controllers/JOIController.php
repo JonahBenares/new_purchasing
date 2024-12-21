@@ -55,6 +55,7 @@ class JOIController extends Controller
             $joiall[]=[
                 'id'=>$j->id,
                 'status'=>$j->status,
+                'method'=>$j->method,
                 'joi_no'=>$j->joi_no,
                 'revision_no'=>$j->revision_no,
                 ($j->date_prepared!='' || $j->date_prepared!=null) ? date('Y-m-d',strtotime($j->date_prepared)) : '',
