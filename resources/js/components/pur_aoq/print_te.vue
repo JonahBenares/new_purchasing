@@ -390,13 +390,13 @@
 							<td></td>
 							<td width="12%">Prepared by:</td>
 							<td></td>
-							<td width="12%">Received and Checked by</td>
+							<td width="12%">Received and Checked by:</td>
 							<td></td>
-							<td width="12%">Award Recommended by</td>
+							<td width="12%">Award Recommended by:</td>
 							<td></td>
-							<td width="12%">Recommending Approval</td>
+							<td width="12%">Recommending Approval:</td>
 							<td></td>
-							<td width="12%">Approved by</td>
+							<td width="12%">Approved by:</td>
 							<td></td>
 						</tr>
 						<tr>

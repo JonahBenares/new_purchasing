@@ -225,11 +225,11 @@
 		<td style="text-align:left">Prepared by:</td>
 		<td></td>
 		<td></td>
-		<td style="text-align:center">Received and Checked by</td>
-		<td style="text-align:center" colspan="2">Award Recommended by</td>
+		<td style="text-align:center">Received and Checked by:</td>
+		<td style="text-align:center" colspan="2">Award Recommended by:</td>
 		<td></td>
-		<td style="text-align:center">Recommending Approval</td>
-		<td style="text-align:center" colspan="2">Approved by</td>
+		<td style="text-align:center">Recommending Approval:</td>
+		<td style="text-align:center" colspan="2">Approved by:</td>
 		<td></td>
 	</tr>
 	<tr>
