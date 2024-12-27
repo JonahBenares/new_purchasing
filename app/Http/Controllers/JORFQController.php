@@ -107,7 +107,7 @@ class JORFQController extends Controller
             ];
         }
 
-        $labor_details = JORLaborDetails::where('jor_head_id',$jor_head_id)->where('status','Saved')->orderBy('scope_of_work','ASC')->get();
+        $labor_details = JORLaborDetails::where('jor_head_id',$jor_head_id)->where('status','Saved')->orderBy('id','ASC')->get();
             $LaborDetails=array();
             foreach($labor_details AS $ld){
                 // $deliver_qty = JORReportDetails::where('jor_labor_details_id',$ld->id)->value('delivered_qty');
@@ -127,7 +127,7 @@ class JORFQController extends Controller
                 // }
             }
 
-        $material_details = JORMaterialDetails::where('jor_head_id',$jor_head_id)->where('status','Saved')->orderBy('item_description','ASC')->get();
+        $material_details = JORMaterialDetails::where('jor_head_id',$jor_head_id)->where('status','Saved')->orderBy('id','ASC')->get();
             $MaterialDetails=array();
             foreach($material_details AS $md){
                 // $deliver_qty = JORReportDetails::where('jor_material_details_id',$md->id)->value('delivered_qty');
