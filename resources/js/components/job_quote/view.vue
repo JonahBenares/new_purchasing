@@ -704,7 +704,7 @@
 														<p class="text-sm font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
 														<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 													</div>
-													<table class="table-bordered w-full !text-xs mb-2">
+													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQLaborDetails.length != 0">
 														<tr class="bg-gray-100">
 															<td class="p-1 text-center" width="5%">#</td>
 															<td class="p-1" width="50%">Scope of Work</td>
@@ -751,7 +751,7 @@
 														</tr>
 													</tbody>
 													</table>
-													<table class="table-bordered w-full !text-xs mb-2">
+													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQMaterialDetails.length != 0">
 														<tr class="bg-gray-100">
 															<td class="p-1 text-center" width="5%">No</td>
 															<td class="p-1 text-center" width="10%">Qty</td>

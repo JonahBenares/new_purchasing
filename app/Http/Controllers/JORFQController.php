@@ -350,7 +350,7 @@ class JORFQController extends Controller
                 }
 
             $jo_rfq_material_details = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get();
-                 $RFQMaterialDetails=array();
+                $RFQMaterialDetails=array();
                 foreach($jo_rfq_material_details AS $jrld){
                     $RFQMaterialDetails[] = [
                         'jo_rfq_material_details_id'=>$jrld->id,
@@ -378,10 +378,10 @@ class JORFQController extends Controller
                 'head'=>$RFQHead,
                 'jor_head_notes'=>$jor_head_notes,
                 'rfq_vendor'=>$RFQVendor,
-                'rfq_labor_details'=>$RFQLaborDetails,
-                'rfq_labor_offers'=>$RFQLaborOffers,
-                'rfq_material_details'=>$RFQMaterialDetails,
-                'rfq_material_offers'=>$RFQMaterialOffers,
+                'rfq_labor_details'=>$RFQLaborDetails ?? '',
+                'rfq_labor_offers'=>$RFQLaborOffers ?? '',
+                'rfq_material_details'=>$RFQMaterialDetails ?? '',
+                'rfq_material_offers'=>$RFQMaterialOffers ?? '',
                 'rfq_vendor_terms'=>$jo_rfq_vendor_terms,
                 'signatories'=>$signatories,
                 'count_jorlabor'=>$count_jorlabor,
