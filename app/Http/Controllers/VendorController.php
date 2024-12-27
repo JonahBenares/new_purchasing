@@ -131,6 +131,7 @@ class VendorController extends Controller
         $branch_dets_update['contact_person']=$request->input('contact_person');
         $branch_dets_update['email']=$request->input('email');
         $branch_dets_update['notes']=$request->input('notes');
+        $branch_dets_update['ewt']=$request->input('ewt');
         $branch_dets_update['status']=$request->input('status');
         $branch_dets->update($branch_dets_update);
 
