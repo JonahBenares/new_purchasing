@@ -106,7 +106,7 @@ class RFQController extends Controller
             ];
         }
 
-        $details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','Saved')->orderBy('item_description','ASC')->get();
+        $details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','Saved')->orderBy('id','ASC')->get();
             foreach($details AS $d){
                 $deliver_qty = PrReportDetails::where('pr_details_id',$d->id)->value('delivered_qty');
                 $remaining_qty = $d->quantity - $deliver_qty;
