@@ -713,7 +713,7 @@
 															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 														</td>
 													</tr>
-													<tr class="bg-gray-100">
+													<tr class="bg-gray-100" v-if="joi_labor_details.length != 0">
 														<td class="uppercase p-1" colspan="3">Scope of Work</td>
 														<td class="uppercase p-1 text-center" width="7%">Qty</td>
 														<td class="uppercase p-1 text-center" width="7%">Unit</td>
@@ -751,7 +751,7 @@
 														<td class="border-y-none p-1 text-right">{{jld.unit_price}} {{ jld.currency }}</td>
 														<td class="border-y-none p-1 text-right"><input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 													</tr>
-													<tr class="bg-gray-100">
+													<tr class="bg-gray-100" v-if="joi_material_details.length != 0">
 														<td class="p-1 text-center" width="3%">#</td>
 														<td class="p-1" colspan="2">Materials:</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Qty</td>
