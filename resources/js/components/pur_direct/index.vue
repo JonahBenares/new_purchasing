@@ -289,7 +289,7 @@
 		// 	formData.append('quantity'+index, 'available_qty'+index)
 		// });
 		if(status==='Saved'){
-			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
+			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && vat_in_ex.value!=0){
 				axios.post(`/api/save_direct_po`,formData).then(function (response) {
 					pohead_id.value=response.data;
 					success.value='You have successfully saved new po.'
@@ -306,6 +306,9 @@
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}); 
 			}else{
+				if(vat_in_ex.value==0){
+					document.getElementById('vat_in_ex').style.backgroundColor = '#FAA0A0';
+				}
 				if(checked_by.value==0){
 					document.getElementById('checked_by').style.backgroundColor = '#FAA0A0';
 				}
@@ -500,11 +503,14 @@
 		if(button==='button1'){
 			document.getElementById('checked_by').style.backgroundColor = '#FEFCE8';
 		}
+		if(button==='button2'){
+			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		}
 		if(button==='button3'){
 			document.getElementById('approved_by').style.backgroundColor = '#FEFCE8';
 		}
-		if(button==='button2'){
-			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		if(button==='button4'){
+			document.getElementById('vat_in_ex').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
@@ -776,7 +782,7 @@
 												<td class="align-top pl-1" colspan="2">
 													<div class="flex justify-between">
 														<span class="w-14">Price is </span>
-														<select name="" class="w-full bg-yellow-50" id="" v-model="vat_in_ex">
+														<select name="" class="w-full bg-yellow-50" id="vat_in_ex" v-model="vat_in_ex" @click="resetError('button4')">
 															<option value="1">Inclusive of VAT</option>
 															<option value="2">Exclusive of VAT</option>
 														</select>
