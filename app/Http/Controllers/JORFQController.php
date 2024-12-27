@@ -335,8 +335,9 @@ class JORFQController extends Controller
                         // 'remaining_qty'=>$jrld->remaining_qty,
                         'scope_of_work'=>$jrld->jor_labor_details->scope_of_work,
                     ];
+                }
 
-                $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jo_rfq_labor_details_id',$jrld->id)->get();
+                $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->get();
                     $RFQLaborOffers=array();
                     foreach($rfq_labor_offers AS $rlo){
                         $RFQLaborOffers[] = [
@@ -347,7 +348,6 @@ class JORFQController extends Controller
                             'labor_currency'=>$rlo->currency ?? 'PHP',
                         ];
                     }
-                }
 
             $jo_rfq_material_details = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get();
                 $RFQMaterialDetails=array();
@@ -360,8 +360,9 @@ class JORFQController extends Controller
                         // 'remaining_qty'=>$jrld->remaining_qty,
                         'item_description'=>$jrld->jor_material_details->item_description,
                     ];
+                }
 
-                $rfq_material_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jo_rfq_material_details_id',$jrld->id)->get();
+                $rfq_material_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->get();
                     $RFQMaterialOffers=array();
                     foreach($rfq_material_offers AS $rmo){
                         $RFQMaterialOffers[] = [
@@ -372,7 +373,7 @@ class JORFQController extends Controller
                             'material_currency'=>$rmo->currency ?? 'PHP',
                         ];
                     }
-                }
+                
 
             return response()->json([
                 'head'=>$RFQHead,
