@@ -403,6 +403,7 @@ class JORFQController extends Controller
                 'prepared_by'=>$request->input('prepared_by'),
                 'noted_by'=>$request->input('noted_by'),
                 'approved_by'=>$request->input('approved_by'),
+                'due_date'=>$request->input('due_date'),
             ]);
         }
 
@@ -439,6 +440,7 @@ class JORFQController extends Controller
             $rfq_add_vendor['vendor_details_id']=$request->input('vendor_details_id');
             $rfq_add_vendor['vendor_name']=$request->input('vendor_name');
             $rfq_add_vendor['vendor_identifier']=$request->input('vendor_identifier');
+            $rfq_add_vendor['due_date']=$request->input('due_date');
             $rfq_add_vendor['created_at']=date('Y-m-d H:i:s');
             $jo_rfq_vendor_id=JORFQVendor::insertGetId($rfq_add_vendor);
 

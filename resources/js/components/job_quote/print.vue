@@ -293,8 +293,14 @@
 	}
 
 	const printDivBtn= (jo_rfq_vendor_id) => {
+	var duedate =document.getElementById('duedate').value
+		if(duedate == ''){
+			document.getElementById("duedatealert").style.display="block"
+		}else{
+			document.getElementById("duedatealert").style.display="none"
 			rfqvendorid.value = jo_rfq_vendor_id
 			PrintAlert.value = !PrintAlert.value
+		}
 	}
 
 	const printDiv = (jo_rfq_vendor_id) => {
@@ -302,6 +308,7 @@
 		const formData= new FormData()
 
 		formData.append('jo_rfq_vendor_id', jo_rfq_vendor_id)
+		formData.append('due_date', duedate)
 		formData.append('prepared_by', RFQHead.value.preparedby_id)
 		formData.append('noted_by', noted_by.value)
 		formData.append('approved_by',  approved_by.value)
@@ -553,16 +560,26 @@
 													<td class="p-1 align-top">{{ hn.notes }}</td>
 												</tr>
 											</table>
+											<div class="bg-red-100 border-2 border-red-200 w-full p-1  px-2 text-red-500 my-1 mb-2 hidden"  id="duedatealert">
+												<div class="flex justify-start space-x-2">
+													<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
+													<span class="text-sm">Due date is required!</span>
+												</div>
+											</div>
 											<table class="table-bordesred w-full text-xs">
 												<tr>
-													<td colspan="4">Please Fill - Up :</td>
+													<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50 print:bg-white" type="date" id="duedate" v-model="rvi.due_date"></td>
+													<td colspan="4" id="duedate" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
+												</tr>
+												<tr>
+													<td colspan="4">2. Please Fill - Up :</td>
 												</tr>
 												<tbody v-if="(rvi.canvassed==0)">
 													<tr class="po_buttons">
 														<td width="10%"></td>
 														<td width="40%" colspan="2">
 															<div class="flex justify-between space-x-1">
-																<input type="text" class="p-1 w-full bg-yellow-50" id="newterms" v-model="term">
+																<input type="text" cl ass="p-1 w-full bg-yellow-50" id="newterms" v-model="term">
 																<button type="button" class="btn btn-primary p-1" @click="AddRFQTerms(rvi.jo_rfq_vendor_id)">
 																<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon></button>
 															</div>

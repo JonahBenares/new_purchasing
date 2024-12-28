@@ -252,6 +252,23 @@
 		}
 	}
 
+	const SaveBtn = () => {
+		var count_refpo=document.getElementsByClassName('refpono');
+		var not_empty_refpo = 0;
+			for(var x=0;x<count_refpo.length;x++){
+				var reference = document.getElementsByClassName('refpono')[x].value
+				if(reference != "") {
+					not_empty_refpo++;
+				}
+			}
+
+			if(not_empty_refpo>=1){
+				document.getElementById("save").disabled = false;
+			}else{
+				document.getElementById("save").disabled = true;
+			}
+	}
+
 	const onSave = (status) => {
 		const formData= new FormData()
 		var total = String(grand_total.value);
@@ -690,7 +707,7 @@
 												<div class="flex justify-between space-x-1 w-full">
 													<div class="w-full">
 														<!-- <p class="w-full text-xs m-0 font-bold">{{ pd.offer_supp }}</p> -->
-														<input type="text" class="p-1  w-full bg-yellow-50 border-b" :id="'refpono'+ index" v-model="pd.reference_po_no" readonly>
+														<input type="text" class="p-1  w-full bg-yellow-50 border-b refpono" :id="'refpono'+ index" v-model="pd.reference_po_no" readonly @change="SaveBtn">
 														<input type="text" class="p-1  w-full bg-yellow-50 border-b" :id="'offerdesc'+ index" v-model="pd.offer_desc" readonly>
 														<input type="hidden" :id="'refpodetailsid'+ index" v-model="pd.reference_po_details_id">
 														<!-- <span class="">{{ pd.offer_desc }}</span> -->
@@ -967,7 +984,7 @@
 									<div class="flex justify-center space-x-2">
 										<button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="pohead_id!=0">Cancel PO</button>
 										<button @click="onSave('Draft')" class="btn btn-warning w-26 !text-white" id="draft">Save as Draft</button>
-										<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save">Save</button>
+										<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save" disabled>Save</button>
 									</div>
 								</div>
 							</div>
