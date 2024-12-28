@@ -24,4 +24,8 @@ class JORMaterialDetails extends Model
         'cancelled_reason',
         'status',
     ];
+
+    public function jo_rfq_material_details(){
+        return $this->hasMany(JORFQMaterialDetails::class);
+    }
 }

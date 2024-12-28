@@ -314,7 +314,7 @@
 							<!-- loop here if 3 and below offers here -->
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 						<tr>
-							<td class="bg-gray-50 p-1 uppercase" colspan="19">
+							<td class="bg-gray-50 p-1 uppercase" colspan="19" v-if="material_data.length != 0">
 								Materials
 							</td>
 						</tr>

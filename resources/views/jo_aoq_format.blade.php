@@ -158,9 +158,11 @@
 	@endphp
 	@endforeach
 	
+	@if(!empty($aoq_material_data))
 	<tr>
 		<td style="border: 1px solid gray;vertical-align: text-top;text-wrap: wrap; text-align: left;" colspan="3">Materials</td>
 	</tr>
+	@endif
 	@php
 		$materialno = 1;
 	@endphp
