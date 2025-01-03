@@ -307,6 +307,7 @@
 		PrintAlert.value = !hideModal.value
 		const formData= new FormData()
 
+		var duedate =document.getElementById('duedate').value
 		formData.append('jo_rfq_vendor_id', jo_rfq_vendor_id)
 		formData.append('due_date', duedate)
 		formData.append('prepared_by', RFQHead.value.preparedby_id)

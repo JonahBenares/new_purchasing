@@ -814,7 +814,7 @@
 													</table>
 													<table class="table-bordesred w-full text-xs">
 															<tr>
-																<td colspan="4">1. Quotation must be submitted on or before {{ rvi.due_date }}</td>
+																<td colspan="4">1. Quotation must be submitted on or before {{ rvi.view_due_date }}</td>
 															</tr>
 															<tr>
 																<td colspan="4">2. Please Fill - Up :</td>

@@ -50,6 +50,7 @@ class JORFQController extends Controller
 
     public function all_jor(){
         $jorlist=JORHead::where('status','Saved')->orderBy('jor_no','ASC')->get()->unique('jor_no');
+        $jor_list = array();
         foreach($jorlist AS $jor){
             $jor_in_rfq = JORFQHead::where('jor_head_id',$jor->id)->get();
             $count_jor_in_rfq=$jor_in_rfq->count();
@@ -309,6 +310,7 @@ class JORFQController extends Controller
                         'vendor_identifier'=>$v->vendor_identifier ?? '',
                         'phone_no'=>$v->vendor_details->phone,
                         'due_date'=>$v->due_date,
+                        'view_due_date'=>date('m/d/Y', strtotime($v->due_date)),
                         'canvassed'=>$v->canvassed,
                         'status'=>$v->status,
                         'prepared_by_id'=>$v->prepared_by,
