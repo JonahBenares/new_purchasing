@@ -49,7 +49,7 @@ class RepeatOrderPOController extends Controller
         foreach($available_pr AS $apr){
             $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
             $count_pr=$count_available_pr->count();
-            if($count_pr != 0){
+            if($count_pr != 0 || $count_pr != ''){
                 $prno_dropdown[] = [
                     'id'=>$apr->id,
                     'pr_no'=>$apr->pr_no,
@@ -120,10 +120,13 @@ class RepeatOrderPOController extends Controller
             ];
         }
 
-        $pr_details = PrReportDetails::where('pr_no',$pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+        // $pr_details = PrReportDetails::where('pr_no',$pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+        $pr_head_id= PRHead::where('pr_no',$pr_no)->value('id');
+        $pr_details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','=','Saved')->get();
         $currency=Config::get('constants.currency');
         foreach($pr_details AS $pd){
-            $available_qty = $pd->pr_qty - $pd->delivered_qty;
+            $delivered_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('delivered_qty');
+            $available_qty = $pd->pr_qty - $delivered_qty;
             $po_details[] = [
                 'pr_details_id' =>$pd->pr_details_id,
                 'item_description' =>$pd->item_description,
