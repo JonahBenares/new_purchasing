@@ -49,7 +49,11 @@ class PODirectController extends Controller
         foreach($available_pr AS $apr){
             $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
             $count_pr=$count_available_pr->count();
-            if($count_pr != 0 || $count_pr != ''){
+
+            $total_pr_qty = PRDetails::where('pr_head_id',$apr->id)->where('status','Saved')->sum('quantity');
+            $total_po_qty = PrReportDetails::where('pr_no',$apr->pr_no)->selectRaw('SUM(po_qty + dpo_qty + rpo_qty) as total_sum')->value('total_sum');
+            
+            if(($count_pr != 0 || $count_pr != '') && ($total_pr_qty != $total_po_qty)){
                 $prno_dropdown[] = [
                     'id'=>$apr->id,
                     'pr_no'=>$apr->pr_no,
