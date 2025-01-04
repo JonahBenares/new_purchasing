@@ -125,17 +125,21 @@ class PODirectController extends Controller
         $pr_details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','=','Saved')->get();
         $currency=Config::get('constants.currency');
         foreach($pr_details AS $pd){
-            $delivered_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('delivered_qty');
-            $available_qty = $pd->pr_qty - $delivered_qty;
-            $po_details[] = [
-                'pr_details_id' =>$pd->pr_details_id,
-                'item_description' =>$pd->item_description,
-                'quantity' =>$available_qty,
-                'available_qty' =>$available_qty,
-                'uom' =>$pd->uom,
-                'unit_price' =>0,
-                'currency' =>'PHP',
-            ];
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('rpo_qty');
+            $available_qty = $pd->pr_qty - ($po_qty + $dpo_qty + $rpo_qty);
+            if($available_qty > 0){
+                $po_details[] = [
+                    'pr_details_id' =>$pd->pr_details_id,
+                    'item_description' =>$pd->item_description,
+                    'quantity' =>$available_qty,
+                    'available_qty' =>$available_qty,
+                    'uom' =>$pd->uom,
+                    'unit_price' =>0,
+                    'currency' =>'PHP',
+                ];
+            }
         }
         // $po_details = RFQOffers::select('rfq_offers.id','rfq_offers.rfq_vendor_id', 'remaining_qty', 'rfq_offers.pr_details_id','rfq_offers.offer','rfq_offers.uom','rfq_offers.unit_price','rfq_offers.currency')->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_details', 'rfq_offers.rfq_vendor_id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.rfq_head_id',$po_head->rfq_head_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         // foreach($po_details AS $pd){
