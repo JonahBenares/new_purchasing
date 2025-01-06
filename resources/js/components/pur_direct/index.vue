@@ -198,6 +198,7 @@
 				var pi = p.replace(",", "");
 				total += parseFloat(pi);
 			});
+			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
 			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 			ChangeGrandTotal(vat_percent)
