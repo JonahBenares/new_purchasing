@@ -678,9 +678,12 @@ class RepeatOrderPOController extends Controller
         $po_terms = POTerms::where('po_head_id',$po_head_id)->get();
         $po_instructions = POInstruction::where('po_head_id',$po_head_id)->get();
         $prepared_by= User::where('id',$po_head->prepared_by)->value('name');
-        $checked_by= User::where('id',$po_head->checked_by)->value('name');
-        $recommended_by= User::where('id',$po_head->recommended_by)->value('name');
-        $approved_by= User::where('id',$po_head->approved_by)->value('name');
+        $checkedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('checked_by');
+        $checked_by= User::where('id',$checkedby_id)->value('name');
+        $recommendedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('recommended_by');
+        $recommended_by= User::where('id',$recommendedby_id)->value('name');
+        $approvedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('approved_by');
+        $approved_by= User::where('id',$approvedby_id)->value('name');
         // $total=[];
         // foreach($po_details AS $pd){
         //     $total[]=$pd->unit_price * $pd->quantity;
@@ -742,6 +745,9 @@ class RepeatOrderPOController extends Controller
             'vat_amount'=>$request->vat_amount,
             'vat_in_ex'=>$request->vat_in_ex,
             'grand_total'=>$request->grand_total,
+            'checked_by'=>$request->checked_by,
+            'recommended_by'=>$request->recommended_by,
+            'approved_by'=>$request->approved_by,
             'internal_comment'=>$request->internal_comment,
             'revision_no'=>0,
         ];
@@ -951,6 +957,9 @@ class RepeatOrderPOController extends Controller
                 'vat_amount'=>$po_head_temp->vat_amount,
                 'vat_in_ex'=>$po_head_temp->vat_in_ex,
                 'grand_total'=>$po_head_temp->grand_total,
+                'checked_by'=>$po_head_temp->checked_by,
+                'recommended_by'=>$po_head_temp->recommended_by,
+                'approved_by'=>$po_head_temp->approved_by,
                 'internal_comment'=>$po_head_temp->internal_comment,
                 'revision_no'=>$revision_no,
                 'status'=>'Saved',

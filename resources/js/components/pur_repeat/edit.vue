@@ -533,6 +533,9 @@ import moment from 'moment';
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total_replace)
+		formData.append('checked_by', checked_by_id.value)
+		formData.append('approved_by', approved_by_id.value)
+		formData.append('recommended_by', recommended_by_id.value)
 		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		formData.append('terms_list', JSON.stringify(terms_list.value))
@@ -1082,26 +1085,29 @@ import moment from 'moment';
 											<tr>
 												<td class="text-center p-1"><input type="text" class="text-center">{{prepared_by}}</td>
 												<td></td>
-												<td class="text-center p-1">
+												<td class="text-center p-1" v-if="po_head.status!='Revised'">
 												<select class="text-center bg-yellow-50" v-model="checked_by_id" id="checked_by" @click="resetError('button1')">
 													<option value='0'>--Select Reviewed/Checked by--</option>
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
+												<td class="text-center p-1" v-else>{{checked_by}}</td>
 												<td></td>
-												<td class="text-center p-1">
+												<td class="text-center p-1" v-if="po_head.status!='Revised'">
 												<select class="text-center bg-yellow-50" v-model="recommended_by_id" id="recommended_by" @click="resetError('button2')">
 													<option value='0'>--Select Recommended by--</option>
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
+												<td class="text-center p-1" v-else>{{recommended_by}}</td>
 												<td></td>
-												<td class="text-center p-1">
+												<td class="text-center p-1" v-if="po_head.status!='Revised'">
 												<select class="text-center bg-yellow-50" v-model="approved_by_id" id="approved_by" @click="resetError('button3')">
 													<option value='0'>--Select Approved by--</option>
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
+												<td class="text-center p-1" v-else>{{approved_by}}</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>
