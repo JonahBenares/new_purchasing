@@ -44,9 +44,9 @@
 	const instruction_id=ref(0);
 	const terms_id=ref(0);
 	let pohead_id=ref(0);
-	const formatter = new Intl.NumberFormat('en-US', {
-		minimumFractionDigits: 4,   
-	})
+	const formatter = new Intl.NumberFormat('en-US', { 
+        minimumFractionDigits: 4 
+    });
 	const cancel_all_reason=ref('');
 
 	const props = defineProps({
