@@ -120,8 +120,8 @@ import moment from 'moment';
 		var cancelled_qty=0;
 		response.data.po_details.forEach(function (val, index, theArray) {
 			cancelled_qty +=(val.status=='Cancelled') ? val.total_cost : ''
-			grand_total_old.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
-			grand_total.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
+			grand_total_old.value = (((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee - response.data.po_head.discount)) + newvat.value 
+			grand_total.value = (((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) - response.data.po_head.discount) + newvat.value
 		});
 		po_details.value.forEach(function (val, index, theArray) {
 			checkRemainingQty(val.po_head_id,val.pr_details_id,index)
@@ -376,7 +376,7 @@ import moment from 'moment';
 		// var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
 		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_total = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + new_vat ;
 		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
@@ -397,7 +397,7 @@ import moment from 'moment';
         var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
 		vat_amount.value=new_vat.toFixed(2);
-        var new_total=(parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        var new_total=((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat);
         document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
 		// new_data.value=parseFloat(new_total)
 	} 
@@ -412,8 +412,9 @@ import moment from 'moment';
 					total += parseFloat(pi);
 				}
 			});
+			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
-			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 			ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
@@ -436,8 +437,8 @@ import moment from 'moment';
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
+		var new_total = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + new_vat;
 		grand_total.value = new_total;
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
@@ -493,7 +494,7 @@ import moment from 'moment';
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
 		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 		vat_amount.value=new_vat;
-		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
 		grand_total.value=overall_total.toFixed(2);
 		orig_amount.value=grandtotal.toFixed(2);
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
@@ -502,7 +503,6 @@ import moment from 'moment';
 		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
 		var all_qty=balance_overall.value.pr_qty - po_qty
 		var total_qty = all_qty + po_qty;
-qty
 		po_details.value[count].totalprice = qty * po_details.value[count].unit_price
 	
 		if(qty>total_qty){

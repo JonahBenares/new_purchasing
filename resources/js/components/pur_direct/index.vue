@@ -160,8 +160,8 @@
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) - parseFloat(discount_display)) + new_vat ;
 		grand_total.value = new_total;
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
@@ -182,7 +182,7 @@
         var percent= (vat.value==1) ? vat_percent/100 : 0;
         var new_vat = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
-        var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        var new_total=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat);
         grand_total.value=new_total;
 		new_data.value=parseFloat(new_total)
 	}
@@ -200,7 +200,8 @@
 			});
 			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
-			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+			var new_vat=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+			vat_amount.value = parseFloat(new_vat).toFixed(2);
 			ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
@@ -223,12 +224,13 @@
 			var pi = p.replace(",", "");
 			grandtotal += parseFloat(pi);
         });
+		var discount_display= (discount.value!='') ? discount.value : 0;
         var percent= (vat.value==1) ? vat_percent/100 : 0
-		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 		vat_amount.value=new_vat;
 		
-		var discount_display= (discount.value!='') ? discount.value : 0;
-		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+		
+		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
 		grand_total.value=overall_total.toFixed(2);
 		if(qty>avail_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
