@@ -114,7 +114,7 @@
                                     <tr>
                                         <th class="!text-xs bg-gray-100 uppercase"> Employee Name</th>
                                         <th class="!text-xs bg-gray-100 uppercase"> Department</th>
-                                        <th class="!text-xs bg-gray-100 uppercase"> Poisition</th>
+                                        <th class="!text-xs bg-gray-100 uppercase"> Position</th>
                                         <th class="!text-xs bg-gray-100 uppercase" width="1%" align="center"> 
                                             <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>

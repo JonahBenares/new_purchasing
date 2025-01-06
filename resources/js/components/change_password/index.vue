@@ -79,41 +79,28 @@ const onSave = () => {
 
 <template>
     <navigation>
-        <div class="container-fluid">
-			<!-- BreadCrumb -->
-			<div class="card mb-3">	
-				<div class="flex justify-between content-center">
-					<div class="flex justify-start space-x-3 ">
-						<div class="">
-							<a href="/dashboard" class="btn btn-secondary btn-xs btn-rounded">
-								<ArrowUturnLeftIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></ArrowUturnLeftIcon>
-							</a>
-						</div>
-						<!-- <div class="border-r"></div>	 -->
-						<div>
-							<h5 class="m-0 ">{{credentials.name}}</h5>
-						</div>
-					</div>	
-					<div class="pt-1">	
-						<nav aria-label="breadcrumb" role="navigation">
-							<ol class="breadcrumb adminx-page-breadcrumb">
-								<li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Change Password</li>
-							</ol>
-						</nav>
-					</div>
-				</div>
-			</div>	
-			<div class="row">
-				<div class="col-md-12 col-lg-12 ">
-					<div class="card">
+		<div class="row">
+            <div class="col-lg-12">
+                <div class="flex justify-between mb-3 px-2">
+                    <span class="">
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">{{credentials.name}} </h3>
+                    </span>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Change Password</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+		<div class="row">
+			<div class="col-lg-12 stretch-card">
+				<div class="card">
+					<div class="card-body">
 						<div class="mt-2 mb-2 border-b">
 							<h6>Change Password</h6>	
 						</div>
-						<!-- <span>
-							<p class="text-success" v-if="success">{{ success }}</p>
-							<p class="text-danger" v-if="error">{{ error }}</p>
-						</span> -->
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-group">
@@ -127,9 +114,6 @@ const onSave = () => {
 									<p v-if="errorMessage" style="color:red">{{ errorMessage }}</p>
 								</div>									
 							</div>
-							<div class="col-lg-6">
-																	
-							</div>
 						</div>
 						<div class="pt-2 mb-2">
 							<input type="hidden" class="form-control border" v-model="credentials.id">
@@ -137,7 +121,6 @@ const onSave = () => {
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<Transition
