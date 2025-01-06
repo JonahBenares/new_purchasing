@@ -174,6 +174,7 @@ class POController extends Controller
         $other_list=$request->input("other_list");
         $po_details=$request->input("po_details");
         $year=date('Y');
+        $company=Config::get('constants.company');
         $series_rows = POSeries::where('year',$year)->count();
         $exp=explode('-',$request->po_no);
 
@@ -188,7 +189,7 @@ class POController extends Controller
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$popr."-".Str::padLeft($exp[3], 4,'000')."-".$company;
+            $po_no = 'P'.$popr."-".Str::padLeft($exp[2], 4,'000')."-".$company;
         }
 
         // if($series_rows==0){
@@ -201,7 +202,7 @@ class POController extends Controller
         //     $po_no = 'P'.$request->pr_no."-".Str::padLeft($exp[3], 4,'000');
         // }
 
-        if(!POSeries::where('year',$year)->where('series',$exp[3])->exists()){
+        if(!POSeries::where('year',$year)->where('series',$exp[2])->exists()){
             $series['year']=$year;
             $series['series']=$po_series;
             $po_series=POSeries::create($series);

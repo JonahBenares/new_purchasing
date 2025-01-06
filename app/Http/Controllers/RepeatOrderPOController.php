@@ -141,7 +141,7 @@ class RepeatOrderPOController extends Controller
             $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty);
             if($available_qty > 0){
                 $po_details[] = [
-                    'pr_details_id' =>$pd->pr_details_id,
+                    'pr_details_id' =>$pd->id,
                     'item_description' =>$pd->item_description,
                     'quantity' =>$available_qty,
                     'available_qty' =>$available_qty,
@@ -209,6 +209,7 @@ class RepeatOrderPOController extends Controller
         $other_list=$request->input("other_list");
         $po_details=$request->input("po_details");
         $year=date('Y');
+        $company=Config::get('constants.company');
         $series_rows = POSeries::where('year',$year)->count();
         $exp=explode('-',$request->po_no);
 
@@ -223,10 +224,10 @@ class RepeatOrderPOController extends Controller
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$popr."-".Str::padLeft($exp[3], 4,'000')."-".$company;
+            $po_no = 'P'.$popr."-".Str::padLeft($exp[2], 4,'000')."-".$company;
         }
         
-        if(!POSeries::where('year',$year)->where('series',$exp[3])->exists()){
+        if(!POSeries::where('year',$year)->where('series',$exp[2])->exists()){
             $series['year']=$year;
             $series['series']=$po_series;
             $po_series=POSeries::create($series);
