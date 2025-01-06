@@ -283,7 +283,7 @@
                                                             <div class="flex justify-between space-x-1">
                                                                 <span class="w-full">{{pd.item_description}}</span>
                                                                 <a href="#" @click="cancelPOitems('no',pd.id)" class="!text-red-500 cursor-pointer po_buttons" v-if="po_details_view.length>1 && pd.status!='Cancelled'">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
+                                                                    <!-- <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon> -->
                                                                 </a>
                                                             </div>
                                                         </td>
@@ -366,7 +366,7 @@
                                         <div class="col-lg-12">
                                             <div class="flex space-x-1" >
                                                 <template v-for="(por, r) in po_details" :key="index">
-                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
+                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2" v-if="por.reference_po_no != ''">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
                                                 </template>
                                             </div> 
                                         </div>

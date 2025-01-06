@@ -138,7 +138,8 @@ class PODirectController extends Controller
             $po_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('po_qty');
             $dpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('dpo_qty');
             $rpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('rpo_qty');
-            $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty);
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->id)->where('status','Draft')->value('quantity');
+            $available_qty = $pd->quantity - (($po_qty + $dpo_qty + $rpo_qty) + $po_draft_qty);
             if($available_qty > 0){
                 $po_details[] = [
                     'pr_details_id' =>$pd->id,
