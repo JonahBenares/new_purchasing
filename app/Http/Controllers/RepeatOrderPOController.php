@@ -84,14 +84,19 @@ class RepeatOrderPOController extends Controller
         $year=date('Y');
         $series_rows = POSeries::where('year',$year)->count();
         $company=Config::get('constants.company');
+
+        $po_pr = explode("-", $pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$pr_no."-".Str::padLeft($po_series, 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($po_series, 4,'000')."-".$company;
         }
         
         $dr_series_rows = PoDrSeries::where('year',$year)->count();
@@ -128,11 +133,12 @@ class RepeatOrderPOController extends Controller
         $pr_head_id= PRHead::where('pr_no',$pr_no)->value('id');
         $pr_details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','=','Saved')->get();
         $currency=Config::get('constants.currency');
+        $po_details = array();
         foreach($pr_details AS $pd){
             $po_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('po_qty');
             $dpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('dpo_qty');
             $rpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('rpo_qty');
-            $available_qty = $pd->pr_qty - ($po_qty + $dpo_qty + $rpo_qty);
+            $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty);
             if($available_qty > 0){
                 $po_details[] = [
                     'pr_details_id' =>$pd->pr_details_id,
@@ -205,15 +211,21 @@ class RepeatOrderPOController extends Controller
         $year=date('Y');
         $series_rows = POSeries::where('year',$year)->count();
         $exp=explode('-',$request->po_no);
+
+        $po_pr = explode("-", $request->pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$request->pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$request->pr_no."-".Str::padLeft($exp[3], 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($exp[3], 4,'000')."-".$company;
         }
+        
         if(!POSeries::where('year',$year)->where('series',$exp[3])->exists()){
             $series['year']=$year;
             $series['series']=$po_series;
@@ -689,8 +701,11 @@ class RepeatOrderPOController extends Controller
             'po_instructions_temp'=>$po_instruction_temp,
             'prepared_by'=>$prepared_by,
             'checked_by'=>$checked_by,
+            'checked_by_id'=>$po_head->checked_by,
             'recommended_by'=>$recommended_by,
+            'recommended_by_id'=>$po_head->recommended_by,
             'approved_by'=>$approved_by,
+            'approved_by_id'=>$po_head->approved_by,
             'cancelled_by'=>$cancelled_by,
             'grand_total'=>$total_sum,
             'vendor_details_id'=>$vendor_details_id,

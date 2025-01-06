@@ -44,9 +44,12 @@ import moment from 'moment';
 	const balance_overall =  ref(0);
 	const remaining_balance =  ref([]);
 	const prepared_by =  ref('');
+	const checked_by_id =  ref(0);
 	const checked_by =  ref('');
 	const recommended_by =  ref('');
+	const recommended_by_id =  ref(0);
 	const approved_by =  ref('');
+	const approved_by_id =  ref(0);
 	const approved_by_rev =  ref(0);
 	const approved_date =  ref('');
 	const approved_reason =  ref('');
@@ -109,8 +112,11 @@ import moment from 'moment';
 		po_instructions.value = response.data.po_instructions;
 		prepared_by.value = response.data.prepared_by;
 		checked_by.value = response.data.checked_by;
+		checked_by_id.value = response.data.checked_by_id;
 		recommended_by.value = response.data.recommended_by;
+		recommended_by_id.value = response.data.recommended_by_id;
 		approved_by.value = response.data.approved_by;
+		approved_by_id.value = response.data.approved_by_id;
 		var cancelled_qty=0;
 		response.data.po_details.forEach(function (val, index, theArray) {
 			cancelled_qty +=(val.status=='Cancelled') ? val.total_cost : ''
@@ -1074,13 +1080,28 @@ qty
 												<td class="text-center border-b"></td>
 											</tr>
 											<tr>
-												<td class="text-center p-1">{{prepared_by}}</td>
+												<td class="text-center p-1"><input type="text" class="text-center">{{prepared_by}}</td>
 												<td></td>
-												<td class="text-center p-1">{{checked_by}}</td>
+												<td class="text-center p-1">
+												<select class="text-center bg-yellow-50" v-model="checked_by_id" id="checked_by" @click="resetError('button1')">
+													<option value='0'>--Select Reviewed/Checked by--</option>
+													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+												</select>
+												</td>
 												<td></td>
-												<td class="text-center p-1">{{recommended_by}}</td>
+												<td class="text-center p-1">
+												<select class="text-center bg-yellow-50" v-model="recommended_by_id" id="recommended_by" @click="resetError('button2')">
+													<option value='0'>--Select Recommended by--</option>
+													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+												</select>
+												</td>
 												<td></td>
-												<td class="text-center p-1">{{approved_by}}</td>
+												<td class="text-center p-1">
+												<select class="text-center bg-yellow-50" v-model="approved_by_id" id="approved_by" @click="resetError('button3')">
+													<option value='0'>--Select Approved by--</option>
+													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+												</select>
+												</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>

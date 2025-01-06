@@ -603,7 +603,7 @@
 							<div class="input-group col-xs-12">
 								<select class="form-control file-upload-info" v-model="pr_no" @change="getSupplierRPO()">
 									<option value="">--Select PR Number--</option>
-									<option :value="p.pr_no" v-for="p in prno_dropdown" :key="p.pr_no">{{ p.pr_no }}</option>
+									<option :value="p.pr_no" v-for="p in prno_dropdown" :key="p.pr_no">{{ p.pr_no }} </option>
 								</select>
 								<select class="form-control file-upload-info" id="rpo_supplier" v-model="vendor_details_id" @change="OpenBtn()" disabled>
 									<option value="">--Select Supplier--</option>
