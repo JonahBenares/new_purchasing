@@ -149,9 +149,6 @@
 	}
 
 	const ChangeGrandTotal = (vat_percent) => {
-		formatter.value = new Intl.NumberFormat('en-US', {
-			minimumFractionDigits: 4,      
-		})
 		var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
@@ -161,10 +158,11 @@
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
 		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) - parseFloat(discount_display)) + new_vat ;
 		grand_total.value = new_total;
 		new_data.value=parseFloat(new_total)
-		document.getElementById("vat_amount").value=new_vat.toFixed(2);
+		// document.getElementById("vat_amount").value=new_vat.toFixed(2);
 		vat_amount.value=new_vat.toFixed(2);
 
 		const prices = document.querySelectorAll('.unit-price');
@@ -694,7 +692,7 @@
 													<textarea name="" :id="'itemdesc'+index" rows="2" class="p-1 w-full bg-yellow-50 itemdesc" v-model="pd.item_description" @change="CheckItemDescEmpty(index)"></textarea>
 												</td>
 												<td class="align-top p-0 bg-yellow-50">
-													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b unit-price" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" @change="ChangeGrandTotal()" v-model="pd.unit_price">
+													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b unit-price" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" @change="ChangeGrandTotal(vat_percent)" v-model="pd.unit_price">
 													<select class="p-1 m-0 leading-none w-full text-center  bg-yellow-50" v-model="pd.currency">
 														<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 													</select>
