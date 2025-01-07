@@ -251,10 +251,10 @@
 			var percent=vat_percent/100;
 			var new_vat=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 			vat_amount.value = parseFloat(new_vat).toFixed(2);
-			// ChangeGrandTotal(vat_percent)
+			ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
-			// ChangeGrandTotal(vat_percent)
+			ChangeGrandTotal(vat_percent)
 		}
 	}
 
