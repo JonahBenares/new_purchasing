@@ -162,21 +162,25 @@
 	}
 
 	const checkBalance = (vat_percent,qty,avail_qty,count) => {
+		po_details.value[count].totalprice = po_details.value[count].unit_price * po_details.value[count].quantity
+
 		var grandtotal=0;
-		po_details.value.forEach(function (val, index, theArray) {
-			var p = document.getElementById('tprice'+index).value;
-			if(p != '' && p != NaN){
-				var pi = p.replace(",", "");
-				grandtotal += parseFloat(pi);
+		// po_details.value.forEach(function (val, index, theArray) {
+		for(var x=0;x<po_details.value.length;x++){
+			var p = po_details.value[x].totalprice;
+			if(p != '' && p != NaN && p != null){
+				// var pi = p.replace(",", "");
+				grandtotal += parseFloat(p);
 			}
-        });
+        }
+
+		var discount_display= (discount.value!='') ? discount.value : 0;
         var percent= (vat.value==1) ? vat_percent/100 : 0
 		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 		vat_amount.value=new_vat;
 		
-		var discount_display= (discount.value!='') ? discount.value : 0;
 		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
-		grand_total.value=overall_total;
+		grand_total.value=overall_total.toFixed(2);
 		if(qty>avail_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
@@ -246,10 +250,10 @@
 			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
 			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
-			ChangeGrandTotal(vat_percent)
+			// ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
-			ChangeGrandTotal(vat_percent)
+			// ChangeGrandTotal(vat_percent)
 		}
 	}
 
@@ -714,7 +718,7 @@
 											</td>
 											<td class="p-0 bg-orange-50">
 												<!-- <input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00.00" v-model="pd.total" readonly> -->
-												<input type="text" class="p-1 text-center w-full bg-orange-50 tprice" placeholder="00.00" :id="'tprice'+index" v-model="pd.totalprice" readonly>
+												<input type="text" class="p-1 text-center w-full bg-orange-50 tprice" placeholder="00.00" :id="'tprice'+index" v-model="pd.totalprice">
 											</td>
 											<td class="p-0" align="center">
 												<button class="btn btn-sm btn-danger p-1" @click="removeOffer(index)" v-if="pd.reference_po_no != ''">
