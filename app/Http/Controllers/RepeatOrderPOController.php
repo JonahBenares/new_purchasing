@@ -679,11 +679,15 @@ class RepeatOrderPOController extends Controller
         $po_instructions = POInstruction::where('po_head_id',$po_head_id)->get();
         $prepared_by= User::where('id',$po_head->prepared_by)->value('name');
         $checkedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('checked_by');
-        $checked_by= User::where('id',$checkedby_id)->value('name');
+        $temp_checked_by= User::where('id',$checkedby_id)->value('name');
         $recommendedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('recommended_by');
-        $recommended_by= User::where('id',$recommendedby_id)->value('name');
+        $temp_recommended_by= User::where('id',$recommendedby_id)->value('name');
         $approvedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('approved_by');
-        $approved_by= User::where('id',$approvedby_id)->value('name');
+        $temp_approved_by= User::where('id',$approvedby_id)->value('name');
+
+        $checked_by= User::where('id',$po_head->checked_by)->value('name');
+        $recommended_by= User::where('id',$po_head->recommended_by)->value('name');
+        $approved_by= User::where('id',$po_head->approved_by)->value('name');
         // $total=[];
         // foreach($po_details AS $pd){
         //     $total[]=$pd->unit_price * $pd->quantity;
@@ -705,10 +709,13 @@ class RepeatOrderPOController extends Controller
             'po_instructions'=>$po_instructions,
             'po_instructions_temp'=>$po_instruction_temp,
             'prepared_by'=>$prepared_by,
+            'temp_checked_by'=>$temp_checked_by,
             'checked_by'=>$checked_by,
             'checked_by_id'=>$po_head->checked_by,
+            'temp_recommended_by'=>$temp_recommended_by,
             'recommended_by'=>$recommended_by,
             'recommended_by_id'=>$po_head->recommended_by,
+            'temp_approved_by'=>$temp_approved_by,
             'approved_by'=>$approved_by,
             'approved_by_id'=>$po_head->approved_by,
             'cancelled_by'=>$cancelled_by,

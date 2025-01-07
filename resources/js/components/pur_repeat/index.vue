@@ -383,8 +383,9 @@
 
 	const pr_det = ref(false)
 
-	const openModel = (item_no) => {
+	const openModel = (item_no, itemdesc) => {
 		itemno.value = item_no
+		item_description.value = itemdesc
 		showModal.value = !showModal.value
 	}
 
@@ -725,7 +726,7 @@
 												<button class="btn btn-sm btn-danger p-1" @click="removeOffer(index)" v-if="pd.reference_po_no != ''">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 												</button>
-                                                <button class="btn btn-sm btn-primary p-1" @click="openModel(index)">
+                                                <button class="btn btn-sm btn-primary p-1" @click="openModel(index,pd.item_description)">
                                                     <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </button>
                                             </td>

@@ -44,10 +44,13 @@ import moment from 'moment';
 	const balance_overall =  ref(0);
 	const remaining_balance =  ref([]);
 	const prepared_by =  ref('');
-	const checked_by_id =  ref(0);
+	const temp_checked_by =  ref('');
 	const checked_by =  ref('');
+	const checked_by_id =  ref(0);
+	const temp_recommended_by =  ref('');
 	const recommended_by =  ref('');
 	const recommended_by_id =  ref(0);
+	const temp_approved_by =  ref('');
 	const approved_by =  ref('');
 	const approved_by_id =  ref(0);
 	const approved_by_rev =  ref(0);
@@ -111,10 +114,12 @@ import moment from 'moment';
 		po_terms.value = response.data.po_terms;
 		po_instructions.value = response.data.po_instructions;
 		prepared_by.value = response.data.prepared_by;
+		temp_checked_by.value = response.data.temp_checked_by;
 		checked_by.value = response.data.checked_by;
 		checked_by_id.value = response.data.checked_by_id;
-		recommended_by.value = response.data.recommended_by;
+		temp_recommended_by.value = response.data.temp_recommended_by;
 		recommended_by_id.value = response.data.recommended_by_id;
+		temp_approved_by.value = response.data.temp_approved_by;
 		approved_by.value = response.data.approved_by;
 		approved_by_id.value = response.data.approved_by_id;
 		var cancelled_qty=0;
@@ -1091,7 +1096,7 @@ import moment from 'moment';
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
-												<td class="text-center p-1" v-else>{{checked_by}}</td>
+												<td class="text-center p-1" v-else>{{temp_checked_by}}</td>
 												<td></td>
 												<td class="text-center p-1" v-if="po_head.status!='Revised'">
 												<select class="text-center bg-yellow-50" v-model="recommended_by_id" id="recommended_by" @click="resetError('button2')">
@@ -1099,7 +1104,7 @@ import moment from 'moment';
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
-												<td class="text-center p-1" v-else>{{recommended_by}}</td>
+												<td class="text-center p-1" v-else>{{temp_recommended_by}}</td>
 												<td></td>
 												<td class="text-center p-1" v-if="po_head.status!='Revised'">
 												<select class="text-center bg-yellow-50" v-model="approved_by_id" id="approved_by" @click="resetError('button3')">
@@ -1107,7 +1112,7 @@ import moment from 'moment';
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
-												<td class="text-center p-1" v-else>{{approved_by}}</td>
+												<td class="text-center p-1" v-else>{{temp_approved_by}}</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>
