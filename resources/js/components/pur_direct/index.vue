@@ -166,6 +166,17 @@
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
 		vat_amount.value=new_vat.toFixed(2);
+
+		const prices = document.querySelectorAll('.unit-price');
+        let allZero = true;
+
+        prices.forEach(price => {
+            if (parseFloat(price.value) !== 0) {
+                allZero = false;
+            }
+        });
+
+        document.getElementById('save').disabled = allZero;
 	}
 
 	const vatChange = (vat_percent) => {
@@ -683,7 +694,7 @@
 													<textarea name="" :id="'itemdesc'+index" rows="2" class="p-1 w-full bg-yellow-50 itemdesc" v-model="pd.item_description" @change="CheckItemDescEmpty(index)"></textarea>
 												</td>
 												<td class="align-top p-0 bg-yellow-50">
-													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" @change="ChangeGrandTotal()" v-model="pd.unit_price">
+													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b unit-price" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" @change="ChangeGrandTotal()" v-model="pd.unit_price">
 													<select class="p-1 m-0 leading-none w-full text-center  bg-yellow-50" v-model="pd.currency">
 														<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 													</select>
@@ -925,7 +936,7 @@
 											<button type="submit" class="btn btn-primary mr-2 w-44" @click="openSuccessAlert()">Save</button> -->
 											<button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="pohead_id!=0">Cancel PO</button>
 											<button @click="onSave('Draft')" class="btn btn-warning w-26 !text-white" id="draft">Save as Draft</button>
-											<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save">Save</button>
+											<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save" disabled>Save</button>
 										</div>
 									</div>
 								</div>
