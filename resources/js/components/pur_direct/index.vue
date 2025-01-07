@@ -530,6 +530,17 @@
 		btn_draft.disabled = false;
 		const btn_save = document.getElementById("save");
 		btn_save.disabled = false;
+
+		const prices = document.querySelectorAll('.unit-price');
+        let allZero = true;
+
+        prices.forEach(price => {
+            if (parseFloat(price.value) !== 0) {
+                allZero = false;
+            }
+        });
+
+        document.getElementById('save').disabled = allZero;
 	}
 
 	const isNumber = (evt)=> {
