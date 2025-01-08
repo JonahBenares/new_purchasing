@@ -706,8 +706,8 @@ class POController extends Controller
                 ]);
                 // $pr_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('pr_qty');
                 $po_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('po_qty');
-                $dpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('dpo_qty');
-                $rpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('rpo_qty');
+                $dpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+                $rpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
                 $method = POHead::where('id',$pd->po_head_id)->value('method');
                 if($method=='PO'){
                     $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
@@ -715,11 +715,11 @@ class POController extends Controller
                         'po_qty'=>$po_qty - $pd->quantity,
                     ]);
                 }else if($method=='DPO'){
-                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
+                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
                         'dpo_qty'=>$dpo_qty - $pd->quantity,
                     ]);
                 }else if($method=='RPO'){
-                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
+                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
                         'rpo_qty'=>$rpo_qty - $pd->quantity,
                     ]);
                 }

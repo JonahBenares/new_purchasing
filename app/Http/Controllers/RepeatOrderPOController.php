@@ -591,11 +591,17 @@ class RepeatOrderPOController extends Controller
         $currency=Config::get('constants.currency');
         $total=[];
         foreach($podetails AS $pd){
-            $total[]=$pd->unit_price * $pd->quantity;
-            $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
-            $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
-            $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
-            $available_qty = $pr_qty - $delivered_qty;
+            // $total[]=$pd->unit_price * $pd->quantity;
+            // $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
+            // $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            // $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
+            // $available_qty = $pr_qty - $delivered_qty;
+
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->pr_details_id)->where('status','Draft')->value('quantity');
+            $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty + $po_draft_qty);
             $po_details[] = [
                 'id' =>$pd->id,
                 'item_no' =>$pd->item_no,

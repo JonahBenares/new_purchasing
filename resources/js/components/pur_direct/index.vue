@@ -224,9 +224,6 @@
 	}
 
 	const checkBalance = async (vat_percent,qty,avail_qty,count) => {
-		formatter.value = new Intl.NumberFormat('en-US', {
-			minimumFractionDigits: 4,      
-		})
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
@@ -236,7 +233,7 @@
 		var discount_display= (discount.value!='') ? discount.value : 0;
         var percent= (vat.value==1) ? vat_percent/100 : 0
 		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
-		vat_amount.value=new_vat;
+		vat_amount.value=new_vat.toFixed(2);
 		
 		
 		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
@@ -254,9 +251,6 @@
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = false;
 		}
-		formatter.value = new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 4,      
-        })
 	}
 
 	const CheckItemDescEmpty = (index) => {
