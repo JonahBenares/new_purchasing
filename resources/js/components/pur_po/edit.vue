@@ -30,6 +30,7 @@ import moment from 'moment';
 	const po_dr_items =  ref([]);
 	const po_vendor = ref([])
 	const pr_head =  ref([]);
+	const po_details_old =  ref([]);
 	const po_details =  ref([]);
 	const po_details_temp =  ref([]);
 	const po_terms = ref([])
@@ -64,6 +65,7 @@ import moment from 'moment';
 	const new_data =  ref(0);
 	const instruction_id =  ref(0);
 	const terms_id =  ref(0);
+	const currency =  ref([]);
 	const formatter = new Intl.NumberFormat('en-US', { 
         minimumFractionDigits: 4 
     });
@@ -87,6 +89,7 @@ import moment from 'moment';
 		let response = await axios.get("/api/po_viewdetails/"+props.id);
 		po_head_rev.value = response.data.po_head_array;
 		po_head.value = response.data.po_head;
+		currency.value = response.data.currency;
 		po_dr_rev.value = response.data.po_dr_array;
 		po_dr.value = response.data.po_dr;
 		po_dr_items.value = response.data.po_dr_items;
@@ -102,13 +105,14 @@ import moment from 'moment';
 		totals.value = response.data.grand_total;
 		pr_head.value = response.data.pr_head;
 		po_vendor.value = response.data.po_vendor;
+		po_details_old.value = response.data.po_details_view_old;
 		po_details.value = response.data.po_details_view;
 		po_terms.value = response.data.po_terms;
 		po_instructions.value = response.data.po_instructions;
 		prepared_by.value = response.data.prepared_by;
-		checked_by.value = response.data.checked_by;
-		recommended_by.value = response.data.recommended_by;
-		approved_by.value = response.data.approved_by;
+		checked_by.value = response.data.checked_by_id;
+		recommended_by.value = response.data.recommended_by_id;
+		approved_by.value = response.data.approved_by_id
 
 		var percent= vat_percent.value/100;
       
@@ -452,6 +456,9 @@ import moment from 'moment';
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total_replace)
+		formData.append('checked_by', checked_by.value)
+		formData.append('recommended_by', recommended_by.value)
+		formData.append('approved_by', approved_by.value)
 		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		formData.append('terms_list', JSON.stringify(terms_list.value))
@@ -638,7 +645,7 @@ import moment from 'moment';
 													{{ cancelled_qty=0 }}
 													{{ total_cost=0 }}
 												</span>
-												<tr class="" v-for="(pd,index) in po_details">
+												<tr class="" v-for="(pd,index) in po_details_old">
 													<span hidden>
 														{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}
 														{{ total_cost+=pd.total_cost}}
@@ -732,20 +739,33 @@ import moment from 'moment';
 													{{ total_cost=0 }}
 													{{ totalprice=0 }}
 												</span>
-												<tr class="" v-for="(pd, index) in po_details" v-if="po_head.status!='Revised'">
+												<tr class="" v-for="(pdr, index) in po_details" v-if="po_head.status!='Revised'">
 													<span hidden>
-														{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}
-														{{ total_cost+=pd.total_cost}}
-														{{ totalprice=formatter.format(pd.unit_price * remaining_balance[index]) }}
+														{{ cancelled_qty+=(pdr.status=='Cancelled') ? pdr.total_cost : 0 }}
+														{{ total_cost+=pdr.total_cost}}
+														{{ totalprice=formatter.format(pdr.unit_price * remaining_balance[index]) }}
 													</span>
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
 														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
-														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+														<input type="text" min="0" @keyup="checkBalance(pdr.po_head_id,pdr.pr_details_id,remaining_balance[index], index,vat_percent)" @change="checkBalance(pdr.po_head_id,pdr.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 													</td>
-													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
-													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
-													<td class="border-y-none p-1 text-right">{{formatter.format(pd.unit_price)}} {{ pd.currency }}</td>
+													<td class="border-y-none p-1 text-center">
+														<input type="text" class="w-10 bg-yellow-50 border-r" v-model="pdr.uom">
+													</td>
+													<td class="border-y-none p-1" colspan="2">
+														<input type="text" class="w-100 bg-yellow-50 border-r" v-model="pdr.item_description">
+													</td>
+													<td class="border-y-none p-1 text-right">
+														<!-- {{formatter.format(pdr.unit_price)}}  -->
+														<input type="text" class="w-20 bg-yellow-50 border-r text-right" v-model="pdr.unit_price" @keypress="isNumber($event)" @keyup="additionalCost(vat_percent)">
+														<select name="" class="w-15 bg-yellow-50 border-r" v-model="pdr.currency">
+															<option v-for="cur in currency">{{ cur }}</option>
+														</select>
+													</td>
+													<!-- <td class="border-y-none p-1 text-center">{{ pd.uom }}</td> -->
+													<!-- <td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td> -->
+													<!-- <td class="border-y-none p-1 text-right">{{formatter.format(pd.unit_price)}} {{ pd.currency }}</td> -->
 													<td class="border-y-none p-1 text-right"> <input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 												</tr>
 												<tr class="" v-for="(pd, index) in po_details_temp" v-else>
@@ -983,11 +1003,29 @@ import moment from 'moment';
 											<tr>
 												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
-												<td class="text-center p-1">{{checked_by}}</td>
+												<td class="text-center p-1">
+													<!-- {{checked_by}} -->
+													<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by">
+														<option value='0'>--Select Checked by--</option>
+														<option :value="check.id" v-for="check in signatories" :key="check.id">{{ check.name }}</option>
+													</select>
+												</td>
 												<td></td>
-												<td class="text-center p-1">{{recommended_by}}</td>
+												<td class="text-center p-1">
+													<!-- {{recommended_by}} -->
+													<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by">
+														<option value='0'>--Select Recommended by--</option>
+														<option :value="recom.id" v-for="recom in signatories" :key="recom.id">{{ recom.name }}</option>
+													</select>
+												</td>
 												<td></td>
-												<td class="text-center p-1">{{approved_by}}</td>
+												<td class="text-center p-1">
+													<!-- {{approved_by}} -->
+													<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by">
+														<option value='0'>--Select Approved by--</option>
+														<option :value="approve.id" v-for="approve in signatories" :key="approve.id">{{ approve.name }}</option>
+													</select>
+												</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>

@@ -26,5 +26,7 @@ class PoDr extends Model
         'cancelled_reason',
         'revision_no',
         'identifier',
+        'print_identifier',
+        'received',
     ];
 }

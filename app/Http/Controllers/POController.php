@@ -116,8 +116,12 @@ class POController extends Controller
         $po_details = RFQOffers::select('rfq_offers.id','rfq_offers.rfq_vendor_id', 'remaining_qty', 'rfq_offers.pr_details_id','rfq_offers.offer','rfq_offers.uom','rfq_offers.unit_price','rfq_offers.currency')->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_details', 'rfq_offers.rfq_vendor_id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.rfq_head_id',$po_head->rfq_head_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         foreach($po_details AS $pd){
             $balance = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('status','!=','Cancelled')->first();
+            $draft_balance = PoDetails::with('po_head')->where('pr_details_id',$pd->pr_details_id)->whereHas('po_head', function ($pohead) {
+                $pohead->where('status','Draft');
+            })->sum('quantity');
             $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
-            $totals = $balance->pr_qty - $total_po;
+            $totals = $balance->pr_qty - ($total_po + $draft_balance);
+            // $totals = $balance->pr_qty - $total_po;
             $total[]=$pd->unit_price * $totals;
             // $total[]=$pd->unit_price * $balance->pr_qty;
             $rfq_terms=RFQVendorTerms::where('rfq_vendor_id',$pd->rfq_vendor_id)->get();
@@ -139,8 +143,12 @@ class POController extends Controller
 
     public function check_balance($pr_details_id){
         $balance = PrReportDetails::where('pr_details_id',$pr_details_id)->first();
+        $draft_balance = PoDetails::with('po_head')->where('pr_details_id',$pr_details_id)->whereHas('po_head', function ($pohead) {
+            $pohead->where('status','Draft');
+        })->sum('quantity');
         return response()->json([
             'balance'=>$balance,
+            'draft_balance'=>$draft_balance,
         ],200);
     }
 
@@ -577,6 +585,7 @@ class POController extends Controller
         $recommended_by= User::where('id',$po_head->recommended_by)->value('name');
         $approved_by= User::where('id',$po_head->approved_by)->value('name');
         $total=[];
+        $currency=Config::get('constants.currency');
         foreach($po_details AS $pd){
             $total[]=$pd->unit_price * $pd->quantity;
         }
@@ -591,6 +600,7 @@ class POController extends Controller
             'pr_head'=>$pr_head,
             'po_vendor'=>$po_vendor,
             'po_details'=>$po_details,
+            'po_details_view_old'=>$po_details_view,
             'po_details_view'=>$po_details_view,
             'po_details_temp'=>$po_details_temp,
             'po_terms'=>$po_terms,
@@ -599,10 +609,14 @@ class POController extends Controller
             'po_instructions_temp'=>$po_instruction_temp,
             'prepared_by'=>$prepared_by,
             'checked_by'=>$checked_by,
+            'checked_by_id'=>$po_head->checked_by,
             'recommended_by'=>$recommended_by,
+            'recommended_by_id'=>$po_head->recommended_by,
             'approved_by'=>$approved_by,
+            'approved_by_id'=>$po_head->approved_by,
             'cancelled_by'=>$cancelled_by,
             'grand_total'=>$total_sum,
+            'currency'=>$currency,
         ],200);
     }
 
@@ -724,6 +738,9 @@ class POController extends Controller
             'vat_in_ex'=>$request->vat_in_ex,
             'grand_total'=>$request->grand_total,
             'internal_comment'=>$request->internal_comment,
+            'checked_by'=>$request->checked_by,
+            'recommended_by'=>$request->recommended_by,
+            'approved_by'=>$request->approved_by,
             'revision_no'=>0,
         ];
         $pohead_temp=POHeadTemp::create($data_head);
@@ -928,6 +945,9 @@ class POController extends Controller
                 'vat_percent'=>$po_head_temp->vat_percent,
                 'vat_amount'=>$po_head_temp->vat_amount,
                 'vat_in_ex'=>$po_head_temp->vat_in_ex,
+                'checked_by'=>$po_head_temp->checked_by,
+                'recommended_by'=>$po_head_temp->recommended_by,
+                'approved_by'=>$po_head_temp->approved_by,
                 'grand_total'=>$po_head_temp->grand_total,
                 'internal_comment'=>$po_head_temp->internal_comment,
                 'revision_no'=>$revision_no,
@@ -944,6 +964,10 @@ class POController extends Controller
             foreach($po_details_temp AS $pd){
                 $data_details=PoDetails::where('id',$pd->po_details_id)->update([
                     'quantity'=>$pd->quantity,
+                    'item_description'=>$pd->item_description,
+                    'uom'=>$pd->uom,
+                    'unit_price'=>$pd->unit_price,
+                    'currency'=>$pd->currency,
                     'total_cost'=>$pd->total_cost,
                 ]);
                 $data_dr_details=PoDrItems::where('po_details_id',$pd->po_details_id)->where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
@@ -1154,7 +1178,7 @@ class POController extends Controller
             $dr_series=$max_dr_series+1;
             $dr_no = $year."-".Str::padLeft($dr_series, 4,'000').'-'.$company;
         }
-        $po_dr = PoDr::where('po_head_id',$po_head_id)->first();
+        $po_dr = PoDr::where('po_head_id',$po_head_id)->orderBy('id','DESC')->orderBy('po_head_id','ASC')->first();
         $po_dr_distinct = PoDr::select('po_head_id','pr_head_id','po_no','pr_no','site_pr','revision_no')->distinct()->where('po_head_id',$po_head_id)->get();
         $count_po_head_id = PoDr::where('po_head_id',$po_head_id)->count();
         $enduse=PRHead::where('id',$po_dr->pr_head_id)->value('enduse');
@@ -1163,7 +1187,8 @@ class POController extends Controller
         $po_head = POHead::where('id',$po_head_id)->first();
         $prepared_by=Auth::user()?->name;
         $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$po_head->vendor_details_id)->where('status','=','Active')->first();
-        $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->get();
+        $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->where('to_deliver','!=',0)->where('received_qty','>=','quantity')->get();
+        // $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->where('to_deliver','!=',0)->get();
         $total_delivered=[];
         foreach($po_dr_items AS $pdi){
             $delivered_qty=PrReportDetails::where('pr_details_id',$pdi->pr_details_id)->where('rfq_offer_id',$pdi->rfq_offer_id)->value('delivered_qty');
@@ -1216,14 +1241,17 @@ class POController extends Controller
 
     public function check_dr_balance($po_dr_id,$po_details_id){
         $balance = PoDrItems::where('po_dr_id',$po_dr_id)->where('po_details_id',$po_details_id)->first();
-        $balance_delivered = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
+        $balance_delivered = PoDrItems::where('po_details_id',$po_details_id)->sum('received_qty');
+        // $balance_delivered = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
         return response()->json([
             'balance'=>$balance->quantity - $balance_delivered,
+            'delivered_qty'=>$balance->delivered_qty,
         ],200);
     }
 
     public function check_remaining_dr_balance($po_details_id){
-        $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
+        $balance_sum=PoDrItems::where('po_details_id',$po_details_id)->sum('received_qty');
+        // $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,
         ],200);
@@ -1237,24 +1265,25 @@ class POController extends Controller
             $data_dr_head['delivery_date']=date('Y-m-d');
             $data_dr_head['driver']=$request->driver;
             $data_dr_head['identifier']='1';
+            $data_dr_head['print_identifier']='1';
             $updatedrhead->update($data_dr_head);
             foreach(json_decode($request->po_dr_items) AS $pd){
                 $to_deliver = $request->input("to_deliver"."$y");
                 $remaining_delivery = $request->input("remaining_qty"."$y");
                 $po_dr_items_details=PoDrItems::where('id',$pd->id)->update([
                     'delivered_qty'=>$to_deliver,
-                    'to_deliver'=>$remaining_delivery - $to_deliver,
+                    // 'to_deliver'=>$remaining_delivery - $to_deliver,
                 ]);
-                $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
-                $check_delivered=$update_prreport->delivered_qty + $to_deliver;
-                if($update_prreport->pr_qty > $check_delivered){
-                    $delivery_status='Partially Delivered';
-                }else if($update_prreport->pr_qty == $check_delivered){
-                    $delivery_status='Fully Delivered';
-                }
-                $update_prreport->delivered_qty += $to_deliver;
-                $update_prreport->status = $delivery_status;
-                $update_prreport->update();
+                // $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+                // $check_delivered=$update_prreport->delivered_qty + $to_deliver;
+                // if($update_prreport->pr_qty > $check_delivered){
+                //     $delivery_status='Partially Delivered';
+                // }else if($update_prreport->pr_qty == $check_delivered){
+                //     $delivery_status='Fully Delivered';
+                // }
+                // $update_prreport->delivered_qty += $to_deliver;
+                // $update_prreport->status = $delivery_status;
+                // $update_prreport->update();
                 $y++;
             }
             echo $updatedrhead->id;
@@ -1290,6 +1319,8 @@ class POController extends Controller
                 $po_dr['driver']=$request->driver;
                 $po_dr['revision_no']=$podr->revision_no;
                 $po_dr['user_id']=Auth::id();
+                $po_dr['print_identifier']='1';
+                $po_dr['identifier']='1';
                 $po_drinsert=PoDr::create($po_dr);
                 $y=0;
                 foreach(json_decode($request->po_dr_items) AS $pd){
@@ -1301,25 +1332,54 @@ class POController extends Controller
                         $po_dr_itmins['pr_details_id']=$pd->pr_details_id;
                         $po_dr_itmins['rfq_offer_id']=$pd->rfq_offer_id;
                         $po_dr_itmins['quantity']=$pd->quantity;
-                        $po_dr_itmins['to_deliver']=$remaining_delivery - $to_deliver;
+                        $po_dr_itmins['to_deliver']=$pd->to_deliver;
+                        // $po_dr_itmins['to_deliver']=$remaining_delivery - $to_deliver;
                         $po_dr_itmins['delivered_qty']=$to_deliver;
                         $po_drinsertitem=PoDrItems::create($po_dr_itmins);
-                        $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
-                        $check_delivered=$update_prreport->delivered_qty + $to_deliver;
-                        if($update_prreport->pr_qty > $check_delivered){
-                            $delivery_status='Partially Delivered';
-                        }else if($update_prreport->pr_qty == $check_delivered){
-                            $delivery_status='Fully Delivered';
-                        }
-                        $update_prreport->delivered_qty += $to_deliver;
-                        $update_prreport->status = $delivery_status;
-                        $update_prreport->update();
+                        // $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+                        // $check_delivered=$update_prreport->delivered_qty + $to_deliver;
+                        // if($update_prreport->pr_qty > $check_delivered){
+                        //     $delivery_status='Partially Delivered';
+                        // }else if($update_prreport->pr_qty == $check_delivered){
+                        //     $delivery_status='Fully Delivered';
+                        // }
+                        // $update_prreport->delivered_qty += $to_deliver;
+                        // $update_prreport->status = $delivery_status;
+                        // $update_prreport->update();
                     }
                     $y++;
                 }
                 echo $po_drinsert->id;
             }
         }
+    }
+
+    public function save_received_dr(Request $request){
+        $y=0;
+        $updatedrhead=PoDr::where('id',$request->po_dr_id)->first();
+        $data_dr_head['driver']=$request->driver;
+        $data_dr_head['received']='1';
+        $updatedrhead->update($data_dr_head);
+        foreach(json_decode($request->po_dr_items) AS $pd){
+            $received_qty = $request->input("received_qty"."$y");
+            $remaining_delivery = $request->input("remaining_qty"."$y");
+            $po_dr_items_details=PoDrItems::where('id',$pd->id)->update([
+                'received_qty'=>$received_qty,
+                'to_deliver'=>$remaining_delivery - $received_qty,
+            ]);
+            $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
+            $check_delivered=$update_prreport->delivered_qty + $received_qty;
+            if($update_prreport->pr_qty > $check_delivered){
+                $delivery_status='Partially Delivered';
+            }else if($update_prreport->pr_qty == $check_delivered){
+                $delivery_status='Fully Delivered';
+            }
+            $update_prreport->delivered_qty += $received_qty;
+            $update_prreport->status = $delivery_status;
+            $update_prreport->update();
+            $y++;
+        }
+        echo $updatedrhead->id;
     }
 
     public function get_rfd_po_dropdown(){

@@ -249,6 +249,7 @@
                                                     <td class="border-l-none border-y-none p-1 text-right" colspan="2">
                                                         <div class="flex justify-end space-x-1">
                                                             <span>Retention</span>
+                                                            <span>{{p.retention_percent}}%</span>
                                                         </div>
                                                     </td>
                                                     <td class="p-1 border-y-none">
@@ -310,7 +311,7 @@
                                     <td class="text-center border-b"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center p-1">{{prepared_by}}"></td>
+                                    <td class="text-center p-1">{{prepared_by}}</td>
                                     <td></td>
                                     <td class="text-center p-1">{{rfd_head.checked_by_name}}</td>
                                     <td></td>

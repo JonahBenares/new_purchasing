@@ -21,5 +21,8 @@ class POHeadTemp extends Model
         'grand_total',
         'revision_no',
         'internal_comment',
+        'checked_by',
+        'recommended_by',
+        'approved_by',
     ];
 }

@@ -16,6 +16,7 @@
 	const hideAlert = ref(true)
 	const po_head_id = ref(0)
 	const to_deliver = ref([])
+	const received_qty = ref([])
 	const enduse = ref('')
 	const purpose = ref('')
 	const requestor = ref('')
@@ -134,6 +135,19 @@
 		}
 	}
 
+	const checkBalanceRec = async (po_dr_id,po_details_id,qty,count) => {
+		let response = await axios.get("/api/check_dr_balance/"+po_dr_id+"/"+po_details_id);
+		if(qty>response.data.delivered_qty){
+			document.getElementById('balance_rec_checker'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('balance_rec_checker'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
+
 	const checkRemainingQty = async (po_details_id,qty,count) => {
 		let response = await axios.get("/api/check_remaining_dr_balance/"+po_details_id);
 		total_sumdelivered.value = response.data.balance_sum
@@ -157,21 +171,22 @@
 			formData.append('po_details_id'+index, val.po_details_id)
 			formData.append('remaining_qty'+index, remaining_delivery[index])
 		});
-		if(driver.value!=''){
-			axios.post(`/api/save_dr`,formData).then(function (response) {
-				po_dr_id.value=response.data;
-				success.value='You have successfully saved new dr.'
-				successAlert.value=!successAlert.value
-			}, function (err) {
-				error.value='Error! Please try again.';
-				dangerAlerterrors.value=!dangerAlerterrors.value
-			}); 
-		}else{
-			document.getElementById('driver').placeholder="Driver field must not be empty!"
-			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
-			const btn_save = document.getElementById("save");
-			btn_save.disabled = true;
-		}
+		// if(driver.value!=''){
+		axios.post(`/api/save_dr`,formData).then(function (response) {
+			po_dr_id.value=response.data;
+			success.value='You have successfully created new dr.'
+			// success.value='You have successfully saved new dr.'
+			successAlert.value=!successAlert.value
+		}, function (err) {
+			error.value='Error! Please try again.';
+			dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+		// }else{
+		// 	document.getElementById('driver').placeholder="Driver field must not be empty!"
+		// 	document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }
     }
 
 	const resetError = () => {
@@ -187,6 +202,32 @@
 	const filteredPoDrItems = () => {
       // Filter items based on corresponding `to_deliver` values
       return po_dr_items.value.filter((item, index) => to_deliver.value[index] !== 0);
+    }
+
+	const saveReceived = () => {
+		const formData= new FormData()
+		formData.append('driver', driver.value)
+		formData.append('po_dr_id', po_dr.value.id)
+		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
+		po_dr_items.value.forEach(function (val, index, theArray) {
+			formData.append('received_qty'+index, received_qty.value[index])
+			formData.append('remaining_qty'+index, remaining_delivery[index])
+		});
+		if(driver.value!=''){
+			axios.post(`/api/save_received_dr`,formData).then(function (response) {
+				po_dr_id.value=response.data;
+				success.value='You have successfully saved dr.'
+				successAlert.value=!successAlert.value
+			}, function (err) {
+				error.value='Error! Please try again.';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			document.getElementById('driver').placeholder="Driver field must not be empty!"
+			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}
     }
 </script>
 <template>
@@ -289,9 +330,22 @@
 												<td class="p-1 text-center">{{index+1}}</td>
 												<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 												<td class="p-1 ">{{ offer[index] }}</td>
-												<td class="p-0"><input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalance(pdi.po_dr_id,pdi.po_details_id,to_deliver[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_checker'+index" v-model="to_deliver[index]"></td>
+
+												<td class="p-0" v-if="po_dr.print_identifier==0 && po_dr.received==0"><input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalance(pdi.po_dr_id,pdi.po_details_id,to_deliver[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_checker'+index" v-model="to_deliver[index]"></td>
+
+												<td class="p-0" v-else-if="po_dr.identifier==1 && po_dr.print_identifier==1 && po_dr.received==1"><input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalance(pdi.po_dr_id,pdi.po_details_id,to_deliver[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_checker'+index" v-model="to_deliver[index]"></td>
+												
+												<td class="p-1 text-center" v-else>
+													<input type="hidden" min="0" @keypress="isNumber($event)" @keyup="checkBalance(pdi.po_dr_id,pdi.po_details_id,to_deliver[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_checker'+index" v-model="to_deliver[index]">
+													{{pdi.delivered_qty}}
+												</td>
+
 												<td class="p-1 text-center">{{ total_sumdelivered1[index] }}</td>
-												<td class="p-1 text-center">{{ pdi.quantity }}</td>
+												<td class="p-1 text-center" v-if="po_dr.print_identifier==0 && po_dr.received==0"></td>
+												<td class="p-1 text-center" v-else-if="po_dr.print_identifier==1 && po_dr.received==1"></td>
+												<td class="p-1 text-center" v-else>
+													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceRec(pdi.po_dr_id,pdi.po_details_id,received_qty[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_checker'+index" v-model="received_qty[index]">
+												</td>
 												<td class="p-1 text-center">{{ uom[index] }}</td>
 												<td class="p-1 text-center"></td>
 											</tr>
@@ -362,7 +416,10 @@
 								<div class="row my-2"> 
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-center space-x-2">
-											<button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save">Save</button>
+											<button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save" v-if="po_dr.print_identifier==0 && po_dr.identifier==0 && po_dr.received==0">Create DR</button>
+											<button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save" v-else-if="po_dr.print_identifier==1 && po_dr.identifier==1 && po_dr.received==1">Create DR</button>
+											<button type="button" class="btn btn-primary mr-2 w-36" @click="saveReceived()" id="save" v-else>Save</button>
+											
 											<!-- <button type="button" class="btn btn-primary mr-2 w-36" @click="openSuccessAlert()" id="save">Save</button> -->
 										</div>
 									</div>

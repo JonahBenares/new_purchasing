@@ -225,6 +225,7 @@ class JOIController extends Controller
         $recommended_by= User::where('id',$joi_head->recommended_by)->value('name');
         $approved_by= User::where('id',$joi_head->approved_by)->value('name');
         $total=[];
+        $currency=Config::get('constants.currency');
         foreach($joi_labor_details AS $pd){
             $total[]=$pd->unit_price * $pd->quantity;
         }
@@ -256,8 +257,10 @@ class JOIController extends Controller
             'jor_head'=>$jor_head,
             'joi_vendor'=>$joi_vendor,
             'joi_labor_details'=>$joi_labor_details,
+            'joi_details_view_old'=>$joi_details_view,
             'joi_details_view'=>$joi_details_view,
             'joi_material_details'=>$joi_material_details,
+            'joi_material_details_view_old'=>$joi_material_details_view,
             'joi_material_details_view'=>$joi_material_details_view,
             'joi_labor_details_temp'=>$joi_labor_details_temp,
             'joi_material_details_temp'=>$joi_material_details_temp,
@@ -269,11 +272,18 @@ class JOIController extends Controller
             'checked_by'=>$checked_by,
             'recommended_by'=>$recommended_by,
             'approved_by'=>$approved_by,
+            'checked_by_id'=>$joi_head->checked_by,
+            'checked_by_id_temp'=>$joi_head_temp->checked_by ?? 0,
+            'recommended_by_id'=>$joi_head->recommended_by,
+            'recommended_by_id_temp'=>$joi_head_temp->recommended_by ?? 0,
+            'approved_by_id'=>$joi_head->approved_by,
+            'approved_by_id_temp'=>$joi_head_temp->approved_by ?? 0,
             'cancelled_by'=>$cancelled_by,
             'grand_labor_total'=>$total_sum,
             'grand_material_total'=>$total_sum_material,
             'grand_labor_total_temp'=>$total_sum_temp,
             'grand_material_total_temp'=>$total_sum_material_temp,
+            'currency'=>$currency,
         ],200);
     }
 
@@ -850,6 +860,9 @@ class JOIController extends Controller
             'vat_in_ex'=>$request->vat_in_ex,
             'grand_total'=>$request->grand_total,
             'revision_no'=>0,
+            'checked_by'=>$request->checked_by,
+            'recommended_by'=>$request->recommended_by,
+            'approved_by'=>$request->approved_by,
         ];
         $joihead_temp=JOIHeadTemp::create($data_head);
         $y=0;
@@ -1107,6 +1120,9 @@ class JOIController extends Controller
                 'vat_amount'=>$joi_head_temp->vat_amount,
                 'vat_in_ex'=>$joi_head_temp->vat_in_ex,
                 'grand_total'=>$joi_head_temp->grand_total,
+                'checked_by'=>$joi_head_temp->checked_by,
+                'recommended_by'=>$joi_head_temp->recommended_by,
+                'approved_by'=>$joi_head_temp->approved_by,
                 'revision_no'=>$revision_no,
                 'status'=>'Saved',
             ]);
@@ -1121,6 +1137,10 @@ class JOIController extends Controller
             foreach($joi_details_temp AS $jld){
                 $data_details=JOILaborDetails::where('id',$jld->joi_labor_details_id)->update([
                     'quantity'=>$jld->quantity,
+                    'item_description'=>$jld->item_description,
+                    'uom'=>$jld->uom,
+                    'unit_price'=>$jld->unit_price,
+                    'currency'=>$jld->currency,
                     'total_cost'=>$jld->total_cost,
                 ]);
                 $data_dr_details=JOIDrLabor::where('joi_labor_details_id',$jld->joi_labor_details_id)->where('jor_labor_details_id',$jld->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$jld->jo_rfq_labor_offer_id)->update([
@@ -1130,13 +1150,17 @@ class JOIController extends Controller
             }
             $y=0;
             $joi_material_details_temp=JOIMaterialDetailsTemp::where('joi_head_id',$request->props_id)->get();
-            foreach($joi_material_details_temp AS $jld){
-                $data_details=JOIMaterialDetails::where('id',$jld->joi_material_details_id)->update([
-                    'quantity'=>$jld->quantity,
-                    'total_cost'=>$jld->total_cost,
+            foreach($joi_material_details_temp AS $jmd){
+                $data_details=JOIMaterialDetails::where('id',$jmd->joi_material_details_id)->update([
+                    'quantity'=>$jmd->quantity,
+                    'item_description'=>$jmd->item_description,
+                    'uom'=>$jmd->uom,
+                    'unit_price'=>$jmd->unit_price,
+                    'currency'=>$jmd->currency,
+                    'total_cost'=>$jmd->total_cost,
                 ]);
-                $data_dr_details=JOIDrMaterial::where('joi_material_details_id',$jld->joi_material_details_id)->where('jor_material_details_id',$jld->jor_material_details_id)->where('jo_rfq_material_offer_id',$jld->jo_rfq_material_offer_id)->update([
-                    'quantity'=>$jld->quantity,
+                $data_dr_details=JOIDrMaterial::where('joi_material_details_id',$jmd->joi_material_details_id)->where('jor_material_details_id',$jmd->jor_material_details_id)->where('jo_rfq_material_offer_id',$jmd->jo_rfq_material_offer_id)->update([
+                    'quantity'=>$jmd->quantity,
                 ]);   
                 $y++;
             }
@@ -1245,7 +1269,7 @@ class JOIController extends Controller
             $dr_series=$max_dr_series+1;
             $dr_no = "JO".$year."-".Str::padLeft($dr_series, 4,'000').'-'.$company;
         }
-        $joi_dr = JOIDr::where('joi_head_id',$joi_head_id)->first();
+        $joi_dr = JOIDr::where('joi_head_id',$joi_head_id)->orderBy('id','DESC')->orderBy('joi_head_id','ASC')->first();
         $joi_dr_distinct = JOIDr::select('joi_head_id','jor_head_id','joi_no','jor_no','site_pr','revision_no')->distinct()->where('joi_head_id',$joi_head_id)->get();
         $count_joi_head_id = JOIDr::where('joi_head_id',$joi_head_id)->count();
         $purpose=JORHead::where('id',$joi_dr->jor_head_id)->value('purpose');
@@ -1255,8 +1279,8 @@ class JOIController extends Controller
         $joi_head = JOIHead::where('id',$joi_head_id)->first();
         $prepared_by=Auth::user()?->name;
         $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$joi_head->vendor_details_id)->where('status','=','Active')->first();
-        $joi_dr_labor=JOIDrLabor::where('joi_dr_id',$joi_dr->id)->get();
-        $joi_dr_material=JOIDrMaterial::where('joi_dr_id',$joi_dr->id)->get();
+        $joi_dr_labor=JOIDrLabor::where('joi_dr_id',$joi_dr->id)->where('to_deliver','!=',0)->where('received_qty','>=','quantity')->get();
+        $joi_dr_material=JOIDrMaterial::where('joi_dr_id',$joi_dr->id)->where('to_deliver','!=',0)->where('received_qty','>=','quantity')->get();
         $total_delivered=[];
         foreach($joi_dr_labor AS $pdi){
             $delivered_qty=JOIDrLabor::where('jor_labor_details_id',$pdi->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$pdi->jo_rfq_labor_offer_id)->value('delivered_qty');
@@ -1303,29 +1327,33 @@ class JOIController extends Controller
 
     public function check_jo_labor_dr_balance($joi_dr_id,$joi_labor_details_id){
         $balance = JOIDrLabor::where('joi_dr_id',$joi_dr_id)->where('joi_labor_details_id',$joi_labor_details_id)->first();
-        $balance_delivered = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->sum('delivered_qty');
+        $balance_delivered = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->sum('received_qty');
+        // $balance_delivered = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->sum('delivered_qty');
         return response()->json([
             'balance'=>$balance->quantity - $balance_delivered,
+            'delivered_qty'=>$balance->delivered_qty,
         ],200);
     }
 
     public function check_jo_material_dr_balance($joi_dr_id,$joi_material_details_id){
         $balance = JOIDrMaterial::where('joi_dr_id',$joi_dr_id)->where('joi_material_details_id',$joi_material_details_id)->first();
-        $balance_delivered = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->sum('delivered_qty');
+        $balance_delivered = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->sum('received_qty');
+        // $balance_delivered = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->sum('delivered_qty');
         return response()->json([
             'balance'=>$balance->quantity - $balance_delivered,
+            'delivered_qty'=>$balance->delivered_qty,
         ],200);
     }
 
     public function check_remaining_dr_labor_balance($joi_labor_details_id){
-        $balance_sum = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->sum('delivered_qty');
+        $balance_sum = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->sum('received_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,
         ],200);
     }
 
     public function check_remaining_dr_material_balance($joi_material_details_id){
-        $balance_sum = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->sum('delivered_qty');
+        $balance_sum = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->sum('received_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,
         ],200);
@@ -1338,13 +1366,14 @@ class JOIController extends Controller
             $data_dr_head['delivery_date']=date('Y-m-d');
             $data_dr_head['driver']=$request->driver;
             $data_dr_head['identifier']='1';
+            $data_dr_head['print_identifier']='1';
             $updatedrhead->update($data_dr_head);
             foreach(json_decode($request->joi_dr_labor) AS $jdl){
                 $to_deliver_labor = $request->input("to_deliver_labor"."$y");
                 $remaining_labor_delivery = $request->input("remaining_labor_qty"."$y");
                 $joi_dr_labor_details=JOIDrLabor::where('id',$jdl->id)->update([
                     'delivered_qty'=>$to_deliver_labor,
-                    'to_deliver'=>$remaining_labor_delivery - $to_deliver_labor,
+                    // 'to_deliver'=>$remaining_labor_delivery - $to_deliver_labor,
                 ]);
                 $y++;
             }
@@ -1354,7 +1383,7 @@ class JOIController extends Controller
                 $remaining_material_delivery = $request->input("remaining_material_qty"."$z");
                 $joi_dr_material_details=JOIDrMaterial::where('id',$jmd->id)->update([
                     'delivered_qty'=>$to_deliver_material,
-                    'to_deliver'=>$remaining_material_delivery - $to_deliver_material,
+                    // 'to_deliver'=>$remaining_material_delivery - $to_deliver_material,
                 ]);
                 $z++;
             }
@@ -1391,6 +1420,8 @@ class JOIController extends Controller
                 $joi_dr['driver']=$request->driver;
                 $joi_dr['revision_no']=$joidr->revision_no;
                 $joi_dr['user_id']=Auth::id();
+                $joi_dr['print_identifier']='1';
+                $joi_dr['identifier']='1';
                 $joi_drinsert=JOIDr::create($joi_dr);
                 $y=0;
                 foreach(json_decode($request->joi_dr_labor) AS $jdl){
@@ -1402,7 +1433,8 @@ class JOIController extends Controller
                         $joi_dr_laborins['jor_labor_details_id']=$jdl->jor_labor_details_id;
                         $joi_dr_laborins['jo_rfq_labor_offer_id']=$jdl->jo_rfq_labor_offer_id;
                         $joi_dr_laborins['quantity']=$jdl->quantity;
-                        $joi_dr_laborins['to_deliver']=$remaining_labor_delivery - $to_deliver_labor;
+                        // $joi_dr_laborins['to_deliver']=$remaining_labor_delivery - $to_deliver_labor;
+                        $joi_dr_laborins['to_deliver']=$jdl->to_deliver;
                         $joi_dr_laborins['delivered_qty']=$to_deliver_labor;
                         $joi_drinsertitem=JOIDrLabor::create($joi_dr_laborins);
                     }
@@ -1418,7 +1450,8 @@ class JOIController extends Controller
                         $joi_dr_materialins['jor_material_details_id']=$jdm->jor_material_details_id;
                         $joi_dr_materialins['jo_rfq_material_offer_id']=$jdm->jo_rfq_material_offer_id;
                         $joi_dr_materialins['quantity']=$jdm->quantity;
-                        $joi_dr_materialins['to_deliver']=$remaining_material_delivery - $to_deliver_material;
+                        // $joi_dr_materialins['to_deliver']=$remaining_material_delivery - $to_deliver_material;
+                        $joi_dr_materialins['to_deliver']=$jdm->to_deliver;
                         $joi_dr_materialins['delivered_qty']=$to_deliver_material;
                         $joi_drinsertmaterial=JOIDrMaterial::create($joi_dr_materialins);
                     }
@@ -1427,6 +1460,34 @@ class JOIController extends Controller
                 echo $joi_drinsert->id;
             }
         }
+    }
+
+    public function save_jo_received_dr(Request $request){
+        $y=0;
+        $updatedrhead=JOIDr::where('id',$request->joi_dr_id)->first();
+        $data_dr_head['driver']=$request->driver;
+        $data_dr_head['received']='1';
+        $updatedrhead->update($data_dr_head);
+        foreach(json_decode($request->joi_dr_labor) AS $jdl){
+            $received_qty = $request->input("received_qty"."$y");
+            $remaining_labor_delivery = $request->input("remaining_labor_qty"."$y");
+            $joi_dr_labor_details=JOIDrLabor::where('id',$jdl->id)->update([
+                'received_qty'=>$received_qty,
+                'to_deliver'=>$remaining_labor_delivery - $received_qty,
+            ]);
+            $y++;
+        }
+        $z=0;
+        foreach(json_decode($request->joi_dr_material) AS $jmd){
+            $received_material_qty = $request->input("received_material_qty"."$z");
+            $remaining_material_delivery = $request->input("remaining_material_qty"."$z");
+            $joi_dr_material_details=JOIDrMaterial::where('id',$jmd->id)->update([
+                'received_qty'=>$received_material_qty,
+                'to_deliver'=>$remaining_material_delivery - $received_material_qty,
+            ]);
+            $z++;
+        }
+        echo $updatedrhead->id;
     }
 
     public function get_jo_alldr(){

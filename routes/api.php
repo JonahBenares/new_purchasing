@@ -108,7 +108,6 @@ Route::post('/open_aoq/{aoq_head_id}',[AOQController::class,'open_aoq']);
 Route::get('/aoq_status/{aoq_head_id}',[AOQController::class,'aoq_status']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
-Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::get('/create_pr',[PRController::class,'create_pr']);
 Route::get('/get_import_data/{id}',[PRController::class,'get_import_data']);
 Route::post('/save_upload/{id}',[PRController::class,'save_upload']);
@@ -191,9 +190,9 @@ Route::get('/get_offer/{rfq_offer_id}', [POController::class,'get_offer']);
 Route::get('/check_dr_balance/{po_dr_id}/{po_details_id}', [POController::class,'check_dr_balance']);
 Route::get('/check_remaining_dr_balance/{po_details_id}', [POController::class,'check_remaining_dr_balance']);
 Route::post('/save_dr', [POController::class,'save_dr']);
+Route::post('/save_received_dr', [POController::class,'save_received_dr']);
 Route::get('/get_dr_view/{po_dr_id}', [POController::class,'get_dr_view']);
 Route::get('/get_alldr', [POController::class,'get_alldr']);
-<<<<<<< HEAD
 Route::get('/get_rfd_po_dropdown',[POController::class,'get_rfd_po_dropdown']);
 Route::get('/generate_rfd_po/{po_head_id}', [POController::class,'generate_rfd_po']);
 Route::get('/po_rfd_viewdetails/{po_head_id}', [POController::class,'po_rfd_viewdetails']);
@@ -204,7 +203,6 @@ Route::get('/rfd_list', [POController::class,'rfd_list']);
 Route::post('/cancel_all_rfd/{po_head_id}',[POController::class,'cancel_all_rfd']);
 Route::get('/get_allrfd',[POController::class,'get_allrfd']);
 Route::get('/rfd_po_data/{id}',[POController::class,'rfd_po_data']);
-=======
 
 Route::get('/get_direct_pr', [PODirectController::class,'get_direct_pr']);
 Route::get('/direct_supplier_dropdown', [PODirectController::class,'direct_supplier_dropdown']);
@@ -213,7 +211,6 @@ Route::post('/save_direct_po', [PODirectController::class,'save_direct_po']);
 Route::get('/dpo_viewdetails/{po_head_id}', [PODirectController::class,'dpo_viewdetails']);
 Route::get('/delete_dpo_terms/{id}',[PODirectController::class,'delete_dpo_terms']);
 Route::get('/delete_dpo_instructions/{id}',[PODirectController::class,'delete_dpo_instructions']);
->>>>>>> 0738e0ad3bc6aa65a191e6ba4b84decd5ef78ac1
 
 Route::get('/get_repeat_pr', [RepeatOrderPOController::class,'get_repeat_pr']);
 Route::get('/repeat_supplier_dropdown', [RepeatOrderPOController::class,'repeat_supplier_dropdown']);
@@ -297,6 +294,7 @@ Route::post('/cancel_all_joi_rfd/{joi_head_id}',[JOIController::class,'cancel_al
 Route::get('/get_alljoirfd',[JOIController::class,'get_alljoirfd']);
 Route::get('/rfd_joi_displayview/{rfd_id}', [JOIController::class,'rfd_joi_displayview']);
 Route::get('/rfd_jo_data/{id}',[JOIController::class,'rfd_jo_data']);
+Route::post('/save_jo_received_dr', [JOIController::class,'save_jo_received_dr']);
 
 
 Route::get('/check_jo_labor_dr_balance/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_jo_labor_dr_balance']);

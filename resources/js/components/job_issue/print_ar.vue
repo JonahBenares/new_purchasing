@@ -2,7 +2,7 @@
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
 	const vendor =  ref();
 	const preview =  ref();
@@ -13,6 +13,46 @@
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
+	const joi_dr=ref([])
+	const joi_head=ref([])
+	const jor_head=ref([])
+	const joi_labor_details=ref([])
+	const joi_material_details=ref([])
+	const joi_dr_labor=ref([])
+	const joi_dr_material=ref([])
+	const prepared_by=ref('')
+	const labor_sum_delivery=ref([])
+	const material_sum_delivery=ref([])
+	const labor_sum_received=ref([])
+	const material_sum_received=ref([])
+	const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+    onMounted(async () => {
+		joView()
+	})
+	const joView = async () => {
+		let response = await axios.get("/api/jo_viewdetails/"+props.id);
+		joi_dr.value = response.data.joi_dr;
+		joi_head.value = response.data.joi_head;
+		jor_head.value = response.data.jor_head;
+		joi_labor_details.value = response.data.joi_labor_details;
+        joi_material_details.value = response.data.joi_material_details;
+		joi_dr_labor.value=response.data.joi_dr_labor;
+		joi_dr_material.value=response.data.joi_dr_material;
+        prepared_by.value = response.data.prepared_by;
+		joi_dr_labor.value.forEach(function (val, index, theArray) {
+			labor_sum_delivery.value[index]=val.delivered_qty
+			labor_sum_received.value[index]=val.received_qty
+		});
+		joi_dr_material.value.forEach(function (val, indexes, theArray) {
+			material_sum_delivery.value[indexes]=val.delivered_qty
+			material_sum_received.value[indexes]=val.received_qty
+		});
+	}
     const openDangerPO = () => {
 		dangerAlert.value = !dangerAlert.value
 	}
@@ -80,41 +120,28 @@
 									<div class="col-lg-8 col-sm-8 col-md-8">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">DR No: </span>
-											<input type="text" class="border-b bg-white w-full font-bold text-sm"  disabled>
+											<input type="text" class="border-b bg-white w-full font-bold text-sm" v-model="joi_dr.dr_no" disabled>
 										</div>
 									</div>
 									<div class="col-lg-4 col-sm-4 col-md-4">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-36">Date: </span>
-											<input type="text" class="border-b bg-white w-full text-sm" disabled>
+											<input type="text" class="border-b bg-white w-full text-sm" v-model="joi_head.date_prepared" disabled>
 										</div>	
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-8 col-sm-8 col-md-8">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">Delivered to: </span>
-											<textarea class="border-b bg-yellow-50 w-full text-sm" rows="1"></textarea>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">JO No.: </span>
+											<span class="border-b bg-white w-full text-sm" disabled>{{ joi_head.joi_no }}{{ (joi_head.revision_no!=0 && joi_head.revision_no!=null) ? '.r'+joi_head.revision_no : '' }}</span>
+											<!-- <input type="text" class="border-b bg-white w-full text-sm" v-model="joi_head.joi_no" disabled> -->
 										</div>
 									</div>
 									<div class="col-lg-4 col-sm-4 col-md-4">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-36">Gatepass No: </span>
-											<input type="text" class="border-b bg-yellow-50 w-full text-sm" >
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-8 col-sm-8 col-md-8">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">Address: </span>
-											<input type="text" class="border-b bg-yellow-50 w-full text-sm" >
-										</div>
-									</div>
-									<div class="col-lg-4 col-sm-4 col-md-4">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-36">JO No: </span>
-											<input type="text" class="border-b bg-white w-full text-sm" disabled>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-36">JOR No: </span>
+											<input type="text" class="border-b bg-white w-full text-sm" v-model="joi_head.jor_no" disabled>
 										</div>
 									</div>
 								</div>
@@ -122,15 +149,9 @@
 									<div class="col-lg-8 col-sm-8 col-md-8">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">Requested By: </span>
-											<input type="text" class="border-b bg-yellow-50 w-full text-sm" >
+											<input type="text" class="border-b bg-white w-full text-sm" v-model="jor_head.requestor" disabled>
 										</div>
 									</div>
-									<!-- <div class="col-lg-4 col-sm-4 col-md-4">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-36">JO No: </span>
-											<input type="text" class="border-b bg-white w-full text-sm" disabled>
-										</div>
-									</div> -->
 								</div>
 								<div class="" >
 									<br>
@@ -140,7 +161,7 @@
 												<table class="table-bordered w-full !text-xs">
 													<tr class="!border-b-3">
 														<td colspan="7" class="py-2">
-															<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
+															<p class="text-sm font-bold text-gray-600 text-center m-0">{{ jor_head.project_activity }}</p>
 															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 														</td>
 													</tr>
@@ -153,46 +174,25 @@
 														<td class="uppercase p-1 text-center" width="5%">UOM</td>
 														<td class="uppercase p-1 text-center" width="12%">Remarks</td>
 													</tr>
-													<!-- <tr class="">
-														<td class="border-y-none p-1" colspan="3">
-                                                            <div class="flex justify-between space-x-2">
-                                                                <div class="w-full">
-                                                                    <span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
-                                                                    technical expertise for the following:</span>
-                                                                    <br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-                                                                    <br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-                                                                    <br>3. Repair and replacement of parts as seen upon inspection.
-                                                                    <br>4. Setting of internal parts and mounting of the governor.
-                                                                    <br>5. Calibration and bench testing for:
-                                                                    <br>5.1. Speed Setting and Indicator
-                                                                    <br>5.2. Speed Droop Setting and Indicator
-                                                                    <br>5.3. Load Limit Setting and Indicator
-                                                                    <br>6. Functional test of shut-down solenoid valve
-                                                                    <br>7. Testing and Commissioning
-                                                                    <br>8. Submission of inspection, service, commissioning and bench testing reports.
-                                                                    <br>9. Other works necessary for job completion.
-                                                                </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-															
-														</td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
-                                                        </td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
+													<tr class="" v-for="(jld,index) in joi_labor_details">
+														<td class="p-1 text-center">{{ index + 1}}</td>
+														<td class="p-1 ">{{ joi_head.vendor_name }}</td>
+														<td class="p-1 ">{{ jld.item_description }}</td>
+														<td class="p-1 text-center">{{labor_sum_delivery[index]}}</td>
+														<td class="p-1 text-center">{{labor_sum_received[index]}}</td>
+														<td class="p-1 text-center">{{ jld.uom }}</td>
+														<td class="p-1 "></td>
 													</tr>
-													 -->
-													<tr class="">
-														<td class="p-1 text-center">1</td>
-														<td class="p-1 "></td>
-														<td class="p-1 "></td>
-														<td class="p-1 text-center">23</td>
-														<td class="p-1 text-center">23</td>
-														<td class="p-1 "></td>
+													<tr class="" v-if="joi_material_details.length!=0">
+														<td class="p-1 font-bold" colspan="7">Materials:</td>
+													</tr>
+													<tr class="" v-for="(jmd,indexes) in joi_material_details">
+														<td class="p-1 text-center">{{ indexes + 1}}</td>
+														<td class="p-1 ">{{ joi_head.vendor_name }}</td>
+														<td class="p-1 ">{{ jmd.item_description }}</td>
+														<td class="p-1 text-center">{{material_sum_delivery[indexes]}}</td>
+														<td class="p-1 text-center">{{material_sum_received[indexes]}}</td>
+														<td class="p-1 text-center">{{ jmd.uom }}</td>
 														<td class="p-1 "></td>
 													</tr>
 												</table>
@@ -210,7 +210,7 @@
                                                     <td width="2%"></td>
                                                     <td class="text-center" width="20%">Noted by</td>
                                                     <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Witnessed by</td>
+                                                    <td class="text-center" width="20%">Complete & accepted by end-user</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-center border-b"><br></td>
@@ -222,13 +222,52 @@
                                                     <td class="text-center border-b"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-center p-1">Henne Tanant</td>
+                                                    <td class="text-center p-1">{{ prepared_by }}</td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Beverly Sy</td>
+                                                    <td class="text-center p-1"></td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Jonah Marie Dy</td>
+                                                    <td class="text-center p-1"></td>
                                                     <td></td>
-                                                    <td class="text-center p-1">Glenn Paulate</td>
+                                                    <td class="text-center p-1">{{ jor_head.requestor }}</td>
+                                                </tr>
+												<tr>
+                                                    <td class="text-center p-1"></td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">Print Name & Signature with Date Received</td>
+                                                    <td></td>
+                                                    <td class="text-center p-1"></td>
+                                                    <td></td>
+                                                    <td class="text-center p-1"></td>
+                                                </tr>
+                                            </table>
+											<br>
+											<table class="w-full text-xs">
+                                                <tr>
+                                                    <td class="text-center" width="20%">Witnessed by</td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%"></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%"></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-center" width="20%"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center border-b"><br></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                    <td></td>
+                                                    <td class="text-center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center p-1"></td>
+                                                    <td></td>
+                                                    <td class="text-center p-1"></td>
+                                                    <td></td>
+                                                    <td class="text-center p-1"></td>
+                                                    <td></td>
+                                                    <td class="text-center p-1"></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -240,9 +279,9 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-center space-x-2">
                                                 <div class="flex justify-start space-x-1">
-                                                    <a href="#" class="btn btn-primary" onclick="close_window();return false;">Back</a>
+                                                    <!-- <a href="#" class="btn btn-primary" onclick="close_window();return false;">Back</a> -->
                                                     <div class="flex justify-between">
-                                                        <a href="#" @click="printDiv()" type="submit" class="btn btn-warning !text-white w-26">Save & Print</a>
+                                                        <a href="#" @click="printDiv()" type="submit" class="btn btn-primary !text-white w-26">Print</a>
                                                     </div>
                                                 </div>
                                             </div>

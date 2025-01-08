@@ -27,6 +27,8 @@
 	const uom_labor =  ref([]);
 	const offer_material =  ref([]);
 	const uom_material =  ref([]);
+	const total_labor_sumdelivered =  ref([]);
+	const total_material_sumdelivered =  ref([]);
 	onMounted(async () => {
 		drLoad()
 	})
@@ -44,16 +46,17 @@
 		prepared_by.value = response.data.prepared_by;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
 			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
-		joi_dr_material.value.forEach(function (val, index, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,index)
+		joi_dr_material.value.forEach(function (val, indexe, theArray) {
+			getMaterialOffer(val.jo_rfq_material_offer_id,indexe)
+			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,indexe)
 		});
 	}
 
 	const getLaborOffer = async (jo_rfq_labor_offer_id,count) => {
 		let response = await axios.get("/api/get_offer_labor/"+jo_rfq_labor_offer_id);
 		offer_labor.value[count] = response.data.offer.offer;
-		console.log(response.data.offer);
 		uom_labor.value[count] = response.data.offer.uom;
 	}
 
@@ -61,6 +64,16 @@
 		let response = await axios.get("/api/get_offer_material/"+jo_rfq_labor_offer_id);
 		offer_material.value[count] = response.data.offer.offer;
 		uom_material.value[count] = response.data.offer.uom;
+	}
+
+	const checkRemainingLaborQty = async (joi_labor_details_id,qty,count) => {
+		let response = await axios.get("/api/check_remaining_dr_labor_balance/"+joi_labor_details_id);
+		total_labor_sumdelivered.value[count] = response.data.balance_sum
+	}
+
+	const checkRemainingMaterialQty = async (joi_material_details_id,qty,count) => {
+		let response = await axios.get("/api/check_remaining_dr_material_balance/"+joi_material_details_id);
+		total_material_sumdelivered.value[count] = response.data.balance_sum
 	}
 </script>
 <template>
@@ -136,6 +149,7 @@
 										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase text-center" width="5%">UOM</td>
+										<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 									</tr>
 									<tr >
 										<td colspan="6"><span class="font-bold">{{ general_description}} </span></td>
@@ -144,10 +158,12 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 										<td class="p-1 ">{{  offer_labor[index] }}</td>
-										<td class="p-1 text-center">{{  jdl.to_deliver }}</td>
 										<td class="p-1 text-center">{{  jdl.delivered_qty }}</td>
-										<td class="p-1 text-center">{{  jdl.quantity }}</td>
+										<td class="p-1 text-center">{{ total_labor_sumdelivered[index] }}</td>
+										<td class="p-1 text-center" v-if="jdl.received_qty!=0">{{ jdl.received_qty }}</td>
+										<td class="p-1 text-center" v-else></td>
 										<td class="p-1 text-center">{{ uom_labor[index] }}</td>
+										<td class="p-1 text-center"></td>
 									</tr>
 									<tr class="bg-gray-100">
 										<td class="p-1 font-bold" colspan="6">Materials:</td>
@@ -156,9 +172,10 @@
 										<td class="p-1 text-center">{{indexes+1}}</td>
 										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 										<td class="p-1 ">{{ offer_material[indexes] }}</td>
-										<td class="p-1 text-center">{{  jdm.to_deliver }}</td>
 										<td class="p-1 text-center">{{  jdm.delivered_qty }}</td>
-										<td class="p-1 text-center">{{  jdm.quantity }}</td>
+										<td class="p-1 text-center">{{  total_material_sumdelivered[indexes] }}</td>
+										<td class="p-1 text-center" v-if="jdm.received_qty!=0">{{ jdm.received_qty }}</td>
+										<td class="p-1 text-center" v-else></td>
 										<td class="p-1 text-center">{{ uom_material[indexes] }}</td>
 									</tr>
 								</table>

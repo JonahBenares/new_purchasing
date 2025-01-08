@@ -128,10 +128,14 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 										<td class="p-1 ">{{offer[index]}}</td>
-										<td class="p-1 text-center">{{ pdi.to_deliver }}</td>
 										<td class="p-1 text-center">{{ pdi.delivered_qty }}</td>
-										<td class="p-1 text-center">{{ pdi.quantity }}</td>
+										<td class="p-1 text-center">{{ total_sumdelivered[index] }}</td>
+										<td class="p-1 text-center" v-if="pdi.received_qty!=0">{{ pdi.received_qty }}</td>
+										<td class="p-1 text-center" v-else></td>
 										<td class="p-1 text-center">{{ uom[index] }}</td>
+										<!-- <td class="p-1 text-center">{{ pdi.to_deliver }}</td> -->
+										<!-- <td class="p-1 text-center">{{ pdi.delivered_qty }}</td> -->
+										<!-- <td class="p-1 text-center">{{ pdi.quantity }}</td> -->
 									</tr>
 								</table>
 							</div>

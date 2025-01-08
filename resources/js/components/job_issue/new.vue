@@ -485,7 +485,7 @@
 			formData.append('quantity_material'+indexer, remaining_material_balance.value[indexer])
 		});
 		if(status==='Saved'){
-			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
+			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && date_needed.value!='' && start_of_work.value!=''){
 				axios.post(`/api/save_joi`,formData).then(function (response) {
 					joi_head_id.value=response.data;
 					success.value='You have successfully saved new jo.'
@@ -511,6 +511,12 @@
 				}
 				if(recommended_by.value==0){
 					document.getElementById('recommended_by').style.backgroundColor = '#FAA0A0';
+				}
+				if(date_needed.value==0){
+					document.getElementById('date_needed').style.backgroundColor = '#FAA0A0';
+				}
+				if(start_of_work.value==0){
+					document.getElementById('start_of_work').style.backgroundColor = '#FAA0A0';
 				}
 				const btn_draft = document.getElementById("draft");
 				btn_draft.disabled = true;
@@ -547,6 +553,14 @@
 		}
 		if(button==='button2'){
 			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		}
+
+		if(button==='button4'){
+			document.getElementById('date_needed').style.backgroundColor = '#FEFCE8';
+		}
+
+		if(button==='button5'){
+			document.getElementById('start_of_work').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
@@ -658,7 +672,7 @@
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
-											<input type="date" class="border-b w-full text-sm" v-model="date_needed">
+											<input type="date" class="border-b w-full text-sm" id="date_needed" v-model="date_needed" @click="resetError('button4')">
 										</div>
 									</div>
 									<div class="col-lg-6">
@@ -686,7 +700,7 @@
 									<div class="col-lg-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
-											<input type="date" class="border-b w-full text-sm" v-model="start_of_work">
+											<input type="date" class="border-b w-full text-sm" id="start_of_work" v-model="start_of_work" @click="resetError('button5')">
 										</div>
 									</div>
 									<div class="col-lg-6">

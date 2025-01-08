@@ -14,6 +14,7 @@
 	const dangerAlert_item2 = ref(false)
 	const dangerAlert_item3 = ref(false)
 	const dangerAlert_item4 = ref(false)
+	const dangerAlerterrors = ref(false)
 	const warningAlert = ref(false)
     const infoAlert = ref(false)
 	const hideAlert = ref(true)
@@ -79,6 +80,7 @@
 		dangerAlert_item2.value = !hideAlert.value
 		dangerAlert_item3.value = !hideAlert.value
 		dangerAlert_item4.value = !hideAlert.value
+		dangerAlerterrors.value = !hideAlert.value
 	}
 	const openViewComments1 = async (jorhead_id,jorlabordetails_id) => {
 		let response = await axios.get(`/api/cancelled_labor_data/`+jorhead_id+'/'+jorlabordetails_id);
@@ -153,17 +155,26 @@
 				const formData= new FormData()
 				formData.append('cancel_reason', cancel_labor_reason.value)
 				axios.post(`/api/cancel_jorlabordetails/`+id,formData).then(function (response) {
-					label.value='scope'
-					dangerAlert_item.value = !hideAlert.value
-					success.value='Successfully cancelled scope!'
-					successAlert.value = !successAlert.value
-					cancel_labor_reason.value=''
-					document.getElementById('labor_check').placeholder=""
-					document.getElementById('labor_check').style.backgroundColor = '#FFFFFF';
-					getJOR()
-					setTimeout(() => {
-						closeAlert()
-					}, 2000);
+					if(response.data!='error'){
+						label.value='scope'
+						dangerAlert_item.value = !hideAlert.value
+						success.value='Successfully cancelled scope!'
+						successAlert.value = !successAlert.value
+						cancel_labor_reason.value=''
+						document.getElementById('labor_check').placeholder=""
+						document.getElementById('labor_check').style.backgroundColor = '#FFFFFF';
+						getJOR()
+						setTimeout(() => {
+							closeAlert()
+						}, 2000);
+					}else{
+						dangerAlert_item.value = !hideAlert.value
+						success.value=''
+						error.value='Cannot be deleted, scope of work already have transactions.'
+						cancel_labor_reason.value=''
+						dangerAlerterrors.value=!dangerAlerterrors.value
+						getJOR()
+					}
 				})
 			}else{
 				document.getElementById('labor_check').placeholder="Cancel Reason must not be empty!"
@@ -182,17 +193,26 @@
 				const formData= new FormData()
 				formData.append('cancel_reason', cancel_material_reason.value)
 				axios.post(`/api/cancel_jormaterialdetails/`+id,formData).then(function (response) {
-					label.value='item'
-					dangerAlert_item.value = !hideAlert.value
-					success.value='Successfully cancelled item!'
-					successAlert.value = !successAlert.value
-					cancel_material_reason.value=''
-					document.getElementById('material_check').placeholder=""
-					document.getElementById('material_check').style.backgroundColor = '#FFFFFF';
-					getJOR()
-					setTimeout(() => {
-						closeAlert()
-					}, 2000);
+					if(response.data!='error'){
+						label.value='item'
+						dangerAlert_item.value = !hideAlert.value
+						success.value='Successfully cancelled item!'
+						successAlert.value = !successAlert.value
+						cancel_material_reason.value=''
+						document.getElementById('material_check').placeholder=""
+						document.getElementById('material_check').style.backgroundColor = '#FFFFFF';
+						getJOR()
+						setTimeout(() => {
+							closeAlert()
+						}, 2000);
+					}else{
+						dangerAlert_item.value = !hideAlert.value
+						success.value=''
+						error.value='Cannot be deleted, item already have transactions.'
+						cancel_material_reason.value=''
+						dangerAlerterrors.value=!dangerAlerterrors.value
+						getJOR()
+					}
 				})
 			}else{
 				document.getElementById('material_check').placeholder="Cancel Reason must not be empty!"
@@ -802,6 +822,46 @@
 					</div> 
 				</div>
 				 <!-- cancel here -->
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlerterrors }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
+									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
 			</div>
 		</Transition>
 	</navigation>

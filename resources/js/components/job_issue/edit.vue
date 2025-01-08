@@ -27,8 +27,11 @@
 	const remaining_balance =  ref([]);
 	const prepared_by =  ref('');
 	const checked_by =  ref('');
+	const checked_by_temp =  ref('');
 	const recommended_by =  ref('');
+	const recommended_by_temp =  ref('');
 	const approved_by =  ref('');
+	const approved_by_temp =  ref('');
 	const approved_by_rev =  ref(0);
 	const approved_date =  ref('');
 	const approved_reason =  ref('');
@@ -69,6 +72,9 @@
 	const remaining_labor_balance=ref([])
 	const remaining_material_balance=ref([])
 	const orig_labor_amount=ref(0)
+	const currency =  ref([]);
+	const joi_labor_details_old=ref([])
+	const joi_material_details_old=ref([])
 	const props = defineProps({
 		id:{
 			type:String,
@@ -93,6 +99,7 @@
 		joi_dr_rev.value = response.data.joi_dr_array;
 		joi_dr.value = response.data.joi_dr;
 		joi_dr_labor.value = response.data.joi_dr_labor;
+		currency.value = response.data.currency;
 		joi_dr_material.value = response.data.joi_dr_material;
 		discount_labor.value = response.data.joi_head.discount;
 		discount_material.value = response.data.joi_head.discount_material;
@@ -107,14 +114,16 @@
 		overall_total.value=(response.data.grand_labor_total + response.data.grand_material_total + newvat.value) - (discount_labor.value + discount_material.value)
 		jor_head.value = response.data.jor_head;
 		joi_vendor.value = response.data.joi_vendor;
+		joi_labor_details_old.value = response.data.joi_details_view_old;
 		joi_labor_details.value = response.data.joi_details_view;
+		joi_material_details_old.value = response.data.joi_material_details_view_old;
 		joi_material_details.value = response.data.joi_material_details_view;
 		joi_terms.value = response.data.joi_terms;
 		joi_instructions.value = response.data.joi_instructions;
 		prepared_by.value = response.data.prepared_by;
-		checked_by.value = response.data.checked_by;
-		recommended_by.value = response.data.recommended_by;
-		approved_by.value = response.data.approved_by;
+		checked_by.value = response.data.checked_by_id;
+		recommended_by.value = response.data.recommended_by_id;
+		approved_by.value = response.data.approved_by_id;
 		var cancelled_qty=0;
 		response.data.joi_labor_details.forEach(function (val, index, theArray) {
 			cancelled_qty +=(val.status=='Cancelled') ? val.total_cost : ''
@@ -150,6 +159,9 @@
 		grand_labor_total_old.value = response.data.grand_labor_total_temp;
 		grand_material_total_old.value = response.data.grand_material_total_temp;
 		overall_total.value=(response.data.grand_labor_total_temp + response.data.grand_material_total_temp + newvat.value) - (joi_head_temp.value.discount + joi_head_temp.value.discount_material)
+		checked_by_temp.value = response.data.checked_by_id_temp;
+		recommended_by_temp.value = response.data.recommended_by_id_temp;
+		approved_by_temp.value = response.data.approved_by_id_temp;
 	}
 
 	const isNumber = (evt)=> {
@@ -188,6 +200,10 @@
 
 		var new_total = (parseFloat(total) + parseFloat(totalm) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
 		// var new_total = (parseFloat(total) + parseFloat(totalm) + parseFloat(new_vat)) - (parseFloat(discount_labor.value) + parseFloat(discount_material.value));
+		var labor_total = parseFloat(total);
+		var material_total = parseFloat(totalm);
+		grand_labor_total.value=labor_total.toFixed(2);
+		grand_material_total.value=material_total.toFixed(2);
 		document.getElementById("grand_labor_total").innerHTML  = new_total.toFixed(2)
 		document.getElementById("overalltotal").innerHTML  = new_total.toFixed(2)
 		new_data.value=parseFloat(new_total)
@@ -423,6 +439,9 @@
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total_replace)
+		formData.append('checked_by', checked_by.value)
+		formData.append('approved_by', approved_by.value)
+		formData.append('recommended_by', recommended_by.value)
 		formData.append('joi_dr', JSON.stringify(joi_dr_rev.value))
 		formData.append('joi_dr_labor', JSON.stringify(joi_dr_labor.value))
 		formData.append('joi_dr_material', JSON.stringify(joi_dr_material.value))
@@ -672,7 +691,7 @@
 												<tr>
 													<td colspan="6"><span class="font-bold">{{ jor_head.general_description}} </span></td>
 												</tr>
-												<tr class="" v-for="(jld,index) in joi_labor_details" v-if="joi_head.status!='Revised'">
+												<tr class="" v-for="(jld,index) in joi_labor_details_old" v-if="joi_head.status!='Revised'">
 													<span hidden>{{ totalprice=formatNumber(jld.unit_price * jld.quantity) }}</span>
 													<td class="border-y-none p-1" colspan="3">
 														{{ jld.item_description}}
@@ -704,7 +723,7 @@
 													<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
 													<td class="uppercase p-1 text-center" width="10%">Total</td>
 												</tr>
-												<tr class="" v-for="(jmd,indexes) in joi_material_details">
+												<tr class="" v-for="(jmd,indexes) in joi_material_details_old">
 													<span hidden>{{ totalmprice=formatNumber(jmd.unit_price * remaining_material_balance[indexes]) }}</span>
 													<td class="border-y-none p-1 text-center">{{indexes+1}}</td>
 													<td class="border-y-none p-1" colspan="2">{{jmd.item_description}}</td>
@@ -746,7 +765,7 @@
 													<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 													<td class="p-0">
 														<div class="flex">
-															<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" :value="joi_head.vat">%
+															<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" :value="joi_head.vat">
 															<input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(joi_head.vat_amount ?? 0)">
 														</div>
 													</td>
@@ -781,16 +800,26 @@
 												<tr>
 													<td colspan="6"><span class="font-bold">{{ jor_head.general_description}} </span></td>
 												</tr>
-												<tr class="" v-for="(jld,index) in joi_labor_details" v-if="joi_head.status!='Revised'">
-													<span hidden>{{ totalprice=formatNumber(jld.unit_price * remaining_labor_balance[index]) }}</span>
+												<tr class="" v-for="(jlds,index) in joi_labor_details" v-if="joi_head.status!='Revised'">
+													<span hidden>{{ totalprice=formatNumber(jlds.unit_price * remaining_labor_balance[index]) }}</span>
 													<td class="border-y-none p-1" colspan="3">
-														{{ jld.item_description}}
+														<!-- {{ jlds.item_description}} -->
+														<textarea class="w-100 bg-yellow-50 border-r" v-model="jlds.item_description"></textarea>
 													</td>
 													<td class="border-y-none p-1 text-center">
-														<input type="text" min="0" @keyup="checkLaborBalance(jld.jor_labor_details_id,jld.jo_rfq_labor_offer_id,vat,remaining_labor_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_labor_checker'+index" v-model="remaining_labor_balance[index]">
+														<input type="text" min="0" @keyup="checkLaborBalance(jlds.jor_labor_details_id,jlds.jo_rfq_labor_offer_id,vat,remaining_labor_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_labor_checker'+index" v-model="remaining_labor_balance[index]">
 													</td>
-													<td class="border-y-none p-1 text-center">{{jld.uom}}</td>
-													<td class="border-y-none p-1 text-right">{{ formatNumber(jld.unit_price)}} {{ jld.currency }}</td>
+													<td class="border-y-none p-1 text-center">
+														<!-- {{jlds.uom}} -->
+														<input type="text" class="w-10 bg-yellow-50 border-r" v-model="jlds.uom">
+													</td>
+													<td class="border-y-none p-1 text-right">
+														<!-- {{ formatNumber(jlds.unit_price)}} {{ jlds.currency }} -->
+														<input type="text" class="w-20 bg-yellow-50 border-r text-right" v-model="jlds.unit_price" @keypress="isNumber($event)" @keyup="additionalCost(vat)">
+														<select name="" class="w-15 bg-yellow-50 border-r" v-model="jlds.currency">
+															<option v-for="cur in currency">{{ cur }}</option>
+														</select>
+													</td>
 													<td class="border-y-none p-1 text-right"><input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 												</tr>
 												<tr class="" v-for="(jld,index) in joi_labor_details_temp" v-else>
@@ -817,12 +846,24 @@
 												<tr class="" v-for="(jmd,indexes) in joi_material_details" v-if="joi_head.status!='Revised'">
 													<span hidden>{{ totalmprice=formatNumber(jmd.unit_price * remaining_material_balance[indexes]) }}</span>
 													<td class="border-y-none p-1 text-center">{{indexes+1}}</td>
-													<td class="border-y-none p-1" colspan="2">{{jmd.item_description}}</td>
+													<td class="border-y-none p-1" colspan="2">
+														<!-- {{jmd.item_description}} -->
+														<textarea class="w-100 bg-yellow-50 border-r" v-model="jmd.item_description"></textarea>
+													</td>
 													<td class="border-y-none p-1 text-center">
 														<input type="text" min="0" @keyup="checkMaterialBalance(jmd.jor_material_details_id,jmd.jo_rfq_material_offer_id,vat,remaining_material_balance[indexes], indexes)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_material_checker'+indexes" v-model="remaining_material_balance[indexes]">
 													</td>
-													<td class="border-y-none p-1 text-center">{{jmd.uom}}</td>
-													<td class="border-y-none p-1 text-right">{{formatNumber(jmd.unit_price  ?? 0)}} {{ jmd.currency }}</td>
+													<td class="border-y-none p-1 text-center">
+														<!-- {{jmd.uom}} -->
+														<input type="text" class="w-10 bg-yellow-50 border-r" v-model="jmd.uom">
+													</td>
+													<td class="border-y-none p-1 text-right">
+														<input type="text" class="w-20 bg-yellow-50 border-r text-right" v-model="jmd.unit_price" @keypress="isNumber($event)" @keyup="additionalCost(vat)">
+														<select name="" class="w-15 bg-yellow-50 border-r" v-model="jmd.currency">
+															<option v-for="cur in currency">{{ cur }}</option>
+														</select>
+														<!-- {{formatNumber(jmd.unit_price  ?? 0)}} {{ jmd.currency }} -->
+													</td>
 													<td class="border-y-none p-1 text-right"><input type="text" class="text-center tmprice" :id="'tmprice'+indexes" v-model="totalmprice" readonly></td>
 												</tr>
 												<tr class="" v-for="(jmd,indexes) in joi_material_details_temp" v-else>
@@ -875,7 +916,7 @@
 													<td class="p-0">
 														<div class="flex">
 															<input type="text" class="w-10 bg-white border-r text-center" placeholder="%" v-model="vat" @keyup="vatChange(vat)" @keypress="isNumber($event)" v-if="joi_head.status=='Revised'" disabled>
-															<input type="text" class="w-10 bg-white border-r text-center" placeholder="%" v-model="vat" @keyup="vatChange(vat)" @keypress="isNumber($event)" v-else>%
+															<input type="text" class="w-10 bg-white border-r text-center" placeholder="%" v-model="vat" @keyup="vatChange(vat)" @keypress="isNumber($event)" v-else>
 															
 															<input type="text" class="w-full bg-white p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat)" @keypress="isNumber($event)" v-if="joi_head.status=='Revised'" disabled>
 															<input type="text" class="w-full bg-white p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat)" @keypress="isNumber($event)" v-else>
@@ -1047,11 +1088,41 @@
 											<tr>
 												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" v-model="prepared_by" readonly></td>
 												<td></td>
-												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name"  v-model="checked_by" readonly></td>
+												<td class="text-center p-0">
+													<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by" v-if="joi_head.status!='Revised'">
+														<option value='0'>--Select Checked by--</option>
+														<option :value="check.id" v-for="check in signatories" :key="check.id">{{ check.name }}</option>
+													</select>
+													<select class="text-center bg-yellow-50" v-model="checked_by_temp" id="checked_by" v-else>
+														<option value='0'>--Select Checked by--</option>
+														<option :value="check.id" v-for="check in signatories" :key="check.id">{{ check.name }}</option>
+													</select>
+													<!-- <input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name"  v-model="checked_by" readonly> -->
+												</td>
 												<td></td>
-												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name" v-model="recommended_by" readonly></td>
+												<td class="text-center p-0">
+													<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by" v-if="joi_head.status!='Revised'">
+														<option value='0'>--Select Recommended by--</option>
+														<option :value="recom.id" v-for="recom in signatories" :key="recom.id">{{ recom.name }}</option>
+													</select>
+													<select class="text-center bg-yellow-50" v-model="recommended_by_temp" id="recommended_by" v-else>
+														<option value='0'>--Select Recommended by--</option>
+														<option :value="recom.id" v-for="recom in signatories" :key="recom.id">{{ recom.name }}</option>
+													</select>
+													<!-- <input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name" v-model="recommended_by" readonly> -->
+												</td>
 												<td></td>
-												<td class="text-center p-0"><input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name" v-model="approved_by" readonly></td>
+												<td class="text-center p-0">
+													<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by" v-if="joi_head.status!='Revised'">
+														<option value='0'>--Select Approved by--</option>
+														<option :value="app.id" v-for="app in signatories" :key="app.id">{{ app.name }}</option>
+													</select>
+													<select class="text-center bg-yellow-50" v-model="approved_by_temp" id="approved_by" v-else>
+														<option value='0'>--Select Approved by--</option>
+														<option :value="app.id" v-for="app in signatories" :key="app.id">{{ app.name }}</option>
+													</select>
+													<!-- <input type="text" class="text-center bg-yellow-50 p-1 w-full" placeholder="Employee Name" v-model="approved_by" readonly> -->
+												</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>
