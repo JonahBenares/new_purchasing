@@ -226,7 +226,7 @@
                             <p class="mb-0 text-white font-weight-medium">Please Print COC!</p>
                         </div>
                         <div class="d-flex">
-                            <a href="" target="_blank" class="btn btn-outline-light mr-2 bg-gradient-danger border-0">View COC</a>
+                            <a href="/job_issue/print_coc" target="_blank" class="btn btn-outline-light mr-2 bg-gradient-danger border-0">View COC</a>
                             <button id="bannerClose" class="btn border-0 p-0 ml-auto">
                             <i class="mdi mdi-close text-white"></i>
                             </button>

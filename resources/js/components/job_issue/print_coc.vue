@@ -76,352 +76,175 @@
 								<hr class="print:block border-dashed mt-2">
 							</div>
                             <div>
-                                <div class="row">
-									<div class="col-lg-1 col-sm-1 col-md-1">
-										<span class="text-sm">TO:</span>
-									</div>
-									<div class="col-lg-11 col-sm-11 col-md-11">
-										<p class="m-0 font-bold capitalize">MF Computer Solutions, Inc.</p>
-										<p class="m-0">Beverly Marie Dy</p>
-										<p class="m-0">Taculing Road, Bacolod City 6100</p>
-										<p class="m-0">(034) 434 9823 / 704-2063</p>
-									</div>
-								</div>
-								<hr class="border-dashed print:block">
+                                
 								<div class="row">
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Needed: </span>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">Completion of Work: </span>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-20 text-right">Ref: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>	
 									</div>
 								</div>
-								<div class="row">
+								
+                                <div class="row">
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date Prepared: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
-										</div>
-									</div>
-									<div class="col-lg-6 col-sm-6 col-md-6">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">CENPRI JOR No: </span>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">JO Reference: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-lg-6 col-sm-6 col-md-6">
+                                
+                                <div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Start of Work: </span>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">Activity: </span>
 											<input type="text" class="border-b bg-white w-full" disabled>
 										</div>
 									</div>
-									<div class="col-lg-6 col-sm-6 col-md-6">
-										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+                                </div>
+                                <br>
+								<div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<div class="flex justify-start">
+                                            <p>	This is to certify that <span class="text-sm text-gray-700 font-bold pr-1 !w-40">(Name of the Supplier)</span> has already completed the following scope of works for:</p>
+										</div>
+									</div>
+								</div>
+								<div class="row px-5">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<div class="flex justify-start">
+                                            <p class="text-sm">
+                                                A. Supply of labor, Materials, tools, equipment and technical expertise for the Quarterly Routine Oil Analysis for Predictive Maintenance: June 2024 (Units 1,2,3,4,5, and Black Start DG Set)	<br>
+                                                <br>
+                                                Scope of work includes:<br><br>
+
+                                                1. Conduct Testing of Lube Oil Sample from:<br>
+                                                *Shell Argina S4 SAE40 (6 samples)<br>
+                                                a. DG1 Bottom Sump<br>
+                                                b. DG2 Bottom Sump<br>
+                                                *Shell Rimula R4 15W40 (1 sample)<br>
+                                                a. Black Start DG Set<br>
+                                                *Petron Petromar HF 4040 (1 sample)<br>
+                                                a. DG3 Bottom Sump<br>
+                                                2. Submission of Reports with results interpretation.<br><br>
+
+
+                                                A. Approach<br>
+                                                Our oil analysis program incorporates an in-depth analysis of machine wear condition, oil condition, and contamination condition. In addition to that, we will also help you monitor and set limits on oil analysis parameters through trending of the previous tests which will help you know if your equipment is in critical condition. Our oil analysis aims to help customers save their time and money by removing catastrophic failure and unplanned maintenance through accurate results interpretation and action plans focusing on the determination of root causes, resulting in high efficiency, availability, and safety of assets.<br>
+                                                Our MachineDiagnostics™ reports have three parts, the Machine Wear Condition, Oil Condition, and
+                                                Contamination Condition:<br>
+                                                * Machine wear condition analysis involves the analysis of wear metals present in the used oil sample. There could be visible or non – visible particles in the used oil which could be determined through elemental analysis using a combination of RDE (for fine wear metal) and RFS (for coarse wear metal). Those tests mentioned could be used as a tool for determining whether your oil and your machine are at its optimum condition.<br>
+                                                * Oil condition analysis involves the analysis of the properties of the oil used for the equipment. The properties include viscosity, oxidation, nitration, total acidic number/total base number. Checking these parameters are essential to determine if your lubricant is still suitable for use or if it must be changed. Using oil, which is highly oxidized, nitrated, or acidic could have detrimental effects to the equipment. Conversely, using oil with extremely high or low viscosities could also damage your equipment.<br>
+                                                * Contamination condition analysis involves the analysis of the contaminants present in the oil such as dirt, water, fuel, and wrong oil which could damage a machine resulting to eventual breakdown of the equipment. Dirt is an abrasive contaminant which causes the wearing of equipment. Meanwhile, water could cause corrosion while fuel contamination could decrease oil viscosities.<br>
+                                                The strength of our MachineDiagnosticsTM Program lies in our short turn-around time, trending of results, excellent interpretation, and actionable recommendation that will greatly help your equipment run at its optimum performance.<br><br>
+
+                                                B. TEST PACKAGE DESCRIPTION<br>
+                                                Upon receipt of the oil sample in the laboratory with complete sample details, a confirmation email from our administrative officer will be sent to the client with a photo of the samples received. Our test methods adhere to internationally accepted ASTM Standards. A short description of each test method is available upon request.<br>
+                                                * Test Code: 804<br>
+                                                * Test Method:<br>
+                                                ASTM D6595<br>
+                                                AES-RFS<br>
+                                                ASTM E2412<br>
+                                                ASTM D445<br>
+                                                ASTM D4739<br>
+                                                ASTM D3828<br>
+                                                ASTM E2412M<br>
+                                                * Test Descriptions:<br>
+                                                - LubeCheckTM 804<br>
+                                                Includes the following individual tests:<br>
+                                                • RDE Fine Wear Metal – 18 elements<br>
+                                                • RFS Coarse Wear Metal – 11 elements AES-RFS<br>
+                                                • Oil Condition (oxidation, nitration)<br>
+                                                • Viscosity @100°C<br>
+                                                • TBN (Total Base Number)<br>
+                                                • Flash Point Method A Closed CupTM Flash/ No Flash<br>
+                                                • % Moisture<br>
+                                                Report with Interpretation and Recommendation<br>
+                                                Sample Volume Required: 100 ml (amount may vary according to the type of oil sample)<br><br>
+
+                                                II. Program Inclusions:<br>
+                                                1. Technical Services include – Data interpretation, Recommendation, and Trending over an online database.<br>
+                                                2. Samples are being analyzed and interpreted by an ICML-certified MLT/MLA Laboratory Analyst.<br>
+                                                3. Laboratory Response for any aftersales concerns.<br>
+                                                4. Supply of ISO 3722 super clean sample bottles with oil sample information form (SIF).<br>
+                                                5. Free analysis for fresh/new oil sample to have an updated baseline.<br>
+                                                6. Web e-lubecheck Account to monitor trending and sample reports database.<br>
+                                                7. One (1) free copy of Machinery Lubrication Philippines Magazine every quarter.<br>
+                                                8. Free monthly subscription to CRE Newsletters.<br><br>
+
+                                                III. Notes:<br>
+                                                1. Turnaround time 5-7 working days upon reaching CRE Lab together with Purchase Order or payment (COD customer only) and complete sample information form.<br>
+                                                2. For bulk samples: normal turnaround time applies for the first 30 samples. Additional 1 day TAT for the succeeding 20 samples.<br>
+                                                3. Test Reports are electronically generated and transmitted. A separate charge will apply if hard copy of test report is requested.<br>
+                                                4. Sample bottles will be provided by CRE Laboratories Corp. with a minimal amount of fee for delivery.<br>
+                                            </p>
+										</div>
+									</div>
+								</div>
+                                <div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<div class="flex justify-start">
+                                            <p>The above scope of works was completed and tested by <span class="text-sm text-gray-700 font-bold pr-1 !w-40">(Name of the Supplier)</span> on <input type="date" class="border px-2"> </p>
+										</div>
+									</div>
+								</div>
+
+                                <div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<textarea name="" class="w-full border text-sm px-2 py-1" id="" cols="30" rows="2">One (1) year warranty for parts and three (3) months warranty for service.</textarea>
+									</div>
+								</div>
+                                <div class="row">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<div class="flex justify-start">
+                                            <p class="text-sm">This certification is being issued on the above-name contractor for payment purposes only.</p>
 										</div>
 									</div>
 								</div>
 								<div class="" >
-									<br>
-									<div class="row">
-										<div class="col-lg-12">
-											<div class="border-2">
-												<table class="table-bordered w-full !text-xs">
-													<tr class="!border-b-3">
-														<td colspan="7" class="py-2">
-															<p class="text-sm font-bold text-gray-600 text-center m-0">Calibration and Servicing of UG 40 Mechanical Hydraulic Governor</p>
-															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
-														</td>
-													</tr>
-													<tr class="bg-gray-100">
-														<td class="uppercase p-1" colspan="3">Scope of Work</td>
-														<td class="uppercase p-1 text-center" width="7%">Qty</td>
-														<td class="uppercase p-1 text-center" width="7%">Unit</td>
-														<td class="uppercase p-1 text-center" width="10%">Unit Price</td>
-														<td class="uppercase p-1 text-center" width="10%">Total</td>
-													</tr>
-													<tr class="">
-														<td class="border-y-none p-1" colspan="3">
-                                                            <div class="flex justify-between space-x-2">
-                                                                <div class="w-full">
-                                                                    <span class="font-bold">Supply of manpower/labor, laboratory tools/equipment, and
-                                                                    technical expertise for the following:</span>
-                                                                    <br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-                                                                    <br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-                                                                    <br>3. Repair and replacement of parts as seen upon inspection.
-                                                                    <br>4. Setting of internal parts and mounting of the governor.
-                                                                    <br>5. Calibration and bench testing for:
-                                                                    <br>5.1. Speed Setting and Indicator
-                                                                    <br>5.2. Speed Droop Setting and Indicator
-                                                                    <br>5.3. Load Limit Setting and Indicator
-                                                                    <br>6. Functional test of shut-down solenoid valve
-                                                                    <br>7. Testing and Commissioning
-                                                                    <br>8. Submission of inspection, service, commissioning and bench testing reports.
-                                                                    <br>9. Other works necessary for job completion.
-                                                                </div>
-                                                                <a @click="openDangerItem()" class="!text-red-500 cursor-pointer po_buttons">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-                                                                </a>
-                                                            </div>
-															
-														</td>
-														<td class="border-y-none p-1 text-center">
-                                                            <input type="text" class="w-full text-center" value="5" placeholder="00">
-                                                        </td>
-														<td class="border-y-none p-1 text-center">pc</td>
-														<td class="border-y-none p-1 text-right">100.00</td>
-														<td class="border-y-none p-1 text-right">500.00</td>
-													</tr>
-													
-													<tr class="">
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-														<td class=""></td>
-													</tr>
-													<tr class="">
-														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6">
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>PR-19772-8727</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>Henne Tanan</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>IT Department</p>
-															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p>
-														</td>
-														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" value="200.00"></td>
-													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
-													</tr>
-													
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="200.00"></td>
-													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
-														<td class="p-0"><input disabled type="text" class="w-full bg-white p-1 text-right" value="100.00"></td>
-													</tr>
-                                                    <tr class="">
-														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
-														<td class="p-0">
-															<div class="flex">
-																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" value="">
-																<input disabled type="text" class="w-full bg-white p-1 text-right" value="">
-															</div>
-														</td>
-													</tr>
-													<tr class="">
-														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-														<td class="p-1 text-right font-bold !text-sm">1000.00</td>
-													</tr>
-												</table>
-											</div>
-										</div>
-									</div>
-                                    
-                                    <div class="row mt-2">
-                                        <div class="col-lg-6  col-sm-6 col-md-6">
-                                            <table class="table-bordsered !text-xs w-full">
-                                                <tr>
-                                                    <td class="p-1 uppercase" colspan="3">Terms and Conditions</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">1.</td>
-                                                    <td class="align-top px-1" colspan="2">PO No. must appear on all copies of Invoices, Delivery Receipt & Correspondences submitted.</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">2.</td>
-                                                    <td class="align-top px-1" colspan="2">Sub-standard items shall be returned to supplier @ no cost to CENPRI.</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">3.</td>
-                                                    <td class="align-top pl-1" colspan="2">
-                                                        <div class="flex justify-start space-x-1">
-                                                            <span >Price is </span>
-                                                            <span>Exclusive of VAT</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">4.</td>
-                                                    <td class="align-top  pl-1" colspan="2">
-                                                        <div class="flex justify-start space-x-1">
-                                                            <span>Payment </span>
-                                                            <span> COD</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">5.</td>
-                                                    <td class="align-top  pl-1" colspan="2">
-                                                        <div class="flex justify-start space-x-1">
-                                                            <span>Delivery Term </span>
-                                                            <span> Sample</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">6.</td>
-                                                    <td class="align-top  pl-1" colspan="2">sample term</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="col-lg-6  col-sm-6 col-md-6">
-                                            <table class="table-bordsered !text-xs w-full">
-                                                <tr>
-                                                    <td class="p-1 uppercase" colspan="3">Other Instructions</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">1.</td>
-                                                    <td class="px-1" colspan="2">sample instructions</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="align-top text-center" width="4%">2.</td>
-                                                    <td class="px-1" colspan="2">sample instructions -Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</td>
-                                                </tr>
-                                                <tr>
-													<td colspan="2" class="p-1">Sample Notes</td>
-													<td class="p-0 align-top po_buttons" width="1">
-														<button type="button" @click="removeOthers(indexes)" class="btn btn-danger p-1">
-															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-														</button>
-													</td>
-												</tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <table class="w-full ">
-                                                <tr>
-                                                    <td></td>
-                                                    <td width="12%" class="font-bold text-sm text-gray-500"> Total Project Cost:</td>
-                                                    <td  width="20%" class="border-b border-gray-400 px-4 font-bold text-base text-gray-500"> 
-                                                        <div class="flex justify-between  text-lg">
-                                                            <span>PHP</span>
-                                                            <span>18,999.99</span>
-                                                        </div>
-                                                    </td>
-                                                    <td width="14%"></td>
-                                                    <td width="8%" class="font-bold text-sm text-gray-500">Conforme:</td>
-                                                    <td  width="30%" class="border-b border-gray-400 px-4"> </td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-xs text-center">Contractor's Signature Over Printed Name</td>
-                                                    <td></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <br>
                                     <div class="row mt-4 mb-4">
                                         <div class="col-lg-12">
-                                            <table class="w-full text-xs">
+                                            <table class="w-full text-sm">
                                                 <tr>
-                                                    <td class="text-center" width="20%">Prepared by</td>
+                                                    <td class="text-left" width="20%">Check and Endorsed by:</td>
                                                     <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Reviewed/Checked by</td>
-                                                    <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Recommended by</td>
-                                                    <td width="2%"></td>
-                                                    <td class="text-center" width="20%">Approved by</td>
+                                                    <td class="text-left" width="20%">Approve by:</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="text-center p-1">
+                                                        <select name="" class="py-1   w-full" id="">
+                                                            <option value="">Select Employee</option>
+                                                        </select>
+                                                    </td>
+                                                    <td></td>
+                                                    <td class="text-center p-1">
+                                                        <select name="" class="py-1   w-full" id="">
+                                                            <option value="">Select Employee</option>
+                                                        </select>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-center border-b"><br></td>
-                                                    <td></td>
                                                     <td class="text-center border-b"></td>
                                                     <td></td>
                                                     <td class="text-center border-b"></td>
-                                                    <td></td>
-                                                    <td class="text-center border-b"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-center p-1">Henne Tanant</td>
-                                                    <td></td>
-                                                    <td class="text-center p-1">Beverly Sy</td>
-                                                    <td></td>
-                                                    <td class="text-center p-1">Jonah Marie Dy</td>
-                                                    <td></td>
-                                                    <td class="text-center p-1">Glenn Paulate</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-center"><br><br></td>
-                                                    <td></td>
-                                                    <td class="text-center"></td>
-                                                    <td></td>
-                                                    <td class="text-center"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-right" colspan="2">Work Completion Verified by: </td>
-                                                    <td class="text-center border-b" colspan="3"></td>
-                                                    <td class="text-center"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-right" colspan="2"></td>
-                                                    <td class="text-center p-1" colspan="3">Signature over Printed Name</td>
-                                                    <td class="text-center"></td>
                                                 </tr>
                                             </table>
                                         </div>
                                     </div>
                                     <hr	class="border-dashed">
-                                    <div class="po_buttons text-xs">
-                                        <span class="w-full block">Internal Comment:</span>
-                                        <span class="w-full block">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. </span>
-                                        <hr	class="border-dashed">
-                                    </div>
                                     
                                     <div class="row my-2 po_buttons" > 
                                         <div class="col-lg-12 col-md-12">
-                                            <div class="flex justify-between space-x-2">
-                                                <div class="flex justify-start space-x-1">
-                                                    <button type="submit" class="btn btn-danger"  @click="openDangerPO()">Cancel PO</button>
-                                                    <div class="flex justify-between">
-                                                        <a href="/job_issue/edit" type="submit" class="btn btn-info  !rounded-r-none">Revise JOI</a>
-                                                        <button class="btn btn-info !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRevise()">
-                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="flex justify-between space-x-1">
-                                                    <a href="/job_issue/print_ar" class="btn btn-warning text-white">Print AC</a>
-                                                    <button type="submit" class="btn btn-primary text-white" @click="printDiv()">Print COC</button>
-                                                    <div class="flex justify-between">
-                                                        <!-- <a href="/job_disburse/new" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a> -->
-                                                        <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a>
-                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
-                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                        </button>
-                                                    </div>
-                                                    <div class="flex justify-between">
-                                                        <a href="/job_dr/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print DR</a>
-                                                        <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerDR()">
-                                                            <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
-                                                        </button>
-                                                    </div>
-                                                    <a href="/job_issue/view" class="btn btn-warning text-white" >Print JOI</a>
-                                                </div>
-                                                
+                                            <div class="flex justify-center space-x-2">
+                                                <button type="submit" class="btn btn-primary text-white" @click="printDiv()">Print COC</button>
                                             </div>
                                         </div>
                                     </div>
