@@ -90,14 +90,29 @@ class POController extends Controller
         $year=date('Y');
         $series_rows = POSeries::where('year',$year)->count();
         $company=Config::get('constants.company');
+        
+        // if($series_rows==0){
+        //     $max_series='1';
+        //     $po_series='0001';
+        //     $po_no = 'P'.$pr_no_exp."-".$po_series;
+        // } else {
+        //     $max_series=POSeries::where('year',$year)->max('series');
+        //     $po_series=$max_series+1;
+        //     $po_no = 'P'.$pr_no_exp."-".Str::padLeft($po_series, 4,'000');
+        // }
+
+        $po_pr = explode("-", $pr_no_exp); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$pr_no_exp."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$pr_no_exp."-".Str::padLeft($po_series, 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($po_series, 4,'000')."-".$company;
         }
         
         $dr_series_rows = PoDrSeries::where('year',$year)->count();
@@ -167,18 +182,35 @@ class POController extends Controller
         $other_list=$request->input("other_list");
         $po_details=$request->input("po_details");
         $year=date('Y');
+        $company=Config::get('constants.company');
         $series_rows = POSeries::where('year',$year)->count();
         $exp=explode('-',$request->po_no);
+
+        $po_pr = explode("-", $request->pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$request->pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$request->pr_no."-".Str::padLeft($exp[3], 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($exp[2], 4,'000')."-".$company;
         }
-        if(!POSeries::where('year',$year)->where('series',$exp[3])->exists()){
+
+        // if($series_rows==0){
+        //     $max_series='1';
+        //     $po_series='0001';
+        //     $po_no = 'P'.$request->pr_no."-".$po_series;
+        // } else {
+        //     $max_series=POSeries::where('year',$year)->max('series');
+        //     $po_series=$max_series+1;
+        //     $po_no = 'P'.$request->pr_no."-".Str::padLeft($exp[3], 4,'000');
+        // }
+
+        if(!POSeries::where('year',$year)->where('series',$exp[2])->exists()){
             $series['year']=$year;
             $series['series']=$po_series;
             $po_series=POSeries::create($series);
@@ -688,8 +720,8 @@ class POController extends Controller
                 ]);
                 // $pr_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('pr_qty');
                 $po_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('po_qty');
-                $dpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('dpo_qty');
-                $rpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->value('rpo_qty');
+                $dpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+                $rpo_qty = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
                 $method = POHead::where('id',$pd->po_head_id)->value('method');
                 if($method=='PO'){
                     $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
@@ -697,11 +729,11 @@ class POController extends Controller
                         'po_qty'=>$po_qty - $pd->quantity,
                     ]);
                 }else if($method=='DPO'){
-                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
+                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
                         'dpo_qty'=>$dpo_qty - $pd->quantity,
                     ]);
                 }else if($method=='RPO'){
-                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offers_id)->update([
+                    $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
                         'rpo_qty'=>$rpo_qty - $pd->quantity,
                     ]);
                 }

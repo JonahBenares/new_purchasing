@@ -490,7 +490,7 @@
 			formData.append('quantity_material'+indexer, remaining_material_balance.value[indexer])
 		});
 		if(status==='Saved'){
-			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
+			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && vat_in_ex.value!=0){
 				axios.post(`/api/save_direct_joi`,formData).then(function (response) {
 					joi_head_id.value=response.data;
 					success.value='You have successfully saved new jo.'
@@ -508,6 +508,9 @@
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}); 
 			}else{
+				if(vat_in_ex.value==0){
+					document.getElementById('vat_in_ex').style.backgroundColor = '#FAA0A0';
+				}
 				if(checked_by.value==0){
 					document.getElementById('checked_by').style.backgroundColor = '#FAA0A0';
 				}
@@ -547,11 +550,14 @@
 		if(button==='button1'){
 			document.getElementById('checked_by').style.backgroundColor = '#FEFCE8';
 		}
+		if(button==='button2'){
+			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		}
 		if(button==='button3'){
 			document.getElementById('approved_by').style.backgroundColor = '#FEFCE8';
 		}
-		if(button==='button2'){
-			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		if(button==='button4'){
+			document.getElementById('vat_in_ex').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
@@ -713,7 +719,7 @@
 															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 														</td>
 													</tr>
-													<tr class="bg-gray-100">
+													<tr class="bg-gray-100" v-if="joi_labor_details.length != 0">
 														<td class="uppercase p-1" colspan="3">Scope of Work</td>
 														<td class="uppercase p-1 text-center" width="7%">Qty</td>
 														<td class="uppercase p-1 text-center" width="7%">Unit</td>
@@ -751,7 +757,7 @@
 														<td class="border-y-none p-1 text-right">{{jld.unit_price}} {{ jld.currency }}</td>
 														<td class="border-y-none p-1 text-right"><input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 													</tr>
-													<tr class="bg-gray-100">
+													<tr class="bg-gray-100" v-if="joi_material_details.length != 0">
 														<td class="p-1 text-center" width="3%">#</td>
 														<td class="p-1" colspan="2">Materials:</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Qty</td>
@@ -872,7 +878,7 @@
 													<td class="align-top pl-1" colspan="2">
 														<div class="flex justify-between">
 															<span class="w-14">Price is </span>
-															<select class="w-full bg-yellow-50" id="" v-model="vat_in_ex">
+															<select class="w-full bg-yellow-50" id="vat_in_ex" v-model="vat_in_ex" @click="resetError('button4')">
 																<option value="1">Inclusive of VAT</option>
 																<option value="2">Exclusive of VAT</option>
 															</select>

@@ -162,21 +162,25 @@
 	}
 
 	const checkBalance = (vat_percent,qty,avail_qty,count) => {
+		po_details.value[count].totalprice = po_details.value[count].unit_price * po_details.value[count].quantity
+
 		var grandtotal=0;
-		po_details.value.forEach(function (val, index, theArray) {
-			var p = document.getElementById('tprice'+index).value;
-			if(p != '' && p != NaN){
-				var pi = p.replace(",", "");
-				grandtotal += parseFloat(pi);
+		// po_details.value.forEach(function (val, index, theArray) {
+		for(var x=0;x<po_details.value.length;x++){
+			var p = po_details.value[x].totalprice;
+			if(p != '' && p != NaN && p != null){
+				// var pi = p.replace(",", "");
+				grandtotal += parseFloat(p);
 			}
-        });
-        var percent= (vat.value==1) ? vat_percent/100 : 0
-		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
-		vat_amount.value=new_vat;
-		
+        }
+
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
-		grand_total.value=overall_total;
+        var percent= (vat.value==1) ? vat_percent/100 : 0
+		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+		vat_amount.value=new_vat.toFixed(2);
+		
+		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
+		grand_total.value=overall_total.toFixed(2);
 		if(qty>avail_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
@@ -207,8 +211,8 @@
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
+		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) - parseFloat(discount_display)) + new_vat;
 		grand_total.value = new_total;
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
@@ -226,9 +230,9 @@
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
         var percent= (vat.value==1) ? vat_percent/100 : 0;
-        var new_vat = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+		var new_vat = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
-        var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) - parseFloat(discount_display)) + parseFloat(new_vat);
         grand_total.value=new_total;
 		new_data.value=parseFloat(new_total)
 	}
@@ -243,8 +247,10 @@
 					total += parseFloat(pi);
 				}
 			});
+			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
-			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			var new_vat=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+			vat_amount.value = parseFloat(new_vat).toFixed(2);
 			ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
@@ -283,7 +289,7 @@
 		// 	formData.append('quantity'+index, 'available_qty'+index)
 		// });
 		if(status==='Saved'){
-			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
+			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && vat_in_ex.value!=0){
 				axios.post(`/api/save_repeat_po`,formData).then(function (response) {
 					pohead_id.value=response.data;
 					success.value='You have successfully saved new po.'
@@ -300,6 +306,9 @@
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}); 
 			}else{
+				if(vat_in_ex.value==0){
+					document.getElementById('vat_in_ex').style.backgroundColor = '#FAA0A0';
+				}
 				if(checked_by.value==0){
 					document.getElementById('checked_by').style.backgroundColor = '#FAA0A0';
 				}
@@ -374,8 +383,9 @@
 
 	const pr_det = ref(false)
 
-	const openModel = (item_no) => {
+	const openModel = (item_no, itemdesc) => {
 		itemno.value = item_no
+		item_description.value = itemdesc
 		showModal.value = !showModal.value
 	}
 
@@ -404,6 +414,7 @@
 		// 	ref_po_no:reference_po_no,
 		// }
 		// po_references.value.push(reference)
+		document.getElementById("save").disabled = false;
 	}
 
 	const removeOffer = (index) => {
@@ -414,7 +425,12 @@
 		po_details.value[index].reference_po_details_id = ''
 		po_details.value[index].currency = ''
 		po_details.value[index].totalprice = ''
-		
+
+		if(index>=1){
+			document.getElementById("save").disabled = false;
+		}else{
+			document.getElementById("save").disabled = true;
+		}
 	}
 
 	const addRowTerms= () => {
@@ -528,11 +544,14 @@
 		if(button==='button1'){
 			document.getElementById('checked_by').style.backgroundColor = '#FEFCE8';
 		}
+		if(button==='button2'){
+			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		}
 		if(button==='button3'){
 			document.getElementById('approved_by').style.backgroundColor = '#FEFCE8';
 		}
-		if(button==='button2'){
-			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		if(button==='button4'){
+			document.getElementById('vat_in_ex').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
@@ -591,7 +610,7 @@
 							<div class="input-group col-xs-12">
 								<select class="form-control file-upload-info" v-model="pr_no" @change="getSupplierRPO()">
 									<option value="">--Select PR Number--</option>
-									<option :value="p.pr_no" v-for="p in prno_dropdown" :key="p.pr_no">{{ p.pr_no }}</option>
+									<option :value="p.pr_no" v-for="p in prno_dropdown" :key="p.pr_no">{{ p.pr_no }} </option>
 								</select>
 								<select class="form-control file-upload-info" id="rpo_supplier" v-model="vendor_details_id" @change="OpenBtn()" disabled>
 									<option value="">--Select Supplier--</option>
@@ -684,7 +703,7 @@
 												<div class="flex justify-between space-x-1 w-full">
 													<div class="w-full">
 														<!-- <p class="w-full text-xs m-0 font-bold">{{ pd.offer_supp }}</p> -->
-														<input type="text" class="p-1  w-full bg-yellow-50 border-b" :id="'refpono'+ index" v-model="pd.reference_po_no" readonly>
+														<input type="text" class="p-1  w-full bg-yellow-50 border-b refpono" :id="'refpono'+ index" v-model="pd.reference_po_no" readonly>
 														<input type="text" class="p-1  w-full bg-yellow-50 border-b" :id="'offerdesc'+ index" v-model="pd.offer_desc" readonly>
 														<input type="hidden" :id="'refpodetailsid'+ index" v-model="pd.reference_po_details_id">
 														<!-- <span class="">{{ pd.offer_desc }}</span> -->
@@ -701,13 +720,13 @@
 											</td>
 											<td class="p-0 bg-orange-50">
 												<!-- <input type="text" class="p-1 text-center w-full bg-orange-50" placeholder="00.00" v-model="pd.total" readonly> -->
-												<input type="text" class="p-1 text-center w-full bg-orange-50 tprice" placeholder="00.00" :id="'tprice'+index" v-model="pd.totalprice" readonly>
+												<input type="text" class="p-1 text-center w-full bg-orange-50 tprice" placeholder="00.00" :id="'tprice'+index" v-model="pd.totalprice">
 											</td>
 											<td class="p-0" align="center">
 												<button class="btn btn-sm btn-danger p-1" @click="removeOffer(index)" v-if="pd.reference_po_no != ''">
 													<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 												</button>
-                                                <button class="btn btn-sm btn-primary p-1" @click="openModel(index)">
+                                                <button class="btn btn-sm btn-primary p-1" @click="openModel(index,pd.item_description)">
                                                     <MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
                                                 </button>
                                             </td>
@@ -824,7 +843,7 @@
 												<td class="align-top pl-1" colspan="2">
 													<div class="flex justify-between">
 														<span class="w-14">Price is </span>
-														<select name="" class="w-full bg-yellow-50" id="" v-model="vat_in_ex">
+														<select name="" class="w-full bg-yellow-50" id="vat_in_ex" v-model="vat_in_ex" @click="resetError('button4')">
 															<option value="1">Inclusive of VAT</option>
 															<option value="2">Exclusive of VAT</option>
 														</select>
@@ -961,7 +980,7 @@
 									<div class="flex justify-center space-x-2">
 										<button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="pohead_id!=0">Cancel PO</button>
 										<button @click="onSave('Draft')" class="btn btn-warning w-26 !text-white" id="draft">Save as Draft</button>
-										<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save">Save</button>
+										<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save" disabled>Save</button>
 									</div>
 								</div>
 							</div>

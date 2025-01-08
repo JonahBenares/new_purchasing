@@ -35,6 +35,7 @@
 	let all_vendor_checkbox=ref(0);
 	let all_labor_checkbox=ref(0);
 	let all_material_checkbox=ref(0);
+	let due_date=ref('');
 
 	let aoq_status=ref('');
 	let aoq_details_id=ref(0);
@@ -176,7 +177,10 @@
 	}
 
 	const AdditionalVendorBtn= () => {
-		if(vendor_details.value == ''){
+		if(due_date.value == ''){
+			document.getElementById('duedate_').placeholder="Please fill in Due date."
+			document.getElementById('duedate_').style.backgroundColor = '#FAA0A0';
+		}else if(vendor_details.value == ''){
 			document.getElementById("vendor_alert").style.display="block"
 		}else{
 			AdditionalVendorAlert.value = !AdditionalVendorAlert.value
@@ -196,6 +200,7 @@
 
 			formVendor.append('jo_rfq_head_id', props.id)
 			formVendor.append('jor_no', RFQHead.value.jor_no)
+			formVendor.append('due_date', due_date.value)
 			formVendor.append('vendor_details_id', vendor_details_id)
 			formVendor.append('vendor_name', vendor_name)
 			formVendor.append('vendor_identifier', identifier)
@@ -704,7 +709,7 @@
 														<p class="text-sm font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
 														<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 													</div>
-													<table class="table-bordered w-full !text-xs mb-2">
+													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQLaborDetails.length != 0">
 														<tr class="bg-gray-100">
 															<td class="p-1 text-center" width="5%">#</td>
 															<td class="p-1" width="50%">Scope of Work</td>
@@ -751,7 +756,7 @@
 														</tr>
 													</tbody>
 													</table>
-													<table class="table-bordered w-full !text-xs mb-2">
+													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQMaterialDetails.length != 0">
 														<tr class="bg-gray-100">
 															<td class="p-1 text-center" width="5%">No</td>
 															<td class="p-1 text-center" width="10%">Qty</td>
@@ -809,7 +814,10 @@
 													</table>
 													<table class="table-bordesred w-full text-xs">
 															<tr>
-																<td colspan="4">Please Fill - Up :</td>
+																<td colspan="4">1. Quotation must be submitted on or before {{ rvi.view_due_date }}</td>
+															</tr>
+															<tr>
+																<td colspan="4">2. Please Fill - Up :</td>
 															</tr>
 															<tbody v-if="(rvi.canvassed==0)">
 																<tr class="po_buttons">
@@ -1220,6 +1228,12 @@
 								<div class="flex justify-start space-x-2">
 									<ExclamationTriangleIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></ExclamationTriangleIcon>
 									<span>Please select vendor!</span>
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-3">
+								<div class="form-group">
+									<label class="text-gray-500 m-0" for="">Due Date</label>
+									<input type="text" class="p-2 border w-full text-sm" placeholder="Due Date"  onfocus="(this.type='date')" v-model="due_date" id="duedate_">
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-3">

@@ -44,7 +44,9 @@
 	const instruction_id=ref(0);
 	const terms_id=ref(0);
 	let pohead_id=ref(0);
-	let formatter=ref('');
+	const formatter = new Intl.NumberFormat('en-US', { 
+        minimumFractionDigits: 4 
+    });
 	const cancel_all_reason=ref('');
 
 	const props = defineProps({
@@ -147,9 +149,6 @@
 	}
 
 	const ChangeGrandTotal = (vat_percent) => {
-		formatter.value = new Intl.NumberFormat('en-US', {
-			minimumFractionDigits: 4,      
-		})
 		var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
@@ -158,12 +157,24 @@
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+
+		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) - parseFloat(discount_display)) + new_vat ;
 		grand_total.value = new_total;
 		new_data.value=parseFloat(new_total)
-		document.getElementById("vat_amount").value=new_vat.toFixed(2);
+		// document.getElementById("vat_amount").value=new_vat.toFixed(2);
 		vat_amount.value=new_vat.toFixed(2);
+
+		const prices = document.querySelectorAll('.unit-price');
+        let allZero = true;
+
+        prices.forEach(price => {
+            if (parseFloat(price.value) !== 0) {
+                allZero = false;
+            }
+        });
+
+        document.getElementById('save').disabled = allZero;
 	}
 
 	const vatChange = (vat_percent) => {
@@ -178,9 +189,9 @@
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
         var percent= (vat.value==1) ? vat_percent/100 : 0;
-        var new_vat = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+        var new_vat = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
-        var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        var new_total=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat);
         grand_total.value=new_total;
 		new_data.value=parseFloat(new_total)
 	}
@@ -196,8 +207,10 @@
 				var pi = p.replace(",", "");
 				total += parseFloat(pi);
 			});
+			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
-			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			var new_vat=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+			vat_amount.value = parseFloat(new_vat).toFixed(2);
 			ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
@@ -211,22 +224,20 @@
 	}
 
 	const checkBalance = async (vat_percent,qty,avail_qty,count) => {
-		formatter.value = new Intl.NumberFormat('en-US', {
-			minimumFractionDigits: 4,      
-		})
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
 			var pi = p.replace(",", "");
 			grandtotal += parseFloat(pi);
         });
-        var percent= (vat.value==1) ? vat_percent/100 : 0
-		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
-		vat_amount.value=new_vat;
-		
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
-		grand_total.value=overall_total;
+        var percent= (vat.value==1) ? vat_percent/100 : 0
+		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+		vat_amount.value=new_vat.toFixed(2);
+		
+		
+		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
+		grand_total.value=overall_total.toFixed(2);
 		if(qty>avail_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
@@ -240,9 +251,6 @@
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = false;
 		}
-		formatter.value = new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 4,      
-        })
 	}
 
 	const CheckItemDescEmpty = (index) => {
@@ -289,7 +297,7 @@
 		// 	formData.append('quantity'+index, 'available_qty'+index)
 		// });
 		if(status==='Saved'){
-			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0){
+			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && vat_in_ex.value!=0){
 				axios.post(`/api/save_direct_po`,formData).then(function (response) {
 					pohead_id.value=response.data;
 					success.value='You have successfully saved new po.'
@@ -306,6 +314,9 @@
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}); 
 			}else{
+				if(vat_in_ex.value==0){
+					document.getElementById('vat_in_ex').style.backgroundColor = '#FAA0A0';
+				}
 				if(checked_by.value==0){
 					document.getElementById('checked_by').style.backgroundColor = '#FAA0A0';
 				}
@@ -500,16 +511,30 @@
 		if(button==='button1'){
 			document.getElementById('checked_by').style.backgroundColor = '#FEFCE8';
 		}
+		if(button==='button2'){
+			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		}
 		if(button==='button3'){
 			document.getElementById('approved_by').style.backgroundColor = '#FEFCE8';
 		}
-		if(button==='button2'){
-			document.getElementById('recommended_by').style.backgroundColor = '#FEFCE8';
+		if(button==='button4'){
+			document.getElementById('vat_in_ex').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
 		const btn_save = document.getElementById("save");
 		btn_save.disabled = false;
+
+		const prices = document.querySelectorAll('.unit-price');
+        let allZero = true;
+
+        prices.forEach(price => {
+            if (parseFloat(price.value) !== 0) {
+                allZero = false;
+            }
+        });
+
+        document.getElementById('save').disabled = allZero;
 	}
 
 	const isNumber = (evt)=> {
@@ -672,7 +697,7 @@
 													<textarea name="" :id="'itemdesc'+index" rows="2" class="p-1 w-full bg-yellow-50 itemdesc" v-model="pd.item_description" @change="CheckItemDescEmpty(index)"></textarea>
 												</td>
 												<td class="align-top p-0 bg-yellow-50">
-													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" @change="ChangeGrandTotal()" v-model="pd.unit_price">
+													<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b unit-price" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" @change="ChangeGrandTotal(vat_percent)" v-model="pd.unit_price">
 													<select class="p-1 m-0 leading-none w-full text-center  bg-yellow-50" v-model="pd.currency">
 														<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 													</select>
@@ -776,7 +801,7 @@
 												<td class="align-top pl-1" colspan="2">
 													<div class="flex justify-between">
 														<span class="w-14">Price is </span>
-														<select name="" class="w-full bg-yellow-50" id="" v-model="vat_in_ex">
+														<select name="" class="w-full bg-yellow-50" id="vat_in_ex" v-model="vat_in_ex" @click="resetError('button4')">
 															<option value="1">Inclusive of VAT</option>
 															<option value="2">Exclusive of VAT</option>
 														</select>
@@ -914,7 +939,7 @@
 											<button type="submit" class="btn btn-primary mr-2 w-44" @click="openSuccessAlert()">Save</button> -->
 											<button type="button" class="btn btn-danger w-36"  @click="cancelAllPO('no')" v-if="pohead_id!=0">Cancel PO</button>
 											<button @click="onSave('Draft')" class="btn btn-warning w-26 !text-white" id="draft">Save as Draft</button>
-											<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save">Save</button>
+											<button @click="onSave('Saved')" type="button" class="btn btn-primary w-36" id="save" disabled>Save</button>
 										</div>
 									</div>
 								</div>

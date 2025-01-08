@@ -393,7 +393,7 @@
 							
 							<div class="row">
 								<div class="col-lg-12">
-									<table class="w-full table-bordered !text-xs mt-3">
+									<table class="w-full table-bordered !text-xs mt-3" v-if="LaborDetails.length != 0">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
 												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
@@ -419,7 +419,7 @@
 							<br>
 							<div class="row">
 								<div class="col-lg-12">
-									<table class="w-full table-bordered !text-xs mb-3">
+									<table class="w-full table-bordered !text-xs mb-3" v-if="MaterialDetails.length != 0">
 										<tr class="bg-gray-100">
 											<td class="p-1 uppercase text-center" width="2%">
 												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">

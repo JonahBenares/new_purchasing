@@ -390,13 +390,13 @@
 							<td></td>
 							<td width="12%">Prepared by:</td>
 							<td></td>
-							<td width="12%">Received and Checked by</td>
+							<td width="12%">Received and Checked by:</td>
 							<td></td>
-							<td width="12%">Award Recommended by</td>
+							<td width="12%">Award Recommended by:</td>
 							<td></td>
-							<td width="12%">Recommending Approval</td>
+							<td width="12%">Recommending Approval:</td>
 							<td></td>
-							<td width="12%">Approved by</td>
+							<td width="12%">Approved by:</td>
 							<td></td>
 						</tr>
 						<tr>
@@ -457,7 +457,7 @@
 				<div class="col-lg-12" v-else>
 					<div class="flex justify-center space-x-1">
 						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
-						<!-- <button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button> -->
+						<button type="submit" v-if="head.status != 'Cancelled'" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 					</div>
 				</div>
 			</div>

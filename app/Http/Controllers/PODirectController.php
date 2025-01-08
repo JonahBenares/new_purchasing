@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PRHead;
+use App\Models\PRDetails;
 use App\Models\PrReportDetails;
 use App\Models\POHead;
 use App\Models\PoDetails;
@@ -48,7 +49,11 @@ class PODirectController extends Controller
         foreach($available_pr AS $apr){
             $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
             $count_pr=$count_available_pr->count();
-            if($count_pr != 0){
+
+            $total_pr_qty = PRDetails::where('pr_head_id',$apr->id)->where('status','Saved')->sum('quantity');
+            $total_po_qty = PrReportDetails::where('pr_no',$apr->pr_no)->selectRaw('SUM(po_qty + dpo_qty + rpo_qty) as total_sum')->value('total_sum');
+            
+            if(($count_pr != 0 || $count_pr != '') && ($total_pr_qty != $total_po_qty)){
                 $prno_dropdown[] = [
                     'id'=>$apr->id,
                     'pr_no'=>$apr->pr_no,
@@ -79,14 +84,19 @@ class PODirectController extends Controller
         $year=date('Y');
         $series_rows = POSeries::where('year',$year)->count();
         $company=Config::get('constants.company');
+        
+        $po_pr = explode("-", $pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$pr_no."-".Str::padLeft($po_series, 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($po_series, 4,'000')."-".$company;
         }
         
         $dr_series_rows = PoDrSeries::where('year',$year)->count();
@@ -119,19 +129,33 @@ class PODirectController extends Controller
             ];
         }
 
-        $pr_details = PrReportDetails::where('pr_no',$pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+        // $pr_details = PrReportDetails::where('pr_no',$pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+        $pr_head_id= PRHead::where('pr_no',$pr_no)->value('id');
+        $pr_details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','=','Saved')->get();
         $currency=Config::get('constants.currency');
+        $po_details = array();
         foreach($pr_details AS $pd){
-            $available_qty = $pd->pr_qty - $pd->delivered_qty;
-            $po_details[] = [
-                'pr_details_id' =>$pd->pr_details_id,
-                'item_description' =>$pd->item_description,
-                'quantity' =>$available_qty,
-                'available_qty' =>$available_qty,
-                'uom' =>$pd->uom,
-                'unit_price' =>0,
-                'currency' =>'PHP',
-            ];
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('rpo_qty');
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->id)->where('status','Draft')->value('quantity');
+            $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty + $po_draft_qty);
+            if($available_qty > 0){
+                $po_details[] = [
+                    'pr_details_id' =>$pd->id,
+                    'item_description' =>$pd->item_description,
+                    'quantity' =>$available_qty,
+                    'available_qty' =>$available_qty,
+                    'uom' =>$pd->uom,
+                    'unit_price' =>0,
+                    'currency' =>'PHP',
+                    'pr_qty' =>$pd->quantity,
+                    'po_qty' =>$po_qty,
+                    'dpo_qty' =>$dpo_qty,
+                    'rpo_qty' =>$rpo_qty,
+                    'po_draft_qty' =>$po_draft_qty,
+                ];
+            }
         }
         // $po_details = RFQOffers::select('rfq_offers.id','rfq_offers.rfq_vendor_id', 'remaining_qty', 'rfq_offers.pr_details_id','rfq_offers.offer','rfq_offers.uom','rfq_offers.unit_price','rfq_offers.currency')->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_details', 'rfq_offers.rfq_vendor_id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.rfq_head_id',$po_head->rfq_head_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         // foreach($po_details AS $pd){
@@ -163,18 +187,25 @@ class PODirectController extends Controller
         $other_list=$request->input("other_list");
         $po_details=$request->input("po_details");
         $year=date('Y');
+        $company=Config::get('constants.company');
         $series_rows = POSeries::where('year',$year)->count();
         $exp=explode('-',$request->po_no);
+        
+        $po_pr = explode("-", $request->pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$request->pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$request->pr_no."-".Str::padLeft($exp[3], 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($exp[2], 4,'000')."-".$company;
         }
-        if(!POSeries::where('year',$year)->where('series',$exp[3])->exists()){
+        
+        if(!POSeries::where('year',$year)->where('series',$exp[2])->exists()){
             $series['year']=$year;
             $series['series']=$po_series;
             $po_series=POSeries::create($series);
@@ -535,10 +566,15 @@ class PODirectController extends Controller
         $currency=Config::get('constants.currency');
         $total=[];
         foreach($podetails AS $pd){
-            $total[]=$pd->unit_price * $pd->quantity;
-            $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
-            $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
-            $available_qty = $pr_qty - $delivered_qty;
+            // $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
+            // $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            // $available_qty = $pr_qty - $delivered_qty;
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->pr_details_id)->where('status','Draft')->value('quantity');
+            $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty + $po_draft_qty);
+            $total[]=$pd->unit_price * $available_qty;
             $po_details[] = [
                 'pr_details_id' =>$pd->pr_details_id,
                 'item_description' =>$pd->item_description,

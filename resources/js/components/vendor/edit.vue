@@ -318,6 +318,7 @@
 		formData.append('contact_person', branch_dets.value.contact_person ?? '')
 		formData.append('email', branch_dets.value.email ?? '')
 		formData.append('notes', branch_dets.value.notes ?? '')
+		formData.append('ewt', branch_dets.value.ewt ?? 0)
 		formData.append('status', branch_dets.value.status)
 		formData.append('terms', JSON.stringify(update_term_list.value))
 			axios.post(`/api/update_branch/`+id, formData).then(function () {
@@ -1044,7 +1045,7 @@
 							<div class="col-lg-4 col-md-2">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >EWT%</label>
-									<input type="text" class="form-control !bg-gray-200" placeholder="EWT%" v-model="branch_dets.ewt" readonly>
+									<input type="text" class="form-control" placeholder="EWT%" v-model="branch_dets.ewt">
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-2">

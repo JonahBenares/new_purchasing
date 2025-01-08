@@ -93,11 +93,15 @@ class JOIDirectController extends Controller
             $dr_series=$max_dr_series+1;
             $dr_no = $year."-".Str::padLeft($dr_series, 4,'000').'-'.$company;
         }
-        $joi_head= JOAOQHead::where('id',$jor_head_id)->where('jor_no',$jor_no_exp)->first();
+        // $joihead= JOIHead::where('jor_no',$jor_no_exp)->first();
+        $joi_head = [
+            'status' =>'',
+        ];
         $jor_head= JORHead::where('jor_no',$jor_no_exp)->first();
         $vendor= VendorDetails::select('vendor_details.id','identifier','vendor_name','fax','phone','contact_person','address')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$vendor_details_id)->where('status','=','Active')->first();
         // $joi_labor_details = JORFQLaborOffers::with('jor_labor_details')->select('jo_rfq_labor_offer.id','jo_rfq_labor_offer.jo_rfq_vendor_id', 'jo_rfq_labor_offer.jor_labor_details_id','jo_rfq_labor_offer.offer','jo_rfq_labor_offer.uom','jo_rfq_labor_offer.unit_price','jo_rfq_labor_offer.currency')->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')->join('jo_aoq_details', 'jo_rfq_labor_offer.jo_rfq_vendor_id', '=', 'jo_aoq_details.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_aoq_details.jo_aoq_head_id', '=', 'jo_aoq_head.id')->where('jo_rfq_vendor.vendor_details_id',$vendor_details_id)->where('jo_rfq_labor_offer.jo_rfq_head_id',$joi_head->jo_rfq_head_id)->where('jo_rfq_labor_offer.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         $joilabordetails = JORLaborDetails::where('jor_head_id',$jor_head_id)->get();
+        $joi_labor_details=array();
         foreach($joilabordetails AS $jld){
             $sum_joi_labor=JOILaborDetails::where('jor_labor_details_id',$jld->id)->where('jo_rfq_labor_offer_id',0)->where('status','Saved')->sum('quantity');
             $deduct = $jld->quantity - $sum_joi_labor;
@@ -118,6 +122,7 @@ class JOIDirectController extends Controller
         
         // $joi_material_details = JORFQMaterialOffers::with('jor_material_details')->select('jo_rfq_material_offer.id','jo_rfq_material_offer.jo_rfq_vendor_id'   , 'jo_rfq_material_offer.jor_material_details_id','jo_rfq_material_offer.offer','jo_rfq_material_offer.uom','jo_rfq_material_offer.unit_price','jo_rfq_material_offer.currency')->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_material_offer.jo_rfq_vendor_id')->join('jo_aoq_details', 'jo_rfq_material_offer.jo_rfq_vendor_id', '=', 'jo_aoq_details.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_aoq_details.jo_aoq_head_id', '=', 'jo_aoq_head.id')->where('jo_rfq_vendor.vendor_details_id',$vendor_details_id)->where('jo_rfq_material_offer.jo_rfq_head_id',$joi_head->jo_rfq_head_id)->where('jo_rfq_material_offer.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         $joimaterialdetails = JORMaterialDetails::where('jor_head_id',$jor_head_id)->get();
+        $joi_material_details=array();
         foreach($joimaterialdetails AS $jmd){
             // $sum_joi_material=JOIMaterialDetails::where('jor_material_details_id',$jmd->id)->where('jo_rfq_material_offer_id',0)->where('status','Saved')->sum('quantity');
             // $deducted = $jmd->quantity - $sum_joi_material;

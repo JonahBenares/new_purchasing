@@ -144,7 +144,7 @@
                     <div class="card-body">
                         <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
                             <a href="/pur_po/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
-                                <span>Add New JO</span>
+                                <span>Add New PO</span>
                             </a>
                         </div>
                         <div class="pt-3">

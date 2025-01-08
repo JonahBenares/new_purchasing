@@ -314,7 +314,7 @@
 							<!-- loop here if 3 and below offers here -->
 						<!-- loop here if it is per item row (rowspan should not be equal to offers just add 1 (ie: 4-rowspan = 3-offers)) -->
 						<tr>
-							<td class="bg-gray-50 p-1 uppercase" colspan="19">
+							<td class="bg-gray-50 p-1 uppercase" colspan="19" v-if="material_data.length != 0">
 								Materials
 							</td>
 						</tr>
@@ -450,13 +450,13 @@
 							<td></td>
 							<td width="12%">Prepared by:</td>
 							<td></td>
-							<td width="12%">Received and Checked by</td>
+							<td width="12%">Received and Checked by:</td>
 							<td></td>
-							<td width="12%">Award Recommended by</td>
+							<td width="12%">Award Recommended by:</td>
 							<td></td>
-							<td width="12%">Recommending Approval</td>
+							<td width="12%">Recommending Approval:</td>
 							<td></td>
-							<td width="12%">Aprroved by</td>
+							<td width="12%">Aprroved by:</td>
 							<td></td>
 						</tr>
 						<tr>
@@ -517,7 +517,7 @@
 				<div class="col-lg-12" v-else>
 					<div class="flex justify-center space-x-1">
 						<a :href="'/export-jo-aoq/'+head.jo_aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
-						<button type="submit" @click="openAOQ(head.jo_rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
+						<button type="submit" v-if="head.status != 'Cancelled'" @click="openAOQ(head.jo_rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
 					</div>
 				</div>
 			</div>

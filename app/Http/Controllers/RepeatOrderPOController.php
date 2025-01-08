@@ -47,9 +47,13 @@ class RepeatOrderPOController extends Controller
         $available_pr=PRHead::where('status', 'Saved')->get();
         $prno_dropdown=array();
         foreach($available_pr AS $apr){
-            $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+            $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','Saved')->get();
             $count_pr=$count_available_pr->count();
-            if($count_pr != 0){
+
+            $total_pr_qty = PRDetails::where('pr_head_id',$apr->id)->where('status','Saved')->sum('quantity');
+            $total_po_qty = PrReportDetails::where('pr_no',$apr->pr_no)->selectRaw('SUM(po_qty + dpo_qty + rpo_qty) as total_sum')->value('total_sum');
+            
+            if(($count_pr != 0 || $count_pr != '') && ($total_pr_qty != $total_po_qty)){
                 $prno_dropdown[] = [
                     'id'=>$apr->id,
                     'pr_no'=>$apr->pr_no,
@@ -80,14 +84,19 @@ class RepeatOrderPOController extends Controller
         $year=date('Y');
         $series_rows = POSeries::where('year',$year)->count();
         $company=Config::get('constants.company');
+
+        $po_pr = explode("-", $pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$pr_no."-".Str::padLeft($po_series, 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($po_series, 4,'000')."-".$company;
         }
         
         $dr_series_rows = PoDrSeries::where('year',$year)->count();
@@ -120,23 +129,32 @@ class RepeatOrderPOController extends Controller
             ];
         }
 
-        $pr_details = PrReportDetails::where('pr_no',$pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+        // $pr_details = PrReportDetails::where('pr_no',$pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+        $pr_head_id= PRHead::where('pr_no',$pr_no)->value('id');
+        $pr_details = PRDetails::where('pr_head_id',$pr_head_id)->where('status','=','Saved')->get();
         $currency=Config::get('constants.currency');
+        $po_details = array();
         foreach($pr_details AS $pd){
-            $available_qty = $pd->pr_qty - $pd->delivered_qty;
-            $po_details[] = [
-                'pr_details_id' =>$pd->pr_details_id,
-                'item_description' =>$pd->item_description,
-                'quantity' =>$available_qty,
-                'available_qty' =>$available_qty,
-                'uom' =>$pd->uom,
-                'unit_price' =>0,
-                'currency' =>'',
-                'offer_desc' =>'',
-                'reference_po_no' =>'',
-                'reference_po_details_id' =>0,
-                'totalprice' =>$pd->total_cost,
-            ];
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->id)->value('rpo_qty');
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->id)->where('status','Draft')->value('quantity');
+            $available_qty = $pd->quantity - (($po_qty + $dpo_qty + $rpo_qty) + $po_draft_qty);
+            if($available_qty > 0){
+                $po_details[] = [
+                    'pr_details_id' =>$pd->id,
+                    'item_description' =>$pd->item_description,
+                    'quantity' =>$available_qty,
+                    'available_qty' =>$available_qty,
+                    'uom' =>$pd->uom,
+                    'unit_price' =>0,
+                    'currency' =>'',
+                    'offer_desc' =>'',
+                    'reference_po_no' =>'',
+                    'reference_po_details_id' =>0,
+                    'totalprice' =>$pd->total_cost,
+                ];
+            }
         }
         // $po_details = RFQOffers::select('rfq_offers.id','rfq_offers.rfq_vendor_id', 'remaining_qty', 'rfq_offers.pr_details_id','rfq_offers.offer','rfq_offers.uom','rfq_offers.unit_price','rfq_offers.currency')->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_details', 'rfq_offers.rfq_vendor_id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.rfq_head_id',$po_head->rfq_head_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         // foreach($po_details AS $pd){
@@ -192,18 +210,25 @@ class RepeatOrderPOController extends Controller
         $other_list=$request->input("other_list");
         $po_details=$request->input("po_details");
         $year=date('Y');
+        $company=Config::get('constants.company');
         $series_rows = POSeries::where('year',$year)->count();
         $exp=explode('-',$request->po_no);
+
+        $po_pr = explode("-", $request->pr_no); // Split the string into an array of words
+        array_pop($po_pr); // Remove the last word from the array
+        $popr = implode("-", $po_pr); // Join the remaining words back into a string\
+
         if($series_rows==0){
             $max_series='1';
             $po_series='0001';
-            $po_no = 'P'.$request->pr_no."-".$po_series;
+            $po_no = 'P'.$popr."-".$po_series."-".$company;
         } else {
             $max_series=POSeries::where('year',$year)->max('series');
             $po_series=$max_series+1;
-            $po_no = 'P'.$request->pr_no."-".Str::padLeft($exp[3], 4,'000');
+            $po_no = 'P'.$popr."-".Str::padLeft($exp[2], 4,'000')."-".$company;
         }
-        if(!POSeries::where('year',$year)->where('series',$exp[3])->exists()){
+        
+        if(!POSeries::where('year',$year)->where('series',$exp[2])->exists()){
             $series['year']=$year;
             $series['series']=$po_series;
             $po_series=POSeries::create($series);
@@ -566,11 +591,17 @@ class RepeatOrderPOController extends Controller
         $currency=Config::get('constants.currency');
         $total=[];
         foreach($podetails AS $pd){
-            $total[]=$pd->unit_price * $pd->quantity;
-            $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
-            $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
-            $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
-            $available_qty = $pr_qty - $delivered_qty;
+            // $total[]=$pd->unit_price * $pd->quantity;
+            // $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
+            // $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            // $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
+            // $available_qty = $pr_qty - $delivered_qty;
+
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->pr_details_id)->where('status','Draft')->value('quantity');
+            $available_qty = $pd->quantity - ($po_qty + $dpo_qty + $rpo_qty + $po_draft_qty);
             $po_details[] = [
                 'id' =>$pd->id,
                 'item_no' =>$pd->item_no,
@@ -653,6 +684,13 @@ class RepeatOrderPOController extends Controller
         $po_terms = POTerms::where('po_head_id',$po_head_id)->get();
         $po_instructions = POInstruction::where('po_head_id',$po_head_id)->get();
         $prepared_by= User::where('id',$po_head->prepared_by)->value('name');
+        $checkedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('checked_by');
+        $temp_checked_by= User::where('id',$checkedby_id)->value('name');
+        $recommendedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('recommended_by');
+        $temp_recommended_by= User::where('id',$recommendedby_id)->value('name');
+        $approvedby_id= PoHeadTemp::where('po_head_id',$po_head_id)->value('approved_by');
+        $temp_approved_by= User::where('id',$approvedby_id)->value('name');
+
         $checked_by= User::where('id',$po_head->checked_by)->value('name');
         $recommended_by= User::where('id',$po_head->recommended_by)->value('name');
         $approved_by= User::where('id',$po_head->approved_by)->value('name');
@@ -677,9 +715,15 @@ class RepeatOrderPOController extends Controller
             'po_instructions'=>$po_instructions,
             'po_instructions_temp'=>$po_instruction_temp,
             'prepared_by'=>$prepared_by,
-            'checked_by'=>$po_head->checked_by,
-            'recommended_by'=>$po_head->recommended_by,
-            'approved_by'=>$po_head->approved_by,
+            'temp_checked_by'=>$temp_checked_by,
+            'checked_by'=>$checked_by,
+            'checked_by_id'=>$po_head->checked_by,
+            'temp_recommended_by'=>$temp_recommended_by,
+            'recommended_by'=>$recommended_by,
+            'recommended_by_id'=>$po_head->recommended_by,
+            'temp_approved_by'=>$temp_approved_by,
+            'approved_by'=>$approved_by,
+            'approved_by_id'=>$po_head->approved_by,
             'cancelled_by'=>$cancelled_by,
             'grand_total'=>$total_sum,
             'vendor_details_id'=>$vendor_details_id,
@@ -714,6 +758,9 @@ class RepeatOrderPOController extends Controller
             'vat_amount'=>$request->vat_amount,
             'vat_in_ex'=>$request->vat_in_ex,
             'grand_total'=>$request->grand_total,
+            'checked_by'=>$request->checked_by,
+            'recommended_by'=>$request->recommended_by,
+            'approved_by'=>$request->approved_by,
             'internal_comment'=>$request->internal_comment,
             'revision_no'=>0,
         ];
@@ -923,6 +970,9 @@ class RepeatOrderPOController extends Controller
                 'vat_amount'=>$po_head_temp->vat_amount,
                 'vat_in_ex'=>$po_head_temp->vat_in_ex,
                 'grand_total'=>$po_head_temp->grand_total,
+                'checked_by'=>$po_head_temp->checked_by,
+                'recommended_by'=>$po_head_temp->recommended_by,
+                'approved_by'=>$po_head_temp->approved_by,
                 'internal_comment'=>$po_head_temp->internal_comment,
                 'revision_no'=>$revision_no,
                 'status'=>'Saved',

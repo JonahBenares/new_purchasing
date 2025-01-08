@@ -23,4 +23,8 @@ class JORLaborDetails extends Model
         'cancelled_date',
         'cancelled_reason',
     ];
+
+    public function jo_rfq_labor_details(){
+        return $this->hasMany(JORFQLaborDetails::class);
+    }
 }

@@ -75,6 +75,7 @@ class JOAOQExport implements FromView
         }
 
         $aoq_labor = JORFQLaborDetails::with('jor_labor_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get()->unique('jor_labor_details_id');
+        $labor_data = array();
         foreach($aoq_labor AS $al){
             $min_price = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jor_labor_details_id',$al->jor_labor_details_id)->where('unit_price','!=',0)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->min('unit_price');
             $labor_data[] = [
@@ -109,6 +110,7 @@ class JOAOQExport implements FromView
         $third_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->where('offer_no',3)->get();
 
         $aoq_material = JORFQMaterialDetails::with('jor_material_details')->where('jo_rfq_head_id',$jo_rfq_head_id)->get()->unique('jor_material_details_id');
+        $material_data = array();
         foreach($aoq_material AS $am){
             $min_price = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->where('jor_material_details_id',$am->jor_material_details_id)->where('unit_price','!=',0)->whereIn('jo_rfq_vendor_id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->min('unit_price');
             $material_data[] = [

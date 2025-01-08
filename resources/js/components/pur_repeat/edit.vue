@@ -44,9 +44,15 @@ import moment from 'moment';
 	const balance_overall =  ref(0);
 	const remaining_balance =  ref([]);
 	const prepared_by =  ref('');
+	const temp_checked_by =  ref('');
 	const checked_by =  ref('');
+	const checked_by_id =  ref(0);
+	const temp_recommended_by =  ref('');
 	const recommended_by =  ref('');
+	const recommended_by_id =  ref(0);
+	const temp_approved_by =  ref('');
 	const approved_by =  ref('');
+	const approved_by_id =  ref(0);
 	const approved_by_rev =  ref(0);
 	const approved_date =  ref('');
 	const approved_reason =  ref('');
@@ -108,14 +114,19 @@ import moment from 'moment';
 		po_terms.value = response.data.po_terms;
 		po_instructions.value = response.data.po_instructions;
 		prepared_by.value = response.data.prepared_by;
+		temp_checked_by.value = response.data.temp_checked_by;
 		checked_by.value = response.data.checked_by;
-		recommended_by.value = response.data.recommended_by;
+		checked_by_id.value = response.data.checked_by_id;
+		temp_recommended_by.value = response.data.temp_recommended_by;
+		recommended_by_id.value = response.data.recommended_by_id;
+		temp_approved_by.value = response.data.temp_approved_by;
 		approved_by.value = response.data.approved_by;
+		approved_by_id.value = response.data.approved_by_id;
 		var cancelled_qty=0;
 		response.data.po_details.forEach(function (val, index, theArray) {
 			cancelled_qty +=(val.status=='Cancelled') ? val.total_cost : ''
-			grand_total_old.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
-			grand_total.value = ((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee + newvat.value) - response.data.po_head.discount
+			grand_total_old.value = (((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee - response.data.po_head.discount)) + newvat.value 
+			grand_total.value = (((response.data.grand_total-cancelled_qty) + response.data.po_head.shipping_cost + response.data.po_head.handling_fee) - response.data.po_head.discount) + newvat.value
 		});
 		po_details.value.forEach(function (val, index, theArray) {
 			checkRemainingQty(val.po_head_id,val.pr_details_id,index)
@@ -370,7 +381,7 @@ import moment from 'moment';
 		// var vat_percent = document.getElementById("vat_percent").value;
 		var percent=vat_percent/100;
 		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_total = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + new_vat ;
 		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
@@ -391,7 +402,7 @@ import moment from 'moment';
         var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
         document.getElementById("vat_amount").value = new_vat.toFixed(2);
 		vat_amount.value=new_vat.toFixed(2);
-        var new_total=(parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+        var new_total=((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat);
         document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
 		// new_data.value=parseFloat(new_total)
 	} 
@@ -406,8 +417,9 @@ import moment from 'moment';
 					total += parseFloat(pi);
 				}
 			});
+			var discount_display= (discount.value!='') ? discount.value : 0;
 			var percent=vat_percent/100;
-			vat_amount.value=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+			vat_amount.value=((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 			ChangeGrandTotal(vat_percent)
 		}else{
 			vat_amount.value=0
@@ -430,8 +442,8 @@ import moment from 'moment';
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
-		var new_vat= (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * percent;
-		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
+		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
+		var new_total = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + new_vat;
 		grand_total.value = new_total;
 		new_data.value=parseFloat(new_total)
 		document.getElementById("vat_amount").value=new_vat.toFixed(2);
@@ -487,7 +499,7 @@ import moment from 'moment';
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
 		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
 		vat_amount.value=new_vat;
-		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
+		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
 		grand_total.value=overall_total.toFixed(2);
 		orig_amount.value=grandtotal.toFixed(2);
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
@@ -496,7 +508,6 @@ import moment from 'moment';
 		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
 		var all_qty=balance_overall.value.pr_qty - po_qty
 		var total_qty = all_qty + po_qty;
-qty
 		po_details.value[count].totalprice = qty * po_details.value[count].unit_price
 	
 		if(qty>total_qty){
@@ -527,6 +538,9 @@ qty
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total_replace)
+		formData.append('checked_by', checked_by_id.value)
+		formData.append('approved_by', approved_by_id.value)
+		formData.append('recommended_by', recommended_by_id.value)
 		formData.append('po_dr', JSON.stringify(po_dr_rev.value))
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		formData.append('terms_list', JSON.stringify(terms_list.value))
@@ -1074,13 +1088,31 @@ qty
 												<td class="text-center border-b"></td>
 											</tr>
 											<tr>
-												<td class="text-center p-1">{{prepared_by}}</td>
+												<td class="text-center p-1"><input type="text" class="text-center">{{prepared_by}}</td>
 												<td></td>
-												<td class="text-center p-1">{{checked_by}}</td>
+												<td class="text-center p-1" v-if="po_head.status!='Revised'">
+												<select class="text-center bg-yellow-50" v-model="checked_by_id" id="checked_by" @click="resetError('button1')">
+													<option value='0'>--Select Reviewed/Checked by--</option>
+													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+												</select>
+												</td>
+												<td class="text-center p-1" v-else>{{temp_checked_by}}</td>
 												<td></td>
-												<td class="text-center p-1">{{recommended_by}}</td>
+												<td class="text-center p-1" v-if="po_head.status!='Revised'">
+												<select class="text-center bg-yellow-50" v-model="recommended_by_id" id="recommended_by" @click="resetError('button2')">
+													<option value='0'>--Select Recommended by--</option>
+													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+												</select>
+												</td>
+												<td class="text-center p-1" v-else>{{temp_recommended_by}}</td>
 												<td></td>
-												<td class="text-center p-1">{{approved_by}}</td>
+												<td class="text-center p-1" v-if="po_head.status!='Revised'">
+												<select class="text-center bg-yellow-50" v-model="approved_by_id" id="approved_by" @click="resetError('button3')">
+													<option value='0'>--Select Approved by--</option>
+													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+												</select>
+												</td>
+												<td class="text-center p-1" v-else>{{temp_approved_by}}</td>
 											</tr>
 											<tr>
 												<td class="text-center"><br><br></td>
