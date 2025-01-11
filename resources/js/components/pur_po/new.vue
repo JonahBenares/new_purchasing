@@ -362,7 +362,8 @@
 	const checkRemainingQty = async (pr_details_id,count) => {
 		let response = await axios.get("/api/check_balance/"+pr_details_id);
 		var all_qty=response.data.balance.po_qty + response.data.balance.dpo_qty + response.data.balance.rpo_qty
-		remaining_balance.value[count] = response.data.balance.pr_qty - all_qty;
+		remaining_balance.value[count] = response.data.balance.pr_qty - (all_qty + parseFloat(response.data.draft_balance));
+		// remaining_balance.value[count] = response.data.balance.pr_qty - all_qty;
 	}
 
 	const onSave = (status) => {

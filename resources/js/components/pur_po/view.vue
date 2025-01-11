@@ -591,9 +591,9 @@
                         <div class="" v-for="phv in po_head_rev">
                             <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
                         </div>
-                        <div>
+                        <!-- <div>
                             <a :href="'/pur_po/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_head.po_no }}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} (Current)</a>
-                        </div>
+                        </div> -->
                     </div> 
                 </div>
             </div>

@@ -30,6 +30,7 @@
 	let referred_by=ref("")
 	let cancelled_by=ref("")
 	let cancelled_by_all=ref("")
+	let remarks=ref("")
 	const props = defineProps({
 		id:{
 			type:String,
@@ -44,6 +45,7 @@
 		get_prhead.value=response.data.prhead
 		cancelled_by_all.value=response.data.cancelled_by_all
 		get_prdetails.value=response.data.prdetails
+		remarks.value=response.data.comment
 		prepared_by.value=response.data.prepared_by
 		approved_by.value=response.data.approved_by
 		recommended_by.value=response.data.recommended_by
@@ -234,9 +236,13 @@
 									<span class="text-sm text-gray-700 font-bold pr-1">Location: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.location}}</span>
 								</div>
-								<div class="col-lg-6 col-sm-6 col-md-6">
+								<div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.date_prepared}}</span>
+								</div>
+								<div class="col-lg-3 col-sm-3 col-md-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Date Issued: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.date_issued}}</span>
 								</div>
 							</div>
 							<div class="row">
@@ -260,13 +266,21 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-12">
+								<div class="col-lg-6">
 									<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.enduse}}</span>
 								</div>
-								<div class="col-lg-12">
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.urgency}}</span>
+								</div>
+								<div class="col-lg-6">
 									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.purpose}}</span>
+								</div>
+								<div class="col-lg-6">
+									<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.requestor}}</span>
 								</div>
 							</div>
 							<div class="row">
@@ -280,7 +294,7 @@
 											<td class="p-1 uppercase" width="">Item Description</td>
 											<td class="p-1 uppercase" width="10%">WH Stocks</td>
 											<td class="p-1 uppercase" width="15%">Date Needed</td>
-											<td class="p-1 uppercase" width="15%">Recom Date</td>
+											<td class="p-1 uppercase print:!bg-transparent print:hidden" width="15%">Recom Date</td>
 											<td class="p-1 uppercase po_buttons" width="6%" align="center">
 												<span>
 													<Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 " ></Bars3Icon>
@@ -295,7 +309,7 @@
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">{{ pd.item_description }}</td>
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">{{ pd.wh_stocks }}</td>
 											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">{{ pd.date_needed }}</td>
-											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1'">
+											<td :class="(pd.status=='Cancelled') ? 'p-1 bg-red-100 print:!bg-transparent print:!text-red-500' : (pd.status=='Referred') ? 'bg-orange-200 p-1 print:!bg-transparent print:!text-orange-500' : 'p-1 print:!bg-transparent print:hidden'">
 												<input type="date" :class=" (pd.recom_date==null) ? 'w-full bg-transparent print:hidden' : 'w-full bg-transparent'" v-model="pd.recom_date" @change="updateRecomdate(pd.id)"  v-if="pd.status!='Cancelled'">
 												<span v-else>{{ pd.recom_date }}</span>
 												<!-- <input type="date" class="w-full bg-transparent" v-model="pd.recom_date" @change="updateRecomdate(pd.id)" readonly v-else> -->
@@ -321,6 +335,13 @@
 													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
 													</button>
+												</div>
+											</td>
+										</tr>
+										<tr v-if="get_prhead.petty_cash=='1'">
+											<td colspan="9">
+												<div class="flex justify-start space-x-1">
+													<span class="p-1">Comment: {{ remarks }}</span>
 												</div>
 											</td>
 										</tr>

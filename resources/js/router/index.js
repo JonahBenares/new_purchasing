@@ -676,8 +676,9 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/print_ar',
+        path:'/job_issue/print_ar/:id',
         component: job_issuePrintAR,
+        props:true,
         meta:{
             requiresAuth:true
         }

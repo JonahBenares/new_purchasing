@@ -238,7 +238,13 @@
         }else{
             var retentionamnt=0
         }
-        var new_total=parseFloat(p_amount.value) - (parseFloat(new_vat) + parseFloat(retentionamnt));
+
+        var retention_percents = retention_percent.value/100;
+        var retention_amounts= parseFloat(p_amount.value) * retention_percents;
+        retention_amount.value=retention_amounts.toFixed(4);
+
+        var new_total=parseFloat(p_amount.value) - (parseFloat(new_vat) + parseFloat(retention_amounts));
+        // var new_total=parseFloat(p_amount.value) - (parseFloat(new_vat) + parseFloat(retentionamnt));
         grand_total.value=new_total.toFixed(4)
         // document.getElementById("grand_total").innerHTML=new_total.toFixed(4);
 
@@ -377,7 +383,7 @@
 		formData.append('joi_head_id', joi_head_id)
 		formData.append('rfd_id', rfd_id.value)
 		if(status==='Saved'){
-			if(checked_by.value!=0 && noted_by.value!=0 && endorsed_by.value!=0 && approved_by.value!=0 && received_by.value!=0){
+			if(checked_by.value!=0 && noted_by.value!=0 && endorsed_by.value!=0 && approved_by.value!=0 && received_by.value!=0 && company.value!='' && pay_to.value!='' && rfd_date.value!='' && payment_option.value!=0){
 				axios.post(`/api/save_joi_rfd`,formData).then(function (response) {
 					rfd_id.value=response.data;
 					success.value='You have successfully  new rfd.'
@@ -401,6 +407,19 @@
 				}
 				if(received_by.value==0){
 					document.getElementById('received_by').style.backgroundColor = '#FAA0A0';
+				}
+                if(company.value==0){
+					document.getElementById('company').style.backgroundColor = '#FAA0A0';
+				}
+                if(pay_to.value==0){
+					document.getElementById('pay_to').style.backgroundColor = '#FAA0A0';
+				}
+                if(rfd_date.value==0){
+					document.getElementById('rfd_date').style.backgroundColor = '#FAA0A0';
+				}
+                if(payment_option.value==0){
+					document.getElementById('payment_option1').style.backgroundColor = '#FAA0A0';
+					document.getElementById('payment_option2').style.backgroundColor = '#FAA0A0';
 				}
 				const btn_draft = document.getElementById("draft");
 				btn_draft.disabled = true;
@@ -440,6 +459,20 @@
 
         if(button==='button5'){
 			document.getElementById('received_by').style.backgroundColor = '#FEFCE8';
+		}
+
+        if(button==='button6'){
+			document.getElementById('company').style.backgroundColor = '#FEFCE8';
+		}
+        if(button==='button7'){
+			document.getElementById('pay_to').style.backgroundColor = '#FEFCE8';
+		}
+        if(button==='button8'){
+			document.getElementById('rfd_date').style.backgroundColor = '#FEFCE8';
+		}
+        if(button==='button9'){
+			document.getElementById('payment_option1').style.backgroundColor = '#FEFCE8';
+			document.getElementById('payment_option2').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
@@ -548,15 +581,15 @@
                                 <table class="w-full text-sm table-borsdered">
                                     <tr>
                                         <td class="px-1 font-bold" width="10%">Company:</td>
-                                        <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b" v-model="company"></td>
+                                        <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b" id="company" v-model="company" @click="resetError('button6')"></td>
                                         <td class="px-1 font-bold pl-4" width="12%">APV/RFD No.:</td>
                                         <td class="p-0" width="25%"><input type="text" class="w-full px-1 border-b" v-model="rfd_no"></td>
                                     </tr>
                                     <tr>
                                         <td class="px-1 font-bold">Pay To:</td>
-                                        <td class="p-0"><input type="text" class="w-full px-1 border-b" v-model="pay_to"></td>
+                                        <td class="p-0"><input type="text" class="w-full px-1 border-b" id="pay_to" v-model="pay_to" @click="resetError('button7')"></td>
                                         <td class="px-1 font-bold pl-4">Date:</td>
-                                        <td class="p-0"><input type="date" class="w-full px-1 border-b" v-model="rfd_date"></td>
+                                        <td class="p-0"><input type="date" class="w-full px-1 border-b" id="rfd_date" v-model="rfd_date" @click="resetError('button8')"></td>
                                     </tr>
                                     <tr>
                                         <td class="px-1 font-bold">Check Name:</td>
@@ -568,10 +601,10 @@
                                         <td class="p-1" colspan="2">
                                             <div class="flex justify-start space-x-10">
                                                 <div class="flex justify-between space-x-2 ml-5">
-                                                    <input type="radio" name="cc" v-model="payment_option" value="1">
-                                                    <span class="font-bold">Check</span>
-                                                    <input type="radio" name="cc" v-model="payment_option" value="2">
-                                                    <span class="font-bold">Cash</span>
+                                                    <input type="radio" name="cc" v-model="payment_option" value="1" @click="resetError('button9')">
+                                                    <span class="font-bold" id="payment_option1">Check</span>
+                                                    <input type="radio" name="cc" v-model="payment_option" value="2" @click="resetError('button9')">
+                                                    <span class="font-bold" id="payment_option2">Cash</span>
                                                 </div>
                                                 <div class="flex justify-between space-x-1 w-full">
                                                     <span class="font-bold w-20">Bank No.:</span>
@@ -698,7 +731,7 @@
                                                             <div class="flex justify-end space-x-1">
                                                                 <span class="p-1">EWT {{ (p.ewt_vat==1) ? 'VAT' : 'NON-VAT' }}</span>
                                                                 <div class="flex " v-if="p.ewt_vat==1">
-                                                                    <input type="text" class="w-10 text-center border p-1 bg-yellow-100" :value="p.ewt_percent" placeholder="%" readonly>%
+                                                                    <input type="text" class="w-10 text-center border p-1 bg-yellow-100" :value="p.ewt_percent" placeholder="%" readonly>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -714,9 +747,9 @@
                                                         <td class="border-l-none border-y-none text-right p-0" colspan="3">
                                                             <div class="flex justify-end space-x-1">
                                                                 <span class="p-1">Retention</span>
-                                                                <!-- <div class="flex ">
-                                                                    <input type="text" class="w-10 text-center border p-1 bg-yellow-100" :value="p.retention_percent" placeholder="%" readonly>%
-                                                                </div> -->
+                                                                <div class="flex ">
+                                                                    <input type="text" class="w-10 text-center border p-1 bg-yellow-100" :value="p.retention_percent" placeholder="%" readonly>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td class="p-0 border-y-none">
@@ -757,7 +790,7 @@
                                                             <button class="btn btn-xs p-0 !bg-yellow-100 ">
                                                                 <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
                                                             </button>
-                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" v-model="p_amount" id="pamount" @keypress="isNumber($event)" placeholder="Amount">
+                                                            <input type="text" class="w-full text-right bg-yellow-100 p-1" v-model="p_amount" id="pamount" @keypress="isNumber($event)" placeholder="Amount" @keyup="vatretChange(vat_percent)">
                                                             <!-- <input type="text" class="w-full text-right bg-yellow-100 p-1" v-model="p_amount" id="pamount" @keypress="isNumber($event)" placeholder="Amount" @keyup="changeSubtotal()"> -->
                                                         </div>
                                                     </td>
@@ -799,9 +832,9 @@
                                                     <td class="border-l-none border-y-none text-right p-0" colspan="3">
                                                         <div class="flex justify-end space-x-1">
                                                             <span class="p-1">Retention</span>
-                                                            <!-- <div class="flex ">
-                                                                <input type="text" class="w-10 text-center border p-1 bg-yellow-100" v-model="retention_percent" placeholder="%">
-                                                            </div> -->
+                                                            <div class="flex ">
+                                                                <input type="text" @keypress="isNumber($event)" @keyup="vatretChange(vat_percent)" class="w-10 text-center border p-1 bg-yellow-100" v-model="retention_percent" placeholder="%">
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td class="p-0 border-y-none">

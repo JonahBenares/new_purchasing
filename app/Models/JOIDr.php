@@ -25,5 +25,7 @@ class JOIDr extends Model
         'cancelled_reason',
         'identifier',
         'user_id',
+        'print_identifier',
+        'received',
     ];
 }

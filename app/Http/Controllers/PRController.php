@@ -50,14 +50,17 @@ class PRController extends Controller
         $pr_head = PRHead::where('id',$id)->where('status','!=','Cancelled')->first();
         $pr_details = PRDetails::where('pr_head_id',$id)->where('status','!=','Cancelled')->get();
         $petty_cash = PettyCash::where('pr_head_id',$id)->orderByDesc('created_at')->first();
+        $prepared_by=User::where('id',Auth::id())->value('name');
         return response()->json([
             'pr_head'=>$pr_head,
             'pr_details'=>$pr_details,
             'petty_cash'=>$petty_cash,
+            'prepared_by'=>$prepared_by,
         ],200);
     }
 
     public function create_pr(Request $request){
+        $prepared_by=User::where('id',Auth::id())->value('name');
         $formData=[
             'purchase_request'=>'',
             'pr_no'=>'',
@@ -71,6 +74,7 @@ class PRController extends Controller
             'purpose'=>'',
             'requestor'=>0,
             'petty_cash'=>0,
+            'prepared_by'=>$prepared_by,
         ];
         return response()->json($formData);
     }
@@ -151,7 +155,8 @@ class PRController extends Controller
                             $data_petty=[
                                 'pr_head_id'=>$request->id,
                                 'pr_no'=>$request->pr_no,
-                                'prepared_by'=>$request->prepared_by,
+                                // 'prepared_by'=>$request->prepared_by,
+                                'prepared_by'=>Auth::id(),
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
                                 'approved_date'=>$request->approved_date,
@@ -163,7 +168,8 @@ class PRController extends Controller
                             $data_petty=[
                                 'pr_head_id'=>$request->id,
                                 'pr_no'=>$request->pr_no,
-                                'prepared_by'=>$request->prepared_by,
+                                'prepared_by'=>Auth::id(),
+                                // 'prepared_by'=>$request->prepared_by,
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
                                 'approved_date'=>$request->approved_date,
@@ -181,6 +187,12 @@ class PRController extends Controller
                     foreach(json_decode($prdetails) AS $pd){
                         $insertprdetails=PRDetails::where('id',$pd->id)->first();
                         $data_details=[
+                            'quantity'=>$pd->quantity,
+                            'uom'=>$pd->uom,
+                            'pn_no'=>$pd->pn_no,
+                            'item_description'=>$pd->item_description,
+                            'wh_stocks'=>$pd->wh_stocks ?? 0,
+                            'date_needed'=>$pd->date_needed,
                             'status'=>$status,
                         ];  
                         $insertprdetails->update($data_details);  
@@ -274,7 +286,8 @@ class PRController extends Controller
                             $data_petty=[
                                 'pr_head_id'=>$request->id,
                                 'pr_no'=>($request->props_id==0) ? $request->pr_no : $pr_no,
-                                'prepared_by'=>$request->prepared_by,
+                                'prepared_by'=>Auth::id(),
+                                // 'prepared_by'=>$request->prepared_by,
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
                                 'approved_date'=>$request->approved_date,
@@ -286,7 +299,8 @@ class PRController extends Controller
                             $data_petty=[
                                 'pr_head_id'=>$request->id,
                                 'pr_no'=>($request->props_id==0) ? $request->pr_no : $pr_no,
-                                'prepared_by'=>$request->prepared_by,
+                                // 'prepared_by'=>$request->prepared_by,
+                                'prepared_by'=>Auth::id(),
                                 'recommended_by'=>$request->recommended_by,
                                 'approved_by'=>$request->approved_by,
                                 'approved_date'=>$request->approved_date,
@@ -568,7 +582,7 @@ class PRController extends Controller
                 $data_petty=[
                     'pr_head_id'=>$insertprhead->id,
                     'pr_no'=>$request->pr_no,
-                    'prepared_by'=>$request->prepared_by,
+                    'prepared_by'=>Auth::id(),
                     'recommended_by'=>$request->recommended_by,
                     'approved_by'=>$request->approved_by,
                     'approved_date'=>$request->approved_date,
@@ -727,7 +741,7 @@ class PRController extends Controller
             $data_petty=[
                 'pr_head_id'=>$insertprhead->id,
                 'pr_no'=>$request->pr_no,
-                'prepared_by'=>$request->prepared_by,
+                'prepared_by'=>Auth::id(),
                 'recommended_by'=>$request->recommended_by,
                 'approved_by'=>$request->approved_by,
                 'approved_date'=>$request->approved_date,
@@ -836,10 +850,12 @@ class PRController extends Controller
         $cancelled_by=User::where('id',$prhead->cancelled_by)->value('name');
         $prdetails=PRDetails::where('pr_head_id',$pr_head_id)->get();
         $pettycash=PettyCash::where('pr_head_id',$pr_head_id)->get();
+        $comment='';
         $prepared_by='';
         $recommended_by='';
         $approved_by='';
         foreach($pettycash AS $pc){
+            $comment=$pc->remarks;
             $prepared_by=User::where('id',$pc->prepared_by)->value('name');
             $recommended_by=User::where('id',$pc->recommended_by)->value('name');
             $approved_by=User::where('id',$pc->approved_by)->value('name');
@@ -848,6 +864,7 @@ class PRController extends Controller
             'prhead'=>$prhead,
             'cancelled_by_all'=>$cancelled_by,
             'prdetails'=>$prdetails,
+            'comment'=>$comment,
             'prepared_by'=>$prepared_by,
             'recommended_by'=>$recommended_by,
             'approved_by'=>$approved_by,

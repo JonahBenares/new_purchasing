@@ -64,9 +64,11 @@
 		if(props.id==0){
 			let response = await axios.get("/api/create_pr");
 			form.value = response.data;
+			prepared_by.value = form.value.prepared_by
 		}else{
 			let response = await axios.get('/api/get_import_data/'+props.id);
 			form.value = response.data.pr_head;
+			prepared_by.value = response.data.prepared_by
 		}
 	}
 	const getDepartment = async () => {
@@ -872,12 +874,30 @@
 										</tr>
 										<tr v-for="(details,index) in prdetails">
 											<td class="p-1 text-center">{{index+1}}</td>
-											<td class="p-1 text-center">{{details.quantity}}</td>
+											<td class="p-1 text-center">
+												<input type="text" @keypress="isNumber($event)" v-model="details.quantity" class="w-full p-1 text-center">
+											</td>
+											<td class="p-1 text-center">
+												<input type="text" v-model="details.uom" class="w-full p-1 text-center bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="text" v-model="details.pn_no" class="w-full p-1 bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="text" v-model="details.item_description" class="w-full p-1 bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="text" @keypress="isNumber($event)" v-model="details.wh_stocks" class="w-full p-1 bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="date" v-model="details.date_needed" class="w-full p-1 bg-yellow-50">
+											</td>
+											<!-- <td class="p-1 text-center">{{details.quantity}}</td>
 											<td class="p-1 text-center">{{details.uom}}</td>
 											<td class="p-1">{{details.pn_no}}</td>
 											<td class="p-1">{{details.item_description}}</td>
 											<td class="p-1">{{details.wh_stocks}}</td>
-											<td class="p-1">{{details.date_needed}}</td>
+											<td class="p-1">{{details.date_needed}}</td> -->
 											<td class="p-1">
 												<input placeholder="Recom Date" type="text" v-model="recom_date_update[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(details.id)" v-if="props.id==0 && (details.recom_date==null || details.recom_date=='')">
 
@@ -954,15 +974,16 @@
 													<td class="text-center border-b"></td>
 												</tr>
 												<tr>
-													<td class="text-center p-0">
-														<select class="p-1 text-center w-full bg-yellow-50" v-model="prepared_by" v-if="props.id==0">
+													<td class="text-center p-1">
+														{{prepared_by}}
+														<!-- <select class="p-1 text-center w-full bg-yellow-50" v-model="prepared_by" v-if="props.id==0">
 															<option value=''>--Select Signatory--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
-														</select>
-														<select class="p-1 text-center w-full bg-yellow-50" v-model="petty_cash.prepared_by" v-else>
+														</select> -->
+														<!-- <select class="p-1 text-center w-full bg-yellow-50" v-model="petty_cash.prepared_by" v-else>
 															<option value=''>--Select Signatory--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
-														</select>
+														</select> -->
 													</td>
 													<td></td>
 													<td class="text-center p-0">
@@ -1192,11 +1213,12 @@
 												<td class="text-center border-b"></td>
 											</tr>
 											<tr>
-												<td class="text-center p-0">
-													<select class="p-1 text-center w-full bg-yellow-50" v-model="prepared_by">
+												<td class="text-center p-1">
+													{{ prepared_by }}
+													<!-- <select class="p-1 text-center w-full bg-yellow-50" v-model="prepared_by">
 														<option value=''>--Select Signatory--</option>
 														<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
-													</select>
+													</select> -->
 												</td>
 												<td></td>
 												<td class="text-center p-0">

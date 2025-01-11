@@ -108,7 +108,6 @@ Route::post('/open_aoq/{aoq_head_id}',[AOQController::class,'open_aoq']);
 Route::get('/aoq_status/{aoq_head_id}',[AOQController::class,'aoq_status']);
 
 Route::post('/import_pr',[PRController::class,'import_pr']);
-Route::post('/import_pr',[PRController::class,'import_pr']);
 Route::get('/create_pr',[PRController::class,'create_pr']);
 Route::get('/get_import_data/{id}',[PRController::class,'get_import_data']);
 Route::post('/save_upload/{id}',[PRController::class,'save_upload']);
@@ -191,6 +190,7 @@ Route::get('/get_offer/{rfq_offer_id}', [POController::class,'get_offer']);
 Route::get('/check_dr_balance/{po_dr_id}/{po_details_id}', [POController::class,'check_dr_balance']);
 Route::get('/check_remaining_dr_balance/{po_details_id}', [POController::class,'check_remaining_dr_balance']);
 Route::post('/save_dr', [POController::class,'save_dr']);
+Route::post('/save_received_dr', [POController::class,'save_received_dr']);
 Route::get('/get_dr_view/{po_dr_id}', [POController::class,'get_dr_view']);
 Route::get('/get_alldr', [POController::class,'get_alldr']);
 Route::get('/get_rfd_po_dropdown',[POController::class,'get_rfd_po_dropdown']);
@@ -294,6 +294,7 @@ Route::post('/cancel_all_joi_rfd/{joi_head_id}',[JOIController::class,'cancel_al
 Route::get('/get_alljoirfd',[JOIController::class,'get_alljoirfd']);
 Route::get('/rfd_joi_displayview/{rfd_id}', [JOIController::class,'rfd_joi_displayview']);
 Route::get('/rfd_jo_data/{id}',[JOIController::class,'rfd_jo_data']);
+Route::post('/save_jo_received_dr', [JOIController::class,'save_jo_received_dr']);
 
 
 Route::get('/check_jo_labor_dr_balance/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_jo_labor_dr_balance']);

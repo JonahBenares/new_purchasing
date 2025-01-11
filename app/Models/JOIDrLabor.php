@@ -17,6 +17,7 @@ class JOIDrLabor extends Model
         'quantity',
         'delivered_qty',
         'to_deliver',
+        'received_qty',
         'status',
     ];
 }

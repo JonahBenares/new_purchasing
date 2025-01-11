@@ -11,30 +11,41 @@ use App\Imports\JORLaborImport;
 use App\Imports\JORMaterialImport;
 use App\Models\JORHead;
 use App\Models\JORLaborDetails;
+use App\Models\JOILaborDetails;
+use App\Models\JOIMaterialDetails;
 use App\Models\JORMaterialDetails;
 use App\Models\JORSeries;
 use App\Models\JORNotes;
 use App\Models\Departments;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 use Config;
 class JORController extends Controller
 {
     public function import_jor(Request $request){
-        if($request->file('upload_jor')){
-            $filename=$request->file('upload_jor')->getClientOriginalName();
-            $request->file('upload_jor')->storeAs('imports',$filename);
-            $user_id = auth()->user()->id;
-            $jorImport = new JORImport($user_id);
-            $sheet1 = Excel::import($jorImport, request()->file('upload_jor'));
-            $head = $jorImport->data;
-            $jor_head_id = $jorImport->id;
-            $jorlaborImportdetails = new JORLaborImport($jor_head_id);
-            $sheet2 = Excel::import($jorlaborImportdetails, request()->file('upload_jor'));
-            $labor_details = $jorlaborImportdetails->data;
-            return response()->json([
-                'jor_head_id'=>$jor_head_id,
-                'jorhead'=>$head,
-            ],200);
+        try {
+            DB::beginTransaction();
+            if($request->file('upload_jor')){
+                $filename=$request->file('upload_jor')->getClientOriginalName();
+                $request->file('upload_jor')->storeAs('imports',$filename);
+                $user_id = auth()->user()->id;
+                $jorImport = new JORImport($user_id);
+                $sheet1 = Excel::import($jorImport, request()->file('upload_jor'));
+                $head = $jorImport->data;
+                $jor_head_id = $jorImport->id;
+                $jorlaborImportdetails = new JORLaborImport($jor_head_id);
+                $sheet2 = Excel::import($jorlaborImportdetails, request()->file('upload_jor'));
+                $labor_details = $jorlaborImportdetails->data;
+                DB::commit();
+                return response()->json([
+                    'jor_head_id'=>$jor_head_id,
+                    'jorhead'=>$head,
+                ],200);
+            } 
+        } catch (Throwable $e) {
+            DB::rollBack();
+            echo 'error';
         }
     }
 
@@ -860,21 +871,29 @@ class JORController extends Controller
     }
 
     public function cancel_jorlabordetails(Request $request, $jor_labor_details_id){
-        $update_jorlabordetails=JORLaborDetails::where('id',$jor_labor_details_id)->update([
-            'status'=>'Cancelled',
-            'cancelled_date'=>date('Y-m-d H:i:s'),
-            'cancelled_reason'=>$request->cancel_reason,
-            'cancelled_by'=>Auth::id(),
-        ]);
+        if(!JOILaborDetails::where('jor_labor_details_id',$jor_labor_details_id)->exists()){
+            $update_jorlabordetails=JORLaborDetails::where('id',$jor_labor_details_id)->update([
+                'status'=>'Cancelled',
+                'cancelled_date'=>date('Y-m-d H:i:s'),
+                'cancelled_reason'=>$request->cancel_reason,
+                'cancelled_by'=>Auth::id(),
+            ]);
+        }else{
+            echo 'error';
+        }
     }
 
     public function cancel_jormaterialdetails(Request $request, $jor_material_details_id){
-        $update_jormaterialdetails=JORMaterialDetails::where('id',$jor_material_details_id)->update([
-            'status'=>'Cancelled',
-            'cancelled_date'=>date('Y-m-d H:i:s'),
-            'cancelled_reason'=>$request->cancel_reason,
-            'cancelled_by'=>Auth::id(),
-        ]);
+        if(!JOIMaterialDetails::where('jor_material_details_id',$jor_material_details_id)->exists()){
+            $update_jormaterialdetails=JORMaterialDetails::where('id',$jor_material_details_id)->update([
+                'status'=>'Cancelled',
+                'cancelled_date'=>date('Y-m-d H:i:s'),
+                'cancelled_reason'=>$request->cancel_reason,
+                'cancelled_by'=>Auth::id(),
+            ]);
+        }else{
+            echo 'error';
+        }
     }
 
     public function cancel_jornotes($jor_notes_id){

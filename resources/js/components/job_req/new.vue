@@ -116,13 +116,25 @@
 		jo_options.value='';
 		try {
 			axios.post("/api/import_jor",formData).then(function (response) {
-				jor_head_id.value=response.data.jor_head_id
-				getImportdata(jor_head_id.value)
-				jo_options.value='jo_upload';
-				loading.value=false;
-				jorFile.value=''
-				const btn_jor = document.getElementById("btn_jor");
-				btn_jor.disabled = true;
+				if(response.data!='error' && response.data!='duplicateerror'){
+					jor_head_id.value=response.data.jor_head_id
+					getImportdata(jor_head_id.value)
+					jo_options.value='jo_upload';
+					loading.value=false;
+					jorFile.value=''
+					const btn_jor = document.getElementById("btn_jor");
+					btn_jor.disabled = true;
+				}else if(response.data=='duplicateerror'){
+					jorFile.value=''
+					loading.value=false;
+					error.value ='Site JOR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}else{
+					jorFile.value=''
+					loading.value=false;
+					error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}
 			}, function (err) {
 				loading.value=false;
 				var substring="1048 Column 'department_id'"
@@ -278,11 +290,13 @@
 			// alert("Uom must not be empty!")
 			document.getElementById('scope_uom_check').placeholder="UOM must not be empty!"
 			document.getElementById('scope_uom_check').style.backgroundColor = '#FAA0A0';
-		}else if(scope_unit_cost.value == '0'){
-			// alert("Unit cost must not be empty!")
-			document.getElementById('scope_unit_cost_check').placeholder="Unit cost must not be empty!"
-			document.getElementById('scope_unit_cost_check').style.backgroundColor = '#FAA0A0';
-		}else{
+		}
+		// else if(scope_unit_cost.value == '0'){
+		// 	// alert("Unit cost must not be empty!")
+		// 	document.getElementById('scope_unit_cost_check').placeholder="Unit cost must not be empty!"
+		// 	document.getElementById('scope_unit_cost_check').style.backgroundColor = '#FAA0A0';
+		// }
+		else{
 			const scope = {
 				scope_item_no:scope_item_no.value,
 				scope_work:scope_work.value,
@@ -688,7 +702,8 @@
 		formData.append('scope_list', JSON.stringify(scope_list.value))
 		formData.append('item_list', JSON.stringify(item_list.value))
 		formData.append('notes_list', JSON.stringify(notes_list.value))
-		if(scope_list.value.length!=0 && item_list.value.length!=0){
+		if(scope_list.value.length!=0){
+			// if(scope_list.value.length!=0 && item_list.value.length!=0){
 			axios.post(`/api/save_jor_manual`,formData).then(function (response) {
 				jorheadid.value=response.data;
 				success.value='You have successfully saved new jor.'
@@ -721,7 +736,8 @@
 			}); 
 		}else{
 			error.value=''
-			error.value = 'Scopes/Items cannot be empty, Please fill in data.';
+			error.value = 'Scopes cannot be empty, Please fill in data.';
+			// error.value = 'Scopes/Items cannot be empty, Please fill in data.';
 			dangerAlerterrors.value=!dangerAlerterrors.value
 		}
     }

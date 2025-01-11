@@ -42,6 +42,8 @@
 	const uom_material = ref([])
 	const remaining_labor_delivery = ref([])
 	const remaining_material_delivery = ref([])
+	const received_qty = ref([])
+	const received_material_qty = ref([])
 	const props = defineProps({
 		id:{
 			type:String,
@@ -150,6 +152,18 @@
 			btn_save.disabled = false;
 		}
 	}
+	const checkBalanceRec = async (joi_dr_id,joi_labor_details_id,qty,count) => {
+		let response = await axios.get("/api/check_jo_labor_dr_balance/"+joi_dr_id+"/"+joi_labor_details_id);
+		if(qty>response.data.delivered_qty){
+			document.getElementById('balance_rec_checker'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('balance_rec_checker'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
 
 	const checkMaterialBalance = async (joi_dr_id,joi_material_details_id,qty,count) => {
 		let response = await axios.get("/api/check_jo_material_dr_balance/"+joi_dr_id+"/"+joi_material_details_id);
@@ -159,6 +173,19 @@
 			btn_save.disabled = true;
 		}else{
 			document.getElementById('balance_material_checker'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
+
+	const checkBalanceMaterialRec = async (joi_dr_id,joi_material_details_id,qty,count) => {
+		let response = await axios.get("/api/check_jo_material_dr_balance/"+joi_dr_id+"/"+joi_material_details_id);
+		if(qty>response.data.delivered_qty){
+			document.getElementById('balance_rec_material_checker'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('balance_rec_material_checker'+count).style.backgroundColor = '#FEFCE8';
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = false;
 		}
@@ -202,10 +229,41 @@
 			formData.append('joi_material_details_id'+indexes, vals.joi_material_details_id)
 			formData.append('remaining_material_qty'+indexes, remaining_material_delivery[indexes])
 		});
+		// if(driver.value!=''){
+		axios.post(`/api/save_jo_dr`,formData).then(function (response) {
+			joi_dr_id.value=response.data;
+			success.value='You have successfully saved new jo dr.'
+			successAlert.value=!successAlert.value
+		}, function (err) {
+			error.value='Error! Please try again.';
+			dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+		// }else{
+		// 	document.getElementById('driver').placeholder="Driver field must not be empty!"
+		// 	document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }
+    }
+
+	const saveReceived = () => {
+		const formData= new FormData()
+		formData.append('joi_dr_id', joi_dr.value.id)
+		formData.append('driver', driver.value)
+		formData.append('joi_dr_labor', JSON.stringify(joi_dr_labor.value))
+		formData.append('joi_dr_material', JSON.stringify(joi_dr_material.value))
+		joi_dr_labor.value.forEach(function (val, index, theArray) {
+			formData.append('received_qty'+index, received_qty.value[index])
+			formData.append('remaining_labor_qty'+index, remaining_labor_delivery[index])
+		});
+		joi_dr_material.value.forEach(function (vals, indexes, theArray) {
+			formData.append('received_material_qty'+indexes, received_material_qty.value[indexes])
+			formData.append('remaining_material_qty'+indexes, remaining_material_delivery[indexes])
+		});
 		if(driver.value!=''){
-			axios.post(`/api/save_jo_dr`,formData).then(function (response) {
+			axios.post(`/api/save_jo_received_dr`,formData).then(function (response) {
 				joi_dr_id.value=response.data;
-				success.value='You have successfully saved new jo dr.'
+				success.value='You have successfully saved dr.'
 				successAlert.value=!successAlert.value
 			}, function (err) {
 				error.value='Error! Please try again.';
@@ -340,6 +398,7 @@
 												<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 												<td class="p-1 uppercase text-center" width="5%">Received</td>
 												<td class="p-1 uppercase text-center" width="5%">UOM</td>
+												<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 											</tr>
 											<tr >
 												<td colspan="6"><span class="font-bold">{{ general_description}} </span></td>
@@ -348,12 +407,24 @@
 												<td class="p-1 text-center">{{index+1}} </td>
 												<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 												<td class="p-1 ">{{  offer_labor[index] }}</td>
-												<td class="p-0">
+												<td class="p-0" v-if="joi_dr.print_identifier==0 && joi_dr.received==0">
 													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkLaborBalance(jdl.joi_dr_id,jdl.joi_labor_details_id,to_deliver_labor[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_labor_checker'+index" v-model="to_deliver_labor[index]">
 												</td>
+												<td class="p-0" v-else-if="joi_dr.identifier==1 && joi_dr.print_identifier==1 && joi_dr.received==1">
+													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkLaborBalance(jdl.joi_dr_id,jdl.joi_labor_details_id,to_deliver_labor[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_labor_checker'+index" v-model="to_deliver_labor[index]">
+												</td>
+												<td class="p-1 text-center" v-else>
+													<input type="hidden" min="0" @keypress="isNumber($event)" @keyup="checkLaborBalance(jdl.joi_dr_id,jdl.joi_labor_details_id,to_deliver_labor[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_labor_checker'+index" v-model="to_deliver_labor[index]">
+													{{jdl.delivered_qty}}
+												</td>
 												<td class="p-1 text-center">{{ total_labor_sumdelivered1[index] }}</td>
-												<td class="p-1 text-center">{{ jdl.quantity }}</td>
+												<td class="p-1 text-center" v-if="joi_dr.print_identifier==0 && joi_dr.received==0"></td>
+												<td class="p-1 text-center" v-else-if="joi_dr.print_identifier==1 && joi_dr.received==1"></td>
+												<td class="p-1 text-center" v-else>
+													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceRec(jdl.joi_dr_id,jdl.joi_labor_details_id,received_qty[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_checker'+index" v-model="received_qty[index]">
+												</td>
 												<td class="p-1 text-center">{{ uom_labor[index] }}</td>
+												<td class="p-1 text-center"></td>
 											</tr>
 											<tr class="bg-gray-100">
 												<td class="p-1 font-bold" colspan="6">Materials:</td>
@@ -362,12 +433,24 @@
 												<td class="p-1 text-center">{{indexes+1}}</td>
 												<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 												<td class="p-1 ">{{ offer_material[indexes] }}</td>
-												<td class="p-0">
+												<td class="p-0" v-if="joi_dr.print_identifier==0 && joi_dr.received==0">
 													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkMaterialBalance(jdm.joi_dr_id,jdm.joi_material_details_id,to_deliver_material[indexes],indexes)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_material_checker'+indexes" v-model="to_deliver_material[indexes]">
 												</td>
+												<td class="p-0" v-else-if="joi_dr.identifier==1 && joi_dr.print_identifier==1 && joi_dr.received==1">
+													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkMaterialBalance(jdm.joi_dr_id,jdm.joi_material_details_id,to_deliver_material[indexes],indexes)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_material_checker'+indexes" v-model="to_deliver_material[indexes]">
+												</td>
+												<td class="p-1 text-center" v-else>
+													<input type="hidden" min="0" @keypress="isNumber($event)" @keyup="checkMaterialBalance(jdm.joi_dr_id,jdm.joi_material_details_id,to_deliver_material[indexes],indexes)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_material_checker'+indexes" v-model="to_deliver_material[indexes]">
+													{{jdm.delivered_qty}}
+												</td>
 												<td class="p-1 text-center">{{ total_material_sumdelivered1[indexes] }}</td>
-												<td class="p-1 text-center">{{ jdm.quantity }}</td>
+												<td class="p-1 text-center" v-if="joi_dr.print_identifier==0 && joi_dr.received==0"></td>
+												<td class="p-1 text-center" v-else-if="joi_dr.print_identifier==1 && joi_dr.received==1"></td>
+												<td class="p-1 text-center" v-else>
+													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceMaterialRec(jdm.joi_dr_id,jdm.joi_material_details_id,received_material_qty[indexes],indexes)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_material_checker'+indexes" v-model="received_material_qty[indexes]">
+												</td>
 												<td class="p-1 text-center">{{ uom_material[indexes] }}</td>
+												<td class="p-1 text-center"></td>
 											</tr>
 										</table>
 									</div>
@@ -439,7 +522,10 @@
 									<div class="row my-2"> 
 										<div class="col-lg-12 col-md-12">
 											<div class="flex justify-center space-x-2">
-												<button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save">Save</button>
+												<!-- <button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save">Save</button> -->
+												<button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save" v-if="joi_dr.print_identifier==0 && joi_dr.identifier==0 && joi_dr.received==0">Create DR</button>
+												<button type="button" class="btn btn-primary mr-2 w-36" @click="onSave()" id="save" v-else-if="joi_dr.print_identifier==1 && joi_dr.identifier==1 && joi_dr.received==1">Create DR</button>
+												<button type="button" class="btn btn-primary mr-2 w-36" @click="saveReceived()" id="save" v-else>Save</button>
 											</div>
 										</div>
 									</div>

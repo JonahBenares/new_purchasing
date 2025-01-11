@@ -233,9 +233,9 @@
                     <div class="" v-for="phv in po_head_rev">
                         <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
                     </div>
-                    <div>
+                    <!-- <div>
                         <a :href="'/pur_po/view/'+po_head_id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_nos }}{{ (revision_nos!=0) ? '.r'+revision_nos : '' }} (Current)</a>
-                    </div>
+                    </div> -->
                     <!-- <div>
                         <p class="text-center text-sm">No Data</p>
                     </div> -->
