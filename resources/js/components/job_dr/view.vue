@@ -1,5 +1,6 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
+	import printheader from '@/layouts/print_header.vue';
 	import{Bars3Icon, PlusIcon, XMarkIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
@@ -87,6 +88,15 @@
 				<div class="card-body">
 					<hr class="border-dashed mt-0">
 					<div class="pt-1" id="printable">
+						<div class="hidden print:block">
+							<printheader ></printheader>
+							<div class="flex justify-center mt-1">
+								<span class="uppercase">Delivery Receipt</span>
+								<!-- <span class="uppercase" v-if="po_head.method == 'DPO'">Direct</span>
+								<span class="uppercase" v-if="po_head.method == 'RPO'">Repeat Order</span> -->
+							</div>
+							<hr class="print:block border-dashed mt-2">
+						</div>
 						<div class="row">
 							<div class="col-lg-8 col-md-8 col-sm-8">
 								<span class="text-sm text-gray-700 font-bold pr-1">JOI No: </span>

@@ -546,7 +546,7 @@
 													<tr>
 														<td colspan="4">2. Please Fill - Up :</td>
 													</tr>
-													<tbody v-if="(rvi.canvassed==0)">
+													<template v-if="(rvi.canvassed==0)">
 														<tr class="po_buttons">
 															<td width="10%"></td>
 															<td width="40%" colspan="2">
@@ -577,8 +577,8 @@
 															</td>
 															<td width="10%"></td>
 														</tr>
-													</tbody>
-													<tbody v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
+													</template>
+													<template v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
 														<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
 														<tr>
 															<td width="10%"></td>
@@ -586,7 +586,7 @@
 															<td width="40%">{{ vt.terms }}</td>
 															<td width="10%"></td>
 														</tr>
-													</tbody>
+													</template>
 												</table>
 												<br>
 												<br>
