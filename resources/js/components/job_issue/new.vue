@@ -485,7 +485,7 @@
 			formData.append('quantity_material'+indexer, remaining_material_balance.value[indexer])
 		});
 		if(status==='Saved'){
-			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && date_needed.value!='' && start_of_work.value!=''){
+			if(checked_by.value!=0 && approved_by.value!=0 && recommended_by.value!=0 && vat_in_ex.value!=0 && date_needed.value!='' && start_of_work.value!=''){
 				axios.post(`/api/save_joi`,formData).then(function (response) {
 					joi_head_id.value=response.data;
 					success.value='You have successfully saved new jo.'
