@@ -21149,6 +21149,8 @@
     display: flex;
     -webkit-flex-direction: column;
     flex-direction: column;
+    margin-left: 250px;
+    
     
   }
 
@@ -21180,6 +21182,7 @@
     height: 600px;
     min-height: 500px;
     max-height: 1200px;
+    
   }
   
   @media (max-width: 767px) {
@@ -21206,8 +21209,24 @@
     -moz-box-shadow: none;
     -ms-box-shadow: none;
     border-right: 1px solid #e3e3e3;
+    /* transition: all .3s ease-out; */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* -webkit-overflow-scrolling: touch; */
+    position: absolute;
+    top: 60px;
+    bottom: 0;
   }
   
+  .sidebar:hover{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: width 0.25s ease, background 0.25s ease;
+    -webkit-transition: width 0.25s ease, background 0.25s ease;
+    -moz-transition: width 0.25s ease, background 0.25s ease;
+    -ms-transition: width 0.25s ease, background 0.25s ease;
+  }
+
   .sidebar .nav {
     overflow: hidden;
     flex-wrap: nowrap;

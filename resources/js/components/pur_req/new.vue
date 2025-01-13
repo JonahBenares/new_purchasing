@@ -764,7 +764,7 @@
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">PR No</label>
-										<input type="text" class="form-control" placeholder="PR No" v-model="prhead.pr_no" readonly>
+										<input type="text" class="form-control !bg-gray-100" placeholder="PR No" v-model="prhead.pr_no" readonly>
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4">
@@ -858,14 +858,30 @@
 											</td>
 										</tr>
 										<tr>
-											<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
-											<td class=""><input placeholder="Qty" type="number" step="any" v-model="qty" min="0" @keypress="isNumber($event)" class="w-full p-1 text-center" id="check_qty"></td>
-											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center" id="check_uom"></td>
-											<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
-											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1" id="check_description"></td>
-											<td class=""><input placeholder="WH Stock" type="number" step="any" v-model="wh_stocks" class="w-full p-1" @keypress="isNumber($event)" ></td>
-											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
-											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
+											<td class="bg-yellow-50">
+												<input placeholder="#" type="text" v-model="item_no" class="bg-transparent w-full p-1 text-center" disabled>
+											</td>
+											<td class="bg-yellow-50">
+												<input placeholder="Qty" type="number" step="any" v-model="qty" min="0" @keypress="isNumber($event)" class="bg-transparent w-full p-1 text-center" id="check_qty">
+											</td>
+											<td class="bg-yellow-50">
+												<input placeholder="UOM" type="text" v-model="uom" class="bg-transparent w-full p-1 text-center" id="check_uom">
+											</td>
+											<td class="bg-yellow-50">
+												<input placeholder="PN No." type="text" v-model="pn_no" class="bg-transparent w-full p-1">
+											</td>
+											<td class="bg-yellow-50">
+												<input placeholder="Item Description" v-model="item_desc" type="text" class="bg-transparent w-full p-1" id="check_description">
+											</td>
+											<td class="bg-yellow-50">
+												<input placeholder="WH Stock" type="number" step="any" v-model="wh_stocks" class="bg-transparent w-full p-1" @keypress="isNumber($event)" >
+											</td>
+											<td class="bg-yellow-50">
+												<input placeholder="Date Needed" type="text" v-model="date_needed" class="bg-transparent w-full p-1" onfocus="(this.type='date')">
+											</td>
+											<td class="bg-yellow-50 p-1">
+												<input placeholder="Recom Date" type="text" v-model="recom_date" class="bg-transparent w-full p-1" onfocus="(this.type='date')">
+											</td>
 											<td class="text-center">
 												<button class="btn btn-primary p-1" @click="addItem">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
@@ -875,7 +891,7 @@
 										<tr v-for="(details,index) in prdetails">
 											<td class="p-1 text-center">{{index+1}}</td>
 											<td class="p-1 text-center">
-												<input type="text" @keypress="isNumber($event)" v-model="details.quantity" class="w-full p-1 text-center">
+												<input type="text" @keypress="isNumber($event)" v-model="details.quantity" class="bg-transparent w-full p-1 text-center">
 											</td>
 											<td class="p-1 text-center">
 												<input type="text" v-model="details.uom" class="w-full p-1 text-center bg-yellow-50">
@@ -1046,7 +1062,7 @@
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">PR No</label>
-										<input type="text" class="form-control" placeholder="PR No" v-model="form.pr_no" readonly>
+										<input type="text" class="form-control !bg-gray-100" placeholder="PR No" v-model="form.pr_no" readonly>
 									</div>
 								</div>
 								<div class="col-lg-4 col-md-4">
@@ -1138,14 +1154,30 @@
 											</td>
 										</tr>
 										<tr>
-											<td class=""><input placeholder="#" type="text" v-model="item_no" class="w-full p-1 text-center" disabled></td>
-											<td class=""><input placeholder="Qty" type="number" step="any" v-model="qty" min="0" @keypress="isNumber($event)" class="w-full p-1 text-center" id="check_qty"></td>
-											<td class=""><input placeholder="UOM" type="text" v-model="uom" class="w-full p-1 text-center" id="check_uom"></td>
-											<td class=""><input placeholder="PN No." type="text" v-model="pn_no" class="w-full p-1"></td>
-											<td class=""><input placeholder="Item Description" v-model="item_desc" type="text" class="w-full p-1" id="check_description"></td>
-											<td class=""><input placeholder="WH Stock" type="number" step="any" v-model="wh_stocks" class="w-full p-1" min="0" @keypress="isNumber($event)"></td>
-											<td class=""><input placeholder="Date Needed" type="text" v-model="date_needed" class="w-full p-1" onfocus="(this.type='date')"></td>
-											<td class="p-1"><input placeholder="Recom Date" type="text" v-model="recom_date" class="w-full p-1" onfocus="(this.type='date')"></td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="#" type="text" v-model="item_no" class="bg-transparent w-full p-1 text-center" disabled>
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="Qty" type="number" step="any" v-model="qty" min="0" @keypress="isNumber($event)" class="bg-transparent w-full p-1 text-center" id="check_qty">
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="UOM" type="text" v-model="uom" class="bg-transparent w-full p-1 text-center" id="check_uom">
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="PN No." type="text" v-model="pn_no" class="bg-transparent w-full p-1">
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="Item Description" v-model="item_desc" type="text" class="bg-transparent w-full p-1" id="check_description">
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="WH Stock" type="number" step="any" v-model="wh_stocks" class="bg-transparent w-full p-1" min="0" @keypress="isNumber($event)">
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="Date Needed" type="text" v-model="date_needed" class="bg-transparent w-full p-1" onfocus="(this.type='date')">
+											</td>
+											<td class="bg-yellow-50 p-0">
+												<input placeholder="Recom Date" type="text" v-model="recom_date" class="bg-transparent w-full p-1" onfocus="(this.type='date')">
+											</td>
 											<td class="text-center">
 												<button class="btn btn-primary p-1" @click="addItem">
 													<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
