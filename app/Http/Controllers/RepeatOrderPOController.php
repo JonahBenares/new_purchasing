@@ -590,6 +590,7 @@ class RepeatOrderPOController extends Controller
         })->get();
         $currency=Config::get('constants.currency');
         $total=[];
+        $po_details = [];
         foreach($podetails AS $pd){
             // $total[]=$pd->unit_price * $pd->quantity;
             // $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
@@ -627,6 +628,7 @@ class RepeatOrderPOController extends Controller
         $podetailsview = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
         })->get();
+        $po_details_view = [];
         foreach($podetailsview AS $pd){
             $total[]=$pd->unit_price * $pd->quantity;
             $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
