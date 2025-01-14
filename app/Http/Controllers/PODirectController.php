@@ -47,13 +47,13 @@ class PODirectController extends Controller
         $available_pr=PRHead::where('status', 'Saved')->get();
         $prno_dropdown=array();
         foreach($available_pr AS $apr){
-            $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
-            $count_pr=$count_available_pr->count();
-
+            // $count_available_pr = PrReportDetails::where('pr_no',$apr->pr_no)->whereColumn('pr_qty','!=','delivered_qty')->where('status','!=','Cancelled')->get();
+            // $count_pr=$count_available_pr->count();
+            $po_draft_qty= PoDetails::select('po_details.quantity')->join('po_head', 'po_head.id', '=', 'po_details.po_head_id')->where('po_head.pr_no',$apr->pr_no)->where('po_head.status','Draft')->sum('quantity');
             $total_pr_qty = PRDetails::where('pr_head_id',$apr->id)->where('status','Saved')->sum('quantity');
-            $total_po_qty = PrReportDetails::where('pr_no',$apr->pr_no)->selectRaw('SUM(po_qty + dpo_qty + rpo_qty) as total_sum')->value('total_sum');
-            
-            if(($count_pr != 0 || $count_pr != '') && ($total_pr_qty != $total_po_qty)){
+            $total_po_qty = PrReportDetails::where('pr_no',$apr->pr_no)->selectRaw('SUM(po_qty + dpo_qty + rpo_qty) as total_sum')->where('status','!=','Cancelled')->value('total_sum');
+            $overall_po_qty = $po_draft_qty + $total_po_qty ;
+            if($total_pr_qty != $overall_po_qty){
                 $prno_dropdown[] = [
                     'id'=>$apr->id,
                     'pr_no'=>$apr->pr_no,
