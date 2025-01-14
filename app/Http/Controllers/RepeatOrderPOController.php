@@ -596,7 +596,7 @@ class RepeatOrderPOController extends Controller
             // $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
             // $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
             // $available_qty = $pr_qty - $delivered_qty;
-
+            $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
             $po_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
             $dpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
             $rpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
