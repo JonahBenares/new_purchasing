@@ -232,61 +232,61 @@
 								<img src="../../../images/bg_cancelled.png" alt="" class="absolute h-[420px] align-center opacity-100">
 							</div>
 							<div class="row">
-								<div class="col-lg-6 col-sm-6 col-md-6">
+								<div class="col-lg-5 col-sm-5 col-md-5">
 									<span class="text-sm text-gray-700 font-bold pr-1">Location: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.location}}</span>
 								</div>
 								<div class="col-lg-3 col-sm-3 col-md-3">
-									<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
-									<span class="text-sm text-gray-700">{{get_prhead.date_prepared}}</span>
-								</div>
+									<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.pr_no}}</span>
+								</div>	
 								<div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Date Issued: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.date_issued}}</span>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6 col-sm-6 col-md-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">PR Number: </span>
-									<span class="text-sm text-gray-700">{{get_prhead.pr_no}}</span>
-								</div>
-								<div class="col-lg-6 col-sm-6 col-md-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
-									<span class="text-sm text-gray-700">{{get_prhead.site_pr}}</span>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-6 col-sm-6 col-md-6">
+								<div class="col-lg-5 col-sm-5 col-md-5">
 									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.department_name}}</span>
 								</div>
-								<div class="col-lg-4 col-sm-4 col-md-4">
-									<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
-									<span class="text-sm text-gray-700">{{get_prhead.process_code}}</span>
+								<div class="col-lg-3 col-sm-3 col-md-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.site_pr}}</span>
+								</div>
+								<div class="col-lg-3 col-sm-3 col-md-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.date_prepared}}</span>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
-									<span class="text-sm text-gray-700">{{get_prhead.enduse}}</span>
+								<div class="col-lg-5 col-sm-5 col-md-5">
+									<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.requestor}}</span>
 								</div>
-								<div class="col-lg-6">
+								<div class="col-lg-3 col-sm-3 col-md-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.process_code}}</span>
+								</div>
+								<div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.urgency}}</span>
 								</div>
-								<div class="col-lg-6">
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<span class="text-sm text-gray-700 font-bold pr-1">End-Use: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.enduse}}</span>
+								</div>
+								<div class="col-lg-12">
 									<span class="text-sm text-gray-700 font-bold pr-1">Purpose: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.purpose}}</span>
-								</div>
-								<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
-									<span class="text-sm text-gray-700">{{get_prhead.requestor}}</span>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
 									<table class="w-full table-bordered bg-transparent !text-xs mt-3">
-										<tr class="bg-gray-100 print:bg-transparent">
+										<tr class="bg-gray-100 print:bg-gray-100">
 											<td class="p-1 uppercase text-center" width="5%">#</td>
 											<td class="p-1 uppercase text-center" width="7%">Qty</td>
 											<td class="p-1 uppercase text-center" width="7%">UOM</td>
