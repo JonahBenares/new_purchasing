@@ -503,7 +503,7 @@
 													</tr>
 													<span hidden>{{ item_no=0 }}</span>
 													<tbody v-for="rd in RFQDetails" class="p-0">
-														<tr v-if="rd.rfq_vendor_id == rvi.rfq_vendor_id">
+														<tr class="section-break" v-if="rd.rfq_vendor_id == rvi.rfq_vendor_id">
 															<td class="p-1 align-top text-center">{{ item_no+1 }}</td>
 															<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 															<td class="p-1 align-top itemdesc_">{{ rd.item_description }}</td>
@@ -559,7 +559,7 @@
 															<td width="10%"></td>
 														</tr>
 														<span hidden>{{ orderno=1 }}</span>
-														<tr v-for="(vt, order_no) in rfq_vendor_terms">
+														<tr class="section-break" v-for="(vt, order_no) in rfq_vendor_terms">
 															<td width="10%"></td>
 															<td width="40%" colspan="2">
 																<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
@@ -580,7 +580,7 @@
 													</template>
 													<template v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
 														<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
-														<tr>
+														<tr class="section-break">
 															<td width="10%"></td>
 															<td width="1%">{{ letters[index] }}.</td>
 															<td width="40%">{{ vt.terms }}</td>

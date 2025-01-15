@@ -21181,7 +21181,7 @@
     overflow-y: scroll;
     height: 600px;
     min-height: 500px;
-    max-height: 1200px;
+    /* max-height: 1200px; */
     
   }
   
@@ -22621,4 +22621,10 @@ form-row>.col,.form-row>[class*=col-]{
 
 tr.selected td span {
   color:white!important
+}
+
+
+input[type="date"]::-webkit-calendar-picker-indicator { display: block!important; }
+@media print{
+  input[type="date"]::-webkit-calendar-picker-indicator { display: block!important; }
 }
