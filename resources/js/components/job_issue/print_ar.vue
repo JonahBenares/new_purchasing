@@ -25,6 +25,7 @@
 	const material_sum_delivery=ref([])
 	const labor_sum_received=ref([])
 	const material_sum_received=ref([])
+	const joi_ar=ref([])
 	const props = defineProps({
 		id:{
 			type:String,
@@ -36,6 +37,7 @@
 	})
 	const joView = async () => {
 		let response = await axios.get("/api/jo_viewdetails/"+props.id);
+		joi_ar.value = response.data.joi_ar;
 		joi_dr.value = response.data.joi_dr;
 		joi_head.value = response.data.joi_head;
 		jor_head.value = response.data.jor_head;
@@ -119,8 +121,8 @@
 								<div class="row">
 									<div class="col-lg-8 col-sm-8 col-md-8">
 										<div class="flex">
-											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">DR No: </span>
-											<input type="text" class="border-b bg-white w-full font-bold text-sm" v-model="joi_dr.dr_no" disabled>
+											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">AR No: </span>
+											<input type="text" class="border-b bg-white w-full font-bold text-sm" v-model="joi_ar.ar_no" disabled>
 										</div>
 									</div>
 									<div class="col-lg-4 col-sm-4 col-md-4">

@@ -31,6 +31,9 @@
 	let cancelled_by=ref("")
 	let cancelled_by_all=ref("")
 	let remarks=ref("")
+	let approved_date=ref("")
+	let check_existprreport = ref([]);
+	let check_existpo = ref([]);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -45,7 +48,10 @@
 		get_prhead.value=response.data.prhead
 		cancelled_by_all.value=response.data.cancelled_by_all
 		get_prdetails.value=response.data.prdetails
+		check_existprreport.value=response.data.check_existprreport
+		check_existpo.value=response.data.check_existpo
 		remarks.value=response.data.comment
+		approved_date.value=response.data.approved_date
 		prepared_by.value=response.data.prepared_by
 		approved_by.value=response.data.approved_by
 		recommended_by.value=response.data.recommended_by
@@ -324,7 +330,7 @@
 													<button type="button" class="btn btn-xs btn-warning text-white p-1" @click="openViewComments(pd.pr_head_id,pd.id)">
 														<EyeIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></EyeIcon>
 													</button>
-													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
+													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)" v-if="!check_existpo[index] && !check_existprreport[index]">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
 													</button>
 												</div>
@@ -332,14 +338,19 @@
 													<button class="btn btn-xs btn-info p-1" @click="openModalReferred(pd.id)" title="Refer">
 														<ArrowUpOnSquareStackIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></ArrowUpOnSquareStackIcon>
 													</button>
-													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)">
+													<button type="button" class="btn btn-xs btn-danger p-1" @click="cancelPrdetails('no',pd.id)" v-if="!check_existpo[index] && !check_existprreport[index]">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 "></XMarkIcon>
 													</button>
 												</div>
 											</td>
 										</tr>
 										<tr v-if="get_prhead.petty_cash=='1'">
-											<td colspan="9">
+											<td colspan="2">
+												<div class="flex justify-start space-x-1">
+													<span class="p-1">Date: {{ approved_date }}</span>
+												</div>
+											</td>
+											<td colspan="7">
 												<div class="flex justify-start space-x-1">
 													<span class="p-1">Comment: {{ remarks }}</span>
 												</div>

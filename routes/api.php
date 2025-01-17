@@ -295,8 +295,6 @@ Route::get('/get_alljoirfd',[JOIController::class,'get_alljoirfd']);
 Route::get('/rfd_joi_displayview/{rfd_id}', [JOIController::class,'rfd_joi_displayview']);
 Route::get('/rfd_jo_data/{id}',[JOIController::class,'rfd_jo_data']);
 Route::post('/save_jo_received_dr', [JOIController::class,'save_jo_received_dr']);
-
-
 Route::get('/check_jo_labor_dr_balance/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_jo_labor_dr_balance']);
 Route::get('/check_jo_material_dr_balance/{joi_dr_id}/{joi_material_details_id}', [JOIController::class,'check_jo_material_dr_balance']);
 Route::get('/check_remaining_dr_labor_balance/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_labor_balance']);
@@ -304,6 +302,10 @@ Route::get('/check_remaining_dr_material_balance/{joi_labor_details_id}', [JOICo
 Route::post('/save_jo_dr', [JOIController::class,'save_jo_dr']);
 Route::get('/get_jo_alldr', [JOIController::class,'get_jo_alldr']);
 Route::get('/get_jo_dr_view/{joi_dr_id}', [JOIController::class,'get_jo_dr_view']);
+Route::get('/get_cocdata/{id}',[JOIController::class,'get_cocdata']);
+Route::get('/get_checkposition/{checked_by}',[JOIController::class,'get_checkposition']);
+Route::get('/get_approveposition/{approved_by}',[JOIController::class,'get_approveposition']);
+Route::post('/save_coc', [JOIController::class,'save_coc']);
 
 Route::get('/get_direct_jorno', [JOIDirectController::class,'get_direct_jorno']);
 Route::get('/generate_direct_joi/{jor_no}/{vendor_details_id}', [JOIDirectController::class,'generate_direct_joi']);

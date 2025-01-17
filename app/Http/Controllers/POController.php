@@ -69,7 +69,7 @@ class POController extends Controller
     }
     public function supplier_dropdown(){
         // $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('status','=','Active')->get();
-        $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_head.vendor_name')->distinct()->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->join('rfq_vendor', 'vendor_details.id', '=', 'rfq_vendor.vendor_details_id')->join('rfq_offers', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_head', 'rfq_offers.rfq_head_id', '=', 'aoq_head.rfq_head_id')->where('vendor_details.status','=','Active')->where('aoq_status','=','Awarded')->where('awarded','=','1')->get();
+        $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_head.vendor_name')->distinct()->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->join('rfq_vendor', 'vendor_details.id', '=', 'rfq_vendor.vendor_details_id')->join('rfq_offers', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_head', 'rfq_offers.rfq_head_id', '=', 'aoq_head.rfq_head_id')->join('pr_report_details', 'rfq_offers.id', '=', 'pr_report_details.rfq_offer_id')->whereColumn('pr_report_details.pr_qty','!=','pr_report_details.po_qty')->where('vendor_details.status','=','Active')->where('aoq_status','=','Awarded')->where('awarded','=','1')->get();
         return response()->json([
             'suppliers'=>$suppliers,
         ],200);
@@ -77,7 +77,7 @@ class POController extends Controller
 
     public function get_prno($vendor_details_id){
         // $prno_dropdown = RFQVendor::join('aoq_details', 'rfq_vendor.id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->where('vendor_details_id',$vendor_details_id)->where('rfq_vendor.status','=','Saved')->where('aoq_status','=','Awarded')->get();
-        $prno_dropdown=RFQOffers::select('rfq_offers.rfq_vendor_id','aoq_head.id','aoq_head.aoq_date','rfq_vendor.pr_no')->distinct()->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_head', 'rfq_offers.rfq_head_id', '=', 'aoq_head.rfq_head_id')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        $prno_dropdown=RFQOffers::select('rfq_offers.rfq_vendor_id','aoq_head.id','aoq_head.aoq_date','rfq_vendor.pr_no')->distinct()->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_head', 'rfq_offers.rfq_head_id', '=', 'aoq_head.rfq_head_id')->join('pr_report_details', 'rfq_offers.id', '=', 'pr_report_details.rfq_offer_id')->whereColumn('pr_report_details.pr_qty','!=','pr_report_details.po_qty')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
         return response()->json([
             'prno_dropdown'=>$prno_dropdown,
         ],200);
@@ -128,7 +128,11 @@ class POController extends Controller
         $po_head= AOQHead::where('id',$aoq_head_id)->where('pr_no',$pr_no_exp)->first();
         $pr_head= PRHead::where('pr_no',$pr_no_exp)->first();
         $vendor= VendorDetails::select('vendor_details.id','identifier','vendor_name','fax','phone','contact_person','address')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$vendor_details_id)->where('status','=','Active')->first();
-        $po_details = RFQOffers::select('rfq_offers.id','rfq_offers.rfq_vendor_id', 'remaining_qty', 'rfq_offers.pr_details_id','rfq_offers.offer','rfq_offers.uom','rfq_offers.unit_price','rfq_offers.currency')->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_details', 'rfq_offers.rfq_vendor_id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.rfq_head_id',$po_head->rfq_head_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+
+        $po_details = RFQOffers::select('rfq_offers.id','rfq_offers.rfq_vendor_id', 'remaining_qty', 'rfq_offers.pr_details_id','rfq_offers.offer','rfq_offers.uom','rfq_offers.unit_price','rfq_offers.currency')->join('rfq_vendor', 'rfq_vendor.id', '=', 'rfq_offers.rfq_vendor_id')->join('aoq_details', 'rfq_offers.rfq_vendor_id', '=', 'aoq_details.rfq_vendor_id')->join('aoq_head', 'aoq_details.aoq_head_id', '=', 'aoq_head.id')->join('pr_report_details', 'rfq_offers.id', '=', 'pr_report_details.rfq_offer_id')->whereColumn('pr_report_details.pr_qty','!=','pr_report_details.po_qty')->where('rfq_vendor.vendor_details_id',$vendor_details_id)->where('rfq_offers.rfq_head_id',$po_head->rfq_head_id)->where('rfq_offers.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        $total=[];
+        $rfq_terms=[];
+        $pr_rerort_details=[];
         foreach($po_details AS $pd){
             $balance = PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('status','!=','Cancelled')->first();
             $draft_balance = PoDetails::with('po_head')->where('pr_details_id',$pd->pr_details_id)->whereHas('po_head', function ($pohead) {
@@ -1389,7 +1393,7 @@ class POController extends Controller
     public function save_received_dr(Request $request){
         $y=0;
         $updatedrhead=PoDr::where('id',$request->po_dr_id)->first();
-        $data_dr_head['driver']=$request->driver;
+        // $data_dr_head['driver']=$request->driver;
         $data_dr_head['received']='1';
         $updatedrhead->update($data_dr_head);
         foreach(json_decode($request->po_dr_items) AS $pd){

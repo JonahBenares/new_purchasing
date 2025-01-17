@@ -127,7 +127,6 @@
 		po_details.value = response.data.po_details;
 		rfq_terms.value = response.data.rfq_terms;
 		vendor.value = response.data.vendor;
-		
 		grand_total.value = response.data.grand_total;
 		prepared_by.value = response.data.prepared_by;
 		po_details.value.forEach(function (val, index, theArray) {
@@ -474,6 +473,7 @@
 	
 	const allZero = () => {
 		if(props.id==0){
+			console.log(remaining_balance.value)
       		return remaining_balance.value.every(value => value === 0);
 		}else{
 			return false;
@@ -717,7 +717,7 @@
 														<!-- VAT -->
 														<td class="p-0" v-if="vat==1">
 															<div class="flex p-0">
-																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)" @change="vatChange(vat_percent)">%
+																<input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)" @change="vatChange(vat_percent)">
                                                                 <input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
                                                                 <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)">
 															</div>

@@ -707,23 +707,23 @@
                                                                 <button type="button" @click="deleteJoiPayment(p.id,'no',p.payment_amount,p.ewt_amount,p.retention_amount)" class="btn btn-danger p-1" v-else-if="p.id!=0 && p.joi_rfd.status!='Saved'">
                                                                     <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
                                                                 </button>
-                                                                <input type="text" class="w-full text-left bg-yellow-100 p-1" v-model="p.payment_description"  readonly>
+                                                                <input type="text" class="w-full text-left p-1" v-model="p.payment_description"  readonly>
                                                             </div>
                                                         </td>
                                                         <td class="p-0 border-y-none">
                                                             <div class="flex justify-between w-full">
-                                                                <button class="btn btn-xs p-0 !bg-yellow-100 ">
+                                                                <button class="btn btn-xs p-0">
                                                                     <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
                                                                 </button>
-                                                                <input type="text" class="w-full text-left bg-yellow-100 p-1" v-model="p.payment_details" readonly>
+                                                                <input type="text" class="w-full text-left  p-1" v-model="p.payment_details" readonly>
                                                             </div>
                                                         </td>
                                                         <td class="p-0 border-y-none">
                                                             <div class="flex justify-between w-full">
-                                                                <button class="btn btn-xs p-0 !bg-yellow-100 ">
+                                                                <button class="btn btn-xs p-0">
                                                                     <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
                                                                 </button>
-                                                                <input type="text" class="w-full text-right bg-yellow-100 p-1" :value="formatter.format(p.payment_amount)" readonly>
+                                                                <input type="text" class="w-full text-right p-1" :value="formatter.format(p.payment_amount)" readonly>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -733,14 +733,14 @@
                                                             <div class="flex justify-end space-x-1">
                                                                 <span class="p-1">EWT {{ (p.ewt_vat==1) ? 'VAT' : 'NON-VAT' }}</span>
                                                                 <div class="flex " v-if="p.ewt_vat==1">
-                                                                    <input type="text" class="w-10 text-center border p-1 bg-yellow-100" :value="p.ewt_percent" placeholder="%" readonly>
+                                                                    <input type="text" class="w-10 text-center border p-1" :value="p.ewt_percent" placeholder="%" readonly>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="p-0 border-y-none">
                                                             <div class="flex justify-between w-full">
                                                                 <span class="p-1">₱</span>
-                                                                <input type="text" class="w-20 text-right border p-1 bg-yellow-100" :value="formatter.format(p.ewt_amount)" placeholder="00" readonly>
+                                                                <input type="text" class="w-20 text-right border p-1" :value="formatter.format(p.ewt_amount)" placeholder="00" readonly>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -750,14 +750,14 @@
                                                             <div class="flex justify-end space-x-1">
                                                                 <span class="p-1">Retention</span>
                                                                 <div class="flex ">
-                                                                    <input type="text" class="w-10 text-center border p-1 bg-yellow-100" :value="p.retention_percent" placeholder="%" readonly>
+                                                                    <input type="text" class="w-10 text-center border p-1" :value="p.retention_percent" placeholder="%" readonly>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td class="p-0 border-y-none">
                                                             <div class="flex justify-between w-full">
                                                                 <span class="p-1">₱</span>
-                                                                <input type="text" class="w-20 text-right border p-1 bg-yellow-100" :value="formatter.format(p.retention_amount)" placeholder="00" readonly>
+                                                                <input type="text" class="w-20 text-right border p-1" :value="formatter.format(p.retention_amount)" placeholder="00" readonly>
                                                             </div>
                                                         </td>
                                                     </tr>

@@ -321,17 +321,29 @@
 		pr_options.value='';
 		try {
 			axios.post("/api/import_pr",formData).then(function (response) {
-				pr_head_id.value=response.data.pr_head_id
-				getImportdata(pr_head_id.value)
-				// prhead.value=response.data.prhead
-				// prdetails.value=response.data.prdetails
-				// success.value='You have successfully imported new pr.'
-				// successAlert.value=!successAlert.value
-				pr_options.value='pr_upload';
-				loading.value=false;
-				prFile.value=''
-				const btn_pr = document.getElementById("btn_pr");
-				btn_pr.disabled = true;
+				if(response.data!='error' && response.data!='duplicateerror'){
+					pr_head_id.value=response.data.pr_head_id
+					getImportdata(pr_head_id.value)
+					// prhead.value=response.data.prhead
+					// prdetails.value=response.data.prdetails
+					// success.value='You have successfully imported new pr.'
+					// successAlert.value=!successAlert.value
+					pr_options.value='pr_upload';
+					loading.value=false;
+					prFile.value=''
+					const btn_pr = document.getElementById("btn_pr");
+					btn_pr.disabled = true;
+				}else if(response.data=='duplicateerror'){
+					prFile.value=''
+					loading.value=false;
+					error.value ='Site PR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}else{
+					prFile.value=''
+					loading.value=false;
+					error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}
 			}, function (err) {
 				loading.value=false;
 				var substring="1048 Column 'department_id'"
@@ -593,14 +605,19 @@
 			axios.post(`/api/save_manual`,formData).then(function (response) {
 				// success.value='You have successfully saved new pr.'
 				// successAlert.value=!successAlert.value
-				prheadid.value=response.data;
-				if(form.value.petty_cash==0){
-					success.value='You have successfully saved new pr.'
-					successAlert.value=!successAlert.value
+				if(response.data!='error'){
+					prheadid.value=response.data;
+					if(form.value.petty_cash==0){
+						success.value='You have successfully saved new pr.'
+						successAlert.value=!successAlert.value
+					}else{
+						success.value='You have successfully saved new pr.'
+						successAlert.value=!successAlert.value
+						router.push('/pur_req/view/'+prheadid.value)
+					}
 				}else{
-					success.value='You have successfully saved new pr.'
-					successAlert.value=!successAlert.value
-					router.push('/pur_req/view/'+prheadid.value)
+					error.value ='Site PR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
 				}
 			}, function (err) {
 				// error.value = err.response.data.message;

@@ -705,14 +705,19 @@
 		if(scope_list.value.length!=0){
 			// if(scope_list.value.length!=0 && item_list.value.length!=0){
 			axios.post(`/api/save_jor_manual`,formData).then(function (response) {
-				jorheadid.value=response.data;
-				success.value='You have successfully saved new jor.'
-				successAlert.value=!successAlert.value
+				if(response.data!='error'){
+					jorheadid.value=response.data;
+					success.value='You have successfully saved new jor.'
+					successAlert.value=!successAlert.value
+				}else{
+					error.value ='Site JOR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}
 			}, function (err) {
 				error.value=''
 				error_pr.value=[]
-				if (err.response.data.errors.pr_no) {
-					error_pr.value.push(err.response.data.errors.pr_no[0])
+				if (err.response.data.errors.jor_no) {
+					error_pr.value.push(err.response.data.errors.jor_no[0])
 				}
 				if (err.response.data.errors.department_id) {
 					error_pr.value.push(err.response.data.errors.department_id[0])
@@ -765,19 +770,24 @@
 		formData.append('notes_list', JSON.stringify(notes_list.value))
 		axios.post(`/api/save_jor_manual_draft`,formData).then(function (response) {
 			// console.log(response.data)
-			success.value='You have successfully saved new jor.'
-			warningAlert.value=!warningAlert.value
-			jorheadid.value=response.data;
-			const btn_draft = document.getElementById("btn_draft");
-			btn_draft.disabled = true;
-			setTimeout(() => {
-				btn_draft.disabled = false;
-			}, 500);
+			if(response.data!='error'){
+				success.value='You have successfully saved new jor.'
+				warningAlert.value=!warningAlert.value
+				jorheadid.value=response.data;
+				const btn_draft = document.getElementById("btn_draft");
+				btn_draft.disabled = true;
+				setTimeout(() => {
+					btn_draft.disabled = false;
+				}, 500);
+			}else{
+				error.value ='Site JOR No. duplicate entry!';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}
 		}, function (err) {
 			error_pr.value=[]
 			// error_pr.value = err.response.data.message;
-			if (err.response.data.errors.pr_no) {
-				error_pr.value.push(err.response.data.errors.pr_no[0])
+			if (err.response.data.errors.jor_no) {
+				error_pr.value.push(err.response.data.errors.jor_no[0])
 			}
 			if (err.response.data.errors.department_id) {
 				error_pr.value.push(err.response.data.errors.department_id[0])
@@ -995,11 +1005,20 @@
 										</tr>
 										<tr v-for="(jl,index) in jorlabordetails" id="scope">
 											<td class="p-1 align-top text-center">{{ index + 1 }}</td>
-											<td class="p-1 align-top">{{ jl.scope_of_work }}</td>
-											<td class="p-1 align-top text-center">{{ jl.quantity }}</td>
-											<td class="p-1 align-top text-center">{{ jl.uom }}</td>
-											<td class="p-1 align-top text-center">{{ jl.unit_cost }}</td>
-											<td class="p-1 align-top text-center">{{ jl.total_cost  }}</td>
+											<td class="p-1 align-top">
+												<textarea type="text" v-model="jl.scope_of_work" class="w-full p-1 bg-yellow-50"></textarea>
+											</td>
+											<td class="p-1 align-top text-center">
+												<input type="text" @keypress="isNumber($event)" v-model="jl.quantity" class="w-full p-1 bg-yellow-50 text-center">
+											</td>
+											<td class="p-1 align-top text-center">
+												<input type="text" v-model="jl.uom" class="w-full p-1 text-center bg-yellow-50">
+											</td>
+											<td class="p-1 align-top text-center">
+												<input type="text" v-model="jl.unit_cost" class="w-full p-1 text-center bg-yellow-50">
+											</td>
+											<td class="p-1 align-top text-center">{{ jl.unit_cost * jl.quantity  }}</td>
+											<!-- <td class="p-1 align-top text-center">{{ jl.total_cost  }}</td> -->
 											<td class="p-1">
 												<input placeholder="Recom Date" type="text" v-model="recom_date_update_labor[index]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(jl.id,'Labors')" v-if="props.id==0 && (jl.recom_date==null || jl.recom_date=='')">
 
@@ -1064,12 +1083,25 @@
 										</tr>
 										<tr v-for="(jm,indexed) in jormaterialdetails" id="item1">
 											<td class="p-1 text-center">{{ indexed + 1 }}</td>
-											<td class="p-1 text-center">{{ jm.quantity }}</td>
-											<td class="p-1 text-center">{{ jm.uom }}</td>
-											<td class="p-1">{{ jm.pn_no }}</td>
-											<td class="p-1">{{ jm.item_description }}</td>
-											<td class="p-1">{{ jm.wh_stocks }}</td>
-											<td class="p-1">{{ jm.date_needed }}</td>
+											<td class="p-1 text-center">
+												<input type="text" @keypress="isNumber($event)" v-model="jm.quantity" class="w-full bg-yellow-50 p-1 text-center">
+											</td>
+											<td class="p-1 text-center">
+												<input type="text" v-model="jm.uom" class="w-full p-1 bg-yellow-50 text-center">
+											</td>
+											<td class="p-1">
+												<!-- {{ jm.pn_no }} -->
+												<input type="text" v-model="jm.pn_no" class="w-full p-1 bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="text" v-model="jm.item_description" class="w-full p-1 bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="text" @keypress="isNumber($event)" v-model="jm.wh_stocks" class="w-full p-1 bg-yellow-50">
+											</td>
+											<td class="p-1">
+												<input type="text"  placeholder="Date Needed"  onfocus="(this.type='date')" v-model="jm.date_needed" class="w-full p-1 bg-yellow-50">
+											</td>
 											<td class="p-1">
 												<input placeholder="Recom Date" type="text" v-model="recom_date_update_material[indexed]" class="w-full p-1" onfocus="(this.type='date')" @change="updateRecomdate(jm.id,'Materials')" v-if="props.id==0  && (jm.recom_date==null || jm.recom_date=='')">
 												
