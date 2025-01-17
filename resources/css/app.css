@@ -21143,12 +21143,14 @@
   
   .main-panel {
     transition: width 0.25s ease, margin 0.25s ease;
-    width: calc(100% - 220px);
+    width: calc(100% - 250px);
     min-height: calc(100vh - 60px);
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: column;
     flex-direction: column;
+    margin-left: 250px;
+    
     
   }
 
@@ -21179,7 +21181,8 @@
     overflow-y: scroll;
     height: 600px;
     min-height: 500px;
-    max-height: 1200px;
+    /* max-height: 1200px; */
+    
   }
   
   @media (max-width: 767px) {
@@ -21195,7 +21198,7 @@
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     padding: 0;
-    width: 220px;
+    width: 250px;
     z-index: 11;
     transition: width 0.25s ease, background 0.25s ease;
     -webkit-transition: width 0.25s ease, background 0.25s ease;
@@ -21206,8 +21209,24 @@
     -moz-box-shadow: none;
     -ms-box-shadow: none;
     border-right: 1px solid #e3e3e3;
+    /* transition: all .3s ease-out; */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* -webkit-overflow-scrolling: touch; */
+    position: absolute;
+    top: 60px;
+    bottom: 0;
   }
   
+  .sidebar:hover{
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: width 0.25s ease, background 0.25s ease;
+    -webkit-transition: width 0.25s ease, background 0.25s ease;
+    -moz-transition: width 0.25s ease, background 0.25s ease;
+    -ms-transition: width 0.25s ease, background 0.25s ease;
+  }
+
   .sidebar .nav {
     overflow: hidden;
     flex-wrap: nowrap;
@@ -21398,7 +21417,7 @@
       top: 60px;
       bottom: 0;
       overflow: auto;
-      right: -220px;
+      right: -250px;
       -webkit-transition: all 0.25s ease-out;
       -o-transition: all 0.25s ease-out;
       transition: all 0.25s ease-out;
@@ -21424,7 +21443,7 @@
     -webkit-transition: width 0.25s ease, background 0.25s ease;
     -moz-transition: width 0.25s ease, background 0.25s ease;
     -ms-transition: width 0.25s ease, background 0.25s ease;
-    width: 220px;
+    width: 250px;
     height: 60px;
     border-right: 1px solid #e3e3e3;
   }
@@ -21457,7 +21476,7 @@
   }
   
   .navbar .navbar-brand-wrapper .navbar-brand-inner-wrapper .navbar-brand img {
-    width: calc(220px - 150px);
+    width: calc(250px - 150px);
     max-width: 100%;
     height: 34px;
     margin: auto;
@@ -21497,7 +21516,7 @@
     color: #9b9b9b;
     padding-left: 1.062rem;
     padding-right: 1.062rem;
-    width: calc(100% - 220px);
+    width: calc(100% - 250px);
     height: 60px;
     border-bottom: 1px solid #e3e3e3;
   }
@@ -22602,4 +22621,10 @@ form-row>.col,.form-row>[class*=col-]{
 
 tr.selected td span {
   color:white!important
+}
+
+
+input[type="date"]::-webkit-calendar-picker-indicator { display: block!important; }
+@media print{
+  input[type="date"]::-webkit-calendar-picker-indicator { display: block!important; }
 }

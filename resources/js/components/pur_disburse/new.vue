@@ -631,6 +631,7 @@
                             </div>
                             <hr class="border-dashed">	
                             <div class="" v-if="po_head && po_head.length!=0">
+                                
                                 <table class="w-full text-sm table-borsdered">
                                     <tr>
                                         <td class="px-1 font-bold" width="10%">Company:</td>
@@ -931,8 +932,8 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-center space-x-2" v-if="rfd_head.balance!=0">
                                                 <button type="button" class="btn btn-danger w-36"  @click="cancelAllRFD('no')">Cancel RFD</button>
-                                                <button type="button" class="btn btn-warning text-white mr-2 w-" @click="onSave('Draft')" id="draft">Save as Draft</button>
-                                                <button type="button" class="btn btn-primary mr-2 w-36" @click="onSave('Saved')" id="save">Save</button>
+                                                <button type="button" class="btn btn-warning text-white w-36" @click="onSave('Draft')" id="draft">Save as Draft</button>
+                                                <button type="button" class="btn btn-primary w-36" @click="onSave('Saved')" id="save">Save</button>
                                             </div>
                                         </div>
                                     </div>

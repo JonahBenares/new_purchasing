@@ -642,9 +642,7 @@
                                                     <td class="!border-none p-1" colspan="4">
                                                         <span class="font-bold">{{jor_head.general_description}}</span>
                                                     </td>
-                                                    <td class="!border-none p-1 text-center"></td>
-                                                    <td class="!border-none p-1 text-center"></td>
-                                                    <td class="!border-none p-1 text-right">Total Amount of JO</td>
+                                                    <td class="!border-none p-1 text-right" colspan="3">Total Amount of JO</td>
                                                     <td class="border-y-none p-1 text-center">
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>
@@ -679,19 +677,19 @@
                                                     </td>
 												</tr>
                                                 <tr class="">
-                                                    <td class="border-y-none p-1 text-left" colspan="6">
+                                                    <td class="border-y-none !border-none p-1 text-left" colspan="5">
                                                         <br>
                                                         <br>
                                                         <br>
                                                         <br>
                                                     </td>
-                                                    <td class="border-y-none p-1 text-center">
-                                                    </td>
+                                                    <td class="border-y-none !border-none p-1 text-center" colspan="2"> </td>
+                                                    <td class="border-y-none p-1 text-center"></td>
                                                 </tr>
-                                                <tr class="">
-                                                    <td class="border-y-none" colspan="6"><br></td>
-                                                    <td class="border-y-none"></td>
-                                                </tr>
+                                                <!-- <tr class="">
+                                                    <td class="border-y-none !border-l-none" colspan="6"><br>asd</td>
+                                                    <td class="border-y-none !border-l-none">asd</td>
+                                                </tr> -->
                                                 <tr class="">
                                                     <td class="" colspan="6"></td>
                                                     <td class=""></td>
@@ -961,8 +959,8 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-center space-x-2"  v-if="rfd_head.balance!=0">
                                                 <button type="button" class="btn btn-danger w-36"  @click="cancelAllRFD('no')">Cancel RFD</button>
-                                                <button type="button" class="btn btn-warning text-white mr-2 w-" @click="onSave('Draft')" id="draft">Save as Draft</button>
-                                                <button type="button" class="btn btn-primary mr-2 w-36" @click="onSave('Saved')" id="save">Save</button>
+                                                <button type="button" class="btn btn-warning text-white w-" @click="onSave('Draft')" id="draft">Save as Draft</button>
+                                                <button type="button" class="btn btn-primary w-36" @click="onSave('Saved')" id="save">Save</button>
                                             </div>
                                         </div>
                                     </div>

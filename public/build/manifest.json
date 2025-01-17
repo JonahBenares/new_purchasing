@@ -1,20 +1,176 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-CoNHI3Q-.css",
+    "file": "assets/app-Mb_dX3nu.css",
     "src": "resources/css/app.css",
     "isEntry": true
+  },
+  "resources/css/fig/figtree-latin-300-italic.woff": {
+    "file": "assets/figtree-latin-300-italic-BTfW4LZH.woff",
+    "src": "resources/css/fig/figtree-latin-300-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-300-italic.woff2": {
+    "file": "assets/figtree-latin-300-italic-C0vZldrD.woff2",
+    "src": "resources/css/fig/figtree-latin-300-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-400-italic.woff": {
+    "file": "assets/figtree-latin-400-italic-DcqoRWff.woff",
+    "src": "resources/css/fig/figtree-latin-400-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-400-italic.woff2": {
+    "file": "assets/figtree-latin-400-italic-BTL5SEua.woff2",
+    "src": "resources/css/fig/figtree-latin-400-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-400-normal.woff": {
+    "file": "assets/figtree-latin-400-normal-CDcxUdIY.woff",
+    "src": "resources/css/fig/figtree-latin-400-normal.woff"
+  },
+  "resources/css/fig/figtree-latin-400-normal.woff2": {
+    "file": "assets/figtree-latin-400-normal-Dj3dwwKg.woff2",
+    "src": "resources/css/fig/figtree-latin-400-normal.woff2"
+  },
+  "resources/css/fig/figtree-latin-500-italic.woff": {
+    "file": "assets/figtree-latin-500-italic-Dj41zNzU.woff",
+    "src": "resources/css/fig/figtree-latin-500-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-500-italic.woff2": {
+    "file": "assets/figtree-latin-500-italic-DbmdWVY3.woff2",
+    "src": "resources/css/fig/figtree-latin-500-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-600-italic.woff": {
+    "file": "assets/figtree-latin-600-italic-BKytyJBA.woff",
+    "src": "resources/css/fig/figtree-latin-600-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-600-italic.woff2": {
+    "file": "assets/figtree-latin-600-italic-BsXeXU8G.woff2",
+    "src": "resources/css/fig/figtree-latin-600-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-600-normal.woff": {
+    "file": "assets/figtree-latin-600-normal-DUHJNm9N.woff",
+    "src": "resources/css/fig/figtree-latin-600-normal.woff"
+  },
+  "resources/css/fig/figtree-latin-600-normal.woff2": {
+    "file": "assets/figtree-latin-600-normal-xcX-VIGi.woff2",
+    "src": "resources/css/fig/figtree-latin-600-normal.woff2"
+  },
+  "resources/css/fig/figtree-latin-700-italic.woff": {
+    "file": "assets/figtree-latin-700-italic-Cj-HOQps.woff",
+    "src": "resources/css/fig/figtree-latin-700-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-700-italic.woff2": {
+    "file": "assets/figtree-latin-700-italic-B2VZ6OUf.woff2",
+    "src": "resources/css/fig/figtree-latin-700-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-800-italic.woff": {
+    "file": "assets/figtree-latin-800-italic-Hx6ERiCE.woff",
+    "src": "resources/css/fig/figtree-latin-800-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-800-italic.woff2": {
+    "file": "assets/figtree-latin-800-italic-GocwZgHg.woff2",
+    "src": "resources/css/fig/figtree-latin-800-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-900-italic.woff": {
+    "file": "assets/figtree-latin-900-italic-B6pzRGx0.woff",
+    "src": "resources/css/fig/figtree-latin-900-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-900-italic.woff2": {
+    "file": "assets/figtree-latin-900-italic-DJqDotjV.woff2",
+    "src": "resources/css/fig/figtree-latin-900-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-300-italic.woff": {
+    "file": "assets/figtree-latin-ext-300-italic-BNUlNa1B.woff",
+    "src": "resources/css/fig/figtree-latin-ext-300-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-300-italic.woff2": {
+    "file": "assets/figtree-latin-ext-300-italic-CEgAfEad.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-300-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-400-italic.woff": {
+    "file": "assets/figtree-latin-ext-400-italic-BzhQe45W.woff",
+    "src": "resources/css/fig/figtree-latin-ext-400-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-400-italic.woff2": {
+    "file": "assets/figtree-latin-ext-400-italic-BQQZENW3.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-400-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-400-normal.woff": {
+    "file": "assets/figtree-latin-ext-400-normal-vkHmfpM4.woff",
+    "src": "resources/css/fig/figtree-latin-ext-400-normal.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-400-normal.woff2": {
+    "file": "assets/figtree-latin-ext-400-normal-B9WhHhOH.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-400-normal.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-500-italic.woff": {
+    "file": "assets/figtree-latin-ext-500-italic-Cw4J5eUY.woff",
+    "src": "resources/css/fig/figtree-latin-ext-500-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-500-italic.woff2": {
+    "file": "assets/figtree-latin-ext-500-italic-C0WhoH6f.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-500-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-600-italic.woff": {
+    "file": "assets/figtree-latin-ext-600-italic-ziANoJPE.woff",
+    "src": "resources/css/fig/figtree-latin-ext-600-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-600-italic.woff2": {
+    "file": "assets/figtree-latin-ext-600-italic-BTMsDhwp.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-600-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-600-normal.woff": {
+    "file": "assets/figtree-latin-ext-600-normal-H5gwhW7S.woff",
+    "src": "resources/css/fig/figtree-latin-ext-600-normal.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-600-normal.woff2": {
+    "file": "assets/figtree-latin-ext-600-normal-DIDOPkqb.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-600-normal.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-700-italic.woff": {
+    "file": "assets/figtree-latin-ext-700-italic-D4FzgY3f.woff",
+    "src": "resources/css/fig/figtree-latin-ext-700-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-700-italic.woff2": {
+    "file": "assets/figtree-latin-ext-700-italic-t0WenX8p.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-700-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-800-italic.woff": {
+    "file": "assets/figtree-latin-ext-800-italic-CELfa4ZQ.woff",
+    "src": "resources/css/fig/figtree-latin-ext-800-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-800-italic.woff2": {
+    "file": "assets/figtree-latin-ext-800-italic-Dav6MInC.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-800-italic.woff2"
+  },
+  "resources/css/fig/figtree-latin-ext-900-italic.woff": {
+    "file": "assets/figtree-latin-ext-900-italic-t35MHr9Z.woff",
+    "src": "resources/css/fig/figtree-latin-ext-900-italic.woff"
+  },
+  "resources/css/fig/figtree-latin-ext-900-italic.woff2": {
+    "file": "assets/figtree-latin-ext-900-italic-w1-EPoE_.woff2",
+    "src": "resources/css/fig/figtree-latin-ext-900-italic.woff2"
+  },
+  "resources/images/bg-orange_4.jpg": {
+    "file": "assets/bg-orange_4-BWkUsn9Q.jpg",
+    "src": "resources/images/bg-orange_4.jpg"
+  },
+  "resources/images/bg_cancelled.png": {
+    "file": "assets/bg_cancelled-Crga7YOA.png",
+    "src": "resources/images/bg_cancelled.png"
   },
   "resources/images/logo_cenpri.png": {
     "file": "assets/logo_cenpri-BAdoHlsa.png",
     "src": "resources/images/logo_cenpri.png"
   },
   "resources/js/app.js": {
-    "file": "assets/app-DNzMqhlv.js",
+    "file": "assets/app-DGxd7q2q.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "css": [
+      "assets/app-DpDPZhDa.css"
+    ],
     "assets": [
-      "assets/logo_cenpri-BAdoHlsa.png"
+      "assets/logo_cenpri-BAdoHlsa.png",
+      "assets/bg_cancelled-Crga7YOA.png"
     ]
   }
 }
