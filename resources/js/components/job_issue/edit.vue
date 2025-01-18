@@ -700,7 +700,7 @@
 								<div class="col-lg-6 col-sm-6 col-md-6">
 									<div class="flex">
 										<span class="text-sm text-gray-700 font-bold pr-1 !w-52">JO No: </span>
-										<input type="text" class="border-b bg-white w-full" disabled :value="joi_head.joi_no">
+										<input type="text" class="border-b bg-white w-full" disabled :value="joi_head.joi_no + (joi_head.revision_no !== 0 && joi_head.revision_no !== null ? '.r' + joi_head.revision_no : '')">
 									</div>
 								</div>
 							</div>
