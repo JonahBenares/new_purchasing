@@ -1,11 +1,13 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
-    import { reactive, ref } from "vue"
+	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon, CheckIcon} from '@heroicons/vue/24/solid'
+    import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
-	const vendor =  ref();
+     import moment from 'moment'
 	const preview =  ref();
+	const success =  ref('');
+	const error =  ref('');
     const dangerAlert = ref(false)
 	const dangerAlert_item = ref(false)
 	const drawer_dr = ref(false)
@@ -13,32 +15,117 @@
 	const drawer_revise = ref(false)
 	const hideModal = ref(true)
 	const hideAlert = ref(true)
-    const openDangerPO = () => {
-		dangerAlert.value = !dangerAlert.value
+    const successAlertCD = ref(false)
+    const dangerAlerterrors = ref(false)
+    const coc_no =  ref('');
+    const vendor =  ref([]);
+	const jor_head = ref([])
+	const joi_coc = ref([])
+	const joi_head = ref([])
+	const joi_labors = ref([])
+	const joi_materials = ref([])
+	const signatories = ref([])
+    const date = ref(moment().format('MMMM DD, YYYY'))
+    const date2 = ref(moment().format('YYYY-MM-DD'))
+    const warranty = ref("One (1) year warranty for parts and three (3) months warranty for service.")
+    const checked_by=ref(0)
+    const approved_by=ref(0)
+    const checked_position=ref("")
+    const approved_position=ref("")
+    const saved = ref(0)
+    const props = defineProps({
+		id:{
+			type:String,
+			default:''
+		}
+	})
+	onMounted(async () => {
+		getCocData()
+        getSignatories()
+	})
+    const getCocData = async () => {
+		let response = await axios.get("/api/get_cocdata/"+props.id);
+		coc_no.value = response.data.coc_no;
+        if(response.data.joi_coc!=null){
+		    joi_coc.value = response.data.joi_coc;
+            coc_no.value=joi_coc.value.coc_no
+            date2.value=joi_coc.value.date_prepared
+            warranty.value=joi_coc.value.warranty
+            checked_by.value=joi_coc.value.checked_by
+            approved_by.value=joi_coc.value.approved_by
+            saved.value=joi_coc.value.saved
+            chooseEmpchecked(checked_by.value)
+            chooseEmpapproved(approved_by.value)
+        }
+		jor_head.value = response.data.jor_head;
+		joi_head.value = response.data.joi_head;
+		joi_labors.value = response.data.joi_labors;
+		joi_materials.value = response.data.joi_materials;
+		vendor.value = response.data.vendor;
 	}
-    const openDangerItem = () => {
-		dangerAlert_item.value = !dangerAlert_item.value
+
+    const chooseEmpchecked = async (checked_by) => {
+        let response = await axios.get("/api/get_checkposition/"+checked_by);
+        checked_position.value = response.data.position;
+    }
+
+    const chooseEmpapproved = async (approved_by) => {
+        let response = await axios.get("/api/get_approveposition/"+approved_by);
+        approved_position.value = response.data.position;
+    }
+
+    const getSignatories = async () => {
+		let response = await axios.get("/api/get_signatories");
+		signatories.value = response.data.employees;
 	}
-    const closeAlert = () => {
-		dangerAlert_item.value = !hideAlert.value
-		dangerAlert.value = !hideAlert.value
-	}
-	const openDrawerDR = () => {
-		drawer_dr.value = !drawer_dr.value
-	}
-    const openDrawerRFD = () => {
-		drawer_rfd.value = !drawer_rfd.value
-	}
-    const openDrawerRevise = () => {
-		drawer_revise.value = !drawer_revise.value
-	}
-	const closeModal = () => {
-		drawer_dr.value = !hideModal.value
-		drawer_rfd.value = !hideModal.value
-		drawer_revise.value = !hideModal.value
+
+    const onSave = () => {
+		const formData= new FormData()
+		formData.append('coc_no', coc_no.value)
+		formData.append('warranty', warranty.value)
+		formData.append('date_prepared', date2.value)
+		formData.append('checked_by', checked_by.value)
+		formData.append('approved_by', approved_by.value)
+		formData.append('joi_head_id', props.id)
+        if(checked_by.value!=0 && approved_by.value!=0){
+            axios.post(`/api/save_coc`,formData).then(function (response) {
+                success.value='You have successfully saved new COC.'
+                successAlertCD.value=!successAlertCD.value
+                setTimeout(() => {
+                    getCocData()
+                    successAlertCD.value=!hideAlert.value
+                }, 2000);
+            }, function (err) {
+                error.value='Error! Please try again.';
+                dangerAlerterrors.value=!dangerAlerterrors.value
+            });
+        } else{
+            if(checked_by.value==0){
+                document.getElementById('checked_by').style.backgroundColor = '#FAA0A0';
+            }
+            if(approved_by.value==0){
+                document.getElementById('approved_by').style.backgroundColor = '#FAA0A0';
+            }
+            const btn_save = document.getElementById("save");
+            btn_save.disabled = true;
+        }
+    }
+	const closeAlert = () => {
+		successAlertCD.value = !hideAlert.value
+        dangerAlerterrors.value = !hideAlert.value
 	}
     const printDiv = () => {
 		window.print();
+	}
+    const resetError = (button) => {
+		if(button==='button1'){
+			document.getElementById('checked_by').style.backgroundColor = '#FEFCE8';
+		}
+		if(button==='button2'){
+			document.getElementById('approved_by').style.backgroundColor = '#FEFCE8';
+		}
+		const btn_save = document.getElementById("save");
+		btn_save.disabled = false;
 	}
 </script>
 <template>
@@ -81,13 +168,13 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">Date: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+                                            <input type="text" class="border-b bg-white w-full" v-model="date" disabled>
 										</div>
 									</div>
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-20 text-right">Ref: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" v-model="coc_no" disabled>
 										</div>	
 									</div>
 								</div>
@@ -96,7 +183,11 @@
 									<div class="col-lg-6 col-sm-6 col-md-6">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-40">JO Reference: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+                                            <span hidden>
+                                                {{ joi_no = joi_head.joi_no}} {{ (joi_head.revision_no!=0 && joi_head.revision_no!=null) ?  revision_no = '.r'+joi_head.revision_no : revision_no = '' }}
+                                                {{ jo_no = joi_no+revision_no  }}
+                                            </span>
+											<input type="text" class="border-b bg-white w-full" v-model="jo_no" disabled>
 										</div>
 									</div>
 								</div>
@@ -105,7 +196,7 @@
 									<div class="col-lg-12 col-sm-12 col-md-12">
 										<div class="flex">
 											<span class="text-sm text-gray-700 font-bold pr-1 !w-32">Activity: </span>
-											<input type="text" class="border-b bg-white w-full" disabled>
+											<input type="text" class="border-b bg-white w-full" v-model="jor_head.project_activity" disabled>
 										</div>
 									</div>
                                 </div>
@@ -113,7 +204,7 @@
 								<div class="row">
 									<div class="col-lg-12 col-sm-12 col-md-12">
 										<div class="flex justify-start">
-                                            <p>	This is to certify that <span class="text-sm text-gray-700 font-bold pr-1 !w-40">(Name of the Supplier)</span> has already completed the following scope of works for:</p>
+                                            <p>	This is to certify that <span class="text-sm text-gray-700 font-bold pr-1 !w-40">{{ vendor.vendor_name }} {{ '('+vendor.identifier+')' }}</span>has already completed the following scope of works for:</p>
 										</div>
 									</div>
 								</div>
@@ -121,69 +212,25 @@
 									<div class="col-lg-12 col-sm-12 col-md-12">
 										<div class="flex justify-start">
                                             <p class="text-sm">
-                                                A. Supply of labor, Materials, tools, equipment and technical expertise for the Quarterly Routine Oil Analysis for Predictive Maintenance: June 2024 (Units 1,2,3,4,5, and Black Start DG Set)	<br>
+                                                A. Supply of labor, Materials, tools, equipment and technical expertise for the <span class="text-sm text-gray-700 font-bold pr-1 !w-40">{{ jor_head.project_activity }}</span><br>
                                                 <br>
                                                 Scope of work includes:<br><br>
 
-                                                1. Conduct Testing of Lube Oil Sample from:<br>
-                                                *Shell Argina S4 SAE40 (6 samples)<br>
-                                                a. DG1 Bottom Sump<br>
-                                                b. DG2 Bottom Sump<br>
-                                                *Shell Rimula R4 15W40 (1 sample)<br>
-                                                a. Black Start DG Set<br>
-                                                *Petron Petromar HF 4040 (1 sample)<br>
-                                                a. DG3 Bottom Sump<br>
-                                                2. Submission of Reports with results interpretation.<br><br>
-
-
-                                                A. Approach<br>
-                                                Our oil analysis program incorporates an in-depth analysis of machine wear condition, oil condition, and contamination condition. In addition to that, we will also help you monitor and set limits on oil analysis parameters through trending of the previous tests which will help you know if your equipment is in critical condition. Our oil analysis aims to help customers save their time and money by removing catastrophic failure and unplanned maintenance through accurate results interpretation and action plans focusing on the determination of root causes, resulting in high efficiency, availability, and safety of assets.<br>
-                                                Our MachineDiagnostics™ reports have three parts, the Machine Wear Condition, Oil Condition, and
-                                                Contamination Condition:<br>
-                                                * Machine wear condition analysis involves the analysis of wear metals present in the used oil sample. There could be visible or non – visible particles in the used oil which could be determined through elemental analysis using a combination of RDE (for fine wear metal) and RFS (for coarse wear metal). Those tests mentioned could be used as a tool for determining whether your oil and your machine are at its optimum condition.<br>
-                                                * Oil condition analysis involves the analysis of the properties of the oil used for the equipment. The properties include viscosity, oxidation, nitration, total acidic number/total base number. Checking these parameters are essential to determine if your lubricant is still suitable for use or if it must be changed. Using oil, which is highly oxidized, nitrated, or acidic could have detrimental effects to the equipment. Conversely, using oil with extremely high or low viscosities could also damage your equipment.<br>
-                                                * Contamination condition analysis involves the analysis of the contaminants present in the oil such as dirt, water, fuel, and wrong oil which could damage a machine resulting to eventual breakdown of the equipment. Dirt is an abrasive contaminant which causes the wearing of equipment. Meanwhile, water could cause corrosion while fuel contamination could decrease oil viscosities.<br>
-                                                The strength of our MachineDiagnosticsTM Program lies in our short turn-around time, trending of results, excellent interpretation, and actionable recommendation that will greatly help your equipment run at its optimum performance.<br><br>
-
-                                                B. TEST PACKAGE DESCRIPTION<br>
-                                                Upon receipt of the oil sample in the laboratory with complete sample details, a confirmation email from our administrative officer will be sent to the client with a photo of the samples received. Our test methods adhere to internationally accepted ASTM Standards. A short description of each test method is available upon request.<br>
-                                                * Test Code: 804<br>
-                                                * Test Method:<br>
-                                                ASTM D6595<br>
-                                                AES-RFS<br>
-                                                ASTM E2412<br>
-                                                ASTM D445<br>
-                                                ASTM D4739<br>
-                                                ASTM D3828<br>
-                                                ASTM E2412M<br>
-                                                * Test Descriptions:<br>
-                                                - LubeCheckTM 804<br>
-                                                Includes the following individual tests:<br>
-                                                • RDE Fine Wear Metal – 18 elements<br>
-                                                • RFS Coarse Wear Metal – 11 elements AES-RFS<br>
-                                                • Oil Condition (oxidation, nitration)<br>
-                                                • Viscosity @100°C<br>
-                                                • TBN (Total Base Number)<br>
-                                                • Flash Point Method A Closed CupTM Flash/ No Flash<br>
-                                                • % Moisture<br>
-                                                Report with Interpretation and Recommendation<br>
-                                                Sample Volume Required: 100 ml (amount may vary according to the type of oil sample)<br><br>
-
-                                                II. Program Inclusions:<br>
-                                                1. Technical Services include – Data interpretation, Recommendation, and Trending over an online database.<br>
-                                                2. Samples are being analyzed and interpreted by an ICML-certified MLT/MLA Laboratory Analyst.<br>
-                                                3. Laboratory Response for any aftersales concerns.<br>
-                                                4. Supply of ISO 3722 super clean sample bottles with oil sample information form (SIF).<br>
-                                                5. Free analysis for fresh/new oil sample to have an updated baseline.<br>
-                                                6. Web e-lubecheck Account to monitor trending and sample reports database.<br>
-                                                7. One (1) free copy of Machinery Lubrication Philippines Magazine every quarter.<br>
-                                                8. Free monthly subscription to CRE Newsletters.<br><br>
-
-                                                III. Notes:<br>
-                                                1. Turnaround time 5-7 working days upon reaching CRE Lab together with Purchase Order or payment (COD customer only) and complete sample information form.<br>
-                                                2. For bulk samples: normal turnaround time applies for the first 30 samples. Additional 1 day TAT for the succeeding 20 samples.<br>
-                                                3. Test Reports are electronically generated and transmitted. A separate charge will apply if hard copy of test report is requested.<br>
-                                                4. Sample bottles will be provided by CRE Laboratories Corp. with a minimal amount of fee for delivery.<br>
+                                                <template v-for="jl in joi_labors">
+                                                    <span class="w-full">{{ jl.item_description }}</span>
+                                                </template>
+                                            </p>
+										</div>
+									</div>
+								</div>
+                                <div class="row px-5">
+									<div class="col-lg-12 col-sm-12 col-md-12">
+										<div class="flex justify-start">
+                                            <p class="text-sm">
+                                                Materials:<br><br>
+                                                <template v-for="jm in joi_materials">
+                                                    <span class="w-full">{{ jm.item_description }}</span>
+                                                </template>
                                             </p>
 										</div>
 									</div>
@@ -191,14 +238,15 @@
                                 <div class="row">
 									<div class="col-lg-12 col-sm-12 col-md-12">
 										<div class="flex justify-start">
-                                            <p>The above scope of works was completed and tested by <span class="text-sm text-gray-700 font-bold pr-1 !w-40">(Name of the Supplier)</span> on <input type="date" class="border px-2"> </p>
+                                            <p>The above scope of works was completed and tested by <span class="text-sm text-gray-700 font-bold pr-1 !w-40">{{ vendor.vendor_name }} {{ '('+vendor.identifier+')' }}</span> on <input type="date" class="border px-2" v-model="date2" v-if="saved==0"><input type="date" class="border px-2" v-model="date2" v-else readonly> </p>
 										</div>
 									</div>
 								</div>
 
                                 <div class="row">
 									<div class="col-lg-12 col-sm-12 col-md-12">
-										<textarea name="" class="w-full border text-sm px-2 py-1" id="" cols="30" rows="2">One (1) year warranty for parts and three (3) months warranty for service.</textarea>
+										<textarea name="" class="w-full border text-sm px-2 py-1" id="" cols="30" rows="2" v-model="warranty" v-if="saved==0"></textarea>
+										<textarea name="" class="w-full border text-sm px-2 py-1" id="" cols="30" rows="2" v-model="warranty" v-else readonly></textarea>
 									</div>
 								</div>
                                 <div class="row">
@@ -220,21 +268,31 @@
                                                 
                                                 <tr>
                                                     <td class="text-center p-1">
-                                                        <select name="" class="py-1   w-full" id="">
-                                                            <option value="">Select Employee</option>
-                                                        </select>
+                                                        <select class="py-1  w-full bg-yellow-50" v-model="checked_by" id="checked_by" @change="chooseEmpchecked(checked_by)" v-if="saved==0" @click="resetError('button1')">
+															<option value='0'>--Select Checked by & Endorsed by--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+                                                        <select class="py-1  w-full" v-model="checked_by" id="checked_by" @change="chooseEmpchecked(checked_by)" v-else style="pointer-events: none;-webkit-appearance: none;-moz-appearance: none;">
+															<option value='0'>--Select Checked by & Endorsed by--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
                                                     </td>
                                                     <td></td>
                                                     <td class="text-center p-1">
-                                                        <select name="" class="py-1   w-full" id="">
-                                                            <option value="">Select Employee</option>
-                                                        </select>
+                                                        <select class="py-1  w-full bg-yellow-50" v-model="approved_by" id="approved_by" @change="chooseEmpapproved(approved_by)" v-if="saved==0" @click="resetError('button2')">
+															<option value='0'>--Select Approved by--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
+                                                        <select class="py-1  w-full" v-model="approved_by" id="approved_by" @change="chooseEmpapproved(approved_by)" v-else style="pointer-events: none;-webkit-appearance: none;-moz-appearance: none;">
+															<option value='0'>--Select Approved by--</option>
+															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
+														</select>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-center border-b"></td>
+                                                    <td class="text-left border-b">{{ checked_position }}</td>
                                                     <td></td>
-                                                    <td class="text-center border-b"></td>
+                                                    <td class="text-left border-b">{{ approved_position }}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -244,7 +302,8 @@
                                     <div class="row my-2 po_buttons" > 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="flex justify-center space-x-2">
-                                                <button type="submit" class="btn btn-primary text-white" @click="printDiv()">Print COC</button>
+                                                <button type="button" class="btn btn-primary text-white" @click="onSave()" id="save" v-if="saved==0">Save</button>
+                                                <button type="button" class="btn btn-primary text-white" @click="printDiv()" v-else>Print COC</button>
                                             </div>
                                         </div>
                                     </div>
@@ -255,5 +314,77 @@
 				</div>
 			</div>
 		</div>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlertCD }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+        <Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:dangerAlerterrors }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-red-500 border-8 bg-red-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></XMarkIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2 text-gray-700 font-bold text-red-400">Error!</h2>
+									<h5 class="leading-tight" v-if="error!=''" >{{ error }}</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<button class="btn btn-danger btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
 	</navigation>
 </template>

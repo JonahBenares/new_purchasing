@@ -641,7 +641,7 @@
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
                                                     <a :href="'/job_issue/print_ar/'+props.id" target="_blank" class="btn btn-warning text-white">Print AR</a>
-                                                    <a href="/job_issue/print_coc" target="_blank" class="btn btn-warning text-white">Print COC</a>
+                                                    <a :href="'/job_issue/print_coc/'+props.id" target="_blank" class="btn btn-warning text-white">Print COC</a>
                                                     <div class="flex justify-between">
                                                         <a :href="'/job_disburse/new/'+props.id" class="btn btn-warning !text-white  !rounded-r-none">Print RFD</a>
                                                         <!-- <a href="/job_disburse/new2" class="btn btn-warning !text-white  !rounded-r-none">Print RFD 2</a> -->
@@ -692,9 +692,9 @@
                         <div class="" v-for="jhv in joi_head_rev">
                             <a :href="'/job_issue/view_revised/'+jhv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ jhv.joi_no }}{{ (jhv.revision_no!=0 && jhv.revision_no!='' && jhv.revision_no!=null) ? '.r'+jhv.revision_no : '' }}</a>
                         </div>
-                        <div>
+                        <!-- <div>
                             <a :href="'/job_issue/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ joi_head.joi_no }}{{ (joi_head.revision_no!=0 && joi_head.revision_no!='' && joi_head.revision_no!=null) ? '.r'+joi_head.revision_no : '' }} (Current)</a>
-                        </div>
+                        </div> -->
                     </div> 
                 </div>
             </div>

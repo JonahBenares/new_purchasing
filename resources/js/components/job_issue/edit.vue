@@ -585,6 +585,43 @@
 		const btn_save = document.getElementById("save_approve");
 		btn_save.disabled = false;
 	}
+
+	const checkEmptyDataLabor = async (count) => {
+		var uom = document.getElementById('uom'+count).value;
+		var item_desc = document.getElementById('item_desc'+count).value;
+		if(uom==''){
+			document.getElementById('uom'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else if(item_desc==''){
+			document.getElementById('item_desc'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('item_desc'+count).style.backgroundColor = '#FEFCE8';
+			document.getElementById('uom'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
+	const checkEmptyDataMaterial = async (count) => {
+		var uom_material = document.getElementById('uom_material'+count).value;
+		var item_desc_material = document.getElementById('item_desc_material'+count).value;
+		if(uom_material==''){
+			document.getElementById('uom_material'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else if(item_desc==''){
+			document.getElementById('item_desc_material'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('item_desc_material'+count).style.backgroundColor = '#FEFCE8';
+			document.getElementById('uom_material'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
 </script>
 <template>
 	<navigation>
@@ -803,15 +840,14 @@
 												<tr class="" v-for="(jlds,index) in joi_labor_details" v-if="joi_head.status!='Revised'">
 													<span hidden>{{ totalprice=formatNumber(jlds.unit_price * remaining_labor_balance[index]) }}</span>
 													<td class="border-y-none p-1" colspan="3">
-														<!-- {{ jlds.item_description}} -->
-														<textarea class="w-100 bg-yellow-50 border-r" v-model="jlds.item_description"></textarea>
+														<textarea class="w-100 bg-yellow-50 border-r" @keyup="checkEmptyDataLabor(index)" :id="'item_desc'+index" v-model="jlds.item_description"></textarea>
 													</td>
 													<td class="border-y-none p-1 text-center">
 														<input type="text" min="0" @keyup="checkLaborBalance(jlds.jor_labor_details_id,jlds.jo_rfq_labor_offer_id,vat,remaining_labor_balance[index], index)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_labor_checker'+index" v-model="remaining_labor_balance[index]">
 													</td>
 													<td class="border-y-none p-1 text-center">
 														<!-- {{jlds.uom}} -->
-														<input type="text" class="w-10 bg-yellow-50 border-r" v-model="jlds.uom">
+														<input type="text" class="w-10 bg-yellow-50 border-r" @keyup="checkEmptyDataLabor(index)" :id="'uom'+index" v-model="jlds.uom">
 													</td>
 													<td class="border-y-none p-1 text-right">
 														<!-- {{ formatNumber(jlds.unit_price)}} {{ jlds.currency }} -->
@@ -847,15 +883,14 @@
 													<span hidden>{{ totalmprice=formatNumber(jmd.unit_price * remaining_material_balance[indexes]) }}</span>
 													<td class="border-y-none p-1 text-center">{{indexes+1}}</td>
 													<td class="border-y-none p-1" colspan="2">
-														<!-- {{jmd.item_description}} -->
-														<textarea class="w-100 bg-yellow-50 border-r" v-model="jmd.item_description"></textarea>
+														<textarea class="w-100 bg-yellow-50 border-r" @keyup="checkEmptyDataMaterial(indexes)" :id="'item_desc_material'+indexes" v-model="jmd.item_description"></textarea>
 													</td>
 													<td class="border-y-none p-1 text-center">
 														<input type="text" min="0" @keyup="checkMaterialBalance(jmd.jor_material_details_id,jmd.jo_rfq_material_offer_id,vat,remaining_material_balance[indexes], indexes)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_material_checker'+indexes" v-model="remaining_material_balance[indexes]">
 													</td>
 													<td class="border-y-none p-1 text-center">
 														<!-- {{jmd.uom}} -->
-														<input type="text" class="w-10 bg-yellow-50 border-r" v-model="jmd.uom">
+														<input type="text" class="w-10 bg-yellow-50 border-r" @keyup="checkEmptyDataMaterial(indexes)" :id="'uom_material'+indexes" v-model="jmd.uom">
 													</td>
 													<td class="border-y-none p-1 text-right">
 														<input type="text" class="w-20 bg-yellow-50 border-r text-right" v-model="jmd.unit_price" @keypress="isNumber($event)" @keyup="additionalCost(vat)">

@@ -552,6 +552,25 @@ import moment from 'moment';
 		const btn_save = document.getElementById("save_approve");
 		btn_save.disabled = false;
 	}
+
+	const checkEmptyData = async (count) => {
+		var uom = document.getElementById('uom'+count).value;
+		var item_desc = document.getElementById('item_desc'+count).value;
+		if(uom==''){
+			document.getElementById('uom'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else if(item_desc==''){
+			document.getElementById('item_desc'+count).style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}else{
+			document.getElementById('item_desc'+count).style.backgroundColor = '#FEFCE8';
+			document.getElementById('uom'+count).style.backgroundColor = '#FEFCE8';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = false;
+		}
+	}
 </script>
 <template>
 	<navigation>
@@ -751,10 +770,10 @@ import moment from 'moment';
 														<input type="text" min="0" @keyup="checkBalance(pdr.po_head_id,pdr.pr_details_id,remaining_balance[index], index,vat_percent)" @change="checkBalance(pdr.po_head_id,pdr.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 													</td>
 													<td class="border-y-none p-1 text-center">
-														<input type="text" class="w-10 bg-yellow-50 border-r" v-model="pdr.uom">
+														<input type="text" class="w-10 bg-yellow-50 border-r" :id="'uom'+index" @keyup="checkEmptyData(index)" v-model="pdr.uom">
 													</td>
 													<td class="border-y-none p-1" colspan="2">
-														<input type="text" class="w-100 bg-yellow-50 border-r" v-model="pdr.item_description">
+														<input type="text" class="w-100 bg-yellow-50 border-r" v-model="pdr.item_description" @keyup="checkEmptyData(index)" :id="'item_desc'+index">
 													</td>
 													<td class="border-y-none p-1 text-right">
 														<!-- {{formatter.format(pdr.unit_price)}}  -->
@@ -852,7 +871,7 @@ import moment from 'moment';
 													<td class="p-0" v-if="vat==1">
 														<div class="flex p-0">
 															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)"  v-if="po_head.status!='Revised'">
-															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="po_head_temp.vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)" v-else disabled>%
+															<input type="text" @keypress="isNumber($event)" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="po_head_temp.vat_percent" id="vat_percent" @keyup="vatChange(vat_percent)" v-else disabled>
 															<input type="text" class="w-10 bg-yellow-50 border-r text-center" value="12" hidden>
 
 															<input type="text" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-right" id="vat_amount" v-model="vat_amount" @keyup="additionalCost(vat_percent)" @change="additionalCost(vat_percent)" v-if="po_head.status!='Revised'">

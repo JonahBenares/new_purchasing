@@ -824,7 +824,7 @@
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 														<td class="p-0">
 															<div class="flex">
-																<input type="text" @keypress="isNumber($event)" @keyup="vatChange(vat)" class="w-10 bg-yellow-50 border-r text-center" v-model="vat">%
+																<input type="text" @keypress="isNumber($event)" @keyup="vatChange(vat)" class="w-10 bg-yellow-50 border-r text-center" v-model="vat">
 																<input type="text" @keypress="isNumber($event)" @keyup="additionalCost(vat)" class="w-full bg-yellow-50 p-1 text-right" v-model="vat_amount" id="vat_amount">
 															</div>
 														</td>

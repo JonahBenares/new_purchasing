@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\JORHead;
 use App\Models\JORLaborDetails;
 use App\Models\JORMaterialDetails;
+use App\Models\JOICoc;
+use App\Models\JOICocSeries;
+use App\Models\JOIAr;
 use App\Models\JOIHead;
 use App\Models\JOILaborDetails;
 use App\Models\JOIMaterialDetails;
@@ -194,6 +197,7 @@ class JOIController extends Controller
         $joi_head = JOIHead::where('id',$joi_head_id)->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
         })->first();
+        $joi_ar = JOIAr::where('joi_head_id',$joi_head_id)->first();
         $joi_head_temp = JOIHeadTemp::where('joi_head_id',$joi_head_id)->first();
         $joi_terms_temp = JOITermsTemp::where('joi_head_id',$joi_head_id)->get();
         $joi_instruction_temp = JOIInstructionsTemp::where('joi_head_id',$joi_head_id)->get();
@@ -248,6 +252,7 @@ class JOIController extends Controller
         $total_sum_material_temp=array_sum($total_material_temp);
         return response()->json([
             'joi_head_array'=>$joi_head_array,
+            'joi_ar'=>$joi_ar,
             'joi_head'=>$joi_head,
             'joi_head_temp'=>$joi_head_temp,
             'joi_dr_array'=>$joi_dr_array,
@@ -370,6 +375,26 @@ class JOIController extends Controller
             $data_dr_head['status']=$request->status;
             $data_dr_head['user_id']=Auth::id();
             $insertdrhead=JOIDr::create($data_dr_head);
+            if($request->status=='Saved'){
+                $series_ar_rows = JOIAr::where('year',$year)->count();
+                if($series_ar_rows==0){
+                    $max_ar_series='1';
+                    $ar_series='0001';
+                    $ar_no = "AR-".$year."-".$ar_series.'-'.$company;
+                } else {
+                    $max_ar_series=JOIAr::where('year',$year)->max('series');
+                    $ar_series=$max_ar_series+1;
+                    $ar_no = "AR-".$year."-".Str::padLeft($ar_series, 4,'000').'-'.$company;
+                }
+                if(!JOIAr::where('year',$year)->where('series',$ar_series)->exists()){
+                    $arseries['joi_head_id']=$insertjoihead->id;
+                    $arseries['ar_no']=$ar_no;
+                    $arseries['ar_date']=$request->date_prepared;
+                    $arseries['year']=$year;
+                    $arseries['series']=$ar_series;
+                    JOIAr::create($arseries);
+                }
+            }
         }else{
             $insertjoihead=JOIHead::where('id',$request->joi_head_id)->first();
             $insertjoihead->update($data_head);
@@ -1815,5 +1840,80 @@ class JOIController extends Controller
         return response()->json([
             'rfd_head'=>$rfd_head,
         ],200);
+    }
+
+    public function get_cocdata($id){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $series_coc_rows = JOICocSeries::where('year',$year)->count();
+        if($series_coc_rows==0){
+            $max_coc_series='1';
+            $coc_series='0001';
+            $coc_no = "COC-".$year."-".$coc_series.'-'.$company;
+        } else {
+            $max_coc_series=JOICocSeries::where('year',$year)->max('series');
+            $coc_series=$max_coc_series+1;
+            $coc_no = "COC-".$year."-".Str::padLeft($coc_series, 4,'000').'-'.$company;
+        }
+        $joi_coc = JOICoc::where('joi_head_id',$id)->first();
+        $joi_head = JOIHead::where('id',$id)->first();
+        $jor_head= JORHead::where('jor_no',$joi_head->jor_no)->first();
+        $joi_labors = JOILaborDetails::where('joi_head_id',$id)->get();
+        $joi_materials = JOIMaterialDetails::where('joi_head_id',$id)->get();
+        $vendor= VendorDetails::select('vendor_details.id','identifier','vendor_name','fax','phone','contact_person','address')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$joi_head->vendor_details_id)->where('status','=','Active')->first();
+        return response()->json([
+            'coc_no'=>$coc_no,
+            'joi_coc'=>$joi_coc,
+            'joi_head'=>$joi_head,
+            'jor_head'=>$jor_head,
+            'joi_labors'=>$joi_labors,
+            'joi_materials'=>$joi_materials,
+            'vendor'=>$vendor,
+        ],200);
+    }
+
+    public function get_checkposition($checked_by){
+        $position=User::where('id',$checked_by)->value('position');
+        return response()->json([
+            'position'=>$position,
+        ],200);
+    }
+
+    public function get_approveposition($approved_by){
+        $position=User::where('id',$approved_by)->value('position');
+        return response()->json([
+            'position'=>$position,
+        ],200);
+    }
+
+    public function save_coc(Request $request){
+        $year=date('Y');
+        $company=Config::get('constants.company');
+        $exp=explode('-',$request->coc_no);
+        $series_coc_rows = JOICocSeries::where('year',$year)->count();
+        if($series_coc_rows==0){
+            $max_coc_series='1';
+            $coc_series='0001';
+            $coc_no = "COC-".$year."-".$coc_series.'-'.$company;
+        } else {
+            $max_coc_series=JOICocSeries::where('year',$year)->max('series');
+            $coc_series=$max_coc_series+1;
+            $coc_no = "COC-".$year."-".Str::padLeft($exp[2], 4,'000').'-'.$company;
+        }
+        if(!JOICocSeries::where('year',$year)->where('series',$exp[2])->exists()){
+            $arseries['year']=$year;
+            $arseries['series']=$coc_series;
+            JOICocSeries::create($arseries);
+        }
+
+        $data_coc['joi_head_id']=$request->joi_head_id;
+        $data_coc['coc_no']=$coc_no;
+        $data_coc['date_prepared']=$request->date_prepared;
+        $data_coc['warranty']=$request->warranty;
+        $data_coc['approved_by']=$request->approved_by;
+        $data_coc['checked_by']=$request->checked_by;
+        $data_coc['saved']=1;
+        $data_coc['user_id']=Auth::id();
+        $insertrfdhead=JOICoc::create($data_coc);
     }
 }

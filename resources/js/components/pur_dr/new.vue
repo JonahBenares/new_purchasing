@@ -98,6 +98,7 @@
 	const generateDR = async () => {
 		let response = await axios.get("/api/generate_dr/"+po_head_id.value);
 		dr_no.value = response.data.dr_no;
+		driver.value=(po_dr.value.received==0) ? po_dr.value.driver : '';
 		count_po_head_id.value = response.data.count_po_head_id;
 		po_dr.value = response.data.po_dr;
 		po_dr_mult.value = response.data.po_dr_mult;
@@ -171,22 +172,22 @@
 			formData.append('po_details_id'+index, val.po_details_id)
 			formData.append('remaining_qty'+index, remaining_delivery[index])
 		});
-		// if(driver.value!=''){
-		axios.post(`/api/save_dr`,formData).then(function (response) {
-			po_dr_id.value=response.data;
-			success.value='You have successfully created new dr.'
-			// success.value='You have successfully saved new dr.'
-			successAlert.value=!successAlert.value
-		}, function (err) {
-			error.value='Error! Please try again.';
-			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
-		// }else{
-		// 	document.getElementById('driver').placeholder="Driver field must not be empty!"
-		// 	document.getElementById('driver').style.backgroundColor = '#FAA0A0';
-		// 	const btn_save = document.getElementById("save");
-		// 	btn_save.disabled = true;
-		// }
+		if(driver.value!=''){
+			axios.post(`/api/save_dr`,formData).then(function (response) {
+				po_dr_id.value=response.data;
+				success.value='You have successfully created new dr.'
+				// success.value='You have successfully saved new dr.'
+				successAlert.value=!successAlert.value
+			}, function (err) {
+				error.value='Error! Please try again.';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			document.getElementById('driver').placeholder="Driver field must not be empty!"
+			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}
     }
 
 	const resetError = () => {
@@ -206,28 +207,28 @@
 
 	const saveReceived = () => {
 		const formData= new FormData()
-		formData.append('driver', driver.value)
+		// formData.append('driver', driver.value)
 		formData.append('po_dr_id', po_dr.value.id)
 		formData.append('po_dr_items', JSON.stringify(po_dr_items.value))
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			formData.append('received_qty'+index, received_qty.value[index])
 			formData.append('remaining_qty'+index, remaining_delivery[index])
 		});
-		if(driver.value!=''){
-			axios.post(`/api/save_received_dr`,formData).then(function (response) {
-				po_dr_id.value=response.data;
-				success.value='You have successfully saved dr.'
-				successAlert.value=!successAlert.value
-			}, function (err) {
-				error.value='Error! Please try again.';
-				dangerAlerterrors.value=!dangerAlerterrors.value
-			}); 
-		}else{
-			document.getElementById('driver').placeholder="Driver field must not be empty!"
-			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
-			const btn_save = document.getElementById("save");
-			btn_save.disabled = true;
-		}
+		// if(driver.value!=''){
+		axios.post(`/api/save_received_dr`,formData).then(function (response) {
+			po_dr_id.value=response.data;
+			success.value='You have successfully saved dr.'
+			successAlert.value=!successAlert.value
+		}, function (err) {
+			error.value='Error! Please try again.';
+			dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+		// }else{
+		// 	document.getElementById('driver').placeholder="Driver field must not be empty!"
+		// 	document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }
     }
 </script>
 <template>
@@ -373,7 +374,9 @@
 												<td></td>
 												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
-												<td class="p-0 "><input type="text" id="driver" class="w-full bg-yellow-50 p-1 text-center" v-model="driver" @click="resetError()"></td>
+												<td class="p-0 ">
+													<input type="text" id="driver" class="w-full bg-yellow-50 p-1 text-center" v-model="driver" @click="resetError()">
+												</td>
 												<td></td>
 											</tr>
 										</table>

@@ -344,6 +344,10 @@
 							<div class="col-lg-6 col-md-6 col-sm-6">
 								<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
 								<span class="text-sm text-gray-700">{{get_jorhead.department_name}}</span>
+							</div>	
+							<div class="col-lg-6 col-md-6 col-sm-6">
+								<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
+								<span class="text-sm text-gray-700">{{get_jorhead.requestor}}</span>
 							</div>							
 						</div>
 						<div class="row">

@@ -228,9 +228,9 @@
                     <div class="" v-for="jhv in joi_head_rev">
                         <a :href="'/job_issue/view_revised/'+jhv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ jhv.joi_no }}{{ (jhv.revision_no!=0 && jhv.revision_no!='' && jhv.revision_no!=null) ? '.r'+jhv.revision_no : '' }}</a>
                     </div>
-                    <div>
+                    <!-- <div>
                         <a :href="'/job_issue/view/'+joi_head_id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ joi_nos }}{{ (revision_nos!=0 && revision_nos!='' && revision_nos!=null) ? '.r'+revision_nos : '' }} (Current)</a>
-                    </div>
+                    </div> -->
                 </div> 
             </div>
         </div>

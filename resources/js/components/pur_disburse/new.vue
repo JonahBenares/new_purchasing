@@ -86,7 +86,8 @@
 			var p = val.total_cost;
 			total += parseFloat(p);
         });
-        var percent= (vendor.value.vat==1) ? po_head.value.vat_percent/100 : 0;
+        var percent= po_head.value.vat_percent/100;
+        // var percent= (vendor.value.vat==1) ? po_head.value.vat_percent/100 : 0;
         var new_vat= ((parseFloat(total) + parseFloat(po_head.value.shipping_cost) + parseFloat(po_head.value.handling_fee)) - parseFloat(po_head.value.discount)) * percent;
         vat_amount.value=parseFloat(new_vat)
         rfd_no.value = response.data.rfd_no;
@@ -211,7 +212,8 @@
             payment_list.value.forEach(function (val, index, theArray) {
                 payment_total += Number(val.payment_amount) || 0;
             });
-            var percent_vat= (vendor.value.vat==1) ? po_head.value.vat_percent/100 : 0;
+            var percent_vat= po_head.value.vat_percent/100;
+            // var percent_vat= (vendor.value.vat==1) ? po_head.value.vat_percent/100 : 0;
             var new_vat= ((parseFloat(total_per_item.value) + parseFloat(po_head.value.shipping_cost) + parseFloat(po_head.value.handling_fee)) - parseFloat(po_head.value.discount)) * percent_vat;
             vat_amount.value=parseFloat(new_vat)
             if(payment_list.value.length!=0){
@@ -417,7 +419,7 @@
 		formData.append('po_head_id', po_head_id)
 		formData.append('rfd_id', rfd_id.value)
 		if(status==='Saved'){
-			if(checked_by.value!=0 && noted_by.value!=0 && endorsed_by.value!=0 && approved_by.value!=0 && received_by.value!=0){
+			if(checked_by.value!=0 && noted_by.value!=0 && endorsed_by.value!=0 && approved_by.value!=0 && received_by.value!=0 && company.value!='' && pay_to.value!='' && rfd_date.value!='' && payment_option.value!=0){
 				axios.post(`/api/save_rfd_po`,formData).then(function (response) {
 					rfd_id.value=response.data;
 					success.value='You have successfully saved new rfd.'
@@ -441,6 +443,19 @@
 				}
 				if(received_by.value==0){
 					document.getElementById('received_by').style.backgroundColor = '#FAA0A0';
+				}
+                if(company.value==0){
+					document.getElementById('company').style.backgroundColor = '#FAA0A0';
+				}
+                if(pay_to.value==0){
+					document.getElementById('pay_to').style.backgroundColor = '#FAA0A0';
+				}
+                if(rfd_date.value==0){
+					document.getElementById('rfd_date').style.backgroundColor = '#FAA0A0';
+				}
+                if(payment_option.value==0){
+					document.getElementById('payment_option1').style.backgroundColor = '#FAA0A0';
+					document.getElementById('payment_option2').style.backgroundColor = '#FAA0A0';
 				}
 				const btn_draft = document.getElementById("draft");
 				btn_draft.disabled = true;
@@ -487,6 +502,20 @@
 
         if(button==='button5'){
 			document.getElementById('received_by').style.backgroundColor = '#FEFCE8';
+		}
+
+        if(button==='button6'){
+			document.getElementById('company').style.backgroundColor = '#FEFCE8';
+		}
+        if(button==='button7'){
+			document.getElementById('pay_to').style.backgroundColor = '#FEFCE8';
+		}
+        if(button==='button8'){
+			document.getElementById('rfd_date').style.backgroundColor = '#FEFCE8';
+		}
+        if(button==='button9'){
+			document.getElementById('payment_option1').style.backgroundColor = '#FEFCE8';
+			document.getElementById('payment_option2').style.backgroundColor = '#FEFCE8';
 		}
 		const btn_draft = document.getElementById("draft");
 		btn_draft.disabled = false;
@@ -606,15 +635,15 @@
                                 <table class="w-full text-sm table-borsdered">
                                     <tr>
                                         <td class="px-1 font-bold" width="10%">Company:</td>
-                                        <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b" v-model="company"></td>
+                                        <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b" id="company" v-model="company" @click="resetError('button6')"></td>
                                         <td class="px-1 font-bold pl-4" width="12%">APV/RFD No.:</td>
                                         <td class="p-0" width="25%"><input type="text" class="w-full px-1 border-b" v-model="rfd_no" readonly></td>
                                     </tr>
                                     <tr>
                                         <td class="px-1 font-bold">Pay To:</td>
-                                        <td class="p-0"><input type="text" class="w-full px-1 border-b" v-model="pay_to"></td>
+                                        <td class="p-0"><input type="text" class="w-full px-1 border-b" id="pay_to" v-model="pay_to" @click="resetError('button7')"></td>
                                         <td class="px-1 font-bold pl-4">Date:</td>
-                                        <td class="p-0"><input type="date" class="w-full px-1 border-b" v-model="rfd_date"></td>
+                                        <td class="p-0"><input type="date" class="w-full px-1 border-b" id="rfd_date" v-model="rfd_date" @click="resetError('button8')"></td>
                                     </tr>
                                     <tr>
                                         <td class="px-1 font-bold">Check Name:</td>
@@ -626,10 +655,10 @@
                                         <td class="p-1" colspan="2">
                                             <div class="flex justify-start space-x-10">
                                                 <div class="flex justify-between space-x-2 ml-5">
-                                                    <input type="radio" name="cc" v-model="payment_option" value="1">
-                                                    <span class="font-bold">Check</span>
-                                                    <input type="radio" name="cc" v-model="payment_option" value="2">
-                                                    <span class="font-bold">Cash</span>
+                                                    <input type="radio" name="cc" v-model="payment_option" value="1"  @click="resetError('button9')">
+                                                    <span class="font-bold" id="payment_option1">Check</span>
+                                                    <input type="radio" name="cc" v-model="payment_option" value="2" @click="resetError('button9')">
+                                                    <span class="font-bold" id="payment_option2">Cash</span>
                                                 </div>
                                                 <div class="flex justify-between space-x-1 w-full">
                                                     <span class="font-bold w-20">Bank No.:</span>

@@ -669,8 +669,9 @@ const routes = [
         }
     },
     {
-        path:'/job_issue/print_coc',
+        path:'/job_issue/print_coc/:id',
         component: job_issuePrintCOC,
+        props:true,
         meta:{
             requiresAuth:true
         }

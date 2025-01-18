@@ -192,6 +192,11 @@ class JORController extends Controller
         foreach(json_decode($jorlabordetails) AS $jl){
             $insertjorlabordetails=JORLaborDetails::where('id',$jl->id)->first();
             $data_labor_details=[
+                'quantity'=>$jl->quantity,
+                'uom'=>$jl->uom,
+                'scope_of_work'=>$jl->scope_of_work,
+                'unit_cost'=>$jl->unit_cost,
+                'total_cost'=>$jl->unit_cost * $jl->quantity,
                 'status'=>'Saved',
             ];  
             $insertjorlabordetails->update($data_labor_details);  
@@ -213,6 +218,12 @@ class JORController extends Controller
         foreach(json_decode($jormaterialdetails) AS $jm){
             $insertjormaterialdetails=JORMaterialDetails::where('id',$jm->id)->first();
             $data_material_details=[
+                'quantity'=>$jm->quantity,
+                'uom'=>$jm->uom,
+                'pn_no'=>$jm->pn_no,
+                'item_description'=>$jm->item_description,
+                'wh_stocks'=>$jm->wh_stocks,
+                'date_needed'=>$jm->date_needed,
                 'status'=>'Saved',
             ];  
             $insertjormaterialdetails->update($data_material_details);  
@@ -414,365 +425,373 @@ class JORController extends Controller
     }
 
     public function save_jor_manual(Request $request){
-        $scope_list=$request->input("scope_list");
-        $requestor=User::where('id',$request->requestor)->value('name');
-        $item_list=$request->input("item_list");
-        $notes_list=$request->input("notes_list");
-        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
-        $department_name=Departments::where('id',$request->department_id)->value('department_name');
-        $department_code=Departments::where('id',$request->department_id)->value('department_code');
-        $series_rows = JORSeries::where('year',$year)->count();
-        $data_head=$this->validate($request,
-            [
-                'jor_no'=>'required|string',
-                'department_id'=>'required|integer',
-                'location'=>'required|string',
-                'date_prepared'=>'required|string',
-                // 'requestor'=>'required|string',
-                'requestor'=>'required|integer|gt:0',
-                'purpose'=>'required|string',
-                'general_description'=>'required|string'
+        if(!JORHead::where('site_jor',$request->site_jor)->where('status','Saved')->exists()){
+            $scope_list=$request->input("scope_list");
+            $requestor=User::where('id',$request->requestor)->value('name');
+            $item_list=$request->input("item_list");
+            $notes_list=$request->input("notes_list");
+            $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+            $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
+            $department_name=Departments::where('id',$request->department_id)->value('department_name');
+            $department_code=Departments::where('id',$request->department_id)->value('department_code');
+            $series_rows = JORSeries::where('year',$year)->count();
+            $data_head=$this->validate($request,
+                [
+                    'jor_no'=>'required|string',
+                    'department_id'=>'required|integer',
+                    'location'=>'required|string',
+                    'date_prepared'=>'required|string',
+                    // 'requestor'=>'required|string',
+                    'requestor'=>'required|integer|gt:0',
+                    'purpose'=>'required|string',
+                    'general_description'=>'required|string'
 
-            ],
-            [
-               'department_id.required'=> 'The department field is required.',
-               'gt'=> 'The :attribute field is required.',
-            //    'location.required'=> 'The location field is required.',
-            //    'date_prepared.required'=> 'The date prepared field is required.',
-            //    'requestor.required'=> 'The requestor field is required.',
-            //    'purpose.required'=> 'The purpose field is required.',
-            //    'general_description.required'=> 'The general description field is required.',
-            ]
-        );
-        // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
-        $data_head['site_jor']=($request->site_jor!='undefined' && $request->site_jor!='null' && $request->site_jor!='') ? $request->site_jor : '';
-        $data_head['duration']=($request->duration!='undefined' && $request->duration!='null' && $request->duration!='') ? $request->duration : '';
-        $data_head['completion_date']=($request->completion_date!='undefined' && $request->completion_date!='null' && $request->completion_date!='') ? $request->completion_date : '';
-        $data_head['delivery_date']=($request->delivery_date!='undefined' && $request->delivery_date!='null' && $request->delivery_date!='') ? $request->delivery_date : '';
-        // $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
-        $data_head['department_name']=$department_name;
-        $data_head['dept_code']=$department_code;
-        $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
-        $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '';
-        $data_head['requestor']=$requestor;
-        // $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
-        // $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
-        $data_head['method']='Manual';
-        $data_head['status']='Saved';
-        // $data_head['general_description']=($request->general_description!='undefined' && $request->general_description!='null' && $request->general_description!='') ? $request->general_description : '';
-        $data_head['project_activity']=($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '';
-        $data_head['user_id']=Auth::id();
-        if($request->jorhead_id==0){
-            $insertjorhead=JORHead::create($data_head);
-        }else{
-            $insertjorhead=JORHead::where('id',$request->jorhead_id)->first();
-            $insertjorhead->update($data_head);
-        }
-        $exp=explode('-',$request->jor_no);
-        if($series_rows==0){
-            $max_series='1';
-            $jor_series='0001';
-            $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
-        } else {
-            $max_series=JORSeries::where('year',$year)->max('series');
-            $jor_series=$max_series+1;
-            $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
-        }
-        if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
-            $series['year']=$year;
-            $series['series']=$jor_series;
-            $jor_series=JORSeries::create($series);
-        }
-
-        foreach(json_decode($scope_list) AS $sl){
-            $data=[
-                'jor_head_id'=>$insertjorhead->id,
-                'quantity'=>$sl->scope_qty,
-                'uom'=>$sl->scope_uom,
-                'scope_of_work'=>$sl->scope_work,
-                'unit_cost'=>$sl->scope_unit_cost,
-                'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
-                'recom_date'=>$sl->scope_recom_date,
-                'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
-                'status'=>'Saved',
-            ];
+                ],
+                [
+                'department_id.required'=> 'The department field is required.',
+                'gt'=> 'The :attribute field is required.',
+                //    'location.required'=> 'The location field is required.',
+                //    'date_prepared.required'=> 'The date prepared field is required.',
+                //    'requestor.required'=> 'The requestor field is required.',
+                //    'purpose.required'=> 'The purpose field is required.',
+                //    'general_description.required'=> 'The general description field is required.',
+                ]
+            );
+            // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+            $data_head['site_jor']=($request->site_jor!='undefined' && $request->site_jor!='null' && $request->site_jor!='') ? $request->site_jor : '';
+            $data_head['duration']=($request->duration!='undefined' && $request->duration!='null' && $request->duration!='') ? $request->duration : '';
+            $data_head['completion_date']=($request->completion_date!='undefined' && $request->completion_date!='null' && $request->completion_date!='') ? $request->completion_date : '';
+            $data_head['delivery_date']=($request->delivery_date!='undefined' && $request->delivery_date!='null' && $request->delivery_date!='') ? $request->delivery_date : '';
+            // $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+            $data_head['department_name']=$department_name;
+            $data_head['dept_code']=$department_code;
+            $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
+            $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+            $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '';
+            $data_head['requestor']=$requestor;
+            // $data_head['requestor']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '';
+            // $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
+            $data_head['method']='Manual';
+            $data_head['status']='Saved';
+            // $data_head['general_description']=($request->general_description!='undefined' && $request->general_description!='null' && $request->general_description!='') ? $request->general_description : '';
+            $data_head['project_activity']=($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '';
+            $data_head['user_id']=Auth::id();
             if($request->jorhead_id==0){
-                $jorlabordetails_id=JORLaborDetails::create($data);
+                $insertjorhead=JORHead::create($data_head);
             }else{
-                if(!JORLaborDetails::where('jor_head_id',$request->jorhead_id)->where('scope_of_work',$sl->scope_work)->where('uom',$sl->scope_uom)->where('quantity',$sl->scope_qty)->where('unit_cost',$sl->scope_unit_cost)->exists()){
+                $insertjorhead=JORHead::where('id',$request->jorhead_id)->first();
+                $insertjorhead->update($data_head);
+            }
+            $exp=explode('-',$request->jor_no);
+            if($series_rows==0){
+                $max_series='1';
+                $jor_series='0001';
+                $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
+            } else {
+                $max_series=JORSeries::where('year',$year)->max('series');
+                $jor_series=$max_series+1;
+                $jor_no = 'JOR'.$department_code.$year_short."-".Str::padLeft($exp[1], 4,'000');
+            }
+            if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
+                $series['year']=$year;
+                $series['series']=$jor_series;
+                $jor_series=JORSeries::create($series);
+            }
+
+            foreach(json_decode($scope_list) AS $sl){
+                $data=[
+                    'jor_head_id'=>$insertjorhead->id,
+                    'quantity'=>$sl->scope_qty,
+                    'uom'=>$sl->scope_uom,
+                    'scope_of_work'=>$sl->scope_work,
+                    'unit_cost'=>$sl->scope_unit_cost,
+                    'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
+                    'recom_date'=>$sl->scope_recom_date,
+                    'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
+                    'status'=>'Saved',
+                ];
+                if($request->jorhead_id==0){
                     $jorlabordetails_id=JORLaborDetails::create($data);
                 }else{
-                    $jorlabordetails_id=JORLaborDetails::updateOrCreate(
-                        [
-                            'scope_of_work'=> $sl->scope_work,
-                            'quantity'=>$sl->scope_qty,
-                            'uom'=>$sl->scope_uom,
-                            'unit_cost'=>$sl->scope_unit_cost,
-                            'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
-                            'recom_date'=>$sl->scope_recom_date,
-                        ],
-                        [
-                            'jor_head_id'=>$insertjorhead->id,
-                            'quantity'=>$sl->scope_qty,
-                            'uom'=>$sl->scope_uom,
-                            'scope_of_work'=>$sl->scope_work,
-                            'unit_cost'=>$sl->scope_unit_cost,
-                            'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
-                            'recom_date'=>$sl->scope_recom_date,
-                            'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
-                            'status'=>'Saved',
-                        ]
-                    );
+                    if(!JORLaborDetails::where('jor_head_id',$request->jorhead_id)->where('scope_of_work',$sl->scope_work)->where('uom',$sl->scope_uom)->where('quantity',$sl->scope_qty)->where('unit_cost',$sl->scope_unit_cost)->exists()){
+                        $jorlabordetails_id=JORLaborDetails::create($data);
+                    }else{
+                        $jorlabordetails_id=JORLaborDetails::updateOrCreate(
+                            [
+                                'scope_of_work'=> $sl->scope_work,
+                                'quantity'=>$sl->scope_qty,
+                                'uom'=>$sl->scope_uom,
+                                'unit_cost'=>$sl->scope_unit_cost,
+                                'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
+                                'recom_date'=>$sl->scope_recom_date,
+                            ],
+                            [
+                                'jor_head_id'=>$insertjorhead->id,
+                                'quantity'=>$sl->scope_qty,
+                                'uom'=>$sl->scope_uom,
+                                'scope_of_work'=>$sl->scope_work,
+                                'unit_cost'=>$sl->scope_unit_cost,
+                                'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
+                                'recom_date'=>$sl->scope_recom_date,
+                                'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
+                                'status'=>'Saved',
+                            ]
+                        );
+                    }
                 }
             }
-        }
 
-        foreach(json_decode($item_list) AS $il){
-            $data=[
-                'jor_head_id'=>$insertjorhead->id,
-                'quantity'=>$il->qty,
-                'uom'=>$il->uom,
-                'pn_no'=>$il->pn_no,
-                'item_description'=>$il->item_desc,
-                'wh_stocks'=>$il->wh_stocks,
-                'date_needed'=>$il->date_needed,
-                'recom_date'=>$il->recom_date,
-                'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
-                'status'=>'Saved',
-            ];
-            if($request->jorhead_id==0){
-                $jormaterialdetails_id=JORMaterialDetails::create($data);
-            }else{
-                if(!JORMaterialDetails::where('jor_head_id',$request->jorhead_id)->where('uom',$il->uom)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->where('quantity',$il->qty)->exists()){
+            foreach(json_decode($item_list) AS $il){
+                $data=[
+                    'jor_head_id'=>$insertjorhead->id,
+                    'quantity'=>$il->qty,
+                    'uom'=>$il->uom,
+                    'pn_no'=>$il->pn_no,
+                    'item_description'=>$il->item_desc,
+                    'wh_stocks'=>$il->wh_stocks,
+                    'date_needed'=>$il->date_needed,
+                    'recom_date'=>$il->recom_date,
+                    'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
+                    'status'=>'Saved',
+                ];
+                if($request->jorhead_id==0){
                     $jormaterialdetails_id=JORMaterialDetails::create($data);
                 }else{
-                    $jormaterialdetails_id=JORMaterialDetails::updateOrCreate(
-                        [
-                            'item_description'=> $il->item_desc,
-                            'pn_no'=>$il->pn_no,
-                            'quantity'=>$il->qty,
-                            'uom'=>$il->uom,
-                            'date_needed'=>$il->date_needed,
-                            'recom_date'=>$il->recom_date,
-                        ],
-                        [
-                            'jor_head_id'=>$insertjorhead->id,
-                            'quantity'=>$il->qty,
-                            'uom'=>$il->uom,
-                            'pn_no'=>$il->pn_no,
-                            'item_description'=>$il->item_desc,
-                            'wh_stocks'=>$il->wh_stocks,
-                            'date_needed'=>$il->date_needed,
-                            'recom_date'=>$il->recom_date,
-                            'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
-                            'status'=>'Saved',
-                        ]
-                    );
+                    if(!JORMaterialDetails::where('jor_head_id',$request->jorhead_id)->where('uom',$il->uom)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->where('quantity',$il->qty)->exists()){
+                        $jormaterialdetails_id=JORMaterialDetails::create($data);
+                    }else{
+                        $jormaterialdetails_id=JORMaterialDetails::updateOrCreate(
+                            [
+                                'item_description'=> $il->item_desc,
+                                'pn_no'=>$il->pn_no,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                            ],
+                            [
+                                'jor_head_id'=>$insertjorhead->id,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'pn_no'=>$il->pn_no,
+                                'item_description'=>$il->item_desc,
+                                'wh_stocks'=>$il->wh_stocks,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                                'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
+                                'status'=>'Saved',
+                            ]
+                        );
+                    }
                 }
             }
-        }
 
-        foreach(json_decode($notes_list) AS $nl){
-            $data=[
-                'jor_head_id'=>$insertjorhead->id,
-                'notes'=>$nl->notes,
-                'status'=>'Saved',
-            ];
-            if($request->jorhead_id==0){
-                $jornotes_id=JORNotes::create($data);
-            }else{
-                if(!JORNotes::where('jor_head_id',$request->jorhead_id)->where('notes',$nl->notes)->exists()){
+            foreach(json_decode($notes_list) AS $nl){
+                $data=[
+                    'jor_head_id'=>$insertjorhead->id,
+                    'notes'=>$nl->notes,
+                    'status'=>'Saved',
+                ];
+                if($request->jorhead_id==0){
                     $jornotes_id=JORNotes::create($data);
                 }else{
-                    $jornotes_id=JORNotes::updateOrCreate(
-                        [
-                            'notes'=>$nl->notes,
-                        ],
-                        [
-                            'jor_head_id'=>$insertjorhead->id,
-                            'notes'=>$nl->notes,
-                            'status'=>'Saved',
-                        ]
-                    );
+                    if(!JORNotes::where('jor_head_id',$request->jorhead_id)->where('notes',$nl->notes)->exists()){
+                        $jornotes_id=JORNotes::create($data);
+                    }else{
+                        $jornotes_id=JORNotes::updateOrCreate(
+                            [
+                                'notes'=>$nl->notes,
+                            ],
+                            [
+                                'jor_head_id'=>$insertjorhead->id,
+                                'notes'=>$nl->notes,
+                                'status'=>'Saved',
+                            ]
+                        );
+                    }
                 }
             }
+            return $insertjorhead->id;
+        }else{
+            echo 'error';
         }
-        return $insertjorhead->id;
     }
 
     public function save_jor_manual_draft(Request $request){
-        $scope_list=$request->input("scope_list");
-        $item_list=$request->input("item_list");
-        $notes_list=$request->input("notes_list");
-        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
-        $department_name=Departments::where('id',$request->department_id)->value('department_name');
-        $department_code=Departments::where('id',$request->department_id)->value('department_code');
-        $series_rows = JORSeries::where('year',$year)->count();
-        $requestor=User::where('id',$request->requestor)->value('name');
-        $data_head=$this->validate($request,
-            [
-                'jor_no'=>'required|string',
-                'department_id'=>'required|integer'
-            ],
-            [
-               'department_id.required'=> 'The department field is required.'
-            ]
-        );
-        $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
-        $data_head['site_jor']=($request->site_jor!='undefined' && $request->site_jor!='null' && $request->site_jor!='') ? $request->site_jor : '';
-        $data_head['duration']=($request->duration!='undefined' && $request->duration!='null' && $request->duration!='') ? $request->duration : '';
-        $data_head['completion_date']=($request->completion_date!='undefined' && $request->completion_date!='null' && $request->completion_date!='') ? $request->completion_date : '';
-        $data_head['delivery_date']=($request->delivery_date!='undefined' && $request->delivery_date!='null' && $request->delivery_date!='') ? $request->delivery_date : '';
-        $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
-        $data_head['department_name']=$department_name;
-        $data_head['dept_code']=$department_code;
-        $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
-        $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '';
-        $data_head['requestor']=$requestor;
-        $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
-        $data_head['method']='Manual';
-        $data_head['status']='Saved';
-        $data_head['general_description']=($request->general_description!='undefined' && $request->general_description!='null' && $request->general_description!='') ? $request->general_description : '';
-        $data_head['project_activity']=($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '';
-        $data_head['user_id']=Auth::id();
-        if($request->jorhead_id==0){
-            $insertjorhead=JORHead::create($data_head);
-        }else{
-            $insertjorhead=JORHead::where('id',$request->jorhead_id)->first();
-            $insertjorhead->update($data_head);
-        }
-        $exp=explode('-',$request->jor_no);
-        if($series_rows==0){
-            $max_series='1';
-            $jor_series='0001';
-            $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
-        } else {
-            $max_series=JORSeries::where('year',$year)->max('series');
-            $jor_series=$max_series+1;
-            $jor_no = 'JOR'.$department_code.$year_short."-".$exp[1];
-        }
-        if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
-            $series['year']=$year;
-            $series['series']=$jor_series;
-            $jor_series=JORSeries::create($series);
-        }
-        foreach(json_decode($scope_list) AS $sl){
-            $data=[
-                'jor_head_id'=>$insertjorhead->id,
-                'quantity'=>$sl->scope_qty,
-                'uom'=>$sl->scope_uom,
-                'scope_of_work'=>$sl->scope_work,
-                'unit_cost'=>$sl->scope_unit_cost,
-                'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
-                'recom_date'=>$sl->scope_recom_date,
-                'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
-                'status'=>'Draft',
-            ];
-            if($request->jorhead_id==0){ 
-                $jorlabordetails_id=JORLaborDetails::create($data);
+        if(!JORHead::where('site_jor',$request->site_jor)->where('status','Saved')->exists()){
+            $scope_list=$request->input("scope_list");
+            $item_list=$request->input("item_list");
+            $notes_list=$request->input("notes_list");
+            $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+            $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
+            $department_name=Departments::where('id',$request->department_id)->value('department_name');
+            $department_code=Departments::where('id',$request->department_id)->value('department_code');
+            $series_rows = JORSeries::where('year',$year)->count();
+            $requestor=User::where('id',$request->requestor)->value('name');
+            $data_head=$this->validate($request,
+                [
+                    'jor_no'=>'required|string',
+                    'department_id'=>'required|integer'
+                ],
+                [
+                'department_id.required'=> 'The department field is required.'
+                ]
+            );
+            $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+            $data_head['site_jor']=($request->site_jor!='undefined' && $request->site_jor!='null' && $request->site_jor!='') ? $request->site_jor : '';
+            $data_head['duration']=($request->duration!='undefined' && $request->duration!='null' && $request->duration!='') ? $request->duration : '';
+            $data_head['completion_date']=($request->completion_date!='undefined' && $request->completion_date!='null' && $request->completion_date!='') ? $request->completion_date : '';
+            $data_head['delivery_date']=($request->delivery_date!='undefined' && $request->delivery_date!='null' && $request->delivery_date!='') ? $request->delivery_date : '';
+            $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+            $data_head['department_name']=$department_name;
+            $data_head['dept_code']=$department_code;
+            $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
+            $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+            $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='0') ? $request->requestor : '';
+            $data_head['requestor']=$requestor;
+            $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
+            $data_head['method']='Manual';
+            $data_head['status']='Saved';
+            $data_head['general_description']=($request->general_description!='undefined' && $request->general_description!='null' && $request->general_description!='') ? $request->general_description : '';
+            $data_head['project_activity']=($request->project_activity!='undefined' && $request->project_activity!='null' && $request->project_activity!='') ? $request->project_activity : '';
+            $data_head['user_id']=Auth::id();
+            if($request->jorhead_id==0){
+                $insertjorhead=JORHead::create($data_head);
             }else{
-                if(!JORLaborDetails::where('jor_head_id',$request->jorhead_id)->where('scope_of_work',$sl->scope_work)->where('uom',$sl->scope_uom)->where('quantity',$sl->scope_qty)->where('unit_cost',$sl->scope_unit_cost)->exists()){
+                $insertjorhead=JORHead::where('id',$request->jorhead_id)->first();
+                $insertjorhead->update($data_head);
+            }
+            $exp=explode('-',$request->jor_no);
+            if($series_rows==0){
+                $max_series='1';
+                $jor_series='0001';
+                $jor_no = 'JOR'.$department_code.$year_short."-".$jor_series;
+            } else {
+                $max_series=JORSeries::where('year',$year)->max('series');
+                $jor_series=$max_series+1;
+                $jor_no = 'JOR'.$department_code.$year_short."-".$exp[1];
+            }
+            if(!JORSeries::where('year',$year)->where('series',$exp[1])->exists()){
+                $series['year']=$year;
+                $series['series']=$jor_series;
+                $jor_series=JORSeries::create($series);
+            }
+            foreach(json_decode($scope_list) AS $sl){
+                $data=[
+                    'jor_head_id'=>$insertjorhead->id,
+                    'quantity'=>$sl->scope_qty,
+                    'uom'=>$sl->scope_uom,
+                    'scope_of_work'=>$sl->scope_work,
+                    'unit_cost'=>$sl->scope_unit_cost,
+                    'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
+                    'recom_date'=>$sl->scope_recom_date,
+                    'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
+                    'status'=>'Draft',
+                ];
+                if($request->jorhead_id==0){ 
                     $jorlabordetails_id=JORLaborDetails::create($data);
                 }else{
-                    $jorlabordetails_id=JORLaborDetails::updateOrCreate(
-                        [
-                            'quantity'=>$sl->scope_qty,
-                            'uom'=>$sl->scope_uom,
-                            'scope_of_work'=>$sl->scope_work,
-                            'unit_cost'=>$sl->scope_unit_cost,
-                            'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
-                            'recom_date'=>$sl->scope_recom_date,
-                        ],
-                        [
-                            'jor_head_id'=>$insertjorhead->id,
-                            'quantity'=>$sl->scope_qty,
-                            'uom'=>$sl->scope_uom,
-                            'scope_of_work'=>$sl->scope_work,
-                            'unit_cost'=>$sl->scope_unit_cost,
-                            'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
-                            'recom_date'=>$sl->scope_recom_date,
-                            'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
-                            'status'=>'Draft',
-                        ]
-                    );
+                    if(!JORLaborDetails::where('jor_head_id',$request->jorhead_id)->where('scope_of_work',$sl->scope_work)->where('uom',$sl->scope_uom)->where('quantity',$sl->scope_qty)->where('unit_cost',$sl->scope_unit_cost)->exists()){
+                        $jorlabordetails_id=JORLaborDetails::create($data);
+                    }else{
+                        $jorlabordetails_id=JORLaborDetails::updateOrCreate(
+                            [
+                                'quantity'=>$sl->scope_qty,
+                                'uom'=>$sl->scope_uom,
+                                'scope_of_work'=>$sl->scope_work,
+                                'unit_cost'=>$sl->scope_unit_cost,
+                                'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
+                                'recom_date'=>$sl->scope_recom_date,
+                            ],
+                            [
+                                'jor_head_id'=>$insertjorhead->id,
+                                'quantity'=>$sl->scope_qty,
+                                'uom'=>$sl->scope_uom,
+                                'scope_of_work'=>$sl->scope_work,
+                                'unit_cost'=>$sl->scope_unit_cost,
+                                'total_cost'=>$sl->scope_unit_cost * $sl->scope_qty,
+                                'recom_date'=>$sl->scope_recom_date,
+                                'recom_status'=>($sl->scope_recom_date!='' && $sl->scope_recom_date!='undefined' && $sl->scope_recom_date!='null') ? 'Open' : '',
+                                'status'=>'Draft',
+                            ]
+                        );
+                    }
                 }
             }
-        }
 
-        foreach(json_decode($item_list) AS $il){
-            $data=[
-                'jor_head_id'=>$insertjorhead->id,
-                'quantity'=>$il->qty,
-                'uom'=>$il->uom,
-                'pn_no'=>$il->pn_no,
-                'item_description'=>$il->item_desc,
-                'wh_stocks'=>$il->wh_stocks,
-                'date_needed'=>$il->date_needed,
-                'recom_date'=>$il->recom_date,
-                'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
-                'status'=>'Draft',
-            ];
-            if($request->jorhead_id==0){ 
-                $jormaterialdetails_id=JORMaterialDetails::create($data);
-            }else{
-                if(!JORMaterialDetails::where('jor_head_id',$request->jorhead_id)->where('uom',$il->uom)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->where('quantity',$il->qty)->exists()){
+            foreach(json_decode($item_list) AS $il){
+                $data=[
+                    'jor_head_id'=>$insertjorhead->id,
+                    'quantity'=>$il->qty,
+                    'uom'=>$il->uom,
+                    'pn_no'=>$il->pn_no,
+                    'item_description'=>$il->item_desc,
+                    'wh_stocks'=>$il->wh_stocks,
+                    'date_needed'=>$il->date_needed,
+                    'recom_date'=>$il->recom_date,
+                    'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
+                    'status'=>'Draft',
+                ];
+                if($request->jorhead_id==0){ 
                     $jormaterialdetails_id=JORMaterialDetails::create($data);
                 }else{
-                    $jormaterialdetails_id=JORMaterialDetails::updateOrCreate(
-                        [
-                            'item_description'   => $il->item_desc,
-                            'pn_no'=>$il->pn_no,
-                            'quantity'=>$il->qty,
-                            'uom'=>$il->uom,
-                            'date_needed'=>$il->date_needed,
-                            'recom_date'=>$il->recom_date,
-                        ],
-                        [
-                            'jor_head_id'=>$insertjorhead->id,
-                            'quantity'=>$il->qty,
-                            'uom'=>$il->uom,
-                            'pn_no'=>$il->pn_no,
-                            'item_description'=>$il->item_desc,
-                            'wh_stocks'=>$il->wh_stocks,
-                            'date_needed'=>$il->date_needed,
-                            'recom_date'=>$il->recom_date,
-                            'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
-                            'status'=>'Draft',
-                        ]
-                    );
+                    if(!JORMaterialDetails::where('jor_head_id',$request->jorhead_id)->where('uom',$il->uom)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->where('quantity',$il->qty)->exists()){
+                        $jormaterialdetails_id=JORMaterialDetails::create($data);
+                    }else{
+                        $jormaterialdetails_id=JORMaterialDetails::updateOrCreate(
+                            [
+                                'item_description'   => $il->item_desc,
+                                'pn_no'=>$il->pn_no,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                            ],
+                            [
+                                'jor_head_id'=>$insertjorhead->id,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'pn_no'=>$il->pn_no,
+                                'item_description'=>$il->item_desc,
+                                'wh_stocks'=>$il->wh_stocks,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                                'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
+                                'status'=>'Draft',
+                            ]
+                        );
+                    }
                 }
             }
-        }
-        foreach(json_decode($notes_list) AS $nl){
-            $data=[
-                'jor_head_id'=>$insertjorhead->id,
-                'notes'=>$nl->notes,
-                'status'=>'Draft',
-            ];
-            if($request->jorhead_id==0){ 
-                $jornotes_id=JORNotes::create($data);
-            }else{
-                if(!JORNotes::where('jor_head_id',$request->jorhead_id)->where('notes',$nl->notes)->exists()){
+            foreach(json_decode($notes_list) AS $nl){
+                $data=[
+                    'jor_head_id'=>$insertjorhead->id,
+                    'notes'=>$nl->notes,
+                    'status'=>'Draft',
+                ];
+                if($request->jorhead_id==0){ 
                     $jornotes_id=JORNotes::create($data);
                 }else{
-                    $jornotes_id=JORNotes::updateOrCreate(
-                        [
-                            'notes'=> $nl->notes,
-                        ],
-                        [
-                            'jor_head_id'=>$insertjorhead->id,
-                            'notes'=>$nl->notes,
-                            'status'=>'Draft',
-                        ]
-                    );
+                    if(!JORNotes::where('jor_head_id',$request->jorhead_id)->where('notes',$nl->notes)->exists()){
+                        $jornotes_id=JORNotes::create($data);
+                    }else{
+                        $jornotes_id=JORNotes::updateOrCreate(
+                            [
+                                'notes'=> $nl->notes,
+                            ],
+                            [
+                                'jor_head_id'=>$insertjorhead->id,
+                                'notes'=>$nl->notes,
+                                'status'=>'Draft',
+                            ]
+                        );
+                    }
                 }
             }
+            return $insertjorhead->id;
+        }else{
+            echo 'error';
         }
-        return $insertjorhead->id;
     }
 
     public function get_alljor(){
