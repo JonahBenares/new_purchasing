@@ -67,7 +67,7 @@ class JOIController extends Controller
                 $j->site_jor,
                 $j->vendor_name." (".$identifier.")",
                 $j->project_activity,
-                ($j->method=='JO') ? 'Job Order Request' : (($j->method=='DPO') ? 'Direct Purchase' : 'Repeat Order'),
+                ($j->method=='JO') ? 'Job Order Request' : (($j->method=='DJO') ? 'Direct JO' : 'Repeat JO'),
                 ($j->status=='Saved') ? 'JO Issued' : (($j->status=='Draft') ? 'Draft' : 'Cancelled'),
                 ''
             ];
