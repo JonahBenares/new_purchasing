@@ -91,7 +91,7 @@
 		prepared_by.value = response.data.prepared_by;
 		total_sumdelivered.value = response.data.total_sumdelivered;
 		po_dr_items.value.forEach(function (val, index, theArray) {
-			getOffer(val.rfq_offer_id,index)
+			getOffer(props.id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
 		});
 	}
@@ -110,17 +110,22 @@
 		prepared_by.value = response.data.prepared_by;
 		total_sumdelivered.value = response.data.total_sumdelivered;
 		po_dr_items.value.forEach(function (val, index, theArray) {
-			getOffer(val.rfq_offer_id,index)
+			getOffer(props.id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
 			// to_deliver.value[index]= parseFloat(val.quantity)  - total_sumdelivered1.value[index]
 			// to_deliver.value[index]= parseFloat(val.quantity) - parseFloat(val.delivered_qty)
 		});
 	}
 
-	const getOffer = async (rfq_offer_id,count) => {
-		let response = await axios.get("/api/get_offer/"+rfq_offer_id);
-		offer.value[count] = response.data.offer.offer;
-		uom.value[count] = response.data.offer.uom;
+	const getOffer = async (po_head_id,rfq_offer_id,count) => {
+		let response = await axios.get("/api/get_offer/"+po_head_id+'/'+rfq_offer_id);
+		if(rfq_offer_id!=0){
+			offer.value[count] = response.data.offer.offer;
+			uom.value[count] = response.data.offer.uom;
+		}else{
+			offer.value[count] = response.data.offer.item_description;
+			uom.value[count] = response.data.offer.uom;
+		}
 	}
 	
 	const checkBalance = async (po_dr_id,po_details_id,qty,count) => {
