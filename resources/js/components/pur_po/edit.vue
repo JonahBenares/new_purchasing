@@ -769,9 +769,10 @@ import moment from 'moment';
 														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
 														<input type="text" min="0" @keyup="checkBalance(pdr.po_head_id,pdr.pr_details_id,remaining_balance[index], index,vat_percent)" @change="checkBalance(pdr.po_head_id,pdr.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 													</td>
-													<td class="border-y-none p-1 text-center">
+													<!-- <td class="border-y-none p-1 text-center">
 														<input type="text" class="w-10 bg-yellow-50 border-r" :id="'uom'+index" @keyup="checkEmptyData(index)" v-model="pdr.uom">
-													</td>
+													</td> -->
+													<td class="border-y-none p-1 text-center">{{ pdr.uom }}</td>
 													<td class="border-y-none p-1" colspan="2">
 														<input type="text" class="w-100 bg-yellow-50 border-r" v-model="pdr.item_description" @keyup="checkEmptyData(index)" :id="'item_desc'+index">
 													</td>
