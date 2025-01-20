@@ -1008,24 +1008,23 @@ import moment from 'moment';
 													</div>
 												</td>
 											</tr>
-											<tr v-for="(vt,indexterms) in vendor_terms">
-												<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
+											<tr v-for="(pt,indexes) in po_terms">
+												<td class="align-top text-center" width="4%">{{ indexes+4 }}.</td>
 												<td class="align-top" colspan="2">
 													<div class="flex justify-between">
-														<textarea class="w-full bg-yellow-50 px-1" id="" v-model="vt.terms"></textarea>
+														<textarea class="w-full bg-yellow-50 px-1" id="" v-model="pt.terms"></textarea>
 													</div>
 												</td>
-												<td v-if="props.id!=0 || pohead_id!=0">
-													<button type="button" @click="deleteTerms(vt.id,'no')" class="btn btn-danger p-1">
+												<td>
+													<button type="button" @click="deleteTerms(pt.id,'no')" class="btn btn-danger p-1">
 														<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 													</button>
 												</td>
 											</tr>
 											<tr v-for="(t,index) in terms_list">
-												<td class="align-top text-center" width="4%">{{ index + 4 +vendor_terms.length }}.</td>
+												<td class="align-top text-center" width="4%">{{ index + 6 }}.</td>
 												<td class="px-1" colspan="2">
-													<!-- <span class="w-32">{{ t.terms_condition }}</span> -->
-													<textarea class="w-full bg-yellow-50 px-1" id="" v-model="t.terms_condition"></textarea>
+													<span class="w-32">{{ t.terms_condition }}</span>
 												</td>
 												<td class="p-0 align-top" width="1">
 													<button type="button" class="btn btn-danger p-1">
