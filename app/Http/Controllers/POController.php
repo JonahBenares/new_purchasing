@@ -1268,8 +1268,12 @@ class POController extends Controller
     }
 
 
-    public function get_offer($rfq_offer_id){
-        $offer = RFQOffers::where('id',$rfq_offer_id)->where('awarded','1')->first();
+    public function get_offer($po_head_id,$rfq_offer_id){
+        if($rfq_offer_id!=0){
+            $offer = RFQOffers::where('id',$rfq_offer_id)->where('awarded','1')->first();
+        }else{
+            $offer = PODetails::where('po_head_id',$po_head_id)->where('status','Saved')->first();
+        }
         return response()->json([
             'offer'=>$offer,
         ],200);
