@@ -732,6 +732,7 @@ import moment from 'moment';
 													<td class="p-1"  colspan="2">
 														<input type="text" class="p-1 bg-yellsow-100 v w-full" v-model="pd.reference_po_no" readonly>
 														<input type="text" class="p-1 bg-yellsow-100 v w-full" v-model="pd.offer_desc" readonly>
+														<input type="hidden" v-model="pd.reference_po_details_id">
 													</td>
 													<td class="border-y-none p-1 text-center">{{formatNumber(pd.unit_price)}} {{ pd.currency }}</td>
 													<td class="border-y-none p-1 text-center">{{formatNumber(pd.unit_price * pd.quantity)}}</td>
@@ -871,9 +872,9 @@ import moment from 'moment';
 														<!-- <button class="btn btn-sm btn-danger p-1" @click="removeOffer(index)" v-if="pd.reference_po_no != ''">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button> -->
-														<button class="btn btn-sm btn-primary p-1" @click="openModel(index)">
+														<!-- <button class="btn btn-sm btn-primary p-1" @click="openModel(index)">
 															<MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
-														</button>
+														</button> -->
 													</td>
 												</tr>
 												<tr class="">
