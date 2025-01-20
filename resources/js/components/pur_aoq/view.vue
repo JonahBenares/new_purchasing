@@ -574,7 +574,7 @@
 												</div>
 											</td>
 											
-											<td class="p-1 align-top"></td>
+											<td class="p-1 align-top">{{ fo.remarks }}</td>
 										</template>
 									</template>
 									
@@ -600,7 +600,7 @@
 												</div>
 											</td>
 											
-											<td class="p-1 align-top"></td>
+											<td class="p-1 align-top">{{ so.remarks }}</td>
 										</template>
 									</template>
 									<!-- loop offers per vendor here -->
@@ -625,7 +625,7 @@
 												</div>
 											</td>
 											
-											<td class="p-1 align-top"></td>
+											<td class="p-1 align-top">{{ to.remarks }}</td>
 										</template>
 									</template>
 									<!-- loop offers per vendor here -->
