@@ -4,7 +4,7 @@
     import {onMounted, ref} from "vue";
 	import { useRouter } from "vue-router";
 	const router = useRouter()
-    let branches=ref([]);
+	const branches = ref([]);
     let term_list=ref([]);
     let vendor_name=ref('');
     let product_services=ref('');
@@ -99,7 +99,7 @@
 		closeModal()
 		vendor_name.value=''
 		product_services.value=''
-		branches.value=''
+		branches.value=[]
 		document.getElementById("SubmitButton").disabled = true;
 	}
 
@@ -471,7 +471,7 @@
 							<div class="col-lg-12 col-md-12">
 								<div class="form-group">
 									<label class="text-gray-500 m-0" >Identifier</label>
-									<textarea class="form-control" placeholder="Indetifier" v-model="identifier"></textarea>
+									<textarea class="form-control" placeholder="Identifier" v-model="identifier"></textarea>
 								</div>
 							</div>
 						</div>
