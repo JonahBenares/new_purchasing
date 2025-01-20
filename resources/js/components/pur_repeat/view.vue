@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
     import moment from 'moment'
@@ -368,7 +368,7 @@
                                     <div class="row mt-2">
                                         <div class="col-lg-12">
                                             <div class="flex space-x-1" >
-                                                <template v-for="(por, r) in po_details" :key="index">
+                                                <template v-for="(por, r) in po_details">
                                                     <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2" v-if="por.reference_po_no != ''">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
                                                 </template>
                                             </div> 
