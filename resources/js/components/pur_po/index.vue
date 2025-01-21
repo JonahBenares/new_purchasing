@@ -166,7 +166,6 @@
                                 </thead>
                                 <template #column-1="props">
                                         <span class="text-left z-50 !w-full p-1 px-2 cursor-pointer btn-link" @click="openDrawerRevise(props.rowData.id, props.rowData.po_no, props.rowData.revision_no)">
-                                            
                                             {{props.rowData.po_no}}{{ (props.rowData.revision_no!=0 && props.rowData.revision_no!=null && props.rowData.revision_no!='') ? '.r'+props.rowData.revision_no : '' }} 
                                         </span>
 								</template>

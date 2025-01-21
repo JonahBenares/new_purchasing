@@ -218,8 +218,8 @@
                                             </tr>
                                             <tr class="">
                                                 
-                                                <span hidden v-if="rfd_payments.length==1">{{ rowspan=6 }}</span>
-                                                <span hidden v-else>{{ rowspan=6+rfd_payments.length+1 }}</span>
+                                                <span hidden v-if="rfd_payments.length==1">{{ rowspan=2 }}</span>
+                                                <span hidden v-else>{{ rowspan=2+rfd_payments.length+1 }}</span>
                                                 <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rowspan"> 
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>{{jor_head.site_jor}}  / {{ joi_head.joi_no }}</p>
                                                 </td>

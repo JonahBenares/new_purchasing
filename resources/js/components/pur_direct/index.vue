@@ -823,7 +823,7 @@
 											</tr>
 											<tr v-for="(t,index) in terms_list">
 												<td class="align-top text-center" width="4%">{{ index + 4 +vendor_terms.length }}.</td>
-												<td class="px-1" colspan="2">
+												<td class="px-1 bg-yellow-50" colspan="2">
 													<!-- <span class="w-32">{{ t.terms_condition }}</span> -->
 													<textarea class="w-full bg-yellow-50 px-1" id="" v-model="t.terms_condition"></textarea>
 												</td>
@@ -851,7 +851,7 @@
 												</td>
 											</tr>
 											<tr v-for="(o, indexes) in other_list">
-												<td class="px-1" colspan="2">
+												<td class="px-1 bg-yellow-50" colspan="2">
 													<textarea class="w-full bg-yellow-50 px-1" id="" v-model="o.instructions"></textarea>
 												</td>
 												<td class="p-0 align-top" width="1">
@@ -888,24 +888,24 @@
 												<td class="text-center border-b"></td>
 											</tr>
 											<tr>
-												<td class="text-center p-1"><input type="text" class="text-center">{{prepared_by}}</td>
+												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
 												<td class="text-center p-1">
-												<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by" @click="resetError('button1')">
+												<select class="text-center bg-yellow-50 py-1 w-full" v-model="checked_by" id="checked_by" @click="resetError('button1')">
 													<option value='0'>--Select Reviewed/Checked by--</option>
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
 												<td></td>
 												<td class="text-center p-1">
-												<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
+												<select class="text-center bg-yellow-50 py-1 w-full" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
 													<option value='0'>--Select Recommended by--</option>
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
 												</td>
 												<td></td>
 												<td class="text-center p-1">
-												<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by" @click="resetError('button3')">
+												<select class="text-center bg-yellow-50 py-1 w-full" v-model="approved_by" id="approved_by" @click="resetError('button3')">
 													<option value='0'>--Select Approved by--</option>
 													<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 												</select>
@@ -1025,7 +1025,7 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
-									<button class="bg-green-500 btn-sm !rounded-full w-full"  @click="closeAlert()">Close</button>
+									<button class="bg-green-500 btn-sm !rounded-full w-full text-white"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
 						</div>

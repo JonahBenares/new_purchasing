@@ -603,7 +603,7 @@
 					</span> -->
 					<hr class="border-dashed mt-0">
 					<div class="pt-1">
-						<div class="col-lg-6 offset-lg-3 col-md-3">
+						<div class="col-lg-10 offset-lg-1">
 							<div class="form-group">
 							<label class="text-gray-500 m-0" for="">Choose PR Number & Supplier</label>
 							<input type="file" name="img[]" class="file-upload-default">
@@ -699,12 +699,12 @@
 											<td class="align-top p-0 text-center">{{ pd.uom }}
 											</td>
 											<td class="p-1">{{ pd.item_description }}</td>
-											<td class="p-1">
-												<div class="flex justify-between space-x-1 w-full">
+											<td class="p-1  bg-yellow-50">
+												<div class="flex justify-between  bg-yellow-50 space-x-1 w-full">
 													<div class="w-full">
 														<!-- <p class="w-full text-xs m-0 font-bold">{{ pd.offer_supp }}</p> -->
 														<input type="text" class="p-1  w-full bg-yellow-50 border-b refpono" :id="'refpono'+ index" v-model="pd.reference_po_no" readonly>
-														<input type="text" class="p-1  w-full bg-yellow-50 border-b" :id="'offerdesc'+ index" v-model="pd.offer_desc" readonly>
+														<input type="text" class="p-1  w-full bg-yellow-50" :id="'offerdesc'+ index" v-model="pd.offer_desc" readonly>
 														<input type="hidden" :id="'refpodetailsid'+ index" v-model="pd.reference_po_details_id">
 														<!-- <span class="">{{ pd.offer_desc }}</span> -->
 													</div>
@@ -713,7 +713,7 @@
 											<td class="p-0 bg-orange-50">
 												<!-- <input type="text" class="p-1 text-right w-full bg-yellow-50 border-b" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" v-model="pd.unit_price" readonly> -->
 												<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b" :id="'po_unitprice'+ index" placeholder="00.00" @keypress="isNumber($event)" v-model="pd.unit_price" readonly>
-												<input type="text" class="p-1 text-right w-full bg-yellow-50 border-b" :id="'currency'+ index"  v-model="pd.currency" readonly>
+												<input type="text" class="p-1 text-right w-full bg-yellow-50 " :id="'currency'+ index"  v-model="pd.currency" readonly>
 												<!-- <select class="p-1 m-0 leading-none w-full text-center  bg-yellow-50" v-model="pd.currency">
 													<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 												</select> --> 
@@ -930,24 +930,24 @@
 											<td class="text-center border-b"></td>
 										</tr>
 										<tr>
-											<td class="text-center p-1"><input type="text" class="text-center">{{prepared_by}}</td>
+											<td class="text-center p-1">{{prepared_by}}</td>
 											<td></td>
 											<td class="text-center p-1">
-											<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by" @click="resetError('button1')">
+											<select class="text-center bg-yellow-50 w-full p-1" v-model="checked_by" id="checked_by" @click="resetError('button1')">
 												<option value='0'>--Select Reviewed/Checked by--</option>
 												<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 											</select>
 											</td>
 											<td></td>
 											<td class="text-center p-1">
-											<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
+											<select class="text-center bg-yellow-50 w-full p-1" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
 												<option value='0'>--Select Recommended by--</option>
 												<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 											</select>
 											</td>
 											<td></td>
 											<td class="text-center p-1">
-											<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by" @click="resetError('button3')">
+											<select class="text-center bg-yellow-50 w-full p-1" v-model="approved_by" id="approved_by" @click="resetError('button3')">
 												<option value='0'>--Select Approved by--</option>
 												<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 											</select>

@@ -559,27 +559,29 @@
 															<td width="10%"></td>
 														</tr>
 														<span hidden>{{ orderno=1 }}</span>
-														<tr class="section-break" v-for="(vt, order_no) in rfq_vendor_terms">
+														<tr class="section-break" >
 															<td width="10%"></td>
 															<td width="40%" colspan="2">
-																<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
-																	<div class="flex justify-between space-x-1">
-																		<span class="pt-1">{{ letters[orderno-1] }}. </span>
-																		<input type="text" class="p-1 w-full print:bg-white bg-yellow-50 rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
-																		<button class="btn btn-danger p-1 po_buttons" @click="RemoveRFQVendorTerms(order_no,vt.id)">
-																			<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-																		</button>
-																		<span hidden>{{ orderno++ }}</span>
+																<div class="" v-for="(vt, order_no) in rfq_vendor_terms">
+																	<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+																		<div class="flex justify-between space-x-1">
+																			<span class="pt-1">{{ letters[orderno-1] }}. </span>
+																			<input type="text" class="p-1 w-full print:bg-white bg-yellow-50  rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
+																			<button class="btn btn-danger p-1 po_buttons" @click="RemoveRFQVendorTerms(order_no,vt.id)">
+																				<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+																			</button>
+																			<span hidden>{{ orderno++ }}</span>
+																		</div>
+																		<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
+																		<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
 																	</div>
-																	<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
-																	<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
 																</div>
 															</td>
 															<td width="10%"></td>
 														</tr>
 													</template>
+													<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
 													<template v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
-														<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
 														<tr class="section-break">
 															<td width="10%"></td>
 															<td width="1%">{{ letters[index] }}.</td>

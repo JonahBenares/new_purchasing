@@ -446,7 +446,7 @@
 						<div class="flex justify-start space-x-1">
 							<button type="button" @click="CancelAlert()" class="btn btn-danger">Cancel</button>
 							<button type="submit" @click="openAddVendor()" class="btn btn-info " v-if="count_rfq_vendors != 0">Add Vendor</button>
-							<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
+							<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning text-white">Open AOQ</button>
 						</div>
 						<div class="flex justify-end space-x-1">
 							<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary ">Export</a>
@@ -456,8 +456,8 @@
 				</div>
 				<div class="col-lg-12" v-else>
 					<div class="flex justify-center space-x-1">
-						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary mr-2 w-44">Export</a>
-						<button type="submit" v-if="head.status != 'Cancelled'" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
+						<a :href="'/export-aoq/'+head.aoq_head_id" class="btn btn-primary  w-44">Export</a>
+						<button type="submit" v-if="head.status != 'Cancelled'" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning text-white">Open AOQ</button>
 					</div>
 				</div>
 			</div>

@@ -193,7 +193,7 @@
 					<hr class="border-dashed mt-0">
 					<div class="pt-1">
 						<div class="row">							
-							<div class="col-lg-6 offset-lg-3 col-md-3">
+							<div class="col-lg-10 offset-lg-1">
 								<div class="form-group">
 								<label class="text-gray-500 m-0" for="">Choose PR and RFQ Number</label>
 								<input type="file" name="img[]" class="file-upload-default">

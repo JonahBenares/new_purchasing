@@ -432,9 +432,9 @@
 									<div class="col-lg-12 col-md-12">
 										<div class="flex justify-between space-x-2">
 											<div class="flex justify-between space-x-1">
-												<button type="submit" class="btn btn-danger mr-2 w-36" @click="CancelAlert()" v-if="(head.status != 'Awarded')">Cancel</button>
+												<button type="submit" class="btn btn-danger w-36" @click="CancelAlert()" v-if="(head.status != 'Awarded')">Cancel</button>
 												<button type="submit" @click="openPreview()" class="btn btn-info w-26">Preview</button>
-												<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning ">Open AOQ</button>
+												<button type="submit" @click="openAOQ(head.rfq_head_id)" class="btn btn-warning text-white">Open AOQ</button>
 												<!-- <button type="submit" @click="openAddVendor()" class="btn btn-info w-26">Add Vendor</button> -->
 											</div>
 											<div class="flex justify-between space-x-1" v-if="(head.status != 'Awarded')">

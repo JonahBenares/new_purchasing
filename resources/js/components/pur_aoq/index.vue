@@ -148,7 +148,7 @@
                                         <th class="!text-xs bg-gray-100 uppercase" > Enduse</th>
                                         <th class="!text-xs bg-gray-100 uppercase" > Requestor</th>
                                         <th class="!text-xs bg-gray-100 uppercase"  width="2%"> Status</th>
-                                        <th class="!text-xs bg-gray-100 uppercase "  width="1%" align="center"> 
+                                        <th class="!text-xs bg-gray-100 uppercase"  width="1%" align="center"> 
                                             <!-- <span class="text-center  px-auto">
                                                 <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></Bars3Icon>
                                             </span> -->
@@ -156,14 +156,14 @@
                                     </tr>
                                 </thead>
                                 <template #column-2="props">
-                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc mb-1">
+                                    <ul v-for="ven in props.rowData.vendor" class="mb-0 list-disc mb-1 leading-none">
                                         <!-- <li class="bg-lime-600  px-1" v-if="ven.canvassed == 1 && ven.status == 'Saved'">
                                             <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li>
                                         <li class="bg-yellow-300 px-1" v-if="ven.canvassed == 0 && ven.status == 'Draft'">
                                             <span class="text-white">{{ ven.vendor_name }} ({{ ven.vendor_details.identifier }})</span>
                                         </li> -->
-                                        <li :class="(ven.count_awarded != 0 && props.rowData.status != 'Cancelled') ? 'px-1 bg-lime-500' : 'px-1'">
+                                        <li :class="(ven.count_awarded != 0 && props.rowData.status != 'Cancelled') ? 'px-1 bg-lime-500 leading-none py-1 text-white' : 'px-1 leading-none'">
                                             {{ ven.vendor_name }} ({{ ven.identifier }})
                                         </li>
                                     </ul>

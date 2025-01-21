@@ -22628,3 +22628,9 @@ input[type="date"]::-webkit-calendar-picker-indicator { display: block!important
 @media print{
   input[type="date"]::-webkit-calendar-picker-indicator { display: block!important; }
 }
+
+@media print {
+    table tr td, table tbody tr td, tr td, td {
+      page-break-inside: auto!important;
+    }
+}

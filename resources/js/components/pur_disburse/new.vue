@@ -869,14 +869,14 @@
                                         <td class="text-center p-1">{{prepared_by}}</td>
                                         <td></td>
                                         <td class="text-center p-1">
-                                            <select class="text-center w-full bg-yellow-50" v-model="checked_by" id="checked_by" @click="resetError('button1')">
+                                            <select class="text-center w-full bg-yellow-50 py-1" v-model="checked_by" id="checked_by" @click="resetError('button1')">
                                                 <option value='0'>--Select Checked by--</option>
                                                 <option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
                                             </select>
                                         </td>
                                         <td></td>
                                         <td class="text-center p-1">
-                                            <select class="text-center w-full bg-yellow-50" v-model="noted_by" id="noted_by" @click="resetError('button2')">
+                                            <select class="text-center w-full bg-yellow-50 py-1" v-model="noted_by" id="noted_by" @click="resetError('button2')">
                                                 <option value='0'>--Select Noted by--</option>
                                                 <option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
                                             </select>
@@ -905,21 +905,21 @@
                                     </tr>
                                     <tr>
                                         <td class="text-center p-1">
-                                            <select class="text-center w-full bg-yellow-50" v-model="endorsed_by" id="endorsed_by" @click="resetError('button3')">
+                                            <select class="text-center w-full bg-yellow-50 p-1" v-model="endorsed_by" id="endorsed_by" @click="resetError('button3')">
                                                 <option value='0'>--Select Endorsed by--</option>
                                                 <option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
                                             </select>
                                         </td>
                                         <td></td>
                                         <td class="text-center p-1">
-                                            <select class="text-center w-full bg-yellow-50" v-model="approved_by" id="approved_by" @click="resetError('button4')">
+                                            <select class="text-center w-full bg-yellow-50 p-1" v-model="approved_by" id="approved_by" @click="resetError('button4')">
                                                 <option value='0'>--Select Approved by--</option>
                                                 <option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
                                             </select>
                                         </td>
                                         <td></td>
                                         <td class="text-center p-1">
-                                            <select class="text-center w-full bg-yellow-50" v-model="received_by" id="received_by" @click="resetError('button5')">
+                                            <select class="text-center w-full bg-yellow-50 p-1" v-model="received_by" id="received_by" @click="resetError('button5')">
                                                 <option value='0'>--Select Payment Received by--</option>
                                                 <option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
                                             </select>
