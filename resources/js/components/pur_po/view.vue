@@ -493,7 +493,7 @@
                                     <hr	class="border-dashed">
                                     <div class="po_buttons text-xs" v-if="po_head.status!='Cancelled'">
                                         <span class="w-full block">Internal Comment:</span>
-                                        <textarea class="bg-yellow-50" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea>
+                                        <textarea class="bg-yellow-50 p-1" @keyup="internalComment()" v-model="po_head.internal_comment" rows="5" placeholder="Write internal comment here..." style="width:100%!important"></textarea>
                                         <hr	class="border-dashed">
                                     </div>
                                     <div class="row my-2 po_buttons"> 

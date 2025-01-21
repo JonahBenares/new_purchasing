@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import printheader from '@/layouts/print_header.vue';
-	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon} from '@heroicons/vue/24/solid'
+	import{Bars3Icon, PlusIcon, XMarkIcon, Bars4Icon, CheckIcon} from '@heroicons/vue/24/solid'
     import { reactive, ref, onMounted } from "vue"
     import { useRouter } from "vue-router"
     import moment from 'moment'
@@ -368,7 +368,7 @@
                                     <div class="row mt-2">
                                         <div class="col-lg-12">
                                             <div class="flex space-x-1" >
-                                                <template v-for="(por, r) in po_details" :key="index">
+                                                <template v-for="(por, r) in po_details">
                                                     <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2" v-if="por.reference_po_no != ''">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
                                                 </template>
                                             </div> 
@@ -570,9 +570,9 @@
                         <div class="" v-for="phv in po_head_rev">
                             <a :href="'/pur_po/view_revised/'+phv.id" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ phv.po_no }}{{ (phv.revision_no!=0) ? '.r'+phv.revision_no : '' }}</a>
                         </div>
-                        <div>
+                        <!-- <div>
                             <a :href="'/pur_po/view/'+props.id"  @click="closeModal" class="text-gray-500 block hover:!no-underline hover:bg-gray-100 px-3 py-2 border-b text-sm">{{ po_head.po_no }}{{ (po_head.revision_no!=0) ? '.r'+po_head.revision_no : '' }} (Current)</a>
-                        </div>
+                        </div> -->
                     </div> 
                 </div>
             </div>

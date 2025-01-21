@@ -591,7 +591,8 @@ class RepeatOrderPOController extends Controller
         })->get();
         $currency=Config::get('constants.currency');
         $total=[];
-        $po_details = [];
+        // $po_details = [];
+        $currency=Config::get('constants.currency');
         foreach($podetails AS $pd){
             // $total[]=$pd->unit_price * $pd->quantity;
             // $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
@@ -624,6 +625,7 @@ class RepeatOrderPOController extends Controller
                 'cancelled_reason'=>$pd->cancelled_reason,
                 'status'=>$pd->status,
             ];
+            $total[]=$pd->unit_price * $pd->quantity;
         }
         $total_sum=array_sum($total);
         $podetailsview = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
@@ -631,7 +633,7 @@ class RepeatOrderPOController extends Controller
         })->get();
         $po_details_view = [];
         foreach($podetailsview AS $pd){
-            $total[]=$pd->unit_price * $pd->quantity;
+            // $total[]=$pd->unit_price * $pd->quantity;
             $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
             $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
             $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
@@ -661,7 +663,7 @@ class RepeatOrderPOController extends Controller
         $podetailstemp = PoDetailsTemp::where('po_head_id',$po_head_id)->get();
         $po_details_temp = [];
         foreach($podetailstemp AS $pd){
-            $total[]=$pd->unit_price * $pd->quantity;
+            // $total[]=$pd->unit_price * $pd->quantity;
             $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
             $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
             $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
@@ -711,6 +713,7 @@ class RepeatOrderPOController extends Controller
             'pr_head'=>$pr_head,
             'po_vendor'=>$po_vendor,
             'po_details'=>$po_details,
+            'po_details_view_old'=>$po_details_view,
             'po_details_view'=>$po_details_view,
             'po_details_temp'=>$po_details_temp,
             'po_terms'=>$po_terms,

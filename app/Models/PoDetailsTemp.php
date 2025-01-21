@@ -14,6 +14,8 @@ class PoDetailsTemp extends Model
         'po_head_id',
         'pr_details_id',
         'rfq_offers_id',
+        'reference_po_no',
+        'reference_po_details_id',
         'quantity',
         'total_cost',
         'item_description',

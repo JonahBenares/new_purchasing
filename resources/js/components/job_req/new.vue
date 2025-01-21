@@ -890,7 +890,7 @@
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">JOR No</label>
-										<input type="text" class="form-control" placeholder="JOR No" v-model="jorhead.jor_no" readonly>
+										<input type="text" class="form-control !bg-gray-100" placeholder="JOR No" v-model="jorhead.jor_no" readonly>
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
@@ -1213,7 +1213,7 @@
 								<div class="col-lg-3 col-md-3">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">JOR No</label>
-										<input type="text" class="form-control" placeholder="JOR No" v-model="form.jor_no" readonly>
+										<input type="text" class="form-control !bg-gray-100" placeholder="JOR No" v-model="form.jor_no" readonly>
 									</div>
 								</div>
 								<div class="col-lg-3 col-md-3">
