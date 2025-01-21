@@ -36,13 +36,17 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
     {
         return [
             'purchase_request'  => 'C7',
-            'department' => 'I7',
-            'site_pr' => 'I8',
+            // 'department' => 'I7',
+            'department' => 'G7',
+            'site_pr' => 'G8',
+            // 'site_pr' => 'I8',
             // 'department_code' => 'I8',
             'date_prepared' => 'C8',
             'date_issued' => 'C9',
-            'requestor' => 'I9',
-            'urgency' => 'I10',
+            'requestor' => 'G9',
+            // 'requestor' => 'I9',
+            'urgency' => 'G10',
+            // 'urgency' => 'I10',
             'purpose' => 'C11',
             'enduse' => 'C12',
         ];
@@ -61,7 +65,7 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
             $requestor_id=User::where('name',$requestor)->value('id');
             $department_id=Departments::where('department_name',$department)->value('id');
             $department_code=Departments::where('department_name',$department)->value('department_code');
-            if(!PRHead::where('site_pr',$row['site_pr'])->where('status','Saved')->exists()){
+            if(!PRHead::where('site_pr',trim($row['site_pr']))->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
                 if($row['purchase_request']!=''){
                     $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                     $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
@@ -102,8 +106,6 @@ class PRImport implements WithMappedCells, ToModel, WithHeadingRow
                         $this->id = $pr_head_id->id;
                     }
                 }
-            }else{
-                echo 'duplicate';
             }
         }
     }

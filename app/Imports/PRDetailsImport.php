@@ -18,7 +18,7 @@ class PRDetailsImport implements ToModel, WithHeadingRow, WithMultipleSheets
     public function sheets(): array
     {
         return [
-            'Sheet1' => $this,
+            'Purchase Request' => $this,
         ];
     }
 

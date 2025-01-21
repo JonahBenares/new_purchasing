@@ -256,6 +256,13 @@
         document.getElementById("remaining_balance").innerHTML=remaining_balance.toFixed(4);
 	}
 
+    const dispEwt = () => {
+        if(vat.value==1){
+            vat_percent.value=vendor.value.ewt;
+            vatretChange(vendor.value.ewt)
+        }
+	}
+
     const changeSubtotal = () => {
         var payment_total = 0;
         payment_list.value.forEach(function (val, index, theArray) {
@@ -813,7 +820,7 @@
                                                             </span> -->
                                                             <span class="p-1">EWT</span>
                                                             <div class="flex ">
-                                                                <select name="" id="pvat" class="w-30 border p-1" v-model="vat">
+                                                                <select name="" id="pvat" class="w-30 border p-1" v-model="vat" @change="dispEwt()">
                                                                     <option value="1">VAT</option>
                                                                     <option value="2">NON-VAT</option>
                                                                 </select>

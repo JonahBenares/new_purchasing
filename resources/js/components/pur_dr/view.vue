@@ -37,14 +37,24 @@
 		requestor.value = response.data.requestor;
 		prepared_by.value = response.data.prepared_by;
 		po_dr_items.value.forEach(function (val, index, theArray) {
-			getOffer(val.rfq_offer_id,index)
+			getOffer(val.po_details_id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
 		});
 	}
-	const getOffer = async (rfq_offer_id,count) => {
-		let response = await axios.get("/api/get_offer/"+rfq_offer_id);
-		offer.value[count] = response.data.offer.offer;
-		uom.value[count] = response.data.offer.uom;
+	// const getOffer = async (rfq_offer_id,count) => {
+	// 	let response = await axios.get("/api/get_offer/"+rfq_offer_id);
+	// 	offer.value[count] = response.data.offer.offer;
+	// 	uom.value[count] = response.data.offer.uom;
+	// }
+	const getOffer = async (po_details_id,rfq_offer_id,count) => {
+		let response = await axios.get("/api/get_offer/"+po_details_id+'/'+rfq_offer_id);
+		if(rfq_offer_id!=0){
+			offer.value[count] = response.data.offer.offer;
+			uom.value[count] = response.data.offer.uom;
+		}else{
+			offer.value[count] = response.data.offer.item_description;
+			uom.value[count] = response.data.offer.uom;
+		}
 	}
 
 	const checkRemainingQty = async (po_details_id,qty,count) => {

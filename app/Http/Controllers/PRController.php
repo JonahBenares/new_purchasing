@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\PRImport;
 use App\Imports\PRDetailsImport;
+use App\Exports\PRTemplate;
 use App\Models\PRHead;
 use App\Models\PRDetails;
 use App\Models\PRSeries;
@@ -25,33 +26,45 @@ use Throwable;
 use Config;
 class PRController extends Controller
 {
+
+    public function exportPRTemplate(){
+        //Excel::store(new BeginningBalanceExport, 'begbal.xlsx');
+        return Excel::download(new PRTemplate, 'Purchase Request.xlsx');
+    }
+
     public function import_pr(Request $request){
-        try {
-            DB::beginTransaction();
+        
             if($request->file('upload_pr')){
                 $filename=$request->file('upload_pr')->getClientOriginalName();
                 $request->file('upload_pr')->storeAs('imports',$filename);
                 $user_id = auth()->user()->id;
-                $prImport = new PRImport($user_id);
-                $sheet1 = Excel::import($prImport, request()->file('upload_pr'));
-                $head = $prImport->data;
-                $pr_head_id = $prImport->id;
-                $prImportdetails = new PRDetailsImport($pr_head_id);
-                $sheet2 = Excel::import($prImportdetails, request()->file('upload_pr'));
-                $details = $prImportdetails->data;
-                DB::commit();
-                return response()->json([
-                    'pr_head_id'=>$pr_head_id,
-                    'prhead'=>$head,
-                    'prdetails'=>$details,
-                ],200);
+                try {
+                    DB::beginTransaction();
+                    $prImport = new PRImport($user_id);
+                    $sheet1 = Excel::import($prImport, request()->file('upload_pr'));
+                    $head = $prImport->data;
+                    $pr_head_id = $prImport->id;
+                    $details=array();
+                    if($prImport->id!=null){
+                        $prImportdetails = new PRDetailsImport($pr_head_id);
+                        $sheet2 = Excel::import($prImportdetails, request()->file('upload_pr'));
+                        $details = $prImportdetails->data;
+                    }
+                    DB::commit();
+                    return response()->json([
+                        'pr_head_id'=>$pr_head_id,
+                        'prhead'=>$head,
+                        'prdetails'=>$details,
+                    ],200);
+                } catch (Throwable $e) {
+                    DB::rollBack();
+                    echo 'error';
+                }
+                
                 // Excel::import(new PRImport($user_id), request()->file('upload_pr'));
                 // Excel::import(new PRDetailsImport, request()->file('upload_pr'));
             }
-        } catch (Throwable $e) {
-            DB::rollBack();
-            echo 'error';
-        }
+       
     }
 
     public function get_import_data($id){
@@ -97,6 +110,7 @@ class PRController extends Controller
     }
 
     public function save_upload(Request $request, $id){
+        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
         // $prhead=$request->input("prhead");
         $prdetails=$request->input("prdetails");
         $item_list=$request->input("item_list");
@@ -230,6 +244,9 @@ class PRController extends Controller
                             PrReportDetails::create($prreport);
                         }
                     }
+                }else{
+                    echo 'error';
+                }
                 // }
             // }
         // }
@@ -237,6 +254,7 @@ class PRController extends Controller
 
     public function save_upload_draft(Request $request, $id){
         // $prhead=$request->input("prhead");
+        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
         $prdetails=$request->input("prdetails");
         $item_list=$request->input("item_list");
         // if(count(json_decode($prhead))>0){
@@ -355,6 +373,9 @@ class PRController extends Controller
                             PrReportDetails::create($prreport);
                         }
                     }
+                }else{
+                    echo 'error';
+                }
         //         }
         //     }
         // }
@@ -498,7 +519,7 @@ class PRController extends Controller
     }
     
     public function save_manual(Request $request){
-        if(!PRHead::where('site_pr',$request->site_pr)->where('status','Saved')->exists()){
+        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$request->prhead_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
             $item_list=$request->input("item_list");
             $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
             $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
@@ -678,161 +699,165 @@ class PRController extends Controller
     }
 
     public function save_manual_draft(Request $request){
-        $item_list=$request->input("item_list");
-        // $department_name=Departments::where('id',$request->department)->value('department_name');
-        $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
-        $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
-        // $pr_no=explode('-',$request->pr_no);
-        $requestor=User::where('id',$request->requestor)->value('name');
-        $department_name=Departments::where('id',$request->department_id)->value('department_name');
-        $department_code=Departments::where('id',$request->department_id)->value('department_code');
-        $series_rows = PRSeries::where('year',$year)->count();
-        $data_head=$this->validate($request,
-            [
-                'pr_no'=>'required|string',
-                'department_id'=>'required|integer'
-            ],
-            [
-               'department_id.required'=> 'The department field is required.'
-            ]
-        );
-        $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
-        $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
-        $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
-        $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
-        $data_head['department_name']=$department_name;
-        $data_head['dept_code']=$department_code;
-        $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
-        $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
-        $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : 0;
-        $data_head['requestor']=$requestor;
-        $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
-        $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
-        $data_head['method']='Manual';
-        $data_head['status']='Draft';
-        $data_head['petty_cash']=$request->petty_cash;
-        $data_head['user_id']=Auth::id();
-        // $data_head=[
-        //     'location'=>$request->location,
-        //     'pr_no'=>$pr_no,
-        //     'site_pr'=>$request->site_pr,
-        //     'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : '',
-        //     'department_id'=>$request->department,
-        //     'department_name'=>$department_name,
-        //     'urgency'=>$request->urgency,
-        //     'process_code'=>$request->process_code,
-        //     'requestor'=>$request->requestor,
-        //     'enduse'=>$request->enduse,
-        //     'purpose'=>$request->purpose,
-        //     'method'=>'Manual',
-        //     'status'=>'Draft',
-        //     'petty_cash'=>$request->petty_cash,
-        // ];    
-        if($request->prhead_id==0){
-            $insertprhead=PRHead::create($data_head);
-        }else{
-            $insertprhead=PRHead::where('id',$request->prhead_id)->first();
-            $insertprhead->update($data_head);
-        }
-        $exp=explode('-',$request->pr_no);
-        if($series_rows==0){
-            $max_series='1';
-            $pr_series='0001';
-            $pr_no = $department_code.$year_short."-".$pr_series;
-        } else {
-            $max_series=PRSeries::where('year',$year)->max('series');
-            $pr_series=$max_series+1;
-            $pr_no = $department_code.$year_short."-".$exp[1];
-            // Str::padLeft($pr_series, 4,'000')
-        }
-        if(!PRSeries::where('year',$year)->where('series',$exp[1])->exists()){
-            $series['year']=$year;
-            $series['series']=$pr_series;
-            $pr_series=PRSeries::create($series);
-        }
-        if($insertprhead && $request->petty_cash==1){
-            $data_petty=[
-                'pr_head_id'=>$insertprhead->id,
-                'pr_no'=>$request->pr_no,
-                'prepared_by'=>Auth::id(),
-                'recommended_by'=>$request->recommended_by,
-                'approved_by'=>$request->approved_by,
-                'approved_date'=>$request->approved_date,
-                'remarks'=>$request->remarks,
-                'user_id'=>Auth::id(),
-            ]; 
-            if($request->prhead_id==0){ 
-                PettyCash::create($data_petty);
+        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$request->prhead_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
+            $item_list=$request->input("item_list");
+            // $department_name=Departments::where('id',$request->department)->value('department_name');
+            $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
+            $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
+            // $pr_no=explode('-',$request->pr_no);
+            $requestor=User::where('id',$request->requestor)->value('name');
+            $department_name=Departments::where('id',$request->department_id)->value('department_name');
+            $department_code=Departments::where('id',$request->department_id)->value('department_code');
+            $series_rows = PRSeries::where('year',$year)->count();
+            $data_head=$this->validate($request,
+                [
+                    'pr_no'=>'required|string',
+                    'department_id'=>'required|integer'
+                ],
+                [
+                'department_id.required'=> 'The department field is required.'
+                ]
+            );
+            $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
+            $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+            $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
+            $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
+            $data_head['department_name']=$department_name;
+            $data_head['dept_code']=$department_code;
+            $data_head['urgency']=($request->urgency!='undefined' && $request->urgency!='null' && $request->urgency!='') ? $request->urgency : '';
+            $data_head['process_code']=($request->process_code!='undefined' && $request->process_code!='null' && $request->process_code!='') ? $request->process_code : '';
+            $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : 0;
+            $data_head['requestor']=$requestor;
+            $data_head['enduse']=($request->enduse!='undefined' && $request->enduse!='null' && $request->enduse!='') ? $request->enduse : '';
+            $data_head['purpose']=($request->purpose!='undefined' && $request->purpose!='null' && $request->purpose!='') ? $request->purpose : '';
+            $data_head['method']='Manual';
+            $data_head['status']='Draft';
+            $data_head['petty_cash']=$request->petty_cash;
+            $data_head['user_id']=Auth::id();
+            // $data_head=[
+            //     'location'=>$request->location,
+            //     'pr_no'=>$pr_no,
+            //     'site_pr'=>$request->site_pr,
+            //     'date_prepared'=>($request->date_prepared!='undefined') ? $request->date_prepared : '',
+            //     'department_id'=>$request->department,
+            //     'department_name'=>$department_name,
+            //     'urgency'=>$request->urgency,
+            //     'process_code'=>$request->process_code,
+            //     'requestor'=>$request->requestor,
+            //     'enduse'=>$request->enduse,
+            //     'purpose'=>$request->purpose,
+            //     'method'=>'Manual',
+            //     'status'=>'Draft',
+            //     'petty_cash'=>$request->petty_cash,
+            // ];    
+            if($request->prhead_id==0){
+                $insertprhead=PRHead::create($data_head);
             }else{
-                $updatepetty=PettyCash::where('pr_head_id',$request->prhead_id)->first();
-                $updatepetty->update($data_head);
+                $insertprhead=PRHead::where('id',$request->prhead_id)->first();
+                $insertprhead->update($data_head);
             }
-        }   
-        foreach(json_decode($item_list) AS $il){
-            $data=[
-                'pr_head_id'=>$insertprhead->id,
-                'quantity'=>$il->qty,
-                'uom'=>$il->uom,
-                'pn_no'=>$il->pn_no,
-                'item_description'=>$il->item_desc,
-                'wh_stocks'=>$il->wh_stocks,
-                'date_needed'=>$il->date_needed,
-                'recom_date'=>$il->recom_date,
-                'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
-                'status'=>'Draft',
-            ];
-            if($request->prhead_id==0){ 
-                $prdetails_id=PRDetails::create($data);
-            }else{
-                if(!PRDetails::where('pr_head_id',$request->prhead_id)->where('uom',$il->uom)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->where('quantity',$il->qty)->exists()){
+            $exp=explode('-',$request->pr_no);
+            if($series_rows==0){
+                $max_series='1';
+                $pr_series='0001';
+                $pr_no = $department_code.$year_short."-".$pr_series;
+            } else {
+                $max_series=PRSeries::where('year',$year)->max('series');
+                $pr_series=$max_series+1;
+                $pr_no = $department_code.$year_short."-".$exp[1];
+                // Str::padLeft($pr_series, 4,'000')
+            }
+            if(!PRSeries::where('year',$year)->where('series',$exp[1])->exists()){
+                $series['year']=$year;
+                $series['series']=$pr_series;
+                $pr_series=PRSeries::create($series);
+            }
+            if($insertprhead && $request->petty_cash==1){
+                $data_petty=[
+                    'pr_head_id'=>$insertprhead->id,
+                    'pr_no'=>$request->pr_no,
+                    'prepared_by'=>Auth::id(),
+                    'recommended_by'=>$request->recommended_by,
+                    'approved_by'=>$request->approved_by,
+                    'approved_date'=>$request->approved_date,
+                    'remarks'=>$request->remarks,
+                    'user_id'=>Auth::id(),
+                ]; 
+                if($request->prhead_id==0){ 
+                    PettyCash::create($data_petty);
+                }else{
+                    $updatepetty=PettyCash::where('pr_head_id',$request->prhead_id)->first();
+                    $updatepetty->update($data_head);
+                }
+            }   
+            foreach(json_decode($item_list) AS $il){
+                $data=[
+                    'pr_head_id'=>$insertprhead->id,
+                    'quantity'=>$il->qty,
+                    'uom'=>$il->uom,
+                    'pn_no'=>$il->pn_no,
+                    'item_description'=>$il->item_desc,
+                    'wh_stocks'=>$il->wh_stocks,
+                    'date_needed'=>$il->date_needed,
+                    'recom_date'=>$il->recom_date,
+                    'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
+                    'status'=>'Draft',
+                ];
+                if($request->prhead_id==0){ 
                     $prdetails_id=PRDetails::create($data);
                 }else{
-                    // $prdetails_id=PRDetails::where('pr_head_id',$request->prhead_id)->update($data);
-                    // $prdetails_id=PRDetails::where('pr_head_id',$request->prhead_id)->first();
-                    // $prdetails_id->update($data);
-                    $prdetails_id=PRDetails::updateOrCreate(
-                        [
-                            'item_description'   => $il->item_desc,
-                            'pn_no'=>$il->pn_no,
-                            'quantity'=>$il->qty,
-                            'uom'=>$il->uom,
-                            'date_needed'=>$il->date_needed,
-                            'recom_date'=>$il->recom_date,
-                        ],
-                        [
-                            'pr_head_id'=>$insertprhead->id,
-                            'quantity'=>$il->qty,
-                            'uom'=>$il->uom,
-                            'pn_no'=>$il->pn_no,
-                            'item_description'=>$il->item_desc,
-                            'wh_stocks'=>$il->wh_stocks,
-                            'date_needed'=>$il->date_needed,
-                            'recom_date'=>$il->recom_date,
-                            'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
-                            'status'=>'Draft',
-                        ]
-                    );
+                    if(!PRDetails::where('pr_head_id',$request->prhead_id)->where('uom',$il->uom)->where('pn_no',$il->pn_no)->where('item_description',$il->item_desc)->where('quantity',$il->qty)->exists()){
+                        $prdetails_id=PRDetails::create($data);
+                    }else{
+                        // $prdetails_id=PRDetails::where('pr_head_id',$request->prhead_id)->update($data);
+                        // $prdetails_id=PRDetails::where('pr_head_id',$request->prhead_id)->first();
+                        // $prdetails_id->update($data);
+                        $prdetails_id=PRDetails::updateOrCreate(
+                            [
+                                'item_description'   => $il->item_desc,
+                                'pn_no'=>$il->pn_no,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                            ],
+                            [
+                                'pr_head_id'=>$insertprhead->id,
+                                'quantity'=>$il->qty,
+                                'uom'=>$il->uom,
+                                'pn_no'=>$il->pn_no,
+                                'item_description'=>$il->item_desc,
+                                'wh_stocks'=>$il->wh_stocks,
+                                'date_needed'=>$il->date_needed,
+                                'recom_date'=>$il->recom_date,
+                                'recom_status'=>($il->recom_date!='' && $il->recom_date!='undefined' && $il->recom_date!='null') ? 'Open' : '',
+                                'status'=>'Draft',
+                            ]
+                        );
+                    }
                 }
-            }
-            if($prdetails_id){
-                $prreport['pr_no']=$insertprhead->pr_no;
-                $prreport['pr_details_id']=$prdetails_id->id;
-                $prreport['item_description']=$il->item_desc;
-                $prreport['pr_qty']=$il->qty;
-                $prreport['uom']=$il->uom;
-                $prreport['status']='Pending for RFQ';
-                if($request->prhead_id==0){ 
-                    PrReportDetails::create($prreport);
-                }else{
-                    if(!PrReportDetails::where('pr_details_id',$prdetails_id->id)->where('item_description',$il->item_desc)->exists()){
+                if($prdetails_id){
+                    $prreport['pr_no']=$insertprhead->pr_no;
+                    $prreport['pr_details_id']=$prdetails_id->id;
+                    $prreport['item_description']=$il->item_desc;
+                    $prreport['pr_qty']=$il->qty;
+                    $prreport['uom']=$il->uom;
+                    $prreport['status']='Pending for RFQ';
+                    if($request->prhead_id==0){ 
                         PrReportDetails::create($prreport);
                     }else{
-                        PrReportDetails::where('pr_details_id',$prdetails_id->id)->update($prreport);
+                        if(!PrReportDetails::where('pr_details_id',$prdetails_id->id)->where('item_description',$il->item_desc)->exists()){
+                            PrReportDetails::create($prreport);
+                        }else{
+                            PrReportDetails::where('pr_details_id',$prdetails_id->id)->update($prreport);
+                        }
                     }
                 }
             }
+            return $insertprhead->id;
+        }else{
+            echo 'error';
         }
-        return $insertprhead->id;
     }
 
     public function get_allpr(){
@@ -879,7 +904,11 @@ class PRController extends Controller
         $check_existprreport=[];
         foreach($prdetails AS $p){
             $check_existpo[]=PoDetails::where('pr_details_id',$p->id)->exists();
-            $check_existprreport[]=PrReportDetails::where('pr_details_id',$p->id)->where('po_qty','!=','0')->orWhere('dpo_qty','!=','0')->orWhere('rpo_qty','!=','0')->exists();
+            $check_existprreport[]=PrReportDetails::where('pr_details_id',$p->id)->where(function ($query) {
+                $query->where('po_qty', '!=', 0)
+                      ->orWhere('dpo_qty', '!=', 0)
+                      ->orWhere('rpo_qty', '!=', 0);
+            })->exists();
         }
         return response()->json([
             'prhead'=>$prhead,

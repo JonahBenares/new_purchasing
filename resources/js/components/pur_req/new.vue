@@ -321,7 +321,9 @@
 		pr_options.value='';
 		try {
 			axios.post("/api/import_pr",formData).then(function (response) {
-				if(response.data!='error' && response.data!='duplicateerror'){
+				console.log(response.data)
+				if(response.data!='error' && response.data.prhead!=undefined){
+					
 					pr_head_id.value=response.data.pr_head_id
 					getImportdata(pr_head_id.value)
 					// prhead.value=response.data.prhead
@@ -330,15 +332,27 @@
 					// successAlert.value=!successAlert.value
 					pr_options.value='pr_upload';
 					loading.value=false;
+					const fileInput = document.getElementById('upload_pr');
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
 					prFile.value=''
 					const btn_pr = document.getElementById("btn_pr");
 					btn_pr.disabled = true;
-				}else if(response.data=='duplicateerror'){
+				}else if(response.data!='error' && response.data.prhead==undefined){
+					const fileInput = document.getElementById('upload_pr');
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
 					prFile.value=''
 					loading.value=false;
 					error.value ='Site PR No. duplicate entry!';
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}else{
+					const fileInput = document.getElementById('upload_pr');
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
 					prFile.value=''
 					loading.value=false;
 					error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';
@@ -431,16 +445,22 @@
 		formData.append('props_id', props.id)
 		if(prdetails.value.length!=0 || item_list.value.length!=0){
 			axios.post(`/api/save_upload/${pr_head_id.value}`,formData).then(function (response) {
-				if(prhead.value.petty_cash==0){
-					success.value='You have successfully saved new pr.'
-					successAlert.value=!successAlert.value
+				if(response.data!='error'){
+					if(prhead.value.petty_cash==0){
+						success.value='You have successfully saved new pr.'
+						successAlert.value=!successAlert.value
+					}else{
+						success.value='You have successfully saved new pr.'
+						successAlert.value=!successAlert.value
+						router.push('/pur_req/view/'+prhead.value.id)
+					}
+					item_list.value=[]
+					getImportdata(pr_head_id.value)
 				}else{
-					success.value='You have successfully saved new pr.'
-					successAlert.value=!successAlert.value
-					router.push('/pur_req/view/'+prhead.value.id)
+					error.value ='Site PR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
 				}
-				item_list.value=[]
-				getImportdata(pr_head_id.value)
+				
 			}, function (err) {
 				// error.value = err.response.data.message;
 				error.value=''
@@ -512,11 +532,15 @@
 		}
 		formData.append('props_id', props.id)
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
-			success.value='You have successfully draft new pr.'
-			warningAlert.value=!warningAlert.value
-			item_list.value=[]
-			getImportdata(pr_head_id.value)
-			
+			if(response.data!='error'){
+				success.value='You have successfully draft new pr.'
+				warningAlert.value=!warningAlert.value
+				item_list.value=[]
+				getImportdata(pr_head_id.value)
+			}else{
+				error.value ='Site PR No. duplicate entry!';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}
 			// setTimeout(() => {
 			// 	closeAlert()
 			// }, 2000);
@@ -677,14 +701,19 @@
 		formData.append('item_list', JSON.stringify(item_list.value))
 		axios.post(`/api/save_manual_draft`,formData).then(function (response) {
 			// console.log(response.data)
-			success.value='You have successfully draft new pr.'
-			warningAlert.value=!warningAlert.value
-			prheadid.value=response.data;
-			const btn_draft = document.getElementById("btn_draft");
-			btn_draft.disabled = true;
-			setTimeout(() => {
-				btn_draft.disabled = false;
-			}, 500);
+			if(response.data!='error'){
+				success.value='You have successfully draft new pr.'
+				warningAlert.value=!warningAlert.value
+				prheadid.value=response.data;
+				const btn_draft = document.getElementById("btn_draft");
+				btn_draft.disabled = true;
+				setTimeout(() => {
+					btn_draft.disabled = false;
+				}, 500);
+			}else{
+				error.value ='Site PR No. duplicate entry!';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}
 		}, function (err) {
 			error_pr.value=[]
 			// error_pr.value = err.response.data.message;

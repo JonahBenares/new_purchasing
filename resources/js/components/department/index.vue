@@ -111,12 +111,17 @@
 		const formData= new FormData()
 		formData.append('department_name', form.value.department_name)
 		formData.append('department_code', form.value.department_code)
-		axios.post("/api/add_department",formData).then(function () {
-			success.value='You have successfully added new department!'
-			form.value.department_name=''
-			form.value.department_code=''
-			successAlert.value = !successAlert.value
-			getDepartment()
+		axios.post("/api/add_department",formData).then(function (response) {
+			if(response.data!='error'){
+				success.value='You have successfully added new department!'
+				form.value.department_name=''
+				form.value.department_code=''
+				successAlert.value = !successAlert.value
+				getDepartment()
+			}else{
+				error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';
+				dangerAlert.value=!dangerAlert.value
+			}
 			// setTimeout(() => {
 			// 	closeModal()
 			// 	closeAlert()
@@ -132,12 +137,17 @@
 		const formData= new FormData()
 		formData.append('department_name', edit_department.value.department_name)
 		formData.append('department_code', edit_department.value.department_code)
-		axios.post(`/api/update_department/${id}`,formData).then(function () {
-			success.value='You have successfully updated department!'
-			form.value.department_name=''
-			form.value.department_code=''
-			successAlert.value = !successAlert.value
-			getDepartment()
+		axios.post(`/api/update_department/${id}`,formData).then(function (response) {
+			if(response.data!='error'){
+				success.value='You have successfully updated department!'
+				form.value.department_name=''
+				form.value.department_code=''
+				successAlert.value = !successAlert.value
+				getDepartment()
+			}else{
+				error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';
+				dangerAlert.value=!dangerAlert.value
+			}
 			// setTimeout(() => {
 			// 	closeModal()
 			// 	closeAlert()

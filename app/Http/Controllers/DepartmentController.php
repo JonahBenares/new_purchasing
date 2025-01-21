@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Departments;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 class DepartmentController extends Controller
 {
     public function create_department(Request $request){
@@ -35,7 +37,14 @@ class DepartmentController extends Controller
             'department_name'=>['unique:department','required','string'],
             'department_code'=>['required','string'],
         ]);
-        Departments::create($validated);
+        try {
+            DB::beginTransaction();
+            DB::commit();
+            Departments::create($validated);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            echo 'error';
+        }
     }
 
     public function edit_department($id){
@@ -51,6 +60,13 @@ class DepartmentController extends Controller
             'department_name'=>'required|string|unique:department,department_name,'.$id,
             'department_code'=>'required|string',
         ]);
-        $departments->update($validated);
+        try {
+            DB::beginTransaction();
+            DB::commit();
+            $departments->update($validated);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            echo 'error';
+        }
     }
 }

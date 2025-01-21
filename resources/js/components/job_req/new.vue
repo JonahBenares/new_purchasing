@@ -121,15 +121,27 @@
 					getImportdata(jor_head_id.value)
 					jo_options.value='jo_upload';
 					loading.value=false;
+					const fileInput = document.getElementById('upload_jor');
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
 					jorFile.value=''
 					const btn_jor = document.getElementById("btn_jor");
 					btn_jor.disabled = true;
 				}else if(response.data=='duplicateerror'){
+					const fileInput = document.getElementById('upload_jor');
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
 					jorFile.value=''
 					loading.value=false;
 					error.value ='Site JOR No. duplicate entry!';
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}else{
+					const fileInput = document.getElementById('upload_jor');
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
 					jorFile.value=''
 					loading.value=false;
 					error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';

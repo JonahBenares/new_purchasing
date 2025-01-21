@@ -34,6 +34,7 @@
 	const offer =  ref([]);
 	const uom = ref([])
 	const remaining_delivery = ref([])
+	const isDriverReadonly = ref(false);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -82,6 +83,10 @@
 		dr_no.value = response.data.dr_no;
 		count_po_head_id.value = response.data.count_po_head_id;
 		po_dr.value = response.data.po_dr;
+		if(po_dr.value.received==0){
+			driver.value=po_dr.value.driver
+			isDriverReadonly.value = true;
+		}
 		po_dr_mult.value = response.data.po_dr_mult;
 		po_dr_items.value = response.data.po_dr_items;
 		vendor.value = response.data.vendor;
@@ -91,7 +96,7 @@
 		prepared_by.value = response.data.prepared_by;
 		total_sumdelivered.value = response.data.total_sumdelivered;
 		po_dr_items.value.forEach(function (val, index, theArray) {
-			getOffer(props.id,val.rfq_offer_id,index)
+			getOffer(val.po_details_id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
 		});
 	}
@@ -101,6 +106,10 @@
 		driver.value=(po_dr.value.received==0) ? po_dr.value.driver : '';
 		count_po_head_id.value = response.data.count_po_head_id;
 		po_dr.value = response.data.po_dr;
+		if(po_dr.value.received==0){
+			driver.value=po_dr.value.driver
+			isDriverReadonly.value = true;
+		}
 		po_dr_mult.value = response.data.po_dr_mult;
 		po_dr_items.value = response.data.po_dr_items;
 		vendor.value = response.data.vendor;
@@ -110,16 +119,16 @@
 		prepared_by.value = response.data.prepared_by;
 		total_sumdelivered.value = response.data.total_sumdelivered;
 		po_dr_items.value.forEach(function (val, index, theArray) {
-			getOffer(props.id,val.rfq_offer_id,index)
+			getOffer(val.po_details_id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
 			// to_deliver.value[index]= parseFloat(val.quantity)  - total_sumdelivered1.value[index]
 			// to_deliver.value[index]= parseFloat(val.quantity) - parseFloat(val.delivered_qty)
 		});
 	}
 
-	const getOffer = async (po_head_id,rfq_offer_id,count) => {
-		let response = await axios.get("/api/get_offer/"+po_head_id+'/'+rfq_offer_id);
-		if(rfq_offer_id!=0){
+	const getOffer = async (po_details_id,rfq_offer_id,count) => {
+		let response = await axios.get("/api/get_offer/"+po_details_id+'/'+rfq_offer_id);
+		if(rfq_offer_id!=0 && rfq_offer_id!=''){
 			offer.value[count] = response.data.offer.offer;
 			uom.value[count] = response.data.offer.uom;
 		}else{
@@ -380,7 +389,7 @@
 												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
 												<td class="p-0 ">
-													<input type="text" id="driver" class="w-full bg-yellow-50 p-1 text-center" v-model="driver" @click="resetError()">
+													<input type="text" id="driver" class="w-full bg-yellow-50 p-1 text-center" v-model="driver" @click="resetError()" :readonly="isDriverReadonly">
 												</td>
 												<td></td>
 											</tr>
@@ -433,7 +442,7 @@
 									</div>
 								</div>
 							</div>
-							<div v-else-if="to_deliver.length!=0 && allZero()">
+							<div v-else-if="to_deliver.length==0 && allZero()">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>

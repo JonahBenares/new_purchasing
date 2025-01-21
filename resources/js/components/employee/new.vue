@@ -40,21 +40,26 @@
 		formData.append('position', form.value.position)
 		formData.append('access', access)
 		formData.append('user_type', form.value.user_type)
-		axios.post("/api/add_employee",formData).then(function () {
-			success.value='You have successfully added new employee!'
-			// form.value=[]
-			error.value=[]
-			form.value.employee_name=''
-			form.value.department_id=''
-			form.value.position=''
-			successAlert.value = !successAlert.value
-			let show=document.getElementById('showCred');
-			show.style.display = 'none'; 
-			getDepartment()
-			employeesForm()
-			setTimeout(() => {
-				closeAlert()
-			}, 2000);
+		axios.post("/api/add_employee",formData).then(function (response) {
+			if(response.data!='error'){
+				success.value='You have successfully added new employee!'
+				// form.value=[]
+				error.value=[]
+				form.value.employee_name=''
+				form.value.department_id=''
+				form.value.position=''
+				successAlert.value = !successAlert.value
+				let show=document.getElementById('showCred');
+				show.style.display = 'none'; 
+				getDepartment()
+				employeesForm()
+				setTimeout(() => {
+					closeAlert()
+				}, 2000);
+			}else{
+				error.value.push('The uploaded file did not pass validation. Ensure it meets all requirements and try again.');
+				dangerAlert.value=!dangerAlert.value
+			}
 		}, function (err) {
 			// error.value = err.response.data.message;
 			error.value=[]

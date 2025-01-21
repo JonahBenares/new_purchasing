@@ -9,6 +9,8 @@ use App\Models\Employees;
 use App\Models\Departments;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 class EmployeeController extends Controller
 {
     public function create_employee(Request $request){
@@ -56,7 +58,14 @@ class EmployeeController extends Controller
         //     'access'=>['integer','nullable'],
         // ]);
         $validated=$request->validated();
-        User::create($validated);
+        try {
+            DB::beginTransaction();
+            DB::commit();
+            User::create($validated);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            echo 'error';
+        }
     }
 
     public function edit_employee($id){
@@ -94,7 +103,14 @@ class EmployeeController extends Controller
                 'user_type'=>'',
             ];
         }
-        $employees->update($validated);
+        try {
+            DB::beginTransaction();
+            DB::commit();
+            $employees->update($validated);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            echo 'error';
+        }
     }
 
     public function get_department(){
