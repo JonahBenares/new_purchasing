@@ -171,6 +171,9 @@
     }
 </script>
 <style>
+    .display_view{
+        display: none;
+    }
     @media print {
         .print-only {
             display: block !important; /* Show only during print */
@@ -178,8 +181,8 @@
         .no-print {
             display: none !important; /* Hide during print */
         }
-        .in-print-only {
-            display: block !important; /* Show only during print */
+        .display_view{
+            display: block;
         }
     }
     
@@ -390,8 +393,12 @@
                                         <div class="col-lg-12">
                                             <div class="flex space-x-1" >
                                                 <template v-for="(por, r) in po_details">
-                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2" v-if="por.reference_po_no != ''">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
+                                                    <!-- hide sa print/ -->
+                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2 no-print" v-if="por.reference_po_details_id != '' || por.status!='Cancelled'">Item No. {{ por.item_no }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
+                                                    <!-- show sa print -->
+                                                    <span class="text-xs text-gray-500 bg-gray-200 rounded p-1 px-2 display_view" v-if="por.status!='Cancelled'">Item No. {{ por.item_no }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
                                                 </template>
+                                                
                                             </div> 
                                         </div>
                                     </div>
