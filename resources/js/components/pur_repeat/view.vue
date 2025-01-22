@@ -358,9 +358,11 @@
                                                                     {{ vat_amount =parseFloat(new_vat) }}
                                                                     {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
                                                                 </span>
-                                                                <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(po_head.vat_amount ?? 0)">
+                                                                <!-- <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(po_head.vat_amount ?? 0)"> -->
+                                                                <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(vat_amount ?? 0)">
                                                                 <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'" disabled :value="formatter.format(vat_amount ?? 0)">
-                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(po_head.vat_amount ?? 0)">
+                                                                <!-- <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(po_head.vat_amount ?? 0)"> -->
+                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(vat_amount ?? 0)">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -379,11 +381,13 @@
                                                         <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">{{ formatter.format(po_head.grand_total - cancelled_qty ?? 0) }}</td>
                                                         <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
 
-                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
+                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(grand_total ?? 0) }}</td>
                                                         <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">
                                                             {{ formatter.format(grand_total) }}
                                                         </td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(grand_total ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
