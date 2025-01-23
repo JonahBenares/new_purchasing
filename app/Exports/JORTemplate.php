@@ -261,6 +261,8 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                         ]
                     ]);
                     $event->sheet->mergeCells('B'.$l.':H'.$l);
+                    $event->sheet->getStyle('I'.$l)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+                    $event->sheet->getStyle('K'.$l)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
                 }
                 for($m=22;$m<=27;$m++){
                     $event->sheet->getStyle('A'.$m.':K'.$m)->applyFromArray([
@@ -275,8 +277,10 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                         ]
                     ]);
+                    $event->sheet->getStyle('B'.$m)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
                     $event->sheet->mergeCells('E'.$m.':I'.$m);
                     $event->sheet->getStyle('K'.$m)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDD2);
+                    $event->sheet->getStyle('I'.$m)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
                     
                 }
                 $event->sheet->getDelegate()->getStyle('A15:K15')->applyFromArray([

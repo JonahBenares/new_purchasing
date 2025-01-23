@@ -64,7 +64,7 @@ class JORLaborImport implements ToModel, WithHeadingRow, SkipsEmptyRows
                     $labordetails['status']='Draft';
                     $jor_labor_details_id=JORlaborDetails::create($labordetails);
                 }else if($this->rows==1){
-                    if ($item_no != 'Materials:' && $item_no != 'Item No.') {
+                    if ($item_no != 'Materials:' && $item_no != 'Item No') {
                         if($item_no!='Notes:'){
                             $date_needed=$row[10] ?? '';
                             $date_needed_disp= ($date_needed!='') ? date('Y-m-d',strtotime($this->transformDate($date_needed))) : '';
