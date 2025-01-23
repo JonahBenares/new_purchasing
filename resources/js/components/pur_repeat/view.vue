@@ -32,6 +32,7 @@
     const recommended_by =  ref('');
     const approved_by =  ref('');
     const cancelled_by =  ref('');
+    const grand_total =  ref(0);
     let po_details_id_view=ref("")
     let cancel_reason=ref("")
     let cancel_all_reason=ref("")
@@ -170,6 +171,9 @@
     }
 </script>
 <style>
+    .display_view{
+        display: none;
+    }
     @media print {
         .print-only {
             display: block !important; /* Show only during print */
@@ -177,8 +181,8 @@
         .no-print {
             display: none !important; /* Hide during print */
         }
-        .in-print-only {
-            display: block !important; /* Show only during print */
+        .display_view{
+            display: block;
         }
     }
     
@@ -276,9 +280,15 @@
                                                         <td class="uppercase p-1 text-center" width="12%">Unit Price</td>
                                                         <td class="uppercase p-1 text-center" width="12%">Total</td>
                                                     </tr>
-                                                    <span hidden>{{ cancelled_qty=0 }}</span>
+                                                    <span hidden>
+                                                        {{ cancelled_qty=0 }}
+                                                        {{ total_cost=0 }}
+                                                    </span>
                                                     <tr class="" v-for="(pd,indeex) in po_details" v-if="po_head.status!='Cancelled'">
-                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
+                                                        <span hidden>
+                                                            {{ cancelled_qty+=(pd.status=='Cancelled') ? pd.totalprice : 0 }}
+                                                            {{ total_cost+=pd.totalprice}}
+                                                        </span>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
@@ -294,7 +304,7 @@
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-right bg-red-100 print:!text-red-500 print:!bg-transparent print:hidden' : 'border-y-none p-1 text-right'">{{ formatter.format(pd.totalprice) }}</td>
                                                     </tr>
                                                     <tr class="" v-for="(pd,indeex) in po_details" v-else>
-                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.total_cost : 0 }}</span>
+                                                        <span hidden>{{ cancelled_qty+=(pd.status=='Cancelled') ? pd.totalprice : 0 }}</span>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{indeex+1}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.quantity}}</td>
                                                         <td :class="(pd.status=='Cancelled') ? 'border-y-none p-1 text-center bg-red-100 print:!text-red-500 print:!bg-transparent' : 'border-y-none p-1 text-center'">{{pd.uom}}</td>
@@ -342,7 +352,17 @@
                                                             <div class="flex">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
-                                                                <input type="text" class="w-full bg-white p-1 text-right" disabled :value="formatter.format(po_head.vat_amount ?? 0)">
+                                                                <span hidden>
+                                                                    {{ percent_vat=  po_head.vat_percent/100 }} 
+                                                                    {{ new_vat= ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount)) * parseFloat(percent_vat) }}
+                                                                    {{ vat_amount =parseFloat(new_vat) }}
+                                                                    {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
+                                                                </span>
+                                                                <!-- <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(po_head.vat_amount ?? 0)"> -->
+                                                                <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(vat_amount ?? 0)">
+                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'" disabled :value="formatter.format(vat_amount ?? 0)">
+                                                                <!-- <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(po_head.vat_amount ?? 0)"> -->
+                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(vat_amount ?? 0)">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -357,9 +377,17 @@
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
 
-                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
                                                         <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">{{ formatter.format(po_head.grand_total - cancelled_qty ?? 0) }}</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
+
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
+                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(grand_total ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">
+                                                            {{ formatter.format(grand_total) }}
+                                                        </td>
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(grand_total ?? 0) }}</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -369,8 +397,12 @@
                                         <div class="col-lg-12">
                                             <div class="flex space-x-1" >
                                                 <template v-for="(por, r) in po_details">
-                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2" v-if="por.reference_po_no != ''">Item No. {{ r + 1 }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
+                                                    <!-- hide sa print/ -->
+                                                    <span class="text-xs text-gray-500 bg-gray-100 rounded p-1 px-2 no-print" v-if="por.reference_po_details_id != '' || por.status!='Cancelled'">Item No. {{ por.item_no }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
+                                                    <!-- show sa print -->
+                                                    <span class="text-xs text-gray-500 bg-gray-200 rounded p-1 px-2 display_view" v-if="por.status!='Cancelled'">Item No. {{ por.item_no }} is a repeat Order of PO No. {{ por.reference_po_no }}</span>
                                                 </template>
+                                                
                                             </div> 
                                         </div>
                                     </div>
@@ -490,7 +522,7 @@
                                                 </div>
                                                 <div class="flex justify-between space-x-1">
                                                     <div class="flex justify-between" v-if="po_head.status!='Cancelled'">
-                                                        <a href="/pur_disburse/new" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
+                                                        <a :href="'/pur_disburse/new/'+props.id" class="btn btn-warning !text-white w-26 !rounded-r-none">Print RFD</a>
                                                         <button class="btn btn-warning !text-white px-2 !pt-[0px] pb-0 !rounded-l-none" @click="openDrawerRFD()">
                                                             <Bars4Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></Bars4Icon >
                                                         </button>
