@@ -51,6 +51,9 @@ class JORController extends Controller
                     return response()->json([
                         'jor_head_id'=>$jor_head_id,
                         'jorhead'=>$head,
+                        'dept_checker'=>$jorImport->dept_checker,
+                        'req_checker'=>$jorImport->req_checker,
+                        'site_checker'=>$jorImport->site_checker,
                     ],200);
                 } catch (Throwable $e) {
                     DB::rollBack();
