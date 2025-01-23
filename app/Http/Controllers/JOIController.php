@@ -1304,8 +1304,8 @@ class JOIController extends Controller
         $joi_head = JOIHead::where('id',$joi_head_id)->first();
         $prepared_by=Auth::user()?->name;
         $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$joi_head->vendor_details_id)->where('status','=','Active')->first();
-        $joi_dr_labor=JOIDrLabor::where('joi_dr_id',$joi_dr->id)->where('to_deliver','!=',0)->where('received_qty','>=','quantity')->get();
-        $joi_dr_material=JOIDrMaterial::where('joi_dr_id',$joi_dr->id)->where('to_deliver','!=',0)->where('received_qty','>=','quantity')->get();
+        $joi_dr_labor=JOIDrLabor::where('joi_dr_id',$joi_dr->id)->where('to_deliver','!=',0)->where('quantity','>=','received_qty')->where('quantity','!=','0')->whereNull('status')->get();
+        $joi_dr_material=JOIDrMaterial::where('joi_dr_id',$joi_dr->id)->where('to_deliver','!=',0)->where('quantity','>=','received_qty')->where('quantity','!=','0')->whereNull('status')->get();
         $total_delivered=[];
         foreach($joi_dr_labor AS $pdi){
             $delivered_qty=JOIDrLabor::where('jor_labor_details_id',$pdi->jor_labor_details_id)->where('jo_rfq_labor_offer_id',$pdi->jo_rfq_labor_offer_id)->value('delivered_qty');
@@ -1336,15 +1336,23 @@ class JOIController extends Controller
         ],200);
     }
 
-    public function get_offer_labor($jo_rfq_labor_offer_id){
-        $offer = JORFQLaborOffers::where('id',$jo_rfq_labor_offer_id)->where('awarded','1')->first();
+    public function get_offer_labor($joi_labor_details_id,$jo_rfq_labor_offer_id){
+        if($jo_rfq_labor_offer_id!=0 && $jo_rfq_labor_offer_id!=''){
+            $offer = JORFQLaborOffers::where('id',$jo_rfq_labor_offer_id)->where('awarded','1')->first();
+        }else{
+            $offer = JOILaborDetails::where('id',$joi_labor_details_id)->where('status','Saved')->first();
+        }
         return response()->json([
             'offer'=>$offer,
         ],200);
     }
 
-    public function get_offer_material($jo_rfq_material_offer_id){
-        $offer = JORFQMaterialOffers::where('id',$jo_rfq_material_offer_id)->where('awarded','1')->first();
+    public function get_offer_material($joi_material_details_id,$jo_rfq_material_offer_id){
+        if($jo_rfq_material_offer_id!=0 && $jo_rfq_material_offer_id!=''){
+            $offer = JORFQMaterialOffers::where('id',$jo_rfq_material_offer_id)->where('awarded','1')->first();
+        }else{
+            $offer = JOIMaterialDetails::where('id',$joi_material_details_id)->where('status','Saved')->first();
+        }
         return response()->json([
             'offer'=>$offer,
         ],200);
