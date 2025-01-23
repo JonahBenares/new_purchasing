@@ -28,12 +28,10 @@ class PRController extends Controller
 {
 
     public function exportPRTemplate(){
-        //Excel::store(new BeginningBalanceExport, 'begbal.xlsx');
         return Excel::download(new PRTemplate, 'Purchase Request.xlsx');
     }
 
     public function import_pr(Request $request){
-        
             if($request->file('upload_pr')){
                 $filename=$request->file('upload_pr')->getClientOriginalName();
                 $request->file('upload_pr')->storeAs('imports',$filename);
@@ -55,6 +53,9 @@ class PRController extends Controller
                         'pr_head_id'=>$pr_head_id,
                         'prhead'=>$head,
                         'prdetails'=>$details,
+                        'dept_checker'=>$prImport->dept_checker,
+                        'req_checker'=>$prImport->req_checker,
+                        'site_checker'=>$prImport->site_checker,
                     ],200);
                 } catch (Throwable $e) {
                     DB::rollBack();
@@ -953,8 +954,7 @@ class PRController extends Controller
         //         ]);
         //     }
         // }else 
-
-        if(!PoDetails::where('pr_details_id',$pr_details_id)->exists() && !PrReportDetails::where('pr_details_id',$pr_details_id)->where('po_qty','!=','0')->orWhere('dpo_qty','!=','0')->orWhere('rpo_qty','!=','0')->exists()){
+        if(!PoDetails::where('pr_details_id',$pr_details_id)->exists() && !PrReportDetails::where('pr_details_id',$pr_details_id)->where(function ($query) {$query->where('po_qty', '!=', 0)->orWhere('dpo_qty', '!=', 0)->orWhere('rpo_qty', '!=', 0);})->exists()){
         // else if(!PoDetails::where('pr_details_id',$pr_details_id)->exists() && !PrReportDetails::where('pr_details_id',$pr_details_id)->where('po_qty','!=','0')->orWhere('dpo_qty','!=','0')->orWhere('rpo_qty','!=','0')->exists()){
             $update_prdetails=PRDetails::where('id',$pr_details_id)->update([
                 'status'=>'Cancelled',

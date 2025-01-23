@@ -24,29 +24,33 @@ use Config;
 class JORController extends Controller
 {
     public function import_jor(Request $request){
-        try {
-            DB::beginTransaction();
+        
             if($request->file('upload_jor')){
                 $filename=$request->file('upload_jor')->getClientOriginalName();
                 $request->file('upload_jor')->storeAs('imports',$filename);
                 $user_id = auth()->user()->id;
-                $jorImport = new JORImport($user_id);
-                $sheet1 = Excel::import($jorImport, request()->file('upload_jor'));
-                $head = $jorImport->data;
-                $jor_head_id = $jorImport->id;
-                $jorlaborImportdetails = new JORLaborImport($jor_head_id);
-                $sheet2 = Excel::import($jorlaborImportdetails, request()->file('upload_jor'));
-                $labor_details = $jorlaborImportdetails->data;
-                DB::commit();
-                return response()->json([
-                    'jor_head_id'=>$jor_head_id,
-                    'jorhead'=>$head,
-                ],200);
+                try {
+                    DB::beginTransaction();
+                    $jorImport = new JORImport($user_id);
+                    $sheet1 = Excel::import($jorImport, request()->file('upload_jor'));
+                    $head = $jorImport->data;
+                    $jor_head_id = $jorImport->id;
+                    $jorlaborImportdetails=array();
+                    if($jorImport->id!=null){
+                        $jorlaborImportdetails = new JORLaborImport($jor_head_id);
+                        $sheet2 = Excel::import($jorlaborImportdetails, request()->file('upload_jor'));
+                        $labor_details = $jorlaborImportdetails->data;
+                    }
+                    DB::commit();
+                    return response()->json([
+                        'jor_head_id'=>$jor_head_id,
+                        'jorhead'=>$head,
+                    ],200);
+                } catch (Throwable $e) {
+                    DB::rollBack();
+                    echo 'error';
+                }
             } 
-        } catch (Throwable $e) {
-            DB::rollBack();
-            echo 'error';
-        }
     }
 
     public function get_import_data_jor($id){

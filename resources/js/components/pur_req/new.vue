@@ -321,9 +321,7 @@
 		pr_options.value='';
 		try {
 			axios.post("/api/import_pr",formData).then(function (response) {
-				console.log(response.data)
-				if(response.data!='error' && response.data.prhead!=undefined){
-					
+				if(response.data!='error' && response.data.site_checker==false && response.data.dept_checker==true && response.data.req_checker==true){
 					pr_head_id.value=response.data.pr_head_id
 					getImportdata(pr_head_id.value)
 					// prhead.value=response.data.prhead
@@ -339,7 +337,7 @@
 					prFile.value=''
 					const btn_pr = document.getElementById("btn_pr");
 					btn_pr.disabled = true;
-				}else if(response.data!='error' && response.data.prhead==undefined){
+				}else if(response.data!='error' && response.data.site_checker==true){
 					const fileInput = document.getElementById('upload_pr');
 					if (fileInput) {
 						fileInput.value = ''; // Reset the file input
@@ -347,6 +345,24 @@
 					prFile.value=''
 					loading.value=false;
 					error.value ='Site PR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}else if(response.data!='error' && (response.data.dept_checker==null || response.data.dept_checker==false)){
+					const fileInput = document.getElementById('upload_pr').value=''
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
+					prFile.value=''
+					loading.value=false;
+					error.value = 'Department code does not exist, make sure it is existing in deparment masterfile.';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}else if(response.data!='error' && (response.data.req_checker==null || response.data.req_checker==false)){
+					const fileInput = document.getElementById('upload_pr').value=''
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
+					prFile.value=''
+					loading.value=false;
+					error.value = 'Requestor does not exist, make sure it is existing in employees masterfile.';
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}else{
 					const fileInput = document.getElementById('upload_pr');
@@ -364,7 +380,7 @@
 				var substring1="1048 Column 'requestor_id'"
 				var substring2="floor(): Argument #1"
 				if(err.response.data.message.includes(substring)==true){
-					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+					error.value = 'Department code does not exist, make sure it is existing in deparment masterfile.';
 					document.getElementById('upload_pr').value=''
 					prFile.value=''
 					pr_options.value='';

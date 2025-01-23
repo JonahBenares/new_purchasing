@@ -62,7 +62,7 @@ class PRTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMultip
     {
         return [
             AfterSheet::class => function(AfterSheet $event) { 
-                $event->sheet->getStyle('Q3')->applyFromArray([
+                $event->sheet->getStyle('O3')->applyFromArray([
                     'font'=> [
                         'color' => ['argb' => 'FFFF0000']
                     ]
@@ -282,8 +282,16 @@ class PRTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMultip
                 $event->sheet->getStyle("C2")->getFont()->setBold(true)->setName('Arial Black');
                 $event->sheet->getStyle("K2")->getFont()->setBold(true);
                 $event->sheet->setCellValue('K2', 'Notes:');
-                $event->sheet->setCellValue('K3', 'Date Format for Date Prepared, Date Issued and Date Needed');
-                $event->sheet->setCellValue('Q3', 'is YYYY-MM-DD');
+
+                $event->sheet->setCellValue('K3', 'Date format for all dates should be:');
+                $event->sheet->setCellValue('O3', 'YYYY-MM-DD');
+                $event->sheet->mergeCells('K3:N3');
+
+                $event->sheet->setCellValue('K4', "For Department Code, please refer to the Department Code sheet");
+                $event->sheet->mergeCells('K4:Q4');
+                $event->sheet->setCellValue('K5', "For the Requestor, please refer to the Requestors Name sheet");
+                $event->sheet->mergeCells('K5:Q5');
+                $event->sheet->getDelegate()->getColumnDimension('N')->setWidth(5);
                 $event->sheet->mergeCells('C2:G2');
                 $event->sheet->mergeCells('C3:G3');
                 $event->sheet->mergeCells('C4:G4');
@@ -301,6 +309,7 @@ class PRTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMultip
         return [
             new PRTemplate(),
             new PRDeptCode(),
+            new PRRequestors(),
         ];
     }
 
