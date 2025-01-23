@@ -128,7 +128,7 @@
 					jorFile.value=''
 					const btn_jor = document.getElementById("btn_jor");
 					btn_jor.disabled = true;
-				}else if(response.data!='error' && response.data.jorhead==undefined){
+				}else if(response.data!='error' && response.data.site_checker==true){
 					const fileInput = document.getElementById('upload_jor');
 					if (fileInput) {
 						fileInput.value = ''; // Reset the file input
@@ -136,6 +136,24 @@
 					jorFile.value=''
 					loading.value=false;
 					error.value ='Site JOR No. duplicate entry!';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}else if(response.data!='error' && (response.data.dept_checker==null || response.data.dept_checker==false)){
+					const fileInput = document.getElementById('upload_jor').value=''
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
+					jorFile.value=''
+					loading.value=false;
+					error.value = 'Department code does not exist, make sure it is existing in deparment masterfile.';
+					dangerAlerterrors.value=!dangerAlerterrors.value
+				}else if(response.data!='error' && (response.data.req_checker==null || response.data.req_checker==false)){
+					const fileInput = document.getElementById('upload_jor').value=''
+					if (fileInput) {
+						fileInput.value = ''; // Reset the file input
+					}
+					jorFile.value=''
+					loading.value=false;
+					error.value = 'Requestor does not exist, make sure it is existing in employees masterfile.';
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}else{
 					const fileInput = document.getElementById('upload_jor');
@@ -146,6 +164,7 @@
 					loading.value=false;
 					error.value ='The uploaded file did not pass validation. Ensure it meets all requirements and try again.';
 					dangerAlerterrors.value=!dangerAlerterrors.value
+					
 				}
 			}, function (err) {
 				loading.value=false;
@@ -153,7 +172,7 @@
 				var substring1="1048 Column 'requestor_id'"
 				var substring2="floor(): Argument #1"
 				if(err.response.data.message.includes(substring)==true){
-					error.value = 'Department name does not exist, make sure it is existing in deparment masterfile.';
+					error.value = 'Department code does not exist, make sure it is existing in deparment masterfile.';
 					document.getElementById('upload_jor').value=''
 					jorFile.value=''
 					jo_options.value='';
@@ -179,8 +198,8 @@
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
 		} catch (error) {
-			error.value=error
-			dangerAlerterrors.value=!dangerAlerterrors.value
+			// error.value=error
+			// dangerAlerterrors.value=!dangerAlerterrors.value
 		} 
     }
 
