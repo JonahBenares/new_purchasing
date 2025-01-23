@@ -301,13 +301,14 @@
 		// balance.value = response.data.balance;
 		// var po_qty=balance.value.po_qty + balance.value.dpo_qty + balance.value.rpo_qty
 		var all_qty=response.data.total_sum_pr_labor - response.data.total_sum_labor
-		if(qty==0){
-			document.getElementById('balance_labor_checker'+count).style.backgroundColor = '#FAA0A0';
-			const btn_draft = document.getElementById("draft");
-			btn_draft.disabled = true;
-			const btn_save = document.getElementById("save");
-			btn_save.disabled = true;
-		}else if(qty>all_qty){
+		// if(qty==0){
+		// 	document.getElementById('balance_labor_checker'+count).style.backgroundColor = '#FAA0A0';
+		// 	const btn_draft = document.getElementById("draft");
+		// 	btn_draft.disabled = true;
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }else
+		if(qty>all_qty){
 			document.getElementById('balance_labor_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
 			btn_draft.disabled = true;
@@ -353,13 +354,14 @@
 		// balance.value = response.data.balance;
 		// var po_qty=balance.value.po_qty + balance.value.dpo_qty + balance.value.rpo_qty
 		var all_qty=response.data.total_sum_pr_material - response.data.total_sum_material
-		if(qty==0){
-			document.getElementById('balance_material_checker'+count).style.backgroundColor = '#FAA0A0';
-			const btn_draft = document.getElementById("draft");
-			btn_draft.disabled = true;
-			const btn_save = document.getElementById("save");
-			btn_save.disabled = true;
-		}else if(qty>all_qty){
+		// if(qty==0){
+		// 	document.getElementById('balance_material_checker'+count).style.backgroundColor = '#FAA0A0';
+		// 	const btn_draft = document.getElementById("draft");
+		// 	btn_draft.disabled = true;
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }else 
+		if(qty>all_qty){
 			document.getElementById('balance_material_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
 			btn_draft.disabled = true;

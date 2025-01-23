@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, CheckIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref, onMounted } from "vue"
+    import { reactive, ref, onMounted, watch } from "vue"
     import { useRouter } from "vue-router"
 	import moment from 'moment'
 	const error =  ref('');
@@ -36,6 +36,7 @@
 	const uom = ref([])
 	const remaining_delivery = ref([])
 	const isDriverReadonly = ref(false);
+	const isLoading = ref(true);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -43,10 +44,12 @@
 		}
 	})
 	onMounted(async () => {
-		getPO()
+		
 		if(props.id!=0){
-			drLoad()
+			await drLoad()
 		}
+		await getPO()
+		isLoading.value = false; 
 	})
 	const openSuccessAlert = () => {
 		successAlert.value = !successAlert.value
@@ -175,6 +178,10 @@
 		remaining_delivery[count]= parseFloat(qty)  - total_sumdelivered1.value[count]
 	}
 
+	watch(isLoading, (newValue) => {
+	
+	});
+
 	const onSave = () => {
 		const formData= new FormData()
 		formData.append('identifier', po_dr.value.identifier)
@@ -293,7 +300,8 @@
 							</div>
 							<hr class="border-dashed">
 							<!-- <div v-show="po_det"> -->
-							<div v-if="po_dr && po_dr.length!=0 && !allZero()">
+							
+							<div v-if="po_dr && po_dr.length!=0 && !allZero() && to_deliver.length !=0">
 								<div class="row">
 									<div class="col-lg-8">
 										<input type="hidden" v-model="dr_no">
@@ -447,7 +455,8 @@
 									</div>
 								</div>
 							</div>
-							<div v-else-if="to_deliver.length==0 && allZero()">
+							
+							<div v-else-if="!isLoading && to_deliver.length == 0 && allZero()">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>
@@ -521,7 +530,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created a DR.</h5>
+									<h5 class="leading-tight">{{ success }}</h5>
 								</div>
 							</div>
 						</div>

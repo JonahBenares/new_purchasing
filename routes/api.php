@@ -283,8 +283,8 @@ Route::get('/old_jo_revision_data/{id}',[JOIController::class,'old_jo_revision_d
 Route::get('/view_jo_revision_data/{id}',[JOIController::class,'view_jo_revision_data']);
 Route::get('/joi_dropdown', [JOIController::class,'joi_dropdown']);
 Route::get('/generate_jo_dr/{joi_head_id}', [JOIController::class,'generate_jo_dr']);
-Route::get('/get_offer_labor/{jo_rfq_labor_offer_id}', [JOIController::class,'get_offer_labor']);
-Route::get('/get_offer_material/{jo_rfq_material_offer_id}', [JOIController::class,'get_offer_material']);
+Route::get('/get_offer_labor/{joi_labor_details_id}/{jo_rfq_labor_offer_id}', [JOIController::class,'get_offer_labor']);
+Route::get('/get_offer_material/{joi_material_details_id}/{jo_rfq_material_offer_id}', [JOIController::class,'get_offer_material']);
 Route::get('/get_rfd_joi_dropdown',[JOIController::class,'get_rfd_joi_dropdown']);
 Route::get('/generate_rfd_joi/{joi_head_id}', [JOIController::class,'generate_rfd_joi']);
 Route::get('/joi_rfd_viewdetails/{joi_head_id}', [JOIController::class,'joi_rfd_viewdetails']);
