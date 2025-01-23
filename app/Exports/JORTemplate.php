@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMultipleSheets, WithTitle, WithCustomStartCell, WithDrawings, WithStrictNullComparison
@@ -253,6 +254,8 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                         ]
                     ]);
                     $event->sheet->mergeCells('E'.$m.':I'.$m);
+                    $event->sheet->getStyle('K'.$m)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDD2);
+                    
                 }
                 $event->sheet->getDelegate()->getStyle('A15:K15')->applyFromArray([
                     'fill' => [
@@ -266,16 +269,13 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                         'color' => ['rgb' => 'BDD7EE']
                     ]
                 ]);
-                $event->sheet->getStyle('A13:K13')->getAlignment()->setHorizontal('center');
                 $event->sheet->getStyle('C7:C10')->getAlignment()->setHorizontal('center');
                 $event->sheet->getStyle('G7:G10')->getAlignment()->setHorizontal('center');
-                $event->sheet->getStyle('B1')->getFont()->setBold(true);
                 $event->sheet->getStyle('I2')->getFont()->setBold(true);
                 $event->sheet->getStyle('A6')->getFont()->setBold(true);
                 $event->sheet->getStyle('A7:A14')->getFont()->setBold(true);
-                $event->sheet->getStyle('F7:H12')->getFont()->setBold(true);
+                $event->sheet->getStyle('F7:H10')->getFont()->setBold(true);
                 $event->sheet->getStyle('B5')->getFont()->setBold(true);
-                $event->sheet->getStyle('C7')->getFont()->setBold(true);
                 $event->sheet->getStyle('D5')->getFont()->setBold(true);
                 $event->sheet->getStyle('E7')->getFont()->setBold(true);
                 $event->sheet->getStyle('A21')->getFont()->setBold(true);
@@ -288,6 +288,7 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                 $event->sheet->getStyle('A8:B8')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('A8:B8');
                 $event->sheet->mergeCells('C8:E8');
+                $event->sheet->getStyle('C8:E8')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDD2);
                 $event->sheet->setCellValue('A9', 'Department:');
                 $event->sheet->getStyle('A9:B9')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('A9:B9');
@@ -307,22 +308,30 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                 $event->sheet->setCellValue('A13', 'Project/Activity:');
                 $event->sheet->getStyle('A13')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('B13:K13');
+                $event->sheet->getStyle('B13:K13')->getAlignment()->setHorizontal('left');
                 $event->sheet->setCellValue('A14', 'General Description:');
                 $event->sheet->getStyle('A14')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('B14:K14');
+                $event->sheet->getStyle('B14:K14')->getAlignment()->setHorizontal('left');
 
                 $event->sheet->setCellValue('H7', 'Duration:');
                 $event->sheet->getStyle('H7')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('I7:K7');
+                $event->sheet->getStyle('I7:K7')->getAlignment()->setHorizontal('center');
                 $event->sheet->setCellValue('H8', 'Completion Date:');
                 $event->sheet->getStyle('H8')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('I8:K8');
+                $event->sheet->getStyle('I8:K8')->getAlignment()->setHorizontal('center');
+                $event->sheet->getStyle('I8:K8')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDD2);
                 $event->sheet->setCellValue('H9', 'Delivery Date:');
                 $event->sheet->getStyle('H9')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('I9:K9');
+                $event->sheet->getStyle('I9:K9')->getAlignment()->setHorizontal('center');
+                $event->sheet->getStyle('I9:K9')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDD2);
                 $event->sheet->setCellValue('H10', 'Urgency No.:');
                 $event->sheet->getStyle('H10')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('I10:K10');
+                $event->sheet->getStyle('I10:K10')->getAlignment()->setHorizontal('center');
 
                 $event->sheet->setCellValue('A21', 'Materials:');
                 $event->sheet->getStyle('A21')->getFont()->setBold(true);
