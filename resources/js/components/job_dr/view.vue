@@ -46,26 +46,48 @@
 		general_description.value = response.data.general_description;
 		prepared_by.value = response.data.prepared_by;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
-			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			getLaborOffer(val.joi_labor_details_id,val.jo_rfq_labor_offer_id,index)
 			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
 		joi_dr_material.value.forEach(function (val, indexe, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,indexe)
+			getMaterialOffer(val.joi_material_details_id,val.jo_rfq_material_offer_id,indexe)
 			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,indexe)
 		});
 	}
 
-	const getLaborOffer = async (jo_rfq_labor_offer_id,count) => {
-		let response = await axios.get("/api/get_offer_labor/"+jo_rfq_labor_offer_id);
-		offer_labor.value[count] = response.data.offer.offer;
-		uom_labor.value[count] = response.data.offer.uom;
+	const getLaborOffer = async (joi_labor_details_id,jo_rfq_labor_offer_id,count) => {
+		let response = await axios.get("/api/get_offer_labor/"+joi_labor_details_id+'/'+jo_rfq_labor_offer_id);
+		if(jo_rfq_labor_offer_id!=0 && jo_rfq_labor_offer_id!=''){
+			offer_labor.value[count] = response.data.offer.offer;
+			uom_labor.value[count] = response.data.offer.uom;
+		}else{
+			offer_labor.value[count] = response.data.offer.item_description;
+			uom_labor.value[count] = response.data.offer.uom;
+		}
 	}
 
-	const getMaterialOffer = async (jo_rfq_labor_offer_id,count) => {
-		let response = await axios.get("/api/get_offer_material/"+jo_rfq_labor_offer_id);
-		offer_material.value[count] = response.data.offer.offer;
-		uom_material.value[count] = response.data.offer.uom;
+	const getMaterialOffer = async (joi_material_details_id,jo_rfq_material_offer_id,count) => {
+		let response = await axios.get("/api/get_offer_material/"+joi_material_details_id+'/'+jo_rfq_material_offer_id);
+		if(jo_rfq_material_offer_id!=0 && jo_rfq_material_offer_id!=''){
+			offer_material.value[count] = response.data.offer.offer;
+			uom_material.value[count] = response.data.offer.uom;
+		}else{
+			offer_material.value[count] = response.data.offer.item_description;
+			uom_material.value[count] = response.data.offer.uom;
+		}
 	}
+
+	// const getLaborOffer = async (jo_rfq_labor_offer_id,count) => {
+	// 	let response = await axios.get("/api/get_offer_labor/"+jo_rfq_labor_offer_id);
+	// 	offer_labor.value[count] = response.data.offer.offer;
+	// 	uom_labor.value[count] = response.data.offer.uom;
+	// }
+
+	// const getMaterialOffer = async (jo_rfq_labor_offer_id,count) => {
+	// 	let response = await axios.get("/api/get_offer_material/"+jo_rfq_labor_offer_id);
+	// 	offer_material.value[count] = response.data.offer.offer;
+	// 	uom_material.value[count] = response.data.offer.uom;
+	// }
 
 	const checkRemainingLaborQty = async (joi_labor_details_id,qty,count) => {
 		let response = await axios.get("/api/check_remaining_dr_labor_balance/"+joi_labor_details_id);
