@@ -23,6 +23,7 @@ class JOIRfd extends Model
         'pay_to',
         'mode',
         'notes',
+        'identifier',
         'grand_total',
         'balance',
         'status',

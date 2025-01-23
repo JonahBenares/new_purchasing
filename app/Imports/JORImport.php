@@ -65,7 +65,7 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
             $requestor_id=User::where('name',$requestor)->value('id');
             $department_id=Departments::where('department_name',$department)->value('id');
             $department_code=Departments::where('department_name',$department)->value('department_code');
-            if(!JORHead::where('site_jor',$row['jo_no'])->where('status','Saved')->exists()){
+            if(!JORHead::where('site_jor',$row['jo_no'])->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
                 if($row['jo_request']!=''){
                     $year= date("Y", strtotime($this->transformDate($row['date_prepared'])));
                     $year_short = date("y",strtotime($this->transformDate($row['date_prepared'])));
@@ -107,9 +107,10 @@ class JORImport implements WithMappedCells, ToModel, WithHeadingRow
                         $this->id = $jor_head_id->id;
                     }
                 }
-            }else{
-                echo 'duplicate';
             }
+            // else{
+            //     echo 'duplicate';
+            // }
         }
     }
 }

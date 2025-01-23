@@ -139,6 +139,7 @@
 				const formData= new FormData()
 				formData.append('cancel_reason', cancel_reason.value)
 				axios.post(`/api/cancel_prdetails/`+id,formData).then(function (response) {
+					console.log(response.data)
 					if(response.data!='error'){
 						dangerAlert_item.value = !hideAlert.value
 						success.value='Successfully cancelled item!'

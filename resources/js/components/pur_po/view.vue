@@ -54,7 +54,7 @@
 	// 	rfd_head.value = response.data.rfd_list;
 	// }
     const formatNumber = (number) => {
-        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return number.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
     }
     const poView = async () => {
 		let response = await axios.get("/api/po_viewdetails/"+props.id);
@@ -366,9 +366,10 @@
                                                                     {{  vat_amount =parseFloat(new_vat) }}
                                                                     {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
                                                                 </span>
-                                                                <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(po_head.vat_amount ?? 0)">
+                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" disabled :value="formatter.format(vat_amount ?? 0)">
+                                                                <!-- <input type="text" class="w-full bg-white p-1 text-right no-print" disabled :value="formatter.format(po_head.vat_amount ?? 0)">
                                                                 <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'" disabled :value="formatter.format(vat_amount ?? 0)">
-                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(po_head.vat_amount ?? 0)">
+                                                                <input type="text" class="w-full bg-white p-1 text-right print-only in-print-only" style="display: none;" v-else disabled :value="formatter.format(po_head.vat_amount ?? 0)"> -->
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -376,19 +377,26 @@
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
+                                                                <span hidden>
+                                                                    {{ percent_vat=  po_head.vat_percent/100 }} 
+                                                                    {{ new_vat= ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount)) * parseFloat(percent_vat) }}
+                                                                    {{  vat_amount =parseFloat(new_vat) }}
+                                                                    {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
+                                                                </span>
                                                                 <input type="text" class="w-full bg-white p-1 text-right" disabled value="0.00">
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-
-                                                        <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only">
+                                                            {{ formatter.format(grand_total) }}
+                                                        </td>
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
                                                         <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">
                                                             {{ formatter.format(grand_total) }}
-                                                            <!-- {{ formatter.format(po_head.grand_total - cancelled_qty ?? 0) }} -->
                                                         </td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
                                                     </tr>
                                                 </table>
                                             </div>

@@ -1704,6 +1704,13 @@ class JOIController extends Controller
         $endorsed_by_name= User::where('id',$request->endorsed_by)->value('name');
         $approved_by_name= User::where('id',$request->approved_by)->value('name');
         $received_by_name= User::where('id',$request->received_by)->value('name');
+        $rfd_count = JOIRfd::where('joi_head_id',$request->joi_head_id)->count();
+        if($rfd_count==0){
+            $identifier='1';
+        } else {
+            $max = JOIRfd::where('joi_head_id',$request->joi_head_id)->max('identifier');
+            $identifier= $max+1;
+        }
         $data_rfd_head['joi_head_id']=$request->joi_head_id;
         $data_rfd_head['joi_no']=$request->joi_no;
         $data_rfd_head['jor_no']=$request->jor_no;
@@ -1717,6 +1724,7 @@ class JOIController extends Controller
         $data_rfd_head['pay_to']=$request->pay_to ?? '';
         $data_rfd_head['mode']=$request->mode;
         $data_rfd_head['notes']=$request->notes;
+        $data_rfd_head['identifier']= $identifier;
         $data_rfd_head['grand_total']=$request->grand_total;
         $data_rfd_head['sub_total']=$request->subtotal;
         $data_rfd_head['balance']=$request->balance;
@@ -1809,7 +1817,14 @@ class JOIController extends Controller
         $rfd_head = JOIRfd::where('id',$rfd_id)->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Cancelled');
         })->orderBy('id')->first();
-        $rfd_payments = JOIRfdPayment::with('joi_rfd')->where('joi_rfd_id',$rfd_head->id)->get();
+        $identifier_loop=[];
+        for($x=1;$x<=$rfd_head->identifier;$x++){
+            $identifier_loop[]=$x;
+        }
+        $rfd_payments = JOIRfdPayment::with('joi_rfd')->where('joi_id',$rfd_head->joi_head_id)->whereHas('joi_rfd', function ($joi_rfd) use ($identifier_loop) {
+            $joi_rfd->whereIn('identifier',$identifier_loop);
+        })->get();
+        // $rfd_payments = JOIRfdPayment::with('joi_rfd')->where('joi_rfd_id',$rfd_head->id)->get();
         $joi_head= JOIHead::where('id',$rfd_head->joi_head_id)->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
         })->first();

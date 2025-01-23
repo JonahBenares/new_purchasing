@@ -116,7 +116,7 @@
 		jo_options.value='';
 		try {
 			axios.post("/api/import_jor",formData).then(function (response) {
-				if(response.data!='error' && response.data!='duplicateerror'){
+				if(response.data!='error' && response.data.jorhead!=undefined){
 					jor_head_id.value=response.data.jor_head_id
 					getImportdata(jor_head_id.value)
 					jo_options.value='jo_upload';
@@ -128,7 +128,7 @@
 					jorFile.value=''
 					const btn_jor = document.getElementById("btn_jor");
 					btn_jor.disabled = true;
-				}else if(response.data=='duplicateerror'){
+				}else if(response.data!='error' && response.data.jorhead==undefined){
 					const fileInput = document.getElementById('upload_jor');
 					if (fileInput) {
 						fileInput.value = ''; // Reset the file input

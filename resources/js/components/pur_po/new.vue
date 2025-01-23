@@ -72,7 +72,7 @@
 	})
 
 	const formatNumber = (number) => {
-      return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return number.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
     }
 	const poDraft = async () => {
 		let response = await axios.get("/api/po_viewdetails/"+props.id);
@@ -267,10 +267,10 @@
 		var percent= (vat.value==1) ? vat_percent/100 : 0;
 		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
-		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
+		document.getElementById("grand_total").innerHTML  = new_total.toFixed(4)
 		new_data.value=parseFloat(new_total)
-		document.getElementById("vat_amount").value=new_vat.toFixed(2);
-		vat_amount.value=new_vat.toFixed(2);
+		document.getElementById("vat_amount").value=new_vat.toFixed(4);
+		vat_amount.value=new_vat.toFixed(4);
 	}
 
 	const vatChange = (vat_percent) => {
@@ -287,10 +287,10 @@
 		// alert(vat_percent)
         var percent= (vat.value==1) ? vat_percent/100 : 0;
         var new_vat = ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
-        document.getElementById("vat_amount").value = new_vat.toFixed(2);
-		vat_amount.value=new_vat.toFixed(2);
+        document.getElementById("vat_amount").value = new_vat.toFixed(4);
+		vat_amount.value=new_vat.toFixed(4);
         var new_total=(parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
-        document.getElementById("grand_total").innerHTML=new_total.toFixed(2);
+        document.getElementById("grand_total").innerHTML=new_total.toFixed(4);
 		new_data.value=parseFloat(new_total)
 	} 
 
@@ -317,33 +317,37 @@
 	}
 
 	const checkBalance = async (pr_details_id,vat_percent,qty,count) => {
+		let response = await axios.get("/api/check_balance/"+pr_details_id);
 		var grandtotal=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = document.getElementById('tprice'+index).value;
 			var pi = p.replace(",", "");
 			grandtotal += parseFloat(pi);
         });
+		var discount_display= (discount.value!='') ? discount.value : 0;
 		// var vat = document.getElementById("vat_percent").value;
         var percent= (vat.value==1) ? vat_percent/100 : 0
-		var new_vat = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) * parseFloat(percent);
+		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+		// alert(grandtotal+'-'+shipping_cost.value+'-'+handling_fee.value+'-'+percent)
 		vat_amount.value=new_vat;
 		
-		var discount_display= (discount.value!='') ? discount.value : 0;
+		
 		var overall_total = (parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + parseFloat(new_vat)) - parseFloat(discount_display);
-		grand_total.value=overall_total.toFixed(2);
+		grand_total.value=overall_total.toFixed(4);
 		// grand_total.value=grandtotal + new_vat);
-		orig_amount.value=grandtotal.toFixed(2);
-		let response = await axios.get("/api/check_balance/"+pr_details_id);
+		orig_amount.value=grandtotal.toFixed(4);
+		
 		balance.value = response.data.balance;
 		var po_qty=balance.value.po_qty + balance.value.dpo_qty + balance.value.rpo_qty
 		var all_qty=balance.value.pr_qty - po_qty
-		if(qty==0){
-			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
-			const btn_draft = document.getElementById("draft");
-			btn_draft.disabled = true;
-			const btn_save = document.getElementById("save");
-			btn_save.disabled = true;
-		}else if(qty>all_qty){
+		// if(qty==0){
+		// 	document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
+		// 	const btn_draft = document.getElementById("draft");
+		// 	btn_draft.disabled = true;
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }else 
+		if(qty>all_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_draft = document.getElementById("draft");
 			btn_draft.disabled = true;

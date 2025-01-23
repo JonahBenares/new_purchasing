@@ -216,10 +216,9 @@
                                                 <td class="" colspan="6"></td>
                                                 <td class=""></td>
                                             </tr>
-                                            <tr class="">
-                                                
-                                                <span hidden v-if="rfd_payments.length==1">{{ rowspan=2 }}</span>
-                                                <span hidden v-else>{{ rowspan=2+rfd_payments.length+1 }}</span>
+                                            <tr>
+                                                <span hidden v-if="rfd_payments.length==1">{{ rowspan=6 }}</span>
+                                                <span hidden v-else>{{ rowspan=3+(rfd_payments.length*3) }}</span>
                                                 <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rowspan"> 
                                                     <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>{{jor_head.site_jor}}  / {{ joi_head.joi_no }}</p>
                                                 </td>
@@ -270,6 +269,9 @@
                                                     </td>
                                                 </tr>
                                             </template>
+                                            <!-- <tr class="">
+                                               
+                                            </tr> -->
                                             <tr class="">
                                                 <td class="border-l-none border-y-none p-1 text-right font-bold " colspan="2">Total Amount Due</td>
                                                 <td class="p-1 text-right font-bold !text-sm">
@@ -293,7 +295,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="7">
+                                                <td colspan="4">
                                                     <div class="flex justify-start space-x-1">
                                                         <span class="p-1">Notes:</span>
                                                         <span class="p-1">{{rfd_head.notes}}</span>

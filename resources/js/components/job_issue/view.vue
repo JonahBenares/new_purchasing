@@ -449,17 +449,17 @@
 														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6"></td>
 														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
 														<td class="p-0">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 no-print" :value="formatNumber(grand_totall ?? 0)">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall - cancelled_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall ?? 0)" style="display: none;" v-else>
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1" :value="formatNumber(grand_totall - cancelled_qty ?? 0)">
+                                                            <!-- <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall - cancelled_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totall ?? 0)" style="display: none;" v-else> -->
                                                         </td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
 														<td class="p-0">
-                                                            <input disabled type="text" class="w-full bg-white p-1 text-right no-print" :value="formatNumber(grand_totalm ?? 0)">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm - cancelled_m_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
-                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm ?? 0)" style="display: none;" v-else>
+                                                            <input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(grand_totalm - cancelled_m_qty ?? 0)">
+                                                            <!-- <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm - cancelled_m_qty ?? 0)" style="display: none;" v-if="joi_head.status!='Cancelled'">
+                                                            <input disabled type="text" class="w-full bg-white p-0.5 text-right pr-1 print-only in-print-only" :value="formatNumber(grand_totalm ?? 0)" style="display: none;" v-else> -->
                                                         </td>
 													</tr>
 													
@@ -475,17 +475,25 @@
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">VAT %</td>
 														<td class="p-0">
 															<div class="flex">
+                                                                <span hidden>
+                                                                    {{ total_labor =  parseFloat(grand_totall) - parseFloat(cancelled_qty) }} 
+                                                                    {{ total_material =  parseFloat(grand_totalm) - (parseFloat(cancelled_m_qty)) }}
+                                                                    {{ percent_vat=  joi_head.vat/100 }} 
+                                                                    {{ new_vat=  ((parseFloat(total_labor) - parseFloat(joi_head.discount)) + (parseFloat(total_material) - parseFloat(joi_head.discount_material))) * parseFloat(percent_vat)}}
+                                                                    {{ vat_amount =parseFloat(new_vat) }}
+                                                                    {{ grand_total = (parseFloat(total_labor) + parseFloat(total_material) + parseFloat(vat_amount)) - (parseFloat(joi_head.discount) + parseFloat(joi_head.discount_material)) }}
+                                                                </span>
 																<input disabled type="text" class="w-10 bg-white border-r text-center" placeholder="%" :value="formatNumber(joi_head.vat ?? 0)">
-																<input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(joi_head.vat_amount ?? 0)">
+																<input disabled type="text" class="w-full bg-white p-1 text-right" :value="formatNumber(vat_amount ?? 0)">
 															</div>
 														</td>
 													</tr>
 													<tr class="">
 														<td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
 
-														<td class="p-1 text-right font-bold !text-sm no-print">{{formatNumber(joi_head.grand_total ?? 0)}}</td>
-														<td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="joi_head.status!='Cancelled'">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{formatNumber(joi_head.grand_total ?? 0)}}</td>
+														<td class="p-1 text-right font-bold !text-sm">{{formatNumber(grand_total ?? 0)}}</td>
+														<!-- <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="joi_head.status!='Cancelled'">{{formatNumber(joi_head.grand_total - (cancelled_qty + cancelled_m_qty) ?? 0)}}</td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{formatNumber(joi_head.grand_total ?? 0)}}</td> -->
 													</tr>
 												</table>
 											</div>
