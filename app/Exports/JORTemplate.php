@@ -421,6 +421,7 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
         return [
             new JORTemplate(),
             new PRDeptCode(),
+            new PRRequestors(),
         ];
     }
 
