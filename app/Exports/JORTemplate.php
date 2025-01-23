@@ -224,6 +224,28 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                     ],
                 ]);
 
+                $event->sheet->getStyle('A28:K28')->applyFromArray([
+                    'borders' => [
+                        'bottom' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ]
+                    ],
+                ]);
+                $event->sheet->getStyle('A28')->applyFromArray([
+                    'borders' => [
+                        'right' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ]
+                    ],
+                ]);
+                $event->sheet->getStyle('K28')->applyFromArray([
+                    'borders' => [
+                        'right' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ]
+                    ],
+                ]);
+
                 // $totalRows = $event->sheet->getHighestRow();
                 for($l=15;$l<=20;$l++){
                     $event->sheet->getStyle('A'.$l.':K'.$l)->applyFromArray([
@@ -313,6 +335,10 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                 $event->sheet->getStyle('A14')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('B14:K14');
                 $event->sheet->getStyle('B14:K14')->getAlignment()->setHorizontal('left');
+                $event->sheet->setCellValue('A28', 'Notes:');
+                $event->sheet->getStyle('A28')->getFont()->setBold(true);
+                $event->sheet->getStyle('A28')->getAlignment()->setHorizontal('right');
+                $event->sheet->mergeCells('B28:K28');
 
                 $event->sheet->setCellValue('H7', 'Duration:');
                 $event->sheet->getStyle('H7')->getAlignment()->setHorizontal('right');
