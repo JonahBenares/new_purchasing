@@ -155,7 +155,7 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
 										<td class="p-1 uppercase text-center" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
+										<td class="p-1 uppercase text-center" width="7%" v-if="joi_dr.received==0">To Deliver</td>
 										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase text-center" width="5%">UOM</td>
@@ -168,7 +168,7 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 										<td class="p-1 ">{{  offer_labor[index] }}</td>
-										<td class="p-1 text-center">{{  jdl.delivered_qty }}</td>
+										<td class="p-1 text-center" v-if="joi_dr.received==0">{{  jdl.to_deliver }}</td>
 										<td class="p-1 text-center">{{ total_labor_sumdelivered[index] }}</td>
 										<td class="p-1 text-center" v-if="jdl.received_qty!=0">{{ jdl.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>
@@ -182,7 +182,7 @@
 										<td class="p-1 text-center">{{indexes+1}}</td>
 										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 										<td class="p-1 ">{{ offer_material[indexes] }}</td>
-										<td class="p-1 text-center">{{  jdm.delivered_qty }}</td>
+										<td class="p-1 text-center" v-if="joi_dr.received==0">{{  jdm.to_deliver }}</td>
 										<td class="p-1 text-center">{{  total_material_sumdelivered[indexes] }}</td>
 										<td class="p-1 text-center" v-if="jdm.received_qty!=0">{{ jdm.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>
