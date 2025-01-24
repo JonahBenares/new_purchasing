@@ -1197,7 +1197,7 @@ class POController extends Controller
     }
 
     public function po_dropdown(){
-        $po_dropdown = PoDr::select('po_head_id','po_no','revision_no')->distinct()->where('status','Saved')->get();
+        $po_dropdown = PoDr::select('po_head_id','po_no','revision_no')->distinct()->where('status','Saved')->take(2)->get();
         return response()->json([
             'po_dropdown'=>$po_dropdown,
         ],200);
@@ -1251,7 +1251,7 @@ class POController extends Controller
 
     public function get_dr_view($po_dr_id){
         $po_dr = PoDr::where('id',$po_dr_id)->where('status','Saved')->first();
-        $po_dr_items = PoDrItems::where('po_dr_id',$po_dr_id)->whereNull('status')->get();
+        $po_dr_items = PoDrItems::where('po_dr_id',$po_dr_id)->where('quantity','!=','0')->whereNull('status')->get();
         $enduse=PRHead::where('id',$po_dr->pr_head_id)->value('enduse');
         $purpose=PRHead::where('id',$po_dr->pr_head_id)->value('purpose');
         $requestor=PRHead::where('id',$po_dr->pr_head_id)->value('requestor');
@@ -1292,7 +1292,7 @@ class POController extends Controller
     }
 
     public function check_remaining_dr_balance($po_details_id){
-        $balance_sum=PoDrItems::where('po_details_id',$po_details_id)->sum('received_qty');
+        $balance_sum=PoDrItems::where('po_details_id',$po_details_id)->where('quantity','!=','0')->sum('received_qty');
         // $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,

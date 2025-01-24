@@ -139,7 +139,7 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase" width="25%">Supplier</td>
 										<td class="p-1 uppercase" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
+										<td class="p-1 uppercase text-center" width="7%" v-if="po_dr.received==0">To Deliver</td>
 										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase text-center" width="5%">UOM</td>
@@ -149,8 +149,8 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 										<td class="p-1 ">{{offer[index]}}</td>
-										<td class="p-1 text-center">{{ pdi.delivered_qty }}</td>
-										<td class="p-1 text-center">{{ total_sumdelivered[index] }}</td>
+										<td class="p-1 text-center">{{ pdi.to_deliver }}</td>
+										<td class="p-1 text-center" v-if="po_dr.received==0">{{ total_sumdelivered[index] }}</td>
 										<td class="p-1 text-center" v-if="pdi.received_qty!=0">{{ pdi.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>
 										<td class="p-1 text-center">{{ uom[index] }}</td>

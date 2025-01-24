@@ -46,26 +46,48 @@
 		general_description.value = response.data.general_description;
 		prepared_by.value = response.data.prepared_by;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
-			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			getLaborOffer(val.joi_labor_details_id,val.jo_rfq_labor_offer_id,index)
 			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
 		joi_dr_material.value.forEach(function (val, indexe, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,indexe)
+			getMaterialOffer(val.joi_material_details_id,val.jo_rfq_material_offer_id,indexe)
 			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,indexe)
 		});
 	}
 
-	const getLaborOffer = async (jo_rfq_labor_offer_id,count) => {
-		let response = await axios.get("/api/get_offer_labor/"+jo_rfq_labor_offer_id);
-		offer_labor.value[count] = response.data.offer.offer;
-		uom_labor.value[count] = response.data.offer.uom;
+	const getLaborOffer = async (joi_labor_details_id,jo_rfq_labor_offer_id,count) => {
+		let response = await axios.get("/api/get_offer_labor/"+joi_labor_details_id+'/'+jo_rfq_labor_offer_id);
+		if(jo_rfq_labor_offer_id!=0 && jo_rfq_labor_offer_id!=''){
+			offer_labor.value[count] = response.data.offer.offer;
+			uom_labor.value[count] = response.data.offer.uom;
+		}else{
+			offer_labor.value[count] = response.data.offer.item_description;
+			uom_labor.value[count] = response.data.offer.uom;
+		}
 	}
 
-	const getMaterialOffer = async (jo_rfq_labor_offer_id,count) => {
-		let response = await axios.get("/api/get_offer_material/"+jo_rfq_labor_offer_id);
-		offer_material.value[count] = response.data.offer.offer;
-		uom_material.value[count] = response.data.offer.uom;
+	const getMaterialOffer = async (joi_material_details_id,jo_rfq_material_offer_id,count) => {
+		let response = await axios.get("/api/get_offer_material/"+joi_material_details_id+'/'+jo_rfq_material_offer_id);
+		if(jo_rfq_material_offer_id!=0 && jo_rfq_material_offer_id!=''){
+			offer_material.value[count] = response.data.offer.offer;
+			uom_material.value[count] = response.data.offer.uom;
+		}else{
+			offer_material.value[count] = response.data.offer.item_description;
+			uom_material.value[count] = response.data.offer.uom;
+		}
 	}
+
+	// const getLaborOffer = async (jo_rfq_labor_offer_id,count) => {
+	// 	let response = await axios.get("/api/get_offer_labor/"+jo_rfq_labor_offer_id);
+	// 	offer_labor.value[count] = response.data.offer.offer;
+	// 	uom_labor.value[count] = response.data.offer.uom;
+	// }
+
+	// const getMaterialOffer = async (jo_rfq_labor_offer_id,count) => {
+	// 	let response = await axios.get("/api/get_offer_material/"+jo_rfq_labor_offer_id);
+	// 	offer_material.value[count] = response.data.offer.offer;
+	// 	uom_material.value[count] = response.data.offer.uom;
+	// }
 
 	const checkRemainingLaborQty = async (joi_labor_details_id,qty,count) => {
 		let response = await axios.get("/api/check_remaining_dr_labor_balance/"+joi_labor_details_id);
@@ -155,7 +177,7 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
 										<td class="p-1 uppercase text-center" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
+										<td class="p-1 uppercase text-center" width="7%" v-if="joi_dr.received==0">To Deliver</td>
 										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase text-center" width="5%">UOM</td>
@@ -168,7 +190,7 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 										<td class="p-1 ">{{  offer_labor[index] }}</td>
-										<td class="p-1 text-center">{{  jdl.delivered_qty }}</td>
+										<td class="p-1 text-center" v-if="joi_dr.received==0">{{  jdl.to_deliver }}</td>
 										<td class="p-1 text-center">{{ total_labor_sumdelivered[index] }}</td>
 										<td class="p-1 text-center" v-if="jdl.received_qty!=0">{{ jdl.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>
@@ -182,7 +204,7 @@
 										<td class="p-1 text-center">{{indexes+1}}</td>
 										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
 										<td class="p-1 ">{{ offer_material[indexes] }}</td>
-										<td class="p-1 text-center">{{  jdm.delivered_qty }}</td>
+										<td class="p-1 text-center" v-if="joi_dr.received==0">{{  jdm.to_deliver }}</td>
 										<td class="p-1 text-center">{{  total_material_sumdelivered[indexes] }}</td>
 										<td class="p-1 text-center" v-if="jdm.received_qty!=0">{{ jdm.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>

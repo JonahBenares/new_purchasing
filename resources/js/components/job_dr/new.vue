@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, CheckIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref, onMounted } from "vue"
+    import { reactive, ref, onMounted, watch } from "vue"
     import { useRouter } from "vue-router"
 	import moment from 'moment'
 	const error =  ref('');
@@ -46,6 +46,7 @@
 	const received_qty = ref([])
 	const received_material_qty = ref([])
 	const isDriverReadonly = ref(false);
+	const isLoading = ref(true);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -53,10 +54,12 @@
 		}
 	})
 	onMounted(async () => {
-		getJOi()
+		
 		if(props.id!=0){
-			drLoad()
+			await drLoad()
 		}
+		await getJOi()
+		isLoading.value = false; 
 	})
 	const isNumber = (evt)=> {
 		evt = (evt) ? evt : window.event;
@@ -100,11 +103,11 @@
 		total_labor_sumdelivered.value = response.data.total_sumdelivered;
 		total_material_sumdelivered.value = response.data.total_material_sumdelivered;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
-			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			getLaborOffer(val.joi_labor_details_id,val.jo_rfq_labor_offer_id,index)
 			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
 		joi_dr_material.value.forEach(function (val, index, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,index)
+			getMaterialOffer(val.joi_material_details_id,val.jo_rfq_material_offer_id,index)
 			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,index)
 		});
 	}
@@ -132,11 +135,11 @@
 		total_labor_sumdelivered.value = response.data.total_sumdelivered;
 		total_material_sumdelivered.value = response.data.total_material_sumdelivered;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
-			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			getLaborOffer(val.joi_labor_details_id,val.jo_rfq_labor_offer_id,index)
 			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
 		joi_dr_material.value.forEach(function (val, index, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,index)
+			getMaterialOffer(val.joi_material_details_id,val.jo_rfq_material_offer_id,index)
 			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,index)
 		});
 	}
@@ -229,6 +232,10 @@
 		to_deliver_material.value[count]= parseFloat(qty)  - total_material_sumdelivered1.value[count]
 		remaining_material_delivery[count]= parseFloat(qty)  - total_material_sumdelivered1.value[count]
 	}
+
+	watch(isLoading, (newValue) => {
+		
+	});
 
 	const onSave = () => {
 		const formData= new FormData()
@@ -555,7 +562,7 @@
 									</div>
 								</div>
 							</div>
-							<div v-else-if="to_deliver_labor.length!=0 && to_deliver_material.length!=0 && (allZero() || allZeroMaterial())">
+							<div v-else-if="to_deliver_labor.length==0 && to_deliver_material.length==0 && (allZero() || allZeroMaterial())">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>
