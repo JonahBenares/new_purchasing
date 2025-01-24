@@ -562,7 +562,7 @@
 									</div>
 								</div>
 							</div>
-							<div v-else-if="to_deliver_labor.length!=0 && to_deliver_material.length!=0 && (allZero() || allZeroMaterial())">
+							<div v-else-if="to_deliver_labor.length==0 && to_deliver_material.length==0 && (allZero() || allZeroMaterial())">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>

@@ -1275,7 +1275,7 @@ class JOIController extends Controller
     }
 
     public function joi_dropdown(){
-        $joi_dropdown = JOIDr::select('joi_head_id','joi_no','revision_no')->distinct()->where('status','Saved')->get();
+        $joi_dropdown = JOIDr::select('joi_head_id','joi_no','revision_no')->distinct()->where('status','Saved')->take(2)->get();
         return response()->json([
             'joi_dropdown'=>$joi_dropdown,
         ],200);
@@ -1379,14 +1379,14 @@ class JOIController extends Controller
     }
 
     public function check_remaining_dr_labor_balance($joi_labor_details_id){
-        $balance_sum = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->sum('received_qty');
+        $balance_sum = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->where('quantity','!=','0')->sum('received_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,
         ],200);
     }
 
     public function check_remaining_dr_material_balance($joi_material_details_id){
-        $balance_sum = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->sum('received_qty');
+        $balance_sum = JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->where('quantity','!=','0')->sum('received_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,
         ],200);
@@ -1544,8 +1544,8 @@ class JOIController extends Controller
 
     public function get_jo_dr_view($joi_dr_id){
         $joi_dr = JOIDr::where('id',$joi_dr_id)->where('status','Saved')->first();
-        $joi_dr_labor = JOIDrLabor::where('joi_dr_id',$joi_dr_id)->get();
-        $joi_dr_material = JOIDrMaterial::where('joi_dr_id',$joi_dr_id)->get();
+        $joi_dr_labor = JOIDrLabor::where('joi_dr_id',$joi_dr_id)->where('quantity','!=','0')->whereNull('status')->get();
+        $joi_dr_material = JOIDrMaterial::where('joi_dr_id',$joi_dr_id)->where('quantity','!=','0')->whereNull('status')->get();
         $purpose=JORHead::where('id',$joi_dr->jor_head_id)->value('purpose');
         $requestor=JORHead::where('id',$joi_dr->jor_head_id)->value('requestor');
         $project_activity=JORHead::where('id',$joi_dr->jor_head_id)->value('project_activity');
