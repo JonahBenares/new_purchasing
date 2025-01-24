@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
+use App\Exports\JORTemplate;
 use App\Imports\JORImport;
 use App\Imports\JORLaborImport;
 use App\Imports\JORMaterialImport;
@@ -22,7 +23,12 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 use Config;
 class JORController extends Controller
-{
+{   
+    public function exportJORTemplate(){
+        //Excel::store(new BeginningBalanceExport, 'begbal.xlsx');
+        return Excel::download(new JORTemplate, 'JORequest Form.xlsx');
+    }
+
     public function import_jor(Request $request){
         
             if($request->file('upload_jor')){
@@ -45,6 +51,9 @@ class JORController extends Controller
                     return response()->json([
                         'jor_head_id'=>$jor_head_id,
                         'jorhead'=>$head,
+                        'dept_checker'=>$jorImport->dept_checker,
+                        'req_checker'=>$jorImport->req_checker,
+                        'site_checker'=>$jorImport->site_checker,
                     ],200);
                 } catch (Throwable $e) {
                     DB::rollBack();
