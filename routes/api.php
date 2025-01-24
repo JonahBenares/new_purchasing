@@ -188,6 +188,7 @@ Route::get('/po_dropdown', [POController::class,'po_dropdown']);
 Route::get('/generate_dr/{po_head_id}', [POController::class,'generate_dr']);
 Route::get('/get_offer/{po_details_id}/{rfq_offer_id}', [POController::class,'get_offer']);
 Route::get('/check_dr_balance/{po_dr_id}/{po_details_id}', [POController::class,'check_dr_balance']);
+Route::get('/check_remaining_dr_balance_view/{po_dr_id}/{po_details_id}', [POController::class,'check_remaining_dr_balance_view']);
 Route::get('/check_remaining_dr_balance/{po_details_id}', [POController::class,'check_remaining_dr_balance']);
 Route::post('/save_dr', [POController::class,'save_dr']);
 Route::post('/save_received_dr', [POController::class,'save_received_dr']);
