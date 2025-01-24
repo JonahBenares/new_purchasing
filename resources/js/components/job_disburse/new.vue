@@ -67,6 +67,9 @@
     let vat_amount_del = ref(0)
     let retention_amount_del = ref(0)
     let cancel_all_reason = ref('')
+    let percent_vat = ref(0)
+    let newvat = ref(0)
+    let vatamount = ref(0)
     const props = defineProps({
 		id:{
 			type:String,
@@ -143,11 +146,17 @@
         joi_labor.value.forEach(function (val, index, theArray) {
             total += parseFloat(val.total_cost);
         });
+
         joi_material.value.forEach(function (val, index, theArray) {
             totalm += parseFloat(val.total_cost);
         });
+
+        percent_vat=  joi_head.value.vat/100
+        newvat =  ((parseFloat(total) - parseFloat(joi_head.value.discount)) + (parseFloat(totalm) - (parseFloat(joi_head.value.discount_material)))) * parseFloat(percent_vat)
+        vatamount =parseFloat(newvat)
             
-        overall_total.value=(parseFloat(total) + parseFloat(totalm) + parseFloat(joi_head.value.vat_amount)) - (parseFloat(joi_head.value.discount) + parseFloat(joi_head.value.discount_material))
+        overall_total.value=(parseFloat(total) + parseFloat(totalm)  + parseFloat(vatamount)) - (parseFloat(joi_head.value.discount) + parseFloat(joi_head.value.discount_material))
+        
         if(vendor.value.vat==1){
             less_labor.value = (parseFloat(total)/1.12)*percent
             less_material.value = (parseFloat(totalm)/1.12)*percent_material
@@ -185,7 +194,9 @@
             joi_head.value = response.data.joi_head;
             jor_head.value = response.data.jor_head;
             joi_labor.value = response.data.joi_labor;
+            joi_labor_cancelled.value = response.data.joi_labor_cancelled;
             joi_material.value = response.data.joi_material;
+            joi_material_cancelled.value = response.data.joi_material_cancelled;
             vendor.value = response.data.vendor;
             total_per_item.value = parseFloat(response.data.total_sum_labor) + parseFloat(response.data.total_sum_material);
             prepared_by.value = response.data.prepared_by;
@@ -209,8 +220,14 @@
             joi_material.value.forEach(function (val, index, theArray) {
                 totalm += parseFloat(val.total_cost);
             });
+
+            percent_vat=  joi_head.value.vat/100
+            newvat =  ((parseFloat(total) - parseFloat(joi_head.value.discount)) + (parseFloat(totalm) - (parseFloat(joi_head.value.discount_material)))) * parseFloat(percent_vat)
+            vatamount =parseFloat(newvat)
                 
-            overall_total.value=(parseFloat(total) + parseFloat(totalm) + parseFloat(joi_head.value.vat_amount)) - (parseFloat(joi_head.value.discount) + parseFloat(joi_head.value.discount_material))
+            overall_total.value=(parseFloat(total) + parseFloat(totalm)  + parseFloat(vatamount)) - (parseFloat(joi_head.value.discount) + parseFloat(joi_head.value.discount_material))
+                
+            // overall_total.value=(parseFloat(total) + parseFloat(totalm) + parseFloat(joi_head.value.vat_amount)) - (parseFloat(joi_head.value.discount) + parseFloat(joi_head.value.discount_material))
             if(vendor.value.vat==1){
                 less_labor.value = (parseFloat(total)/1.12)*percent
                 less_material.value = (parseFloat(totalm)/1.12)*percent_material
@@ -226,7 +243,9 @@
 	}
 
     const vatretChange = (vat_percent) => {
-        var percent= (vat.value==1) ? vat_percent/100 : 0;
+        // var percent= (vat.value==1) ? vat_percent/100 : 0;
+        var percent= vat_percent/100;
+        
         if(vat.value==1){
             var new_vat = (parseFloat(p_amount.value)/1.12)  * parseFloat(percent);
         }else{
@@ -260,6 +279,9 @@
         if(vat.value==1){
             vat_percent.value=vendor.value.ewt;
             vatretChange(vendor.value.ewt)
+        }else{
+            vat_percent.value=0;
+            vatretChange(0)
         }
 	}
 
@@ -653,9 +675,10 @@
                                                     <td class="border-y-none p-1 text-center">
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>
-                                                            <span v-if="joi_head.grand_total==0">{{formatter.format(overall_total)}}</span>
+                                                            <!-- <span v-if="joi_head.grand_total==0">{{formatter.format(overall_total)}}</span>
                                                             <span v-else-if="joi_head.grand_total!=0">{{formatter.format(joi_head.grand_total)}}</span>
-                                                            <span v-else>{{formatter.format(overall_total)}}</span>
+                                                            <span v-else>{{formatter.format(overall_total)}}</span> -->
+                                                            <span>{{formatter.format(overall_total)}}</span>
                                                         </div>
                                                     </td>
 												</tr>
@@ -824,7 +847,7 @@
                                                                     <option value="1">VAT</option>
                                                                     <option value="2">NON-VAT</option>
                                                                 </select>
-                                                                <input type="text" @keypress="isNumber($event)" class="w-10 text-center border p-1 bg-yellow-100" v-model="vat_percent" placeholder="%" @keyup="vatretChange(vat_percent)" @change="vatretChange(vat_percent)" v-if="vat==1">
+                                                                <input type="text" @keypress="isNumber($event)" class="w-10 text-center border p-1 bg-yellow-100" v-model="vat_percent" placeholder="%" @keyup="vatretChange(vat_percent)" @change="vatretChange(vat_percent)">
                                                             </div>
                                                         </div>
                                                     </td>
