@@ -530,7 +530,7 @@
 							<div class="col-lg-12 col-md-3">
 								<div class="text-center">
 									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
-									<h5 class="leading-tight">You have successfully created a DR.</h5>
+									<h5 class="leading-tight">{{ success }}</h5>
 								</div>
 							</div>
 						</div>

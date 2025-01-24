@@ -1225,7 +1225,7 @@ class POController extends Controller
         $po_head = POHead::where('id',$po_head_id)->first();
         $prepared_by=Auth::user()?->name;
         $vendor=VendorDetails::select('vendor_details.id','identifier','vendor_name')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$po_head->vendor_details_id)->where('status','=','Active')->first();
-        $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->where('to_deliver','!=',0)->where('quantity','>=','received_qty')->whereNull('status')->get();
+        $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->where('to_deliver','!=',0)->where('quantity','>=','received_qty')->where('quantity','!=','0')->whereNull('status')->get();
         // $po_dr_items=PoDrItems::where('po_dr_id',$po_dr->id)->where('to_deliver','!=',0)->get();
         $total_delivered=[];
         foreach($po_dr_items AS $pdi){

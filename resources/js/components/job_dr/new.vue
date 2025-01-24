@@ -1,7 +1,7 @@
 <script setup>
 	import navigation from '@/layouts/navigation.vue';
 	import{Bars3Icon, CheckIcon, XMarkIcon} from '@heroicons/vue/24/solid'
-    import { reactive, ref, onMounted } from "vue"
+    import { reactive, ref, onMounted, watch } from "vue"
     import { useRouter } from "vue-router"
 	import moment from 'moment'
 	const error =  ref('');
@@ -12,6 +12,7 @@
 	const print_button =  ref(false)
 	const hide_printButton = ref()
 	const successAlert = ref(false)
+	const successAlertReceived = ref(false)
 	const dangerAlerterrors = ref(false)
 	const hideAlert = ref(true)
 	const joi_head_id = ref(0)
@@ -44,6 +45,8 @@
 	const remaining_material_delivery = ref([])
 	const received_qty = ref([])
 	const received_material_qty = ref([])
+	const isDriverReadonly = ref(false);
+	const isLoading = ref(true);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -51,10 +54,12 @@
 		}
 	})
 	onMounted(async () => {
-		getJOi()
+		
 		if(props.id!=0){
-			drLoad()
+			await drLoad()
 		}
+		await getJOi()
+		isLoading.value = false; 
 	})
 	const isNumber = (evt)=> {
 		evt = (evt) ? evt : window.event;
@@ -82,6 +87,10 @@
 		dr_no.value = response.data.dr_no;
 		count_joi_head_id.value = response.data.count_joi_head_id;
 		joi_dr.value = response.data.joi_dr;
+		if(joi_dr.value.identifier!=0 && joi_dr.value.print_identifier!=0 && joi_dr.value.received==0 && (joi_dr.value.driver!='' || joi_dr.value.driver!='null')){
+			driver.value=joi_dr.value.driver
+			isDriverReadonly.value = true;
+		}
 		joi_dr_mult.value = response.data.joi_dr_mult;
 		joi_dr_labor.value = response.data.joi_dr_labor;
 		joi_dr_material.value = response.data.joi_dr_material;
@@ -94,11 +103,11 @@
 		total_labor_sumdelivered.value = response.data.total_sumdelivered;
 		total_material_sumdelivered.value = response.data.total_material_sumdelivered;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
-			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			getLaborOffer(val.joi_labor_details_id,val.jo_rfq_labor_offer_id,index)
 			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
 		joi_dr_material.value.forEach(function (val, index, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,index)
+			getMaterialOffer(val.joi_material_details_id,val.jo_rfq_material_offer_id,index)
 			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,index)
 		});
 	}
@@ -107,6 +116,13 @@
 		dr_no.value = response.data.dr_no;
 		count_joi_head_id.value = response.data.count_joi_head_id;
 		joi_dr.value = response.data.joi_dr;
+		if(joi_dr.value.identifier!=0 && joi_dr.value.print_identifier!=0 && joi_dr.value.received==0 && (joi_dr.value.driver!='' || joi_dr.value.driver!='null')){
+			driver.value=joi_dr.value.driver
+			isDriverReadonly.value = true;
+		}else if(joi_dr.value.driver!='' || joi_dr.value.driver!='null'){
+			driver.value=''
+			isDriverReadonly.value = false;
+		}
 		joi_dr_mult.value = response.data.joi_dr_mult;
 		joi_dr_labor.value = response.data.joi_dr_labor;
 		joi_dr_material.value = response.data.joi_dr_material;
@@ -119,25 +135,35 @@
 		total_labor_sumdelivered.value = response.data.total_sumdelivered;
 		total_material_sumdelivered.value = response.data.total_material_sumdelivered;
 		joi_dr_labor.value.forEach(function (val, index, theArray) {
-			getLaborOffer(val.jo_rfq_labor_offer_id,index)
+			getLaborOffer(val.joi_labor_details_id,val.jo_rfq_labor_offer_id,index)
 			checkRemainingLaborQty(val.joi_labor_details_id,val.quantity,index)
 		});
 		joi_dr_material.value.forEach(function (val, index, theArray) {
-			getMaterialOffer(val.jo_rfq_material_offer_id,index)
+			getMaterialOffer(val.joi_material_details_id,val.jo_rfq_material_offer_id,index)
 			checkRemainingMaterialQty(val.joi_material_details_id,val.quantity,index)
 		});
 	}
 
-	const getLaborOffer = async (jo_rfq_labor_offer_id,count) => {
-		let response = await axios.get("/api/get_offer_labor/"+jo_rfq_labor_offer_id);
-		offer_labor.value[count] = response.data.offer.offer;
-		uom_labor.value[count] = response.data.offer.uom;
+	const getLaborOffer = async (joi_labor_details_id,jo_rfq_labor_offer_id,count) => {
+		let response = await axios.get("/api/get_offer_labor/"+joi_labor_details_id+'/'+jo_rfq_labor_offer_id);
+		if(jo_rfq_labor_offer_id!=0 && jo_rfq_labor_offer_id!=''){
+			offer_labor.value[count] = response.data.offer.offer;
+			uom_labor.value[count] = response.data.offer.uom;
+		}else{
+			offer_labor.value[count] = response.data.offer.item_description;
+			uom_labor.value[count] = response.data.offer.uom;
+		}
 	}
 
-	const getMaterialOffer = async (jo_rfq_labor_offer_id,count) => {
-		let response = await axios.get("/api/get_offer_material/"+jo_rfq_labor_offer_id);
-		offer_material.value[count] = response.data.offer.offer;
-		uom_material.value[count] = response.data.offer.uom;
+	const getMaterialOffer = async (joi_material_details_id,jo_rfq_material_offer_id,count) => {
+		let response = await axios.get("/api/get_offer_material/"+joi_material_details_id+'/'+jo_rfq_material_offer_id);
+		if(jo_rfq_material_offer_id!=0 && jo_rfq_material_offer_id!=''){
+			offer_material.value[count] = response.data.offer.offer;
+			uom_material.value[count] = response.data.offer.uom;
+		}else{
+			offer_material.value[count] = response.data.offer.item_description;
+			uom_material.value[count] = response.data.offer.uom;
+		}
 	}
 
 	const checkLaborBalance = async (joi_dr_id,joi_labor_details_id,qty,count) => {
@@ -207,6 +233,10 @@
 		remaining_material_delivery[count]= parseFloat(qty)  - total_material_sumdelivered1.value[count]
 	}
 
+	watch(isLoading, (newValue) => {
+		
+	});
+
 	const onSave = () => {
 		const formData= new FormData()
 		formData.append('identifier', joi_dr.value.identifier)
@@ -229,21 +259,21 @@
 			formData.append('joi_material_details_id'+indexes, vals.joi_material_details_id)
 			formData.append('remaining_material_qty'+indexes, remaining_material_delivery[indexes])
 		});
-		// if(driver.value!=''){
-		axios.post(`/api/save_jo_dr`,formData).then(function (response) {
-			joi_dr_id.value=response.data;
-			success.value='You have successfully saved new jo dr.'
-			successAlert.value=!successAlert.value
-		}, function (err) {
-			error.value='Error! Please try again.';
-			dangerAlerterrors.value=!dangerAlerterrors.value
-		}); 
-		// }else{
-		// 	document.getElementById('driver').placeholder="Driver field must not be empty!"
-		// 	document.getElementById('driver').style.backgroundColor = '#FAA0A0';
-		// 	const btn_save = document.getElementById("save");
-		// 	btn_save.disabled = true;
-		// }
+		if(driver.value!=''){
+			axios.post(`/api/save_jo_dr`,formData).then(function (response) {
+				joi_dr_id.value=response.data;
+				success.value='You have successfully saved new jo dr.'
+				successAlert.value=!successAlert.value
+			}, function (err) {
+				error.value='Error! Please try again.';
+				dangerAlerterrors.value=!dangerAlerterrors.value
+			}); 
+		}else{
+			document.getElementById('driver').placeholder="Driver field must not be empty!"
+			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+			const btn_save = document.getElementById("save");
+			btn_save.disabled = true;
+		}
     }
 
 	const saveReceived = () => {
@@ -260,21 +290,22 @@
 			formData.append('received_material_qty'+indexes, received_material_qty.value[indexes])
 			formData.append('remaining_material_qty'+indexes, remaining_material_delivery[indexes])
 		});
-		if(driver.value!=''){
-			axios.post(`/api/save_jo_received_dr`,formData).then(function (response) {
-				joi_dr_id.value=response.data;
-				success.value='You have successfully saved dr.'
-				successAlert.value=!successAlert.value
-			}, function (err) {
-				error.value='Error! Please try again.';
-				dangerAlerterrors.value=!dangerAlerterrors.value
-			}); 
-		}else{
-			document.getElementById('driver').placeholder="Driver field must not be empty!"
-			document.getElementById('driver').style.backgroundColor = '#FAA0A0';
-			const btn_save = document.getElementById("save");
-			btn_save.disabled = true;
-		}
+		// if(driver.value!=''){
+		axios.post(`/api/save_jo_received_dr`,formData).then(function (response) {
+			joi_dr_id.value=response.data;
+			success.value='You have successfully saved dr.'
+			// successAlert.value=!successAlert.value
+			successAlertReceived.value=!successAlertReceived.value
+		}, function (err) {
+			error.value='Error! Please try again.';
+			dangerAlerterrors.value=!dangerAlerterrors.value
+		}); 
+		// }else{
+		// 	document.getElementById('driver').placeholder="Driver field must not be empty!"
+		// 	document.getElementById('driver').style.backgroundColor = '#FAA0A0';
+		// 	const btn_save = document.getElementById("save");
+		// 	btn_save.disabled = true;
+		// }
     }
 
 	const resetError = () => {
@@ -477,7 +508,7 @@
 												<td></td>
 												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
-												<td class="p-0 "><input type="text" id="driver"  class="w-full bg-yellow-50 p-1 text-center" v-model="driver" @click="resetError()"></td>
+												<td class="p-0 "><input type="text" id="driver"  class="w-full bg-yellow-50 p-1 text-center" v-model="driver" @click="resetError()" :readonly="isDriverReadonly"></td>
 												<td></td>
 											</tr>
 										</table>
@@ -575,6 +606,49 @@
 									<a :href="'/job_issue/view/'+props.id" class="btn !bg-gray-100 btn-sm !rounded-full w-full" v-if="props.id!=0">Back to JOI</a>
 									<a href="/job_dr/new/0" class="btn !bg-gray-100 btn-sm !rounded-full w-full" v-else>Create New</a>
 									<a :href="'/job_dr/view/'+joi_dr_id" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close & Print</a>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</Transition>
+		<Transition
+            enter-active-class="transition ease-out !duration-1000"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-500"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-500"
+            leave-to-class="opacity-0 scale-95"
+        >
+			<div class="modal p-0 !bg-transparent" :class="{ show:successAlertReceived }">
+				<div @click="closeAlert" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
+					<div class="flex justify-center">
+						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
+							<div class="p-2 text-white">
+								<CheckIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 "></CheckIcon>
+							</div>
+						</div>
+					</div>
+					<div class="py-5 rounded-t-3xl"></div>
+					<div class="modal_s_items pt-0 !px-8 pb-4">
+						<div class="row">
+							<div class="col-lg-12 col-md-3">
+								<div class="text-center">
+									<h2 class="mb-2  font-bold text-green-400">Success!</h2>
+									<h5 class="leading-tight">{{ success }}</h5>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row mt-4"> 
+							<div class="col-lg-12 col-md-12">
+								<div class="flex justify-center space-x-2">
+									<!-- <a href="/job_po/view" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Back to JOI</a> -->
+									<a :href="'/job_issue/view/'+props.id" class="btn !bg-gray-100 btn-sm !rounded-full w-full" v-if="props.id!=0">Back to JOI</a>
+									<a href="/job_dr/new/0" class="btn !bg-gray-100 btn-sm !rounded-full w-full" v-else>Create New</a>
+									<!-- <a :href="'/job_dr/view/'+joi_dr_id" class="btn !bg-gray-100 btn-sm !rounded-full w-full">Close & Print</a> -->
 								</div>
 							</div>
 						</div>
