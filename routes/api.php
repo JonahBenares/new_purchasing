@@ -299,7 +299,9 @@ Route::post('/save_jo_received_dr', [JOIController::class,'save_jo_received_dr']
 Route::get('/check_jo_labor_dr_balance/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_jo_labor_dr_balance']);
 Route::get('/check_jo_material_dr_balance/{joi_dr_id}/{joi_material_details_id}', [JOIController::class,'check_jo_material_dr_balance']);
 Route::get('/check_remaining_dr_labor_balance/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_labor_balance']);
+Route::get('/check_remaining_dr_labor_balance_view/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_labor_balance_view']);
 Route::get('/check_remaining_dr_material_balance/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_material_balance']);
+Route::get('/check_remaining_dr_material_balance_view/{joi_dr_id}/{joi_labor_details_id}', [JOIController::class,'check_remaining_dr_material_balance_view']);
 Route::post('/save_jo_dr', [JOIController::class,'save_jo_dr']);
 Route::get('/get_jo_alldr', [JOIController::class,'get_jo_alldr']);
 Route::get('/get_jo_dr_view/{joi_dr_id}', [JOIController::class,'get_jo_dr_view']);

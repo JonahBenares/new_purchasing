@@ -16,6 +16,7 @@ class JOIDrMaterial extends Model
         'jo_rfq_material_offer_id',
         'quantity',
         'delivered_qty',
+        'delivered_qty_disp',
         'to_deliver',
         'received_qty',
         'status',
