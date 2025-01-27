@@ -34,6 +34,7 @@
 	const joi_material_details=ref([]);
 	const jo_rfq_terms=ref([]);
 	const vendor=ref([]);
+	const vendor_terms =  ref([]);
 	const orig_labor_amount=ref(0);
 	const grand_labor_total=ref(0);
 	const grand_material_total=ref(0);
@@ -93,6 +94,7 @@
 		overall_total.value=(response.data.grand_labor_total + response.data.grand_material_total + newvat.value) - (discount_labor.value + discount_material.value)
 		jor_head.value = response.data.jor_head;
 		vendor.value = response.data.joi_vendor;
+		vendor_terms.value = response.data.joi_terms;
 		joi_labor_details.value = response.data.joi_labor_details;
 		joi_material_details.value = response.data.joi_material_details;
 		jo_rfq_terms.value = response.data.joi_terms;
@@ -102,6 +104,7 @@
 	const joDraftDisplay = async () => {
 		let response = await axios.get("/api/jo_viewdetails/"+joi_head_id.value);
 		jo_rfq_terms.value = response.data.joi_terms;
+		vendor_terms.value = response.data.joi_terms;
 		other_list.value = response.data.joi_instructions;
 	}
 	const formatNumber = (number) => {
@@ -398,6 +401,7 @@
 		joi_material_details.value = response.data.joi_material_details;
 		jo_rfq_terms.value = response.data.jo_rfq_terms;
 		vendor.value = response.data.vendor;
+		vendor_terms.value = response.data.vendor_terms;
 		grand_labor_total.value = response.data.grand_labor_total.toFixed(2);
 		grand_material_total.value = response.data.grand_material_total.toFixed(2);
 		overall_total.value=response.data.grand_labor_total + response.data.grand_material_total
@@ -476,7 +480,7 @@
 		formData.append('recommended_by', recommended_by.value)
 		formData.append('conforme', conforme.value)
 		formData.append('terms_list', JSON.stringify(terms_list.value))
-		formData.append('jo_rfq_terms', JSON.stringify(jo_rfq_terms.value))
+		formData.append('vendor_terms', JSON.stringify(vendor_terms.value))
 		formData.append('other_list', JSON.stringify(other_list.value))
 		formData.append('joi_labor_details', JSON.stringify(joi_labor_details.value))
 		formData.append('joi_material_details', JSON.stringify(joi_material_details.value))
@@ -898,15 +902,15 @@
 														</div>
 													</td>
 												</tr>
-												<tr v-for="(jrt,indexterms) in jo_rfq_terms">
+												<tr v-for="(vt,indexterms) in vendor_terms">
 													<td class="align-top text-center" width="4%">{{indexterms + 4}}.</td>
 													<td class="align-top" colspan="1">
 														<div class="flex justify-between">
-															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="jrt.terms"></textarea>
+															<textarea class="w-full bg-yellow-50 px-1" id="" v-model="vt.terms"></textarea>
 														</div>
 													</td>
 													<td v-if="props.id!=0 || joi_head_id!=0">
-														<button type="button" @click="deleteJOTerms(jrt.id,'no')" class="btn btn-danger p-1">
+														<button type="button" @click="deleteJOTerms(vt.id,'no')" class="btn btn-danger p-1">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
 													</td>

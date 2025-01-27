@@ -34,6 +34,7 @@ use App\Models\JOIRevisionTerms;
 use App\Models\JORFQLaborOffers;
 use App\Models\JORFQMaterialOffers;
 use App\Models\VendorDetails;
+use App\Models\VendorTerms;
 use App\Models\JOAOQHead;
 use App\Models\JORFQTerms;
 use App\Models\User;
@@ -73,6 +74,7 @@ class JOIDirectController extends Controller
         $year=date('Y');
         $series_rows = JOISeries::where('year',$year)->count();
         $company=Config::get('constants.company');
+        $vendor_terms=VendorTerms::where('vendor_details_id',$vendor_details_id)->get();
         if($series_rows==0){
             $max_series='1';
             $joi_series='0001';
@@ -148,6 +150,7 @@ class JOIDirectController extends Controller
             'joi_material_details'=>$joi_material_details,
             'joi_no'=>$joi_no,
             'dr_no'=>$dr_no,
+            'vendor_terms'=>$vendor_terms,
             'jo_rfq_terms'=>$jo_rfq_terms,
             'grand_labor_total'=>$total_labor_sum,
             'grand_material_total'=>0,
@@ -158,7 +161,7 @@ class JOIDirectController extends Controller
 
     public function save_direct_joi(Request $request){
         $terms_list=$request->input("terms_list");
-        $jo_rfq_terms=$request->input("jo_rfq_terms");
+        $vendor_terms=$request->input("vendor_terms");
         $other_list=$request->input("other_list");
         $joi_labor_details=$request->input("joi_labor_details");
         $joi_material_details=$request->input("joi_material_details");
@@ -571,8 +574,8 @@ class JOIDirectController extends Controller
             }
         }
 
-        foreach(json_decode($jo_rfq_terms) AS $rt){
-            if(count(json_decode($jo_rfq_terms))>0){
+        foreach(json_decode($vendor_terms) AS $rt){
+            if(count(json_decode($vendor_terms))>0){
                 if($request->joi_head_id==0){
                     $terms = JOITerms::where('joi_head_id',$insertjoihead->id)->where('terms', $rt->terms)->first();
                     if(is_null($terms)) {
