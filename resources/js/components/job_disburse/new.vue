@@ -31,7 +31,7 @@
     let p_description=ref("");
     let p_details=ref("");
     let p_amount=ref(0);
-    let rows=ref(5);
+    let payment_rows=ref(5);
     let joi_id=ref(0)
     let rfd_id=ref(0)
     let vat=ref(0)
@@ -367,8 +367,8 @@
             document.getElementById('pamount').placeholder="Amount"
             document.getElementById('pvat').placeholder=""
 			document.getElementById('pvat').style.backgroundColor = '#FEF9C3';
-            var row = rows + 1
-            row++;
+            payment_rows.value = payment_rows.value + 3
+            // row++;
 		}
 	}
 	const removePayment = (index,payment_amount,vat_amount,retention_amount) => {
@@ -722,9 +722,10 @@
                                                     <td class="" colspan="6"></td>
                                                     <td class=""></td>
                                                 </tr>
+                                                
                                                 <tr class="">
                                                     <!--plus one sa rowspan if may additional nga description and amount-->
-                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rows"> 
+                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="payment_rows"> 
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>{{jor_head.site_jor}}  / {{ joi_head.joi_no }}</p>
                                                         <!-- <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p> -->
                                                     </td>
@@ -808,7 +809,6 @@
                                                 </tr>
                                                 <template v-for="(p, indexes) in payment_list">
                                                     <tr class="">
-                                                        <td colspan="4"></td>
                                                         <td class="border-l-none border-y-none p-0 text-right" colspan="2">
                                                             <div class="flex justify-between space-x-1">
                                                                 <button type="button" @click="removePayment(indexes,p.payment_amount,p.ewt_amount,p.retention_amount)" class="btn btn-danger p-1" v-if="p.id==0">
@@ -838,7 +838,6 @@
                                                         </td>
                                                     </tr>
                                                     <tr class="">
-                                                        <td colspan="4"></td>
                                                         <td class="border-l-none border-y-none text-right p-0" colspan="3">
                                                             <div class="flex justify-end space-x-1">
                                                                 <span class="p-1">EWT {{ (p.ewt_vat==1) ? 'VAT' : 'NON-VAT' }}</span>
@@ -855,7 +854,6 @@
                                                         </td>
                                                     </tr>
                                                     <tr class="">
-                                                        <td colspan="4"></td>
                                                         <td class="border-l-none border-y-none text-right p-0" colspan="3">
                                                             <div class="flex justify-end space-x-1">
                                                                 <span class="p-1">Retention</span>
