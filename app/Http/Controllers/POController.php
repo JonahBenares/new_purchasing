@@ -1178,7 +1178,9 @@ class POController extends Controller
     }
 
     public function get_alldr(){
-        $dr=PoDr::orderBy('dr_no','ASC')->get();
+        $dr=PoDr::with('po_dr_items')->whereHas('po_dr_items', function ($podritems) {
+            $podritems->where('quantity','!=','0');
+        })->orderBy('dr_no','ASC')->get();
         $drall=[];
         foreach($dr AS $d){
             $method=POHead::where('id',$d->po_head_id)->value('method');
@@ -1291,6 +1293,17 @@ class POController extends Controller
         ],200);
     }
 
+    public function check_remaining_dr_balance_view($po_dr_id,$po_details_id){
+        $get_previous_id=PoDrItems::where('po_details_id',$po_details_id)->where('quantity','!=','0')->where('po_dr_id', '<', $po_dr_id)->orderBy('po_dr_id', 'DESC')->value('po_dr_id');
+        $balance_sum=PoDrItems::where('po_dr_id',$get_previous_id)->where('po_details_id',$po_details_id)->where('quantity','!=','0')->value('delivered_qty');
+        $balance_sum2=PoDrItems::where('po_details_id',$po_details_id)->where('quantity','!=','0')->sum('received_qty');
+        // $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
+        return response()->json([
+            'balance_sum'=>$balance_sum,
+            'balance_sum2'=>$balance_sum2,
+        ],200);
+    }
+
     public function check_remaining_dr_balance($po_details_id){
         $balance_sum=PoDrItems::where('po_details_id',$po_details_id)->where('quantity','!=','0')->sum('received_qty');
         // $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
@@ -1314,6 +1327,7 @@ class POController extends Controller
                 $remaining_delivery = $request->input("remaining_qty"."$y");
                 $po_dr_items_details=PoDrItems::where('id',$pd->id)->update([
                     'delivered_qty'=>$to_deliver,
+                    'delivered_qty_disp'=>0,
                     // 'to_deliver'=>$remaining_delivery - $to_deliver,
                 ]);
                 // $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
@@ -1366,6 +1380,9 @@ class POController extends Controller
                 $po_drinsert=PoDr::create($po_dr);
                 $y=0;
                 foreach(json_decode($request->po_dr_items) AS $pd){
+                    $get_previous_id=PoDrItems::where('po_details_id',$pd->po_details_id)->where('quantity','!=','0')->where('po_dr_id', '<', $po_drinsert->id)->orderBy('po_dr_id', 'DESC')->value('po_dr_id');
+                    $delivered_qty=PoDrItems::where('po_dr_id',$get_previous_id)->where('po_details_id',$pd->po_details_id)->where('quantity','!=','0')->value('delivered_qty');
+                    $delivered_qty_disp=PoDrItems::where('po_dr_id',$get_previous_id)->where('po_details_id',$pd->po_details_id)->where('quantity','!=','0')->value('delivered_qty_disp');
                     $to_deliver = $request->input("to_deliver"."$y");
                     $remaining_delivery = $request->input("remaining_qty"."$y");
                     if($to_deliver!=0){
@@ -1377,6 +1394,7 @@ class POController extends Controller
                         $po_dr_itmins['to_deliver']=$pd->to_deliver;
                         // $po_dr_itmins['to_deliver']=$remaining_delivery - $to_deliver;
                         $po_dr_itmins['delivered_qty']=$to_deliver;
+                        $po_dr_itmins['delivered_qty_disp']=$delivered_qty + $delivered_qty_disp;
                         $po_drinsertitem=PoDrItems::create($po_dr_itmins);
                         // $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->where('rfq_offer_id',$pd->rfq_offer_id)->first();
                         // $check_delivered=$update_prreport->delivered_qty + $to_deliver;

@@ -378,7 +378,7 @@
 								</div>
 							</div>
 							<hr class="border-dashed">
-							<div v-if="joi_dr && joi_dr.length!=0 && (!allZero() || !allZeroMaterial())">
+							<div v-if="joi_dr && joi_dr.length!=0 && (!allZero() || !allZeroMaterial()) && (to_deliver_labor.length!=0 || to_deliver_material.length!=0)">
 								<div class="row">
 									<div class="col-lg-8">
 										<input type="hidden" v-model="dr_no">
@@ -426,8 +426,8 @@
 												<td class="p-1 uppercase text-center" width="25%">Supplier</td>
 												<td class="p-1 uppercase text-center" width="25%">Description</td>
 												<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
-												<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 												<td class="p-1 uppercase text-center" width="5%">Received</td>
+												<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 												<td class="p-1 uppercase text-center" width="5%">UOM</td>
 												<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 											</tr>
@@ -448,12 +448,12 @@
 													<input type="hidden" min="0" @keypress="isNumber($event)" @keyup="checkLaborBalance(jdl.joi_dr_id,jdl.joi_labor_details_id,to_deliver_labor[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_labor_checker'+index" v-model="to_deliver_labor[index]">
 													{{jdl.delivered_qty}}
 												</td>
-												<td class="p-1 text-center">{{ total_labor_sumdelivered1[index] }}</td>
 												<td class="p-1 text-center" v-if="joi_dr.print_identifier==0 && joi_dr.received==0"></td>
 												<td class="p-1 text-center" v-else-if="joi_dr.print_identifier==1 && joi_dr.received==1"></td>
 												<td class="p-1 text-center" v-else>
 													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceRec(jdl.joi_dr_id,jdl.joi_labor_details_id,received_qty[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_checker'+index" v-model="received_qty[index]">
 												</td>
+												<td class="p-1 text-center">{{ total_labor_sumdelivered1[index] }}</td>
 												<td class="p-1 text-center">{{ uom_labor[index] }}</td>
 												<td class="p-1 text-center"></td>
 											</tr>
@@ -474,12 +474,12 @@
 													<input type="hidden" min="0" @keypress="isNumber($event)" @keyup="checkMaterialBalance(jdm.joi_dr_id,jdm.joi_material_details_id,to_deliver_material[indexes],indexes)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_material_checker'+indexes" v-model="to_deliver_material[indexes]">
 													{{jdm.delivered_qty}}
 												</td>
-												<td class="p-1 text-center">{{ total_material_sumdelivered1[indexes] }}</td>
 												<td class="p-1 text-center" v-if="joi_dr.print_identifier==0 && joi_dr.received==0"></td>
 												<td class="p-1 text-center" v-else-if="joi_dr.print_identifier==1 && joi_dr.received==1"></td>
 												<td class="p-1 text-center" v-else>
 													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceMaterialRec(jdm.joi_dr_id,jdm.joi_material_details_id,received_material_qty[indexes],indexes)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_material_checker'+indexes" v-model="received_material_qty[indexes]">
 												</td>
+												<td class="p-1 text-center">{{ total_material_sumdelivered1[indexes] }}</td>
 												<td class="p-1 text-center">{{ uom_material[indexes] }}</td>
 												<td class="p-1 text-center"></td>
 											</tr>
@@ -562,7 +562,7 @@
 									</div>
 								</div>
 							</div>
-							<div v-else-if="to_deliver_labor.length==0 && to_deliver_material.length==0 && (allZero() || allZeroMaterial())">
+							<div v-else-if="!isLoading && to_deliver_labor.length==0 && to_deliver_material.length==0 && (allZero() || allZeroMaterial())">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>
