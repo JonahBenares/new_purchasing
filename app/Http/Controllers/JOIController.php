@@ -1378,10 +1378,32 @@ class JOIController extends Controller
         ],200);
     }
 
+    public function check_remaining_dr_labor_balance_view($joi_dr_id,$joi_labor_details_id){
+        $get_previous_id=JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->where('quantity','!=','0')->where('joi_dr_id', '<', $joi_dr_id)->orderBy('joi_dr_id', 'DESC')->value('joi_dr_id');
+        $balance_sum=JOIDrLabor::where('joi_dr_id',$get_previous_id)->where('joi_labor_details_id',$joi_labor_details_id)->where('quantity','!=','0')->value('delivered_qty');
+        $balance_sum2=JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->where('quantity','!=','0')->sum('received_qty');
+        // $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
+        return response()->json([
+            'balance_sum'=>$balance_sum,
+            'balance_sum2'=>$balance_sum2,
+        ],200);
+    }
+
     public function check_remaining_dr_labor_balance($joi_labor_details_id){
         $balance_sum = JOIDrLabor::where('joi_labor_details_id',$joi_labor_details_id)->where('quantity','!=','0')->sum('received_qty');
         return response()->json([
             'balance_sum'=>$balance_sum,
+        ],200);
+    }
+
+    public function check_remaining_dr_material_balance_view($joi_dr_id,$joi_material_details_id){
+        $get_previous_id=JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->where('quantity','!=','0')->where('joi_dr_id', '<', $joi_dr_id)->orderBy('joi_dr_id', 'DESC')->value('joi_dr_id');
+        $balance_sum=JOIDrMaterial::where('joi_dr_id',$get_previous_id)->where('joi_material_details_id',$joi_material_details_id)->where('quantity','!=','0')->value('delivered_qty');
+        $balance_sum2=JOIDrMaterial::where('joi_material_details_id',$joi_material_details_id)->where('quantity','!=','0')->sum('received_qty');
+        // $balance_sum = PoDrItems::where('po_details_id',$po_details_id)->sum('delivered_qty');
+        return response()->json([
+            'balance_sum'=>$balance_sum,
+            'balance_sum2'=>$balance_sum2,
         ],200);
     }
 
@@ -1406,6 +1428,7 @@ class JOIController extends Controller
                 $remaining_labor_delivery = $request->input("remaining_labor_qty"."$y");
                 $joi_dr_labor_details=JOIDrLabor::where('id',$jdl->id)->update([
                     'delivered_qty'=>$to_deliver_labor,
+                    'delivered_qty_disp'=>0,
                     // 'to_deliver'=>$remaining_labor_delivery - $to_deliver_labor,
                 ]);
                 $y++;
@@ -1416,6 +1439,7 @@ class JOIController extends Controller
                 $remaining_material_delivery = $request->input("remaining_material_qty"."$z");
                 $joi_dr_material_details=JOIDrMaterial::where('id',$jmd->id)->update([
                     'delivered_qty'=>$to_deliver_material,
+                    'delivered_qty_disp'=>0,
                     // 'to_deliver'=>$remaining_material_delivery - $to_deliver_material,
                 ]);
                 $z++;
@@ -1458,6 +1482,9 @@ class JOIController extends Controller
                 $joi_drinsert=JOIDr::create($joi_dr);
                 $y=0;
                 foreach(json_decode($request->joi_dr_labor) AS $jdl){
+                    $get_previous_id=JOIDrLabor::where('joi_labor_details_id',$jdl->joi_labor_details_id)->where('quantity','!=','0')->where('joi_dr_id', '<', $joi_drinsert->id)->orderBy('joi_dr_id', 'DESC')->value('joi_dr_id');
+                    $delivered_qty=JOIDrLabor::where('joi_dr_id',$get_previous_id)->where('joi_labor_details_id',$jdl->joi_labor_details_id)->where('quantity','!=','0')->value('delivered_qty');
+                    $delivered_qty_disp=JOIDrLabor::where('joi_dr_id',$get_previous_id)->where('joi_labor_details_id',$jdl->joi_labor_details_id)->where('quantity','!=','0')->value('delivered_qty_disp');
                     $to_deliver_labor = $request->input("to_deliver_labor"."$y");
                     $remaining_labor_delivery = $request->input("remaining_labor_qty"."$y");
                     if($to_deliver_labor!=0){
@@ -1469,12 +1496,16 @@ class JOIController extends Controller
                         // $joi_dr_laborins['to_deliver']=$remaining_labor_delivery - $to_deliver_labor;
                         $joi_dr_laborins['to_deliver']=$jdl->to_deliver;
                         $joi_dr_laborins['delivered_qty']=$to_deliver_labor;
+                        $joi_dr_laborins['delivered_qty_disp']=$delivered_qty + $delivered_qty_disp;
                         $joi_drinsertitem=JOIDrLabor::create($joi_dr_laborins);
                     }
                     $y++;
                 }
                 $z=0;
                 foreach(json_decode($request->joi_dr_material) AS $jdm){
+                    $getm_previous_id=JOIDrMaterial::where('joi_material_details_id',$jdm->joi_material_details_id)->where('quantity','!=','0')->where('joi_dr_id', '<', $joi_drinsert->id)->orderBy('joi_dr_id', 'DESC')->value('joi_dr_id');
+                    $deliveredm_qty=JOIDrMaterial::where('joi_dr_id',$getm_previous_id)->where('joi_material_details_id',$jdm->joi_material_details_id)->where('quantity','!=','0')->value('delivered_qty');
+                    $deliveredm_qty_disp=JOIDrMaterial::where('joi_dr_id',$getm_previous_id)->where('joi_material_details_id',$jdm->joi_material_details_id)->where('quantity','!=','0')->value('delivered_qty_disp');
                     $to_deliver_material = $request->input("to_deliver_material"."$z");
                     $remaining_material_delivery = $request->input("remaining_material_qty"."$z");
                     if($to_deliver_material!=0){
@@ -1486,6 +1517,7 @@ class JOIController extends Controller
                         // $joi_dr_materialins['to_deliver']=$remaining_material_delivery - $to_deliver_material;
                         $joi_dr_materialins['to_deliver']=$jdm->to_deliver;
                         $joi_dr_materialins['delivered_qty']=$to_deliver_material;
+                        $joi_dr_materialins['delivered_qty_disp']=$deliveredm_qty + $deliveredm_qty_disp;
                         $joi_drinsertmaterial=JOIDrMaterial::create($joi_dr_materialins);
                     }
                     $z++;

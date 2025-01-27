@@ -223,6 +223,13 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                         ]
                     ],
                 ]);
+                $event->sheet->getStyle('K21')->applyFromArray([
+                    'borders' => [
+                        'right' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ]
+                    ],
+                ]);
 
                 $event->sheet->getStyle('A28:K28')->applyFromArray([
                     'borders' => [
@@ -239,6 +246,22 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                     ],
                 ]);
                 $event->sheet->getStyle('K28')->applyFromArray([
+                    'borders' => [
+                        'right' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ]
+                    ],
+                ]);
+
+                $event->sheet->getStyle('A29')->applyFromArray([
+                    'borders' => [
+                        'right' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ]
+                    ],
+                ]);
+
+                $event->sheet->getStyle('K29')->applyFromArray([
                     'borders' => [
                         'right' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -283,6 +306,24 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                     $event->sheet->getStyle('I'.$m)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
                     
                 }
+                for($n=29;$n<=33;$n++){
+                    $event->sheet->getStyle('A'.$n.':K'.$n)->applyFromArray([
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            ]
+                        ]
+                    ]);
+                    $event->sheet->getStyle('B'.$n.':K'.$n)->applyFromArray([
+                        'alignment' => [
+                            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                        ]
+                    ]);
+                    $event->sheet->mergeCells('A'.$n.':K'.$n);
+                    // $event->sheet->getStyle('A'.$n)->getAlignment()->setHorizontal('center');
+                    $event->sheet->getStyle('A'.$n)->getAlignment()->setHorizontal('left');
+                    
+                }
                 $event->sheet->getDelegate()->getStyle('A15:K15')->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -290,6 +331,12 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                     ]
                 ]);
                 $event->sheet->getDelegate()->getStyle('A22:K22')->applyFromArray([
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'color' => ['rgb' => 'BDD7EE']
+                    ]
+                ]);
+                $event->sheet->getDelegate()->getStyle('A28:K28')->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['rgb' => 'BDD7EE']
@@ -341,8 +388,8 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                 $event->sheet->getStyle('B14:K14')->getAlignment()->setHorizontal('left');
                 $event->sheet->setCellValue('A28', 'Notes:');
                 $event->sheet->getStyle('A28')->getFont()->setBold(true);
-                $event->sheet->getStyle('A28')->getAlignment()->setHorizontal('right');
-                $event->sheet->mergeCells('B28:K28');
+                $event->sheet->getStyle('A28:K28')->getAlignment()->setHorizontal('Left');
+                $event->sheet->mergeCells('A28:K28');
 
                 $event->sheet->setCellValue('H7', 'Duration:');
                 $event->sheet->getStyle('H7')->getAlignment()->setHorizontal('right');
@@ -364,6 +411,7 @@ class JORTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMulti
                 $event->sheet->getStyle('I10:K10')->getAlignment()->setHorizontal('center');
 
                 $event->sheet->setCellValue('A21', 'Materials:');
+                $event->sheet->mergeCells('A21:K21');
                 $event->sheet->getStyle('A21')->getFont()->setBold(true);
                 $event->sheet->setCellValue('A15', 'Item No');
                 $event->sheet->setCellValue('B15', 'Scope of Work');

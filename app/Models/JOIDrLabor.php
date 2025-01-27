@@ -16,6 +16,7 @@ class JOIDrLabor extends Model
         'jo_rfq_labor_offer_id',
         'quantity',
         'delivered_qty',
+        'delivered_qty_disp',
         'to_deliver',
         'received_qty',
         'status',

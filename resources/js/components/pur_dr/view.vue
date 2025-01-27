@@ -24,6 +24,7 @@
 	const offer =  ref([]);
 	const uom =  ref([]);
 	const total_sumdelivered =  ref([]);
+	const total_sumdelivered1 =  ref([]);
 	onMounted(async () => {
 		drLoad()
 	})
@@ -38,7 +39,7 @@
 		prepared_by.value = response.data.prepared_by;
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			getOffer(val.po_details_id,val.rfq_offer_id,index)
-			checkRemainingQty(val.po_details_id,val.quantity,index)
+			checkRemainingQty(val.po_dr_id,val.po_details_id,val.quantity,index)
 		});
 	}
 	// const getOffer = async (rfq_offer_id,count) => {
@@ -57,9 +58,10 @@
 		}
 	}
 
-	const checkRemainingQty = async (po_details_id,qty,count) => {
-		let response = await axios.get("/api/check_remaining_dr_balance/"+po_details_id);
+	const checkRemainingQty = async (po_dr_id,po_details_id,qty,count) => {
+		let response = await axios.get("/api/check_remaining_dr_balance_view/"+po_dr_id+'/'+po_details_id);
 		total_sumdelivered.value[count] = response.data.balance_sum
+		total_sumdelivered1.value[count] = response.data.balance_sum2
 	}
 </script>
 <template>
@@ -139,9 +141,9 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase" width="25%">Supplier</td>
 										<td class="p-1 uppercase" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="7%" v-if="po_dr.received==0">To Deliver</td>
-										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
+										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
 										<td class="p-1 uppercase text-center" width="5%">Received</td>
+										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">UOM</td>
 										<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 									</tr>
@@ -149,10 +151,15 @@
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 										<td class="p-1 ">{{offer[index]}}</td>
-										<td class="p-1 text-center">{{ pdi.to_deliver }}</td>
-										<td class="p-1 text-center" v-if="po_dr.received==0">{{ total_sumdelivered[index] }}</td>
+										<td class="p-1 text-center">{{ pdi.delivered_qty }}</td>
+										<!-- <td class="p-1 text-center">{{ pdi.to_deliver }}</td> -->
 										<td class="p-1 text-center" v-if="pdi.received_qty!=0">{{ pdi.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>
+										<td class="p-1 text-center" v-if="total_sumdelivered[index]==null">0</td>
+										<td class="p-1 text-center" v-else-if="pdi.received_qty==0">{{ total_sumdelivered1[index] }}</td>
+										<td class="p-1 text-center" v-else>{{ pdi.delivered_qty_disp }} </td>
+										<!-- <td class="p-1 text-center" v-else>{{ total_sumdelivered[index] }} </td> -->
+										<!-- <td class="p-1 text-center">{{ total_sumdelivered[index] }}</td> -->
 										<td class="p-1 text-center">{{ uom[index] }}</td>
 										<td class="p-1 text-center"></td>
 										<!-- <td class="p-1 text-center">{{ pdi.to_deliver }}</td> -->

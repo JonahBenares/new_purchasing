@@ -29,4 +29,7 @@ class PoDr extends Model
         'print_identifier',
         'received',
     ];
+    public function po_dr_items(){
+        return $this->hasMany(PoDRItems::class, 'po_dr_id');
+    }
 }

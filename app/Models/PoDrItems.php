@@ -16,6 +16,7 @@ class PoDrItems extends Model
         'rfq_offer_id',
         'quantity',
         'delivered_qty',
+        'delivered_qty_disp',
         'to_deliver',
         'received_qty',
         'status'
