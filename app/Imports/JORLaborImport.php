@@ -65,7 +65,7 @@ class JORLaborImport implements ToModel, WithHeadingRow, SkipsEmptyRows
                     $jor_labor_details_id=JORlaborDetails::create($labordetails);
                 }else if($this->rows==1){
                     if ($item_no != 'Materials:' && $item_no != 'Item No') {
-                        if($item_no!='Notes:'){
+                        if($item_no!='Notes:' &&  $scope_of_work!=''){
                             $date_needed=$row[10] ?? '';
                             $date_needed_disp= ($date_needed!='') ? date('Y-m-d',strtotime($this->transformDate($date_needed))) : '';
                             $jor_no=JORHead::where('id',$this->jor_head_id)->value('jor_no');
@@ -78,9 +78,9 @@ class JORLaborImport implements ToModel, WithHeadingRow, SkipsEmptyRows
                             $materialdetails['date_needed']=$date_needed_disp;
                             $materialdetails['status']='Draft';
                             $jor_material_details_id=JORMaterialDetails::create($materialdetails);
-                        }else if($item_no=='Notes:' &&  $scope_of_work!=''){
+                        }else if($item_no!='Notes:' &&  $item_no!=''){
                             $jornotes['jor_head_id']=$this->jor_head_id;
-                            $jornotes['notes']=$scope_of_work;
+                            $jornotes['notes']=$item_no;
                             $jornotes['status']='Draft';
                             JORNotes::create($jornotes);
                         }

@@ -35,8 +35,8 @@ class JORController extends Controller
                 $filename=$request->file('upload_jor')->getClientOriginalName();
                 $request->file('upload_jor')->storeAs('imports',$filename);
                 $user_id = auth()->user()->id;
-                try {
-                    DB::beginTransaction();
+                // try {
+                //     DB::beginTransaction();
                     $jorImport = new JORImport($user_id);
                     $sheet1 = Excel::import($jorImport, request()->file('upload_jor'));
                     $head = $jorImport->data;
@@ -47,7 +47,7 @@ class JORController extends Controller
                         $sheet2 = Excel::import($jorlaborImportdetails, request()->file('upload_jor'));
                         $labor_details = $jorlaborImportdetails->data;
                     }
-                    DB::commit();
+                    // DB::commit();
                     return response()->json([
                         'jor_head_id'=>$jor_head_id,
                         'jorhead'=>$head,
@@ -55,10 +55,10 @@ class JORController extends Controller
                         'req_checker'=>$jorImport->req_checker,
                         'site_checker'=>$jorImport->site_checker,
                     ],200);
-                } catch (Throwable $e) {
-                    DB::rollBack();
-                    echo 'error';
-                }
+                // } catch (Throwable $e) {
+                //     DB::rollBack();
+                //     echo 'error';
+                // }
             } 
     }
 
