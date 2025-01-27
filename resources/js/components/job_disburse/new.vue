@@ -194,9 +194,7 @@
             joi_head.value = response.data.joi_head;
             jor_head.value = response.data.jor_head;
             joi_labor.value = response.data.joi_labor;
-            joi_labor_cancelled.value = response.data.joi_labor_cancelled;
             joi_material.value = response.data.joi_material;
-            joi_material_cancelled.value = response.data.joi_material_cancelled;
             vendor.value = response.data.vendor;
             total_per_item.value = parseFloat(response.data.total_sum_labor) + parseFloat(response.data.total_sum_material);
             prepared_by.value = response.data.prepared_by;
