@@ -1469,7 +1469,7 @@ class POController extends Controller
         $po_head= POHead::where('id',$po_head_id)->where('status','Saved')->first();
         $vendor= VendorDetails::where('id',$po_head->vendor_details_id)->where('status','Active')->first();
         $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
-        $po_details = PODetails::where('po_head_id',$po_head_id)->where('status','Saved')->get();
+        $po_details = PODetails::where('po_head_id',$po_head_id)->where('status','Saved')->where('quantity','!=','0')->get();
         $rfd_head = PORfd::where('po_head_id',$po_head_id)->where('status','Saved')->first();
         $rfd_payments = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
             $porfd->where('status','Saved')->Orwhere('status','Draft');

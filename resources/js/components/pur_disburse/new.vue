@@ -694,7 +694,7 @@
                                                     <td class="border-y-none p-1 text-center">
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>
-                                                            <span><input type="text" class="text-center tprice" :id="'tprice'+index" :value="formatter.format(pd.unit_price * pd.quantity)" readonly></span>
+                                                            <span><input type="text" class="text-right tprice " :id="'tprice'+index" :value="formatter.format(pd.unit_price * pd.quantity)" readonly></span>
                                                             <!-- <span>{{ formatter.format(pd.unit_price * pd.quantity)}}</span> -->
                                                         </div>
                                                     </td>

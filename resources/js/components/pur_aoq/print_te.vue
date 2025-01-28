@@ -206,7 +206,7 @@
 							<td class="">{{ head.pr_no }}</td>
 							<td class=" font-bold pr-1" width="8%">AOQ No: </td>
 							<td class="">{{ head.aoq_no }}</td>
-							<td class=" font-bold pr-1" width="8%">Requested By: </td>
+							<td class=" font-bold pr-1" width="10%">Requested By: </td>
 							<td class="">{{ head.requestor }}</td>
 						</tr>
 						<tr>
