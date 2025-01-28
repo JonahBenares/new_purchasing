@@ -381,7 +381,7 @@
                                                                     {{ percent_vat=  po_head.vat_percent/100 }} 
                                                                     {{ new_vat= ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount)) * parseFloat(percent_vat) }}
                                                                     {{  vat_amount =parseFloat(new_vat) }}
-                                                                    {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
+                                                                    {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount))  }}
                                                                 </span>
                                                                 <input type="text" class="w-full bg-white p-1 text-right" disabled value="0.00">
                                                             </div>
