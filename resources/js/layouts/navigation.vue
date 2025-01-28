@@ -421,108 +421,108 @@
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <ul class="navbar-nav  w-100">
-                <li class="nav-item nav-search d-none d-lg-block w-100">
-                    <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="search">
-                        <i class="mdi mdi-magnify"></i>
-                        </span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                    </div>
-                </li>
+                    <li class="nav-item nav-search d-none d-lg-block w-100">
+                        <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="search">
+                            <i class="mdi mdi-magnify"></i>
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
+                        </div>
+                    </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item dropdown mr-1">
-                    <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
-                    <i class="mdi mdi-message-text mx-0"></i>
-                    <!-- <span class="count"></span> -->
-                    </a>
-                    <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-                    <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-                    <a class="dropdown-item">
-                        <div class="item-thumbnail">
-                            <img  alt="image" class="profile-pic">
-                        </div>
-                        <div class="item-content flex-grow">
-                        <h6 class="ellipsis font-weight-normal">David Grey
-                        </h6>
-                        <p class="font-weight-light small-text text-muted mb-0">
-                            The meeting is cancelled
-                        </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item">
-                        <div class="item-thumbnail">
-                            <img  alt="image" class="profile-pic">
-                        </div>
-                        <div class="item-content flex-grow">
-                        <h6 class="ellipsis font-weight-normal">Tim Cook
-                        </h6>
-                        <p class="font-weight-light small-text text-muted mb-0">
-                            New product launch
-                        </p>
-                        </div>
-                    </a>
-                    <a class="dropdown-item">
-                        <div class="item-thumbnail">
-                            <img  alt="image" class="profile-pic">
-                        </div>
-                        <div class="item-content flex-grow">
-                        <h6 class="ellipsis font-weight-normal"> Johnson
-                        </h6>
-                        <p class="font-weight-light small-text text-muted mb-0">
-                            Upcoming board meeting
-                        </p>
-                        </div>
-                    </a>
-                    </div> -->
-                </li>
-                <li class="nav-item dropdown mr-0 ">
-                    <a class="nav-link dropdown-toggle text-base !flex" href="#" data-toggle="dropdown" id="templateDropdown" @click="templatesDrop = !templatesDrop">
-                        Download Templates
-                    </a>
-                    <Transition
-						enter-active-class="transition ease-out duration-200"
-						enter-from-class="opacity-0"
-						enter-to-class="opacity-100 "
-						leave-active-class="transition ease-in duration-200"
-						leave-from-class="opacity-100 "
-						leave-to-class="opacity-0"
-					>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" v-show="templatesDrop">
-                            <a href="/export-prtemplate" class="dropdown-item"> PR Template </a>
-                            <!-- <a href="../../storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a> -->
-                            <!-- <a href="../../storage/upload_format/JORequestForm.xlsx" class="dropdown-item" download> JOR Template </a> -->
-                            <a href="/export-jortemplate" class="dropdown-item"> JOR Template </a>
-                        </div>
-                    </Transition>
-                </li>
-                <li class="nav-item nav-profile dropdown">
-                    <a class="nav-link dropdown-toggle !flex" href="#" data-toggle="dropdown" id="profileDropdown" @click="userDrop = !userDrop">
-                        <span>
-                            <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
-                        </span>
-                        <span class="nav-profile-name">{{ credentials.name }}</span>
-                    </a>
-                    <Transition
-						enter-active-class="transition ease-out duration-200"
-						enter-from-class="opacity-0"
-						enter-to-class="opacity-100 "
-						leave-active-class="transition ease-in duration-200"
-						leave-from-class="opacity-100 "
-						leave-to-class="opacity-0"
-					>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown"  v-show="userDrop">
-                        <a class="dropdown-item" href="/change_password/">Change password</a>
-						<div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item" @click="logout">
-                            <i class="mdi mdi-logout text-primary"></i>
-                            Logout
+                    <li class="nav-item dropdown mr-1">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+                        <i class="mdi mdi-message-text mx-0"></i>
+                        <!-- <span class="count"></span> -->
                         </a>
-                    </div>
-                    </Transition>
-                </li>
+                        <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+                        <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
+                        <a class="dropdown-item">
+                            <div class="item-thumbnail">
+                                <img  alt="image" class="profile-pic">
+                            </div>
+                            <div class="item-content flex-grow">
+                            <h6 class="ellipsis font-weight-normal">David Grey
+                            </h6>
+                            <p class="font-weight-light small-text text-muted mb-0">
+                                The meeting is cancelled
+                            </p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item">
+                            <div class="item-thumbnail">
+                                <img  alt="image" class="profile-pic">
+                            </div>
+                            <div class="item-content flex-grow">
+                            <h6 class="ellipsis font-weight-normal">Tim Cook
+                            </h6>
+                            <p class="font-weight-light small-text text-muted mb-0">
+                                New product launch
+                            </p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item">
+                            <div class="item-thumbnail">
+                                <img  alt="image" class="profile-pic">
+                            </div>
+                            <div class="item-content flex-grow">
+                            <h6 class="ellipsis font-weight-normal"> Johnson
+                            </h6>
+                            <p class="font-weight-light small-text text-muted mb-0">
+                                Upcoming board meeting
+                            </p>
+                            </div>
+                        </a>
+                        </div> -->
+                    </li>
+                    <li class="nav-item dropdown mr-0 ">
+                        <a class="nav-link dropdown-toggle text-base !flex" href="#" data-toggle="dropdown" id="templateDropdown" @click="templatesDrop = !templatesDrop">
+                            Download Templates
+                        </a>
+                        <Transition
+                            enter-active-class="transition ease-out duration-200"
+                            enter-from-class="opacity-0"
+                            enter-to-class="opacity-100 "
+                            leave-active-class="transition ease-in duration-200"
+                            leave-from-class="opacity-100 "
+                            leave-to-class="opacity-0"
+                        >
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" v-show="templatesDrop">
+                                <a href="/export-prtemplate" class="dropdown-item"> PR Template </a>
+                                <!-- <a href="../../storage/upload_format/PurchaseRequestForm.xlsx" class="dropdown-item" download> PR Template </a> -->
+                                <!-- <a href="../../storage/upload_format/JORequestForm.xlsx" class="dropdown-item" download> JOR Template </a> -->
+                                <a href="/export-jortemplate" class="dropdown-item"> JOR Template </a>
+                            </div>
+                        </Transition>
+                    </li>
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle !flex" href="#" data-toggle="dropdown" id="profileDropdown" @click="userDrop = !userDrop">
+                            <span>
+                                <UserIcon  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-5 h-5 "></UserIcon>
+                            </span>
+                            <span class="nav-profile-name">{{ credentials.name }}</span>
+                        </a>
+                        <Transition
+                            enter-active-class="transition ease-out duration-200"
+                            enter-from-class="opacity-0"
+                            enter-to-class="opacity-100 "
+                            leave-active-class="transition ease-in duration-200"
+                            leave-from-class="opacity-100 "
+                            leave-to-class="opacity-0"
+                        >
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown"  v-show="userDrop">
+                            <a class="dropdown-item" href="/change_password/">Change password</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" @click="logout">
+                                <i class="mdi mdi-logout text-primary"></i>
+                                Logout
+                            </a>
+                        </div>
+                        </Transition>
+                    </li>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                 <span class="mdi mdi-menu"></span>
@@ -552,14 +552,14 @@
                                 <!-- <i class="menu-arrow"></i> -->
                             </a>
                             <Transition
-                                enter-active-class="transition ease-out duration-500"
+                                enter-active-class="transition transition-transform ease-out duration-500"
                                 enter-from-class="opacity-0 h-1/2"
                                 enter-to-class="opacity-100 h-full"
-                                leave-active-class="transition ease-in duration-500"
-                                leave-from-class="opacity-100 h-full"
+                                leave-active-class="transition transition-transform ease-in duration-500"
+                                leave-from-class="opacity-100 h-full "
                                 leave-to-class="opacity-0 h-1/2"
                             >
-                            <div class="!hidden"  :class="{ show:masterfileDrop }">
+                            <div class="!hidden transition-transform"  :class="{ show:masterfileDrop }">
                                 <ul class="nav flex-column sub-menu">
                                     <!-- <li class="nav-item list-none"> <a class="nav-link" href="/items">Items</a></li> -->
                                     <li class="nav-item list-none"> <a class="nav-link" href="/department">Department</a></li>

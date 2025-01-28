@@ -31,7 +31,7 @@
     let p_description=ref("");
     let p_details=ref("");
     let p_amount=ref(0);
-    let rows=ref(5);
+    let payment_rows=ref(5);
     let joi_id=ref(0)
     let rfd_id=ref(0)
     let vat=ref(0)
@@ -194,9 +194,7 @@
             joi_head.value = response.data.joi_head;
             jor_head.value = response.data.jor_head;
             joi_labor.value = response.data.joi_labor;
-            joi_labor_cancelled.value = response.data.joi_labor_cancelled;
             joi_material.value = response.data.joi_material;
-            joi_material_cancelled.value = response.data.joi_material_cancelled;
             vendor.value = response.data.vendor;
             total_per_item.value = parseFloat(response.data.total_sum_labor) + parseFloat(response.data.total_sum_material);
             prepared_by.value = response.data.prepared_by;
@@ -369,8 +367,8 @@
             document.getElementById('pamount').placeholder="Amount"
             document.getElementById('pvat').placeholder=""
 			document.getElementById('pvat').style.backgroundColor = '#FEF9C3';
-            var row = rows + 1
-            row++;
+            payment_rows.value = payment_rows.value + 3
+            // row++;
 		}
 	}
 	const removePayment = (index,payment_amount,vat_amount,retention_amount) => {
@@ -724,75 +722,10 @@
                                                     <td class="" colspan="6"></td>
                                                     <td class=""></td>
                                                 </tr>
-                                                <template v-for="(p, indexes) in payment_list">
-                                                    <tr class="">
-                                                        <td colspan="4"></td>
-                                                        <td class="border-l-none border-y-none p-0 text-right" colspan="2">
-                                                            <div class="flex justify-between space-x-1">
-                                                                <button type="button" @click="removePayment(indexes,p.payment_amount,p.ewt_amount,p.retention_amount)" class="btn btn-danger p-1" v-if="p.id==0">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                                                </button>
-                                                                <button type="button" @click="deleteJoiPayment(p.id,'no',p.payment_amount,p.ewt_amount,p.retention_amount)" class="btn btn-danger p-1" v-else-if="p.id!=0 && p.joi_rfd.status!='Saved'">
-                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                                                </button>
-                                                                <input type="text" class="w-full text-left p-1" v-model="p.payment_description"  readonly>
-                                                            </div>
-                                                        </td>
-                                                        <td class="p-0 border-y-none">
-                                                            <div class="flex justify-between w-full">
-                                                                <button class="btn btn-xs p-0">
-                                                                    <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
-                                                                </button>
-                                                                <input type="text" class="w-full text-left  p-1" v-model="p.payment_details" readonly>
-                                                            </div>
-                                                        </td>
-                                                        <td class="p-0 border-y-none">
-                                                            <div class="flex justify-between w-full">
-                                                                <button class="btn btn-xs p-0">
-                                                                    <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
-                                                                </button>
-                                                                <input type="text" class="w-full text-right p-1" :value="formatter.format(p.payment_amount)" readonly>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td colspan="4"></td>
-                                                        <td class="border-l-none border-y-none text-right p-0" colspan="3">
-                                                            <div class="flex justify-end space-x-1">
-                                                                <span class="p-1">EWT {{ (p.ewt_vat==1) ? 'VAT' : 'NON-VAT' }}</span>
-                                                                <div class="flex " v-if="p.ewt_vat==1">
-                                                                    <input type="text" class="w-10 text-center border p-1" :value="p.ewt_percent" placeholder="%" readonly>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="p-0 border-y-none">
-                                                            <div class="flex justify-between w-full">
-                                                                <span class="p-1">₱</span>
-                                                                <input type="text" class="w-20 text-right border p-1" :value="formatter.format(p.ewt_amount)" placeholder="00" readonly>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="">
-                                                        <td colspan="4"></td>
-                                                        <td class="border-l-none border-y-none text-right p-0" colspan="3">
-                                                            <div class="flex justify-end space-x-1">
-                                                                <span class="p-1">Retention</span>
-                                                                <div class="flex ">
-                                                                    <input type="text" class="w-10 text-center border p-1" :value="p.retention_percent" placeholder="%" readonly>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="p-0 border-y-none">
-                                                            <div class="flex justify-between w-full">
-                                                                <span class="p-1">₱</span>
-                                                                <input type="text" class="w-20 text-right border p-1" :value="formatter.format(p.retention_amount)" placeholder="00" readonly>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </template>
+                                                
                                                 <tr class="">
                                                     <!--plus one sa rowspan if may additional nga description and amount-->
-                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rows"> 
+                                                    <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="payment_rows"> 
                                                         <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">JOI Number:</span>{{jor_head.site_jor}}  / {{ joi_head.joi_no }}</p>
                                                         <!-- <p class="m-0 mb-1 leading-none !text-xs"><span class="mr-2 uppercase">DR Number:</span>DR-CENPRI-1001</p> -->
                                                     </td>
@@ -874,6 +807,69 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <template v-for="(p, indexes) in payment_list">
+                                                    <tr class="">
+                                                        <td class="border-l-none border-y-none p-0 text-right" colspan="2">
+                                                            <div class="flex justify-between space-x-1">
+                                                                <button type="button" @click="removePayment(indexes,p.payment_amount,p.ewt_amount,p.retention_amount)" class="btn btn-danger p-1" v-if="p.id==0">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                                                </button>
+                                                                <button type="button" @click="deleteJoiPayment(p.id,'no',p.payment_amount,p.ewt_amount,p.retention_amount)" class="btn btn-danger p-1" v-else-if="p.id!=0 && p.joi_rfd.status!='Saved'">
+                                                                    <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                                                </button>
+                                                                <input type="text" class="w-full text-left p-1" v-model="p.payment_description"  readonly>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-0 border-y-none">
+                                                            <div class="flex justify-between w-full">
+                                                                <button class="btn btn-xs p-0">
+                                                                    <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
+                                                                </button>
+                                                                <input type="text" class="w-full text-left  p-1" v-model="p.payment_details" readonly>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-0 border-y-none">
+                                                            <div class="flex justify-between w-full">
+                                                                <button class="btn btn-xs p-0">
+                                                                    <!-- <PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></PlusIcon> -->
+                                                                </button>
+                                                                <input type="text" class="w-full text-right p-1" :value="formatter.format(p.payment_amount)" readonly>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="border-l-none border-y-none text-right p-0" colspan="3">
+                                                            <div class="flex justify-end space-x-1">
+                                                                <span class="p-1">EWT {{ (p.ewt_vat==1) ? 'VAT' : 'NON-VAT' }}</span>
+                                                                <div class="flex " v-if="p.ewt_vat==1">
+                                                                    <input type="text" class="w-10 text-center border p-1" :value="p.ewt_percent" placeholder="%" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-0 border-y-none">
+                                                            <div class="flex justify-between w-full">
+                                                                <span class="p-1">₱</span>
+                                                                <input type="text" class="w-20 text-right border p-1" :value="formatter.format(p.ewt_amount)" placeholder="00" readonly>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="">
+                                                        <td class="border-l-none border-y-none text-right p-0" colspan="3">
+                                                            <div class="flex justify-end space-x-1">
+                                                                <span class="p-1">Retention</span>
+                                                                <div class="flex ">
+                                                                    <input type="text" class="w-10 text-center border p-1" :value="p.retention_percent" placeholder="%" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-0 border-y-none">
+                                                            <div class="flex justify-between w-full">
+                                                                <span class="p-1">₱</span>
+                                                                <input type="text" class="w-20 text-right border p-1" :value="formatter.format(p.retention_amount)" placeholder="00" readonly>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </template>
                                                 <tr class="">
                                                     <td class="border-l-none border-y-none p-1 text-right font-bold " colspan="3">Total Amount Due</td>
                                                     <td class="p-1 text-right font-bold !text-sm">
