@@ -353,7 +353,7 @@
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled :value="po_head.vat_percent+'%'">
                                                                 <input type="text" class="w-10 bg-white border-r text-center" disabled value="12" hidden>
                                                                 <span hidden>
-                                                                    {{ percent_vat=  po_head.vat_percent/100 }} 
+                                                                    {{ percent_vat=  po_head.vat_percent/100 ?? 0 }} 
                                                                     {{ new_vat= ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount)) * parseFloat(percent_vat) }}
                                                                     {{ vat_amount =parseFloat(new_vat) }}
                                                                     {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee) + parseFloat(vat_amount)) - parseFloat(po_head.discount))  }}
@@ -367,6 +367,9 @@
                                                         </td>
                                                     </tr>
                                                     <tr class="" v-else-if="po_head.vat==0 || po_head.vat==2">
+                                                        <span hidden>
+                                                            {{ grand_total = ((((parseFloat(total_cost) - parseFloat(cancelled_qty))) + parseFloat(po_head.shipping_cost) + parseFloat(po_head.handling_fee)) - parseFloat(po_head.discount))  }}
+                                                        </span>
                                                         <td class="border-l-none border-y-none p-1 text-right" colspan="2">NON-VAT</td>
                                                         <td class="p-0">
                                                             <div class="flex">
@@ -383,11 +386,11 @@
 
                                                         <!-- <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
                                                         <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(grand_total ?? 0) }}</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">
                                                             {{ formatter.format(grand_total) }}
-                                                        </td>
+                                                        </td> -->
                                                         <!-- <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td> -->
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(grand_total ?? 0) }}</td>
+                                                        <!-- <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-else>{{ formatter.format(grand_total ?? 0) }}</td> -->
                                                     </tr>
                                                 </table>
                                             </div>
