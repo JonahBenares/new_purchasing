@@ -278,7 +278,7 @@ import moment from 'moment';
         });
 		var discount_display= (discount.value!='') ? discount.value : 0;
 		// var vat_percent = document.getElementById("vat_percent").value;
-		var percent=vat_percent/100;
+		var percent=vat_percent/100 ?? 0;
 		var new_vat= ((parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * percent;
 		var new_total = (parseFloat(total) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value) + new_vat) - parseFloat(discount_display);
 		document.getElementById("grand_total").innerHTML  = new_total.toFixed(2)
