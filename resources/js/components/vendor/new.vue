@@ -966,7 +966,7 @@
             leave-to-class="opacity-0 scale-95"
         >
 			<div class="modal p-0 !bg-transparent" :class="{ show:successAlert }">
-				<div @click="closeModal" class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
+				<div  class="w-full h-full fixed backdrop-blur-sm bg-white/30"></div>
 				<div class="modal__content !shadow-2xl !rounded-3xl !my-44 w-96 p-0">
 					<div class="flex justify-center">
 						<div class="!border-green-500 border-8 bg-green-500 !h-32 !w-32 -top-16 absolute rounded-full text-center shadow">
@@ -989,9 +989,9 @@
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
+									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="ShowList">Vendor List</button>
 									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="AddBranchTerms()">Add Terms</button>
-									<button class="btn !bg-gray-100 btn-sm !rounded-full w-full"  @click="CreateNewVendor">Create New</button>
-									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="ShowList">Vendor List</button>
+									<button class="btn !text-white !bg-green-500 btn-sm !rounded-full w-full"  @click="CreateNewVendor">Create New</button>
 								</div>
 							</div>
 						</div>

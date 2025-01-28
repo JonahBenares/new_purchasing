@@ -862,21 +862,21 @@
 													<td class="text-center p-1">{{prepared_by}}</td>
 													<td></td>
 													<td class="text-center p-1">
-														<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by" @click="resetError('button1')">
+														<select class="text-center bg-yellow-50 w-full py-1" v-model="checked_by" id="checked_by" @click="resetError('button1')">
 															<option value='0'>--Select Reviewed/Checked by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>
 													</td>
 													<td></td>
 													<td class="text-center p-1">
-														<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
+														<select class="text-center bg-yellow-50 w-full py-1" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
 															<option value='0'>--Select Recommended by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>
 													</td>
 													<td></td>
 													<td class="text-center p-1">
-														<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by" @click="resetError('button3')">
+														<select class="text-center bg-yellow-50 w-full py-1" v-model="approved_by" id="approved_by" @click="resetError('button3')">
 															<option value='0'>--Select Approved by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>

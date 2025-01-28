@@ -1352,7 +1352,7 @@
         >
 			<div class="modal pt-4 px-3" :class="{ show:chooseVendor }">
 				<div @click="closeModal2()" class="w-full h-full fixed"></div>
-				<div class="modal__content w-8/12 mb-5">
+				<div class="modal__content w-9/12 mb-5">
 					<div class="row mb-3">
 						<div class="col-lg-12 flex justify-between">
 							<span class="font-bold ">Choose Vendor and please fill out the following fields</span>
@@ -1365,18 +1365,18 @@
 					<div class="modal_s_items">
 						<div class="row">
 							<div class="col-lg-6">
-									<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
-									<span class="text-sm text-gray-700">{{ head.pr_no }}</span>
-								</div>
-								<div class="col-lg-3">
-									<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
-									<span class="text-sm text-gray-700">{{ aoq_no }}</span>
-									<!-- <input type="text" class="form-control" placeholder="RFQ No" v-model="aoq_no" readonly> -->
-								</div>
-								<div class="col-lg-3">
-									<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
-									<span class="text-sm text-gray-700">{{ head.aoq_date}}</span>
-								</div>
+								<span class="text-sm text-gray-700 font-bold pr-1">PR No: </span>
+								<span class="text-sm text-gray-700">{{ head.pr_no }}</span>
+							</div>
+							<div class="col-lg-3">
+								<span class="text-sm text-gray-700 font-bold pr-1">AOQ No: </span>
+								<span class="text-sm text-gray-700">{{ aoq_no }}</span>
+								<!-- <input type="text" class="form-control" placeholder="RFQ No" v-model="aoq_no" readonly> -->
+							</div>
+							<div class="col-lg-3">
+								<span class="text-sm text-gray-700 font-bold pr-1">Date: </span>
+								<span class="text-sm text-gray-700">{{ head.aoq_date}}</span>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-6">
