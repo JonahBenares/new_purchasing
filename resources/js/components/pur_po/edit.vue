@@ -323,7 +323,7 @@ import moment from 'moment';
 			additionalCost(vat_percent)
 		}else{
 			vat_amount.value=0
-			additionalCost(vat_percent)
+			additionalCost(0)
 		}
 	}
 
@@ -578,7 +578,8 @@ import moment from 'moment';
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">Purchase Order <small>Revise</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'PO'">Purchase Order <small>Revise</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600" v-if="po_head.method == 'DPO'">Direct PO <small>Revise</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
