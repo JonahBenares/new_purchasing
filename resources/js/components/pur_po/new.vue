@@ -372,6 +372,7 @@
 	const onSave = (status) => {
 		const formData= new FormData()
 		var total = document.querySelector("#grand_total").textContent;
+	
 		var total_replace = total.replace(",", "");
 		formData.append('dr_no', dr_no.value)
 		formData.append('po_no', po_no.value)
@@ -381,7 +382,7 @@
 		formData.append('handling_fee', handling_fee.value)
 		formData.append('discount', discount.value)
 		formData.append('vat', vat.value)
-		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
+		formData.append('vat_percent', (vat.value!=2) ? vat_percent.value : 0)
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total_replace)
@@ -412,7 +413,6 @@
 						}
 					}, 2000);
 				}, function (err) {
-					// error.value = err.response.data.message;
 					error.value='Error! Please try again.';
 					dangerAlerterrors.value=!dangerAlerterrors.value
 				}); 
@@ -446,9 +446,9 @@
 					other_list.value=[]
 					poDraftDisplay()
 				}
-				// successAlert.value=!successAlert.value
+				
 			}, function (err) {
-				// error.value = err.response.data.message;
+				
 				error.value='Error! Please try again.';
 				dangerAlerterrors.value=!dangerAlerterrors.value
 			}); 
@@ -730,7 +730,7 @@
 														<td class="p-0" v-else>
                                                             <div class="flex">
                                                                 <input type="number" class="w-full bg-white p-1 text-right" id="vat_percent" readonly value="0">
-																<input type="hidden" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-center" id="vat_amount" v-model="vat_amount">
+																<input type="text" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 p-1 text-center" id="vat_amount" v-model="vat_amount">
                                                             </div>
                                                         </td>
 													</tr>

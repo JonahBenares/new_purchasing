@@ -317,6 +317,7 @@
     // }
     
     const addRowPayment= () => {
+       // alert(vendor.value.ewt)
 		if(payment_description.value!='' && payment_amount.value!=0){
 			const payment = {
                 id:0,
@@ -332,19 +333,19 @@
             payment_list.value.forEach(function (val, index, theArray) {
                 payment_total +=  Number(val.payment_amount) || 0;
             });
-            
+           
             subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
+           
             if(show_ewt.value!=0){
-                less.value = (subtotal_disp.value/1.12)*percent 
+                if(vendor.value.vat==1){
+                    less.value = (subtotal_disp.value/1.12)*percent 
+                } else {
+                    less.value = (subtotal_disp.value)*percent 
+                }
             }else{
                 less.value=0
             }
-            // subtotal.value = parseFloat(grand_total.value) - parseFloat(payment_total) - less.value
-            // if(show_ewt.value!=0){
-            //     less.value = (subtotal_disp.value/1.12)*percent 
-            // }else{
-            //     less.value=0
-            // }
+          
             subtotal.value = parseFloat(grand_total.value) - parseFloat(payment_total) - less.value
 			document.getElementById('check_description').placeholder="Payment Description"
 			document.getElementById('check_description').style.backgroundColor = '#fef3c7';
