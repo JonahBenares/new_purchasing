@@ -91,437 +91,441 @@
                 <div class="pt-0 hidden mb-1"  :class="{ show:tableWeekly }">
                     <div class="">
                         <table class="table-bordered text-xs" width="150%">
-                            <tr class="text-xs bg-gray-100 font-bold">
-                                <td class="p-1" width="10%">Point Person</td>	
-                                <td class="p-1" width="10%">Purpose</td>
-                                <td class="p-1" width="10%">End Use</td>
-                                <td class="p-1" width="5%">JOR No.</td>
-                                <td class="p-1" width="5%">Requestor</td>
-                                <td class="p-1 text-center" width="4%">Qty</td>
-                                <td class="p-1 text-center" width="3%">UOM</td>
-                                <td class="p-1" width="12%">Description</td>
-                                <td class="p-1" width="3%">Status</td>
-                                <td class="p-1 text-center" width="4%">Actual Cost</td>
-                                <td class="p-1 text-center" width="3%">Variance</td>
-                                <td class="p-1">Supplier</td>
-                                <td class="p-1" width="10%">Term</td>
-                                <td class="p-1" width="7%">Remarks</td>	  
-                                <td class="p-1" align="center" width="1%">
-                                    <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></Bars3Icon>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-primary text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-warning text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-success text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top break-all ">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like reada</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-1 align-top">Point Person</td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-1 text-center align-top">Qty</td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-1 align-top">Remarks</td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
+                            <thead>
+                                <tr class="text-xs bg-gray-100 font-bold">
+                                    <td class="p-1" width="10%">Point Person</td>	
+                                    <td class="p-1" width="10%">Purpose</td>
+                                    <td class="p-1" width="10%">End Use</td>
+                                    <td class="p-1" width="5%">JOR No.</td>
+                                    <td class="p-1" width="5%">Requestor</td>
+                                    <td class="p-1 text-center" width="4%">Qty</td>
+                                    <td class="p-1 text-center" width="3%">UOM</td>
+                                    <td class="p-1" width="12%">Description</td>
+                                    <td class="p-1" width="3%">Status</td>
+                                    <td class="p-1 text-center" width="4%">Actual Cost</td>
+                                    <td class="p-1 text-center" width="3%">Variance</td>
+                                    <td class="p-1">Supplier</td>
+                                    <td class="p-1" width="10%">Term</td>
+                                    <td class="p-1" width="7%">Remarks</td>	  
+                                    <td class="p-1" align="center" width="1%">
+                                        <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></Bars3Icon>
+                                    </td>	  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-warning text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-success text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top break-all ">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like reada</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-1 align-top">Point Person</td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-1 text-center align-top">Qty</td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-1 align-top">Remarks</td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
