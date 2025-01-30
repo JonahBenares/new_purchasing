@@ -177,47 +177,52 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="w-full table-bordered text-xs mt-3">
-									<tr class="bg-gray-100">
-										<td class="p-1 uppercase text-center" width="2%">#</td>
-										<td class="p-1 uppercase text-center" width="25%">Supplier</td>
-										<td class="p-1 uppercase text-center" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
-										<td class="p-1 uppercase text-center" width="5%">Received</td>
-										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
-										<td class="p-1 uppercase text-center" width="5%">UOM</td>
-										<td class="p-1 uppercase text-center" width="5%">Remarks</td>
-									</tr>
-									<tr >
-										<td colspan="6"><span class="font-bold">{{ general_description}} </span></td>
-									</tr>
-									<tr v-for="(jdl,index) in joi_dr_labor">
-										<td class="p-1 text-center">{{ index+1 }}</td>
-										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
-										<td class="p-1 ">{{  offer_labor[index] }}</td>
-										<td class="p-1 text-center">{{  jdl.delivered_qty }}</td>
-										<td class="p-1 text-center" v-if="jdl.received_qty!=0">{{ jdl.received_qty }}</td>
-										<td class="p-1 text-center" v-else></td>
-										<td class="p-1 text-center" v-if="total_labor_sumdelivered[index]==null">0</td>
-										<td class="p-1 text-center" v-else-if="jdl.received_qty==0">{{ total_labor_sumdelivered1[index] }}</td>
-										<td class="p-1 text-center" v-else>{{ jdl.delivered_qty_disp }} </td>
-										<td class="p-1 text-center">{{ uom_labor[index] }}</td>
-										<td class="p-1 text-center"></td>
-									</tr>
-									<tr class="bg-gray-100">
-										<td class="p-1 font-bold" colspan="6">Materials:</td>
-									</tr>
-									<tr v-for="(jdm,indexes) in joi_dr_material">
-										<td class="p-1 text-center">{{indexes+1}}</td>
-										<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
-										<td class="p-1 ">{{ offer_material[indexes] }}</td>
-										<td class="p-1 text-center">{{  jdm.delivered_qty }}</td>
-										<td class="p-1 text-center" v-if="jdm.received_qty!=0">{{ jdm.received_qty }}</td>
-										<td class="p-1 text-center" v-else></td>
-										<td class="p-1 text-center" v-if="total_material_sumdelivered[indexes]==null">0</td>
-										<td class="p-1 text-center" v-else-if="jdm.received_qty==0">{{ total_material_sumdelivered1[indexes] }}</td>
-										<td class="p-1 text-center" v-else>{{ jdm.delivered_qty_disp }} </td>
-										<td class="p-1 text-center">{{ uom_material[indexes] }}</td>
-									</tr>
+									<thead>
+										<tr class="bg-gray-100">
+											<td class="p-1 uppercase text-center" width="2%">#</td>
+											<td class="p-1 uppercase text-center" width="25%">Supplier</td>
+											<td class="p-1 uppercase text-center" width="25%">Description</td>
+											<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
+											<td class="p-1 uppercase text-center" width="5%">Received</td>
+											<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
+											<td class="p-1 uppercase text-center" width="5%">UOM</td>
+											<td class="p-1 uppercase text-center" width="5%">Remarks</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr >
+											<td colspan="6"><span class="font-bold">{{ general_description}} </span></td>
+										</tr>
+										<tr v-for="(jdl,index) in joi_dr_labor">
+											<td class="p-1 text-center">{{ index+1 }}</td>
+											<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
+											<td class="p-1 ">{{  offer_labor[index] }}</td>
+											<td class="p-1 text-center">{{  jdl.delivered_qty }}</td>
+											<td class="p-1 text-center" v-if="jdl.received_qty!=0">{{ jdl.received_qty }}</td>
+											<td class="p-1 text-center" v-else></td>
+											<td class="p-1 text-center" v-if="total_labor_sumdelivered[index]==null">0</td>
+											<td class="p-1 text-center" v-else-if="jdl.received_qty==0">{{ total_labor_sumdelivered1[index] }}</td>
+											<td class="p-1 text-center" v-else>{{ jdl.delivered_qty_disp }} </td>
+											<td class="p-1 text-center">{{ uom_labor[index] }}</td>
+											<td class="p-1 text-center"></td>
+										</tr>
+										<tr class="bg-gray-100">
+											<td class="p-1 font-bold" colspan="8">Materials:</td>
+										</tr>
+										<tr v-for="(jdm,indexes) in joi_dr_material">
+											<td class="p-1 text-center">{{indexes+1}}</td>
+											<td class="p-1 ">{{joi_vendor.vendor_name}} ({{ joi_vendor.identifier }})</td>
+											<td class="p-1 ">{{ offer_material[indexes] }}</td>
+											<td class="p-1 text-center">{{  jdm.delivered_qty }}</td>
+											<td class="p-1 text-center" v-if="jdm.received_qty!=0">{{ jdm.received_qty }}</td>
+											<td class="p-1 text-center" v-else></td>
+											<td class="p-1 text-center" v-if="total_material_sumdelivered[indexes]==null">0</td>
+											<td class="p-1 text-center" v-else-if="jdm.received_qty==0">{{ total_material_sumdelivered1[indexes] }}</td>
+											<td class="p-1 text-center" v-else>{{ jdm.delivered_qty_disp }} </td>
+											<td class="p-1 text-center">{{ uom_material[indexes] }}</td>
+											<td class="p-1 text-center"></td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
@@ -225,61 +230,65 @@
 						<div class="row mt-4 mb-4">
 							<div class="col-lg-12">
 								<table class="w-full text-xs">
-									<tr>
-										<td width="10%"></td>
-										<td class="text-center" width="20%">Prepared by</td>
-										<td width="10%"></td>
-										<td class="text-center" width="20%">Driver</td>
-										<td width="10%"></td>	
-									</tr>
-									<tr>
-										<td></td>
-										<td class="text-center border-b"><br><br></td>
-										<td></td>
-										<td class="text-center border-b"></td>
-										<td></td>
-									</tr>
-									<tr>
-										<td></td>
-										<td class="text-center p-1">{{prepared_by}}</td>
-										<td></td>
-										<td class="text-center p-1">{{joi_dr.driver}}</td>
-										<td></td>
-									</tr>
+									<tbody>
+										<tr>
+											<td width="10%"></td>
+											<td class="text-center" width="20%">Prepared by</td>
+											<td width="10%"></td>
+											<td class="text-center" width="20%">Driver</td>
+											<td width="10%"></td>	
+										</tr>
+										<tr>
+											<td></td>
+											<td class="text-center border-b"><br><br></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td class="text-center p-1">{{prepared_by}}</td>
+											<td></td>
+											<td class="text-center p-1">{{joi_dr.driver}}</td>
+											<td></td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="row mt-4 mb-4">
 							<div class="col-lg-12">
 								<table class="w-full text-xs">
-									<tr>
-										<td class="text-center" width="20%">Received by</td>
-										<td width="2%"></td>
-										<td class="text-center" width="20%">Complete & Accepted by Enduser</td>
-										<td width="2%"></td>
-										<td class="text-center" width="20%">Witnessed by</td>
-									</tr>
-									<tr>
-										<td class="text-center border-b"><br><br></td>
-										<td></td>
-										<td class="text-center border-b"></td>
-										<td></td>
-										<td class="text-center border-b"></td>
-									</tr>
-									<tr>
-										<td class="text-center p-1">Print Name & Signature with Date Received</td>
-										<td></td>
-										<td class="text-center p-1">Print Name & Signature with Date Received</td>
-										<td></td>
-										<td class="text-center p-1">Print Name & Signature with Date Received</td>
-									</tr>
-									<tr>
-										<td class="text-center"><br><br></td>
-										<td></td>
-										<td class="text-center"></td>
-										<td></td>
-										<td class="text-center"></td>
-									</tr>
+									<tbody>
+										<tr>
+											<td class="text-center" width="20%">Received by</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Complete & Accepted by Enduser</td>
+											<td width="2%"></td>
+											<td class="text-center" width="20%">Witnessed by</td>
+										</tr>
+										<tr>
+											<td class="text-center border-b"><br><br></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+											<td></td>
+											<td class="text-center border-b"></td>
+										</tr>
+										<tr>
+											<td class="text-center p-1">Print Name & Signature with Date Received</td>
+											<td></td>
+											<td class="text-center p-1">Print Name & Signature with Date Received</td>
+											<td></td>
+											<td class="text-center p-1">Print Name & Signature with Date Received</td>
+										</tr>
+										<tr>
+											<td class="text-center"><br><br></td>
+											<td></td>
+											<td class="text-center"></td>
+											<td></td>
+											<td class="text-center"></td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
