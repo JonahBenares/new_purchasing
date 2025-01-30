@@ -110,7 +110,7 @@
                                 <tr>
                                     <td class="px-1 font-bold" width="10%">Company:</td>
                                     <td class="p-0" width="56%"><input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.company" disabled></td>
-                                    <td class="px-1 font-bold pl-4" width="12%">APV/RFD No.:</td>
+                                    <td class="px-1 font-bold pl-4" width="14%">APV/RFD No.:</td>
                                     <td class="p-0" width="25%"><input type="text" class="w-full px-1 border-b bg-white" v-model="rfd_head.rfd_no" disabled></td>
                                 </tr>
                                 <tr>
