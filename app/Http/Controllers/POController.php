@@ -452,10 +452,10 @@ class POController extends Controller
                     $po_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
                     $dpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
                     $rpo_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
-                    $total_out=$po_qty+$dpo_qty+$rpo_qty;
-                    if($pr_qty > $quantity){
+                    $total_out=$po_qty+$dpo_qty+$rpo_qty+$quantity;
+                    if($pr_qty > $total_out){
                         $po_status='PO Issued Partially';
-                    }else if($pr_qty == $quantity){
+                    }else if($pr_qty == $total_out){
                         $po_status='PO Issued Fully';
                     }
                     $update_prreport=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->update([
@@ -1572,7 +1572,7 @@ class POController extends Controller
         $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
         $po_details = PODetails::where('po_head_id',$po_head->id)->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
-        })->get();
+        })->where('quantity','!=','0')->get();
         $prepared_by=User::where('id',$rfd_head->user_id)->value('name');
         return response()->json([
             'po_head'=>$po_head,

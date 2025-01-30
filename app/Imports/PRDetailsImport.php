@@ -51,7 +51,8 @@ class PRDetailsImport implements ToModel, WithHeadingRow, WithMultipleSheets
             $date_needed_disp= ($date_needed!=0) ? date('Y-m-d',strtotime($this->transformDate($date_needed))) : '';
             if($item_no!=''){
                 $company=Config::get('constants.company');
-                $pr_no=PRHead::where('id',$this->pr_head_id)->value('pr_no')."-".$company;
+                $pr_no=PRHead::where('id',$this->pr_head_id)->value('pr_no');
+                // $pr_no=PRHead::where('id',$this->pr_head_id)->value('pr_no')."-".$company;
                 $prdetails['pr_head_id']=$this->pr_head_id;
                 $prdetails['quantity']=$qty;
                 $prdetails['uom']=$uom;

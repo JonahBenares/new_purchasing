@@ -904,7 +904,7 @@ class PRController extends Controller
         $check_existpo=[];
         $check_existprreport=[];
         foreach($prdetails AS $p){
-            $check_existpo[]=PoDetails::where('pr_details_id',$p->id)->exists();
+            $check_existpo[]=PoDetails::where('pr_details_id',$p->id)->where('status','!=','Cancelled')->exists();
             $check_existprreport[]=PrReportDetails::where('pr_details_id',$p->id)->where(function ($query) {
                 $query->where('po_qty', '!=', 0)
                       ->orWhere('dpo_qty', '!=', 0)

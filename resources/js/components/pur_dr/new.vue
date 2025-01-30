@@ -37,6 +37,7 @@
 	const remaining_delivery = ref([])
 	const isDriverReadonly = ref(false);
 	const isLoading = ref(true);
+	const isVisible = ref(false);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -83,6 +84,7 @@
 		po_dropdown.value = response.data.po_dropdown;
 	}
 	const drLoad = async () => {
+		isVisible.value = true;
 		let response = await axios.get("/api/generate_dr/"+props.id);
 		dr_no.value = response.data.dr_no;
 		count_po_head_id.value = response.data.count_po_head_id;
@@ -105,6 +107,7 @@
 		});
 	}
 	const generateDR = async () => {
+		isVisible.value = true;
 		let response = await axios.get("/api/generate_dr/"+po_head_id.value);
 		dr_no.value = response.data.dr_no;
 		// driver.value=(po_dr.value.received==0) ? po_dr.value.driver : '';
@@ -301,7 +304,7 @@
 							<hr class="border-dashed">
 							<!-- <div v-show="po_det"> -->
 							
-							<div v-if="po_dr && po_dr.length!=0 && !allZero() && to_deliver.length !=0">
+							<div v-if="po_dr && po_dr.length!=0 && !allZero() && to_deliver.length !=0 && po_dr_items.length!=0">
 								<div class="row">
 									<div class="col-lg-8">
 										<input type="hidden" v-model="dr_no">
@@ -455,8 +458,7 @@
 									</div>
 								</div>
 							</div>
-							
-							<div v-else-if="!isLoading && to_deliver.length == 0 && allZero()">
+							<div v-else-if="!isLoading && to_deliver.length==0 && allZero() && po_dr_items.length==0 && isVisible==true">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>

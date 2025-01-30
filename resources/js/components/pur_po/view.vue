@@ -389,9 +389,10 @@
                                                     </tr>
                                                     <tr class="">
                                                         <td class="border-l-none border-y-none p-1 text-right font-bold" colspan="2">GRAND TOTAL</td>
-                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only">
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only"  v-if="po_head.status!='Cancelled'">
                                                             {{ formatter.format(grand_total) }}
                                                         </td>
+                                                        <td class="p-1 text-right font-bold !text-sm print-only in-print-only" v-else>{{ formatter.format(po_head.grand_total ?? 0) }}</td>
                                                         <!-- <td class="p-1 text-right font-bold !text-sm no-print">{{ formatter.format(po_head.grand_total ?? 0) }}</td>
                                                         <td class="p-1 text-right font-bold !text-sm print-only in-print-only" style="display: none;" v-if="po_head.status!='Cancelled'">
                                                             {{ formatter.format(grand_total) }}
