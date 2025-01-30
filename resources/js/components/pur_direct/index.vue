@@ -1021,14 +1021,14 @@
 								</div>
 							</div>
 						</div>
-						<br>
+						<!-- <br>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="bg-green-500 btn-sm !rounded-full w-full text-white"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div> 
 				</div>
 			</div>
