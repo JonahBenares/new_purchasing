@@ -548,7 +548,7 @@ import moment from 'moment';
 	// }
 
 	const checkBalance = (po_head_id,pr_details_id,qty,avail_qty,count,vat_percent) => {
-		po_details.value[count].totalprice = po_details.value[count].unit_price * po_details.value[count].quantity
+		// po_details.value[count].totalprice = po_details.value[count].unit_price * po_details.value[count].quantity
 
 		var grandtotal=0;
 		// po_details.value.forEach(function (val, index, theArray) {
@@ -569,14 +569,14 @@ import moment from 'moment';
 		grand_total.value=overall_total.toFixed(2);
 		if(qty>avail_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
-			const btn_draft = document.getElementById("draft");
-			btn_draft.disabled = true;
+			// const btn_draft = document.getElementById("draft");
+			// btn_draft.disabled = true;
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = true;
 		}else{
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
-			const btn_draft = document.getElementById("draft");
-			btn_draft.disabled = false;
+			// const btn_draft = document.getElementById("draft");
+			// btn_draft.disabled = false;
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = false;
 		}
