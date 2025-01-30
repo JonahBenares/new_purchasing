@@ -31,4 +31,9 @@ class PoDetails extends Model
     public function po_head(){
         return $this->belongsTo(POHead::class, 'po_head_id');
     }
+
+     public function pr_details()
+    {
+        return $this->belongsTo(PrDetails::class, 'pr_details_id', 'id');
+    }
 }

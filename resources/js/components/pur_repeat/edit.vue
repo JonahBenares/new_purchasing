@@ -217,8 +217,9 @@ import moment from 'moment';
 	}
 	const save_button = ref();
 
-	const openModel = (item_no) => {
+	const openModel = (item_no, itemdesc) => {
 		itemno.value = item_no
+		item_description.value = itemdesc
 		showModal.value = !showModal.value
 	}
 	
@@ -511,40 +512,77 @@ import moment from 'moment';
 	// 	}
 	// }
 
-	const checkBalance = async (po_head_id,pr_details_id,qty,count,vat_percent) => {
-		var grandtotal=0;
-		po_details.value.forEach(function (val, index, theArray) {
-			var p = document.getElementById('tprice'+index).value;
-			var pi = p.replace(",", "");
-			grandtotal += parseFloat(pi);
-        });
+	// const checkBalance = async (po_head_id,pr_details_id,qty,count,vat_percent) => {
+	// 	var grandtotal=0;
+	// 	po_details.value.forEach(function (val, index, theArray) {
+	// 		var p = document.getElementById('tprice'+index).value;
+	// 		var pi = p.replace(",", "");
+	// 		grandtotal += parseFloat(pi);
+    //     });
 
-		// var vat = document.getElementById("vat_percent").value;
+	// 	// var vat = document.getElementById("vat_percent").value;
+	// 	var discount_display= (discount.value!='') ? discount.value : 0;
+	// 	var percent= (vat.value==1) ? vat_percent/100 : 0;
+	// 	var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
+	// 	vat_amount.value=new_vat;
+	// 	var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
+	// 	grand_total.value=overall_total.toFixed(2);
+	// 	orig_amount.value=grandtotal.toFixed(2);
+	// 	let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
+	// 	balance.value = response.data.balance;
+	// 	balance_overall.value = response.data.balance_overall;
+	// 	var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
+	// 	var all_qty=balance_overall.value.pr_qty - po_qty
+	// 	var total_qty = all_qty + po_qty;
+	// 	po_details.value[count].totalprice = qty * po_details.value[count].unit_price
+	
+	// 	if(qty>total_qty){
+	// 		document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
+	// 		const btn_save = document.getElementById("save");
+	// 		btn_save.disabled = true;
+	// 	}else{
+	// 		document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
+	// 		const btn_save = document.getElementById("save");
+	// 		btn_save.disabled = false;
+	// 	}
+	// }
+
+	const checkBalance = (po_head_id,pr_details_id,qty,avail_qty,count,vat_percent) => {
+		po_details.value[count].totalprice = po_details.value[count].unit_price * po_details.value[count].quantity
+
+		var grandtotal=0;
+		// po_details.value.forEach(function (val, index, theArray) {
+		for(var x=0;x<po_details.value.length;x++){
+			var p = po_details.value[x].totalprice;
+			if(p != '' && p != NaN && p != null){
+				// var pi = p.replace(",", "");
+				grandtotal += parseFloat(p);
+			}
+        }
+
 		var discount_display= (discount.value!='') ? discount.value : 0;
-		var percent= (vat.value==1) ? vat_percent/100 : 0;
+        var percent= (vat.value==1) ? vat_percent/100 : 0
 		var new_vat = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) * parseFloat(percent);
-		vat_amount.value=new_vat;
+		vat_amount.value=new_vat.toFixed(2);
+		
 		var overall_total = ((parseFloat(grandtotal) + parseFloat(shipping_cost.value) + parseFloat(handling_fee.value)) - parseFloat(discount_display)) + parseFloat(new_vat) ;
 		grand_total.value=overall_total.toFixed(2);
-		orig_amount.value=grandtotal.toFixed(2);
-		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
-		balance.value = response.data.balance;
-		balance_overall.value = response.data.balance_overall;
-		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
-		var all_qty=balance_overall.value.pr_qty - po_qty
-		var total_qty = all_qty + po_qty;
-		po_details.value[count].totalprice = qty * po_details.value[count].unit_price
-	
-		if(qty>total_qty){
+		if(qty>avail_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
+			const btn_draft = document.getElementById("draft");
+			btn_draft.disabled = true;
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = true;
 		}else{
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FEFCE8';
+			const btn_draft = document.getElementById("draft");
+			btn_draft.disabled = false;
 			const btn_save = document.getElementById("save");
 			btn_save.disabled = false;
 		}
 	}
+
+
 	const checkRemainingQty = async (po_head_id,pr_details_id,count) => {
 		let response = await axios.get("/api/check_balance_rev/"+po_head_id+'/'+pr_details_id);
 		remaining_balance.value[count] = response.data.balance.quantity;
@@ -862,7 +900,7 @@ import moment from 'moment';
 													<td class="border-y-none p-1 text-center">{{ index+1}}</td>
 													<td class="border-y-none p-0 text-center">
 														<!-- <input type="number" min="0" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center" :id="'balance_checker'+index" v-model="remaining_balance[index]"> -->
-														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center unit-price" :id="'balance_checker'+index" v-model="remaining_balance[index]">
+														<input type="text" min="0" @keyup="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], pd.available_qty, index,vat_percent)" @change="checkBalance(pd.po_head_id,pd.pr_details_id,remaining_balance[index], index,vat_percent)" step="any" @keypress="isNumber($event)" class="w-full bg-yellow-50 border-b p-1 text-center unit-price" :id="'balance_checker'+index" v-model="remaining_balance[index]">
 													</td>
 													<td class="border-y-none p-1 text-center">{{ pd.uom }}</td>
 													<td class="border-y-none p-1" colspan="2">{{ pd.item_description }}</td>
@@ -883,7 +921,7 @@ import moment from 'moment';
 														<!-- <button class="btn btn-sm btn-danger p-1" @click="removeOffer(index)" v-if="pd.reference_po_no != ''">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button> -->
-														<button class="btn btn-sm btn-primary p-1" @click="openModel(index)">
+														<button class="btn btn-sm btn-primary p-1" @click="openModel(index,pd.item_description)">
 															<MagnifyingGlassIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></MagnifyingGlassIcon>
 														</button>
 													</td>
