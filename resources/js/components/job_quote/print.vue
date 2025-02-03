@@ -468,6 +468,7 @@
 												<tr class="bg-gray-100">
 													<td class="p-1 text-center" width="3%">#</td>
 													<td class="p-1" width="50%">Scope of Work</td>
+													<td class="p-1" width="7%">UOM</td>
 													<td class="p-1" width="35%">Offer</td>
 													<td class="p-1 text-center" width="15%">Unit Price</td>
 												</tr>
@@ -479,6 +480,7 @@
 												<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
 													<td class="p-1 align-top text-center">{{ labor_no }}</td>
 													<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
+													<td class="p-1 align-top text-center">{{ rld.uom }}</td>
 													<span hidden>{{ labor_no++ }}</span>
 													<template v-if="(rvi.canvassed == 0)">
 														<td class="align-top">
@@ -512,6 +514,7 @@
 													<td class="p-1 text-center" width="3%">#</td>
 													<td class="p-1 text-center" width="5%">Qty</td>
 													<td class="p-1" width="45%">Item Description</td>
+													<td class="p-1" width="7%">UOM</td>
 													<td class="p-1" width="35%">Brand/Offer</td>
 													<td class="p-1 text-center" width="15%">Unit Price</td>
 												</tr>
@@ -521,6 +524,7 @@
 														<td class="p-1 align-top text-center">{{ item_no }}</td>
 														<td class="p-1 align-top text-center">{{ parseFloat(rmd.quantity).toFixed(2) }}</td>
 														<td class="p-1 align-top">{{ rmd.item_description }}</td>
+														<td class="p-1 align-top text-center">{{ rmd.uom }}</td>
 														<span hidden>{{ item_no++ }}</span>
 														<template v-if="(rvi.canvassed == 0)">
 															<td class="align-top">

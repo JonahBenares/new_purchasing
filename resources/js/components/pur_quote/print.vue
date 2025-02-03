@@ -498,6 +498,7 @@
 														<td class="p-1 text-center" width="5%">No</td>
 														<td class="p-1 text-center" width="10%">Qty</td>
 														<td class="p-1" width="35%">Item Description</td>
+														<td class="p-1" width="7%">UOM</td>
 														<td class="p-1" width="35%">Brand/Offer</td>
 														<td class="p-1 text-center" width="15%">Unit Price</td>
 													</tr>
@@ -507,6 +508,7 @@
 															<td class="p-1 align-top text-center">{{ item_no+1 }}</td>
 															<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 															<td class="p-1 align-top itemdesc_">{{ rd.item_description }}</td>
+															<td class="p-1 align-top item_desc">{{ rd.uom }}</td>
 															<span hidden>{{ item_no++ }}</span> 
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">

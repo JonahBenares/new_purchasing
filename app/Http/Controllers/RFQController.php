@@ -276,6 +276,7 @@ class RFQController extends Controller
                         'quantity'=>$d->pr_details->quantity,
                         'remaining_qty'=>$d->remaining_qty,
                         'item_description'=>$d->pr_details->item_description,
+                        'uom'=>$d->pr_details->uom,
                     ];
 
                 $rfq_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('rfq_details_id',$d->id)->get();

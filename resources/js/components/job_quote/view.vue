@@ -713,6 +713,7 @@
 														<tr class="bg-gray-100">
 															<td class="p-1 text-center" width="5%">#</td>
 															<td class="p-1" width="50%">Scope of Work</td>
+															<td class="p-1" width="7%">UOM</td>
 															<td class="p-1" width="35%">Offer</td>
 															<td class="p-1">Price</td>
 														</tr>
@@ -726,6 +727,7 @@
 															<!-- <template v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id && rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id"> -->
 															<td class="p-1 align-top text-center">{{ labor_no }}</td>
 															<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
+															<td class="p-1 align-top text-center">{{ rld.uom }}</td>
 															<td class="align-top">
 																<template v-for="rlo in RFQLaborOffers">
 																	<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)" @change="CanvassCompleteBtn"></textarea>
@@ -761,6 +763,7 @@
 															<td class="p-1 text-center" width="5%">No</td>
 															<td class="p-1 text-center" width="10%">Qty</td>
 															<td class="p-1" width="35%">Item Description</td>
+															<td class="p-1" width="7%">UOM</td>
 															<td class="p-1" width="35%">Brand/Offer</td>
 															<td class="p-1 text-center" width="15%">Unit Price</td>
 														</tr>
@@ -770,6 +773,7 @@
 															<td class="p-1 align-top text-center">{{ item_no }}</td>
 															<td class="p-1 align-top text-center">{{ parseFloat(rmd.quantity).toFixed(2) }}</td>
 															<td class="p-1 align-top">{{ rmd.item_description }}</td>
+															<td class="p-1 align-top text-center">{{ rmd.uom }}</td>
 															<span hidden>{{ item_no++ }}</span>
 															<td class="align-top">
 																<template v-for="rmo in RFQMaterialOffers">

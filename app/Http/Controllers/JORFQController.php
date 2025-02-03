@@ -336,6 +336,7 @@ class JORFQController extends Controller
                         'quantity'=>$jrld->jor_labor_details->quantity,
                         // 'remaining_qty'=>$jrld->remaining_qty,
                         'scope_of_work'=>$jrld->jor_labor_details->scope_of_work,
+                        'uom'=>$jrld->jor_labor_details->uom,
                     ];
                 }
 
@@ -361,6 +362,7 @@ class JORFQController extends Controller
                         'quantity'=>$jrld->jor_material_details->quantity,
                         // 'remaining_qty'=>$jrld->remaining_qty,
                         'item_description'=>$jrld->jor_material_details->item_description,
+                        'uom'=>$jrld->jor_material_details->uom,
                     ];
                 }
 
