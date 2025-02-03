@@ -460,7 +460,7 @@
 												<table class="w-full text-xs">
 													<tr>
 														<td width="20%">
-															<span class="pr-1"><span class="text-gray-800">TIN :</span> {{ b.tin}}</span>
+															<span class="pr-1"><span class="text-gray-800">Identifier :</span> {{ b.identifier}}</span>
 														</td>
 														<td width="20%">
 															<span class="pr-1"><span class="text-gray-800">Email :</span> {{ b.email}}</span>
@@ -505,9 +505,9 @@
 												<div class="px-3 py-2">
 													<table class="w-full text-xs">
 														<tr>
-															<td class="!text-gray-800" width="13%">Identifier </td>
+															<td class="!text-gray-800" width="13%">TIN </td>
 															<td></td>
-															<td>  {{ b.identifier}}</td>
+															<td>  {{ b.tin}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Type</td>
@@ -517,7 +517,7 @@
 														<tr>
 															<td class="!text-gray-800">EWT</td>
 															<td></td>
-															<td>  {{ b.ewt}}</td>
+															<td> {{ parseFloat(b.ewt).toFixed(2) }} </td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">VAT</td>
