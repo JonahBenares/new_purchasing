@@ -1043,6 +1043,7 @@
 							<div class="col-lg-12">
 								<table class="w-full table-bordered !text-xs mb-3">
 									<tr class="bg-gray-100">
+										<td class="p-1 uppercase" width="20%">PO Date</td>
 										<td class="p-1 uppercase" width="20%">PO Number</td>
 										<td class="p-1 uppercase" width="30%">Item Description</td>
 										<td class="p-1 uppercase" width="30%">Unit Price</td>
@@ -1054,6 +1055,7 @@
                                         </td>
 									</tr>
 									<tr v-for="(i, index) in item_list" v-if="item_list.length != 0">
+										<td class="p-1">{{ i.po_date }}</td>
 										<td class="p-1">{{ i.po_no }}</td>
 										<td class="p-1" :id="'ritem_description'+ index">{{ i.item_description }}</td>
 										<td class="p-1">{{ parseFloat(i.unit_price).toFixed(4) }}</td>

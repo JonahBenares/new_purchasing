@@ -184,16 +184,22 @@ class RepeatOrderPOController extends Controller
     public function get_po_items($item_desc,$vendor_details_id){
         // $poitems=PODetails::with('po_head')->where('item_description', 'LIKE', '%' . $item_desc . '%')->where('unit_price','!=',0)->get();
         $query = PODetails::with('po_head')->where('item_description', 'LIKE', '%' . $item_desc . '%')->where('unit_price','!=',0);
-        $query->whereHas('po_head', function ($query) use($vendor_details_id) {
-            $query->where('vendor_details_id', '=', $vendor_details_id);
-            $query->where('status', '=', 'Saved');
-        });
+        // $query->whereHas('po_head', function ($query) use($vendor_details_id) {
+        //     $query->where('vendor_details_id', '=', $vendor_details_id);
+        //     $query->where('status', '=', 'Saved');
+        // });
+        $query->whereHas('po_head', function ($q) use ($vendor_details_id) {
+            $q->where('vendor_details_id', '=', $vendor_details_id)
+              ->where('status', '=', 'Saved');
+        })->join('po_head', 'po_head.id', '=', 'po_details.po_head_id')
+          ->orderBy('po_head.po_date', 'DESC');
         $poitems = $query->get();
 
         $po_items=array();
         foreach($poitems AS $pi){
                 $po_items[] = [
                     'po_details_id'=>$pi->id,
+                    'po_date'=>$pi->po_head->po_date,
                     'po_no'=>$pi->po_head->po_no,
                     'item_description'=>$pi->item_description,
                     'unit_price'=>$pi->unit_price,
