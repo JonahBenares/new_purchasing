@@ -663,100 +663,85 @@
 										<div v-if="(vendor == rvi.jo_rfq_vendor_id)">
 											<div class="bg-white !mx-auto w-[21cm] print:!w-full" >
 												<div class="subpage">
-													<!-- <div class="border w-full text-center p-4 bg-blue-100"> Header here</div> -->
 													<table class="table-bosrdered w-full text-xs mb-0">
-														<tr>
-															<td class="" width="8%">Date: </td>
-															<td class="">{{ RFQHead.rfq_date }}</td>
-															<td class="" width="10%">RFQ No.:</td>
-															<td class="" >{{ RFQHead.rfq_no }}</td>
-														</tr>
-														<tr>
-															<td class="">JOR No:</td>
-															<td class="" width="55%">{{ RFQHead.jor_no }}</td>
-															<td class="" >RFQ Name:</td>
-															<td class="" >{{ RFQHead.rfq_name }}</td>
-														</tr>
+														<tbody>
+															<tr>
+																<td class="" width="8%">Date: </td>
+																<td class="">{{ RFQHead.rfq_date }}</td>
+																<td class="" width="10%">RFQ No.:</td>
+																<td class="" >{{ RFQHead.rfq_no }}</td>
+															</tr>
+															<tr>
+																<td class="">JOR No:</td>
+																<td class="" width="55%">{{ RFQHead.jor_no }}</td>
+																<td class="" >RFQ Name:</td>
+																<td class="" >{{ RFQHead.rfq_name }}</td>
+															</tr>
+														</tbody>
 													</table>
-													<!-- <hr class="border-dashed my-2"> -->
 													<table class="table-bsordered w-full text-xs mb-2">
-														<tr>
-															<td class="" width="8%">Supplier: </td>
-															<td class="" width="55%">{{ rvi.vendor_name }}</td>
-															<td class="" width="10%">Contact No.:</td>
-															<td class="" >{{ rvi.phone_no }}</td>
-														</tr>
-														<!-- <tr>
-															<td class="" width="10%">Contact No.:</td>
-															<td class="" width="40%">(034) 433-8370</td>
-															<td></td>
-															<td class="" width="15%">Duration: </td>
-															<td class="border-b" width="">asd</td>
-														</tr> -->
-														<!-- <tr>
-															<td class="">Warranty: </td>
-															<td class="border-b"></td>
-															<td></td>
-															<td class="">Payment Terms:</td>
-															<td class="border-b" ></td>
-														</tr> -->
-														<!-- <tr>
-															<td class="">Notes: </td>
-															<td class="border-b" colspan="10"></td>
-														</tr> -->
+														<tbody>
+															<tr>
+																<td class="" width="8%">Supplier: </td>
+																<td class="" width="55%">{{ rvi.vendor_name }}</td>
+																<td class="" width="10%">Contact No.:</td>
+																<td class="" >{{ rvi.phone_no }}</td>
+															</tr>
+														</tbody>
 													</table>
 													<div class="border-y-2 py-1 mb-2">
 														<p class="text-sm font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
 														<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 													</div>
 													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQLaborDetails.length != 0">
-														<tr class="bg-gray-100">
-															<td class="p-1 text-center" width="5%">#</td>
-															<td class="p-1" width="50%">Scope of Work</td>
-															<td class="p-1" width="7%">UOM</td>
-															<td class="p-1" width="35%">Offer</td>
-															<td class="p-1">Price</td>
-														</tr>
-														<tr>
-															<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
-														</tr>
-														<span hidden>{{ labor_no=1 }}</span>
+														<thead>
+															<tr class="bg-gray-100">
+																<td class="p-1 text-center" width="5%">#</td>
+																<td class="p-1" width="50%">Scope of Work</td>
+																<td class="p-1" width="7%">UOM</td>
+																<td class="p-1" width="35%">Offer</td>
+																<td class="p-1">Price</td>
+																<td class="p-1">Price</td>
+															</tr>
+															<tr>
+																<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
+															</tr>
+															<tr hidden><td hidden><span hidden>{{ labor_no=1 }}</span></td></tr>
+														</thead>
 														<tbody v-for="rld in RFQLaborDetails" class="p-0">
-														<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
-															<!-- <tr v-for="rlo in RFQLaborOffers"> -->
-															<!-- <template v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id && rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id"> -->
-															<td class="p-1 align-top text-center">{{ labor_no }}</td>
-															<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
-															<td class="p-1 align-top text-center">{{ rld.uom }}</td>
-															<td class="align-top">
-																<template v-for="rlo in RFQLaborOffers">
-																	<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)" @change="CanvassCompleteBtn"></textarea>
-																	<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)" readonly></textarea>
-																	<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
-																</template>
-															</td>
-															<span hidden>{{ labor_no++ }}</span>
-															<td class="align-top">
-																<!-- <div class="!h-14 border-b"> -->
+															<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+																<td class="p-1 align-top text-center">{{ labor_no }}</td>
+																<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
+																<td class="p-1 align-top text-center">{{ rld.uom }}</td>
+																<td class="align-top">
 																	<template v-for="rlo in RFQLaborOffers">
-																		<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
-																		<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
-																		<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
-																			<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-																		</select>
+																		<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)" @change="CanvassCompleteBtn"></textarea>
+																		<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)" readonly></textarea>
 																		<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
-																		</template>
-																		<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)">
-																			<div class="border-b p-1 w-full h-7 !align-top text-center laborunitprice_"> {{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
-																			<div class="border-b p-1 w-full h-7 !align-top text-center laborcurrency_">{{ rlo.labor_currency }}</div>
-																		</template>
 																	</template>
-																	
-																<!-- </div> -->
-															</td>
-															<!-- </template> -->
-														</tr>
-													</tbody>
+																</td>
+																<td hidden><span hidden>{{ labor_no++ }}</span></td>
+																<td class="align-top">
+																	<!-- <div class="!h-14 border-b"> -->
+																		<template v-for="rlo in RFQLaborOffers">
+																			<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
+																			<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
+																			<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
+																				<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
+																			</select>
+																			<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
+																			</template>
+																			<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)">
+																				<div class="border-b p-1 w-full h-7 !align-top text-center laborunitprice_"> {{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
+																				<div class="border-b p-1 w-full h-7 !align-top text-center laborcurrency_">{{ rlo.labor_currency }}</div>
+																			</template>
+																		</template>
+																		
+																	<!-- </div> -->
+																</td>
+																<!-- </template> -->
+															</tr>
+														</tbody>
 													</table>
 													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQMaterialDetails.length != 0">
 														<tr class="bg-gray-100">
