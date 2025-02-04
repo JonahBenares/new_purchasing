@@ -623,6 +623,23 @@
             router.push(`/pur_aoq/print_te/${props.aoq_id}`)
         }
 	}
+
+	const isNumber = (evt)=> {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode == 46) {
+			//Check if the text already contains the . character
+			if (evt.target.value.indexOf('.') === -1) {
+				return true;
+			} else {
+				evt.preventDefault();
+			}
+		} else {
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+				evt.preventDefault();
+		}
+		return true;
+    }
 </script>
 <template>
 	<navigation>
@@ -754,49 +771,29 @@
 														<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 														<td class="p-1 align-top item_desc">{{ rd.item_description }}</td>
 														<td class="p-1 align-top text-center">{{ rd.uom }}</td>
-														<td hidden><span >{{ item_no++ }}</span></td>
-														<td class="align-top">
-															<div v-for="(ro, o) in RFQOffers">
-																<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ o" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 0" v-model="ro.offer" @change="CanvassCompleteBtn"></textarea>
-																<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 1" v-model="ro.offer" readonly></textarea>
-																<input type="hidden" class="offerid_" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
+														<span hidden>{{ item_no++ }}</span>
+													<td class="align-top">
+														<div v-for="(ro, o) in RFQOffers">
+															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" :id="'offers'+ o" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 0" v-model="ro.offer" @change="CanvassCompleteBtn"></textarea>
+															<textarea type="text" class="border-b p-1 w-full h-14 !align-top offers_" v-if="ro.rfq_details_id == rd.rfq_details_id && rvi.canvassed == 1" v-model="ro.offer" readonly></textarea>
+															<input type="hidden" class="offerid_" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
+														</div>
+													</td>
+													<td class="align-top">
+														<div  v-for="ro in RFQOffers">
+															<div class="!h-14 border-b" v-if="ro.rfq_details_id == rd.rfq_details_id">
+																<input type="number" class="border-b p-1 w-full !align-top text-center unitprice_" placeholder="00.00" v-model="ro.unit_price" v-if="(rvi.canvassed == 0)">
+																<div class="border-b p-1 w-full h-7 !align-top text-center"  v-else> {{ parseFloat(ro.unit_price).toFixed(2) }}</div>
+																<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="ro.offer_currency" v-if="(rvi.canvassed == 0)">
+																	<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
+																</select>
+																<div class="border-b p-1 w-full h-7 !align-top text-center" v-else>{{ ro.offer_currency }}</div>
+																<input type="hidden" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
+																<input type="hidden" class="border-b p-1 w-full !align-top text-center offerid_" v-model="ro.offer_currency" v-else readonly>
 															</div>
-														</td>
-														<td class="align-top">
-															<div  v-for="ro in RFQOffers">
-																<div class="!h-14 border-b" v-if="ro.rfq_details_id == rd.rfq_details_id">
-																	<input type="number" class="border-b p-1 w-full !align-top text-center unitprice_" placeholder="00.00" v-model="ro.unit_price" v-if="(rvi.canvassed == 0)">
-																	<div class="border-b p-1 w-full h-7 !align-top text-center"  v-else> {{ parseFloat(ro.unit_price).toFixed(2) }}</div>
-																	<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="ro.offer_currency" v-if="(rvi.canvassed == 0)">
-																		<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-																	</select>
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" v-else>{{ ro.offer_currency }}</div>
-																	<input type="hidden" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
-																	<input type="hidden" class="border-b p-1 w-full !align-top text-center offerid_" v-model="ro.offer_currency" v-else readonly>
-																</div>
-															</div>
-														</td>
-														<td class=" align-top ">
-															<div >
-																<div class="!h-14 border-b">
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" > 0</div>
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" > PHP</div>
-																</div>
-															</div>
-															<div >
-																<div class="!h-14 border-b">
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" > 0</div>
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" > PHP</div>
-																</div>
-															</div>
-															<div >
-																<div class="!h-14 border-b">
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" > 0</div>
-																	<div class="border-b p-1 w-full h-7 !align-top text-center" > PHP</div>
-																</div>
-															</div>
-														</td>
-													</tr>
+														</div>
+													</td>
+												</tr>
 												</tbody>
 											</table>
 											<br>

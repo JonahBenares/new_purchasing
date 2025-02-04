@@ -651,10 +651,13 @@ class JOAOQController extends Controller
     }
 
     public function open_jo_aoq($jo_aoq_head_id){
-        // $update_awarded_open_aoq=JOAOQHead::where('id',$jo_aoq_head_id)->update([
-        //     'status'=>null,
-        //     'aoq_status'=>'Done TE',
-        // ]);
+        $joaoq_status = JOAOQHead::where('id',$jo_aoq_head_id)->value('aoq_status');
+        if($joaoq_status == 'Awarded'){
+            $update_awarded_open_aoq=JOAOQHead::where('id',$jo_aoq_head_id)->update([
+                'status'=>null,
+                'aoq_status'=>'Done TE',
+            ]);
+        }
 
         $update_canvass_open_aoq=JORFQVendor::whereIn('id',JOAOQDetails::where('jo_aoq_head_id',$jo_aoq_head_id)->pluck('jo_rfq_vendor_id'))->update([
             'canvassed'=>0,
