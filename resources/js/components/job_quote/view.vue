@@ -606,208 +606,230 @@
 		<div class="row">
 			<div class="col-12 grid-margin stretch-card">
 				<div class="card">
-				<div class="card-body">
-					
-					<hr class="border-dashed mt-2">
-					<div class="pt-1">
-						<div class="row">
-							<div class="col-lg-8">
-								<div class="row">
-									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
-										<span class="text-sm text-gray-700">{{ RFQHead.rfq_no }}</span>
+					<div class="card-body">
+						
+						<hr class="border-dashed mt-2">
+						<div class="pt-1">
+							<div class="row">
+								<div class="col-lg-8">
+									<div class="row">
+										<div class="col-lg-6">
+											<span class="text-sm text-gray-700 font-bold pr-1">RFQ No: </span>
+											<span class="text-sm text-gray-700">{{ RFQHead.rfq_no }}</span>
+										</div>
+										<div class="col-lg-6">
+											<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
+											<span class="text-sm text-gray-700">{{ RFQHead.rfq_date }}</span>
+										</div>
 									</div>
-									<div class="col-lg-6">
-										<span class="text-sm text-gray-700 font-bold pr-1">Date:</span>
-										<span class="text-sm text-gray-700">{{ RFQHead.rfq_date }}</span>
+									<div class="row">
+										<div class="col-lg-12">
+											<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
+											<span class="text-sm text-gray-700">{{ RFQHead.rfq_name }}</span>
+										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-lg-12">
-										<span class="text-sm text-gray-700 font-bold pr-1">RFQ Name: </span>
-										<span class="text-sm text-gray-700">{{ RFQHead.rfq_name }}</span>
+								<div class="col-lg-4">
+									<div class="flex justify-end space-x-2">
+										<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="((count_jorlabor != 0 || count_jormaterial != 0) && count_ccr == 0)">Add Items</button>
+										<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="ShowPrintView()">Show Print View</button>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4">
-								<div class="flex justify-end space-x-2">
-									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="openAddItem()" v-if="((count_jorlabor != 0 || count_jormaterial != 0) && count_ccr == 0)">Add Items</button>
-									<button class="btn btn-sm p-1 px-3 !text-xs btn-primary" @click="ShowPrintView()">Show Print View</button>
+							<br>
+							<div>
+								<div class="rfq_buttons">
+									<div class="w-full flex justify-between space-x-1">
+										<button
+											v-for="rv in RFQVendors"
+											:key="rv.jo_rfq_vendor_id"
+											class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold"
+											:class="{
+												'!text-orange-400 !border-orange-300 !bg-orange-200 border-0': vendor !== rv.jo_rfq_vendor_id,
+												'!text-white !bg-orange-500 !border-orange-500 border-0': vendor === rv.jo_rfq_vendor_id
+											}"
+											@click="vendor = rv.jo_rfq_vendor_id"
+										>
+											{{ rv.vendor_name }} ({{ rv.vendor_identifier }})
+										</button>
+										<button @click="openModel()" class="btn btn-primary p-1">
+											<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
+										</button>
+									</div>
 								</div>
-							</div>
-						</div>
-						<br>
-						<div>
-							<div class="rfq_buttons">
-								<div class="w-full flex justify-between space-x-1">
-									<button
-										v-for="rv in RFQVendors"
-										:key="rv.jo_rfq_vendor_id"
-										class="btn btn-sm !text-xs !leading-tight w-full !border !rounded-b-none !font-bold"
-										:class="{
-											'!text-orange-400 !border-orange-300 !bg-orange-200 border-0': vendor !== rv.jo_rfq_vendor_id,
-											'!text-white !bg-orange-500 !border-orange-500 border-0': vendor === rv.jo_rfq_vendor_id
-										}"
-										@click="vendor = rv.jo_rfq_vendor_id"
-									>
-										{{ rv.vendor_name }} ({{ rv.vendor_identifier }})
-									</button>
-									<button @click="openModel()" class="btn btn-primary p-1">
-										<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon>
-									</button>
-								</div>
-							</div>
-							<div class="bg-gray-200 !border !border-orange-200" >
-								<div v-for="rvi in RFQVendors">
-									<div class="page">
-										<div v-if="(vendor == rvi.jo_rfq_vendor_id)">
-											<div class="bg-white !mx-auto w-[21cm] print:!w-full" >
-												<div class="subpage">
-													<table class="table-bosrdered w-full text-xs mb-0">
-														<tbody>
-															<tr>
-																<td class="" width="8%">Date: </td>
-																<td class="">{{ RFQHead.rfq_date }}</td>
-																<td class="" width="10%">RFQ No.:</td>
-																<td class="" >{{ RFQHead.rfq_no }}</td>
-															</tr>
-															<tr>
-																<td class="">JOR No:</td>
-																<td class="" width="55%">{{ RFQHead.jor_no }}</td>
-																<td class="" >RFQ Name:</td>
-																<td class="" >{{ RFQHead.rfq_name }}</td>
-															</tr>
-														</tbody>
-													</table>
-													<table class="table-bsordered w-full text-xs mb-2">
-														<tbody>
-															<tr>
-																<td class="" width="8%">Supplier: </td>
-																<td class="" width="55%">{{ rvi.vendor_name }}</td>
-																<td class="" width="10%">Contact No.:</td>
-																<td class="" >{{ rvi.phone_no }}</td>
-															</tr>
-														</tbody>
-													</table>
-													<div class="border-y-2 py-1 mb-2">
-														<p class="text-sm font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
-														<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
-													</div>
-													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQLaborDetails.length != 0">
-														<thead>
-															<tr class="bg-gray-100">
-																<td class="p-1 text-center" width="5%">#</td>
-																<td class="p-1" width="50%">Scope of Work</td>
-																<td class="p-1" width="7%">UOM</td>
-																<td class="p-1" width="35%">Offer</td>
-																<td class="p-1">Price</td>
-																<td class="p-1">Price</td>
-															</tr>
-															<tr>
-																<td class="p-1 align-top" colspan="3">{{ RFQHead.general_description }}</td>
-															</tr>
-															<tr hidden><td hidden><span hidden>{{ labor_no=1 }}</span></td></tr>
-														</thead>
-														<tbody v-for="rld in RFQLaborDetails" class="p-0">
-															<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
-																<td class="p-1 align-top text-center">{{ labor_no }}</td>
-																<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
-																<td class="p-1 align-top text-center">{{ rld.uom }}</td>
-																<td class="align-top">
-																	<template v-for="rlo in RFQLaborOffers">
-																		<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)" @change="CanvassCompleteBtn"></textarea>
-																		<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[50px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)" readonly></textarea>
-																		<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
-																	</template>
-																</td>
-																<td hidden><span hidden>{{ labor_no++ }}</span></td>
-																<td class="align-top">
-																	<!-- <div class="!h-14 border-b"> -->
+								<div class="bg-gray-200 !border !border-orange-200" >
+									<div v-for="rvi in RFQVendors">
+										<div class="page">
+											<div v-if="(vendor == rvi.jo_rfq_vendor_id)">
+												<div class="bg-white !mx-auto w-[21cm] print:!w-full" >
+													<div class="subpage">
+														<table class="table-bosrdered w-full text-xs mb-0">
+															<tbody>
+																<tr>
+																	<td class="" width="8%">Date: </td>
+																	<td class="">{{ RFQHead.rfq_date }}</td>
+																	<td class="" width="10%">RFQ No.:</td>
+																	<td class="" >{{ RFQHead.rfq_no }}</td>
+																</tr>
+																<tr>
+																	<td class="">JOR No:</td>
+																	<td class="" width="55%">{{ RFQHead.jor_no }}</td>
+																	<td class="" >RFQ Name:</td>
+																	<td class="" >{{ RFQHead.rfq_name }}</td>
+																</tr>
+															</tbody>
+														</table>
+														<table class="table-bsordered w-full text-xs mb-2">
+															<tbody>
+																<tr>
+																	<td class="" width="8%">Supplier: </td>
+																	<td class="" width="55%">{{ rvi.vendor_name }}</td>
+																	<td class="" width="10%">Contact No.:</td>
+																	<td class="" >{{ rvi.phone_no }}</td>
+																</tr>
+															</tbody>
+														</table>
+														<div class="border-y-2 py-1 mb-2">
+															<p class="text-sm font-bold text-gray-600 text-center m-0">{{ RFQHead.project_activity }}</p>
+															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
+														</div>
+														<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQLaborDetails.length != 0">
+															<thead>
+																<tr class="bg-gray-100">
+																	<td class="p-1 text-center" width="5%">#</td>
+																	<td class="p-1" width="37%">Scope of Work</td>
+																	<td class="p-1" width="5%">UOM</td>
+																	<td class="p-1" width="31%">Offer</td>
+																	<td class="p-1 text-center" width="10%">Unit Price</td>
+																	<td class="p-1 text-center" width="10%">Total Price</td>
+																</tr>
+																<tr>
+																	<td class="p-1 align-top" colspan="6">{{ RFQHead.general_description }}</td>
+																</tr>
+																<tr hidden><td hidden><span hidden>{{ labor_no=1 }}</span></td></tr>
+															</thead>
+															<tbody v-for="rld in RFQLaborDetails" class="p-0">
+																<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+																	<td class="p-1 align-top text-center">{{ labor_no }}</td>
+																	<td class="p-1 align-top">{{ rld.scope_of_work }} </td>
+																	<td class="p-1 align-top text-center">{{ rld.uom }}</td>
+																	<td class="align-top">
 																		<template v-for="rlo in RFQLaborOffers">
-																			<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
-																			<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
-																			<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
-																				<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-																			</select>
+																			<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[62px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)" @change="CanvassCompleteBtn"></textarea>
+																			<textarea name="" id="" class="border-b resize w-full  h-screen !max-h-[62px] !min-h-[100] p-1 laboroffer_" v-model="rlo.offer" v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)" readonly></textarea>
 																			<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
-																			</template>
-																			<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)">
-																				<div class="border-b p-1 w-full h-7 !align-top text-center laborunitprice_"> {{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
-																				<div class="border-b p-1 w-full h-7 !align-top text-center laborcurrency_">{{ rlo.labor_currency }}</div>
-																			</template>
 																		</template>
-																		
-																	<!-- </div> -->
-																</td>
-																<!-- </template> -->
-															</tr>
-														</tbody>
-													</table>
-													<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQMaterialDetails.length != 0">
-														<tr class="bg-gray-100">
-															<td class="p-1 text-center" width="5%">No</td>
-															<td class="p-1 text-center" width="10%">Qty</td>
-															<td class="p-1" width="35%">Item Description</td>
-															<td class="p-1" width="7%">UOM</td>
-															<td class="p-1" width="35%">Brand/Offer</td>
-															<td class="p-1 text-center" width="15%">Unit Price</td>
-														</tr>
-														<span hidden>{{ item_no=1 }}</span>
-														<tbody v-for="rmd in RFQMaterialDetails" class="p-0">
-														<tr v-if="rmd.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
-															<td class="p-1 align-top text-center">{{ item_no }}</td>
-															<td class="p-1 align-top text-center">{{ parseFloat(rmd.quantity).toFixed(2) }}</td>
-															<td class="p-1 align-top">{{ rmd.item_description }}</td>
-															<td class="p-1 align-top text-center">{{ rmd.uom }}</td>
-															<span hidden>{{ item_no++ }}</span>
-															<td class="align-top">
-																<template v-for="rmo in RFQMaterialOffers">
-																	
-																	<template v-if="(rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id && rvi.canvassed == 0)">
-																		<textarea class="border-b p-1 w-full h-10 !align-top materialoffer_" v-model="rmo.offer" @change="CanvassCompleteBtn"></textarea>
-																		<input type="hidden" class="materialofferid_" v-model="rmo.jo_rfq_material_offer_id" >
-																	</template>
-																	<template v-if="(rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id && rvi.canvassed == 1)">
-																		<textarea class="border-b p-1 w-full h-10 !align-top" v-model="rmo.offer" readonly></textarea>
-																	</template>
-																</template>
-															</td>
-															<td class="align-top p-0">
-																<template v-for="rmo in RFQMaterialOffers">
-																	<div class="!h-10 border-b flex" v-if="rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id">
-																		<template v-if="(rvi.canvassed == 0)">
-																			<input type="number" class="p-1 w-full !align-top text-center text-xs materialunitprice_" placeholder="00.00" v-model="rmo.unit_price">
-																			<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap materialcurrency_" v-model="rmo.material_currency">
-																				<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
-																			</select>
-																			<input type="hidden" class="materialofferid_" v-model="rmo.jo_rfq_material_offer_id" >
-																		</template>
-																		<template v-if="(rvi.canvassed == 1)">
-																			<div class="border-b p-1 w-full h-7 !align-top text-center"> {{ parseFloat(rmo.unit_price).toFixed(2) }}</div>
-																			<div class="border-b p-1 w-full h-7 !align-top text-center"> {{ rmo.material_currency }}</div>
-																		</template>
-																	</div>
-																</template>
-															</td>
-														</tr>
-													</tbody>
-													</table>
+																	</td>
+																	<td hidden><span hidden>{{ labor_no++ }}</span></td>
+																	<td class="align-top">
+																		<template v-for="rlo in RFQLaborOffers">
+																			<div class="">
+																				<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
+																					<input type="number" class="border-b p-1 w-full !align-top !h-8 text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
+																					<select class="p-1 m-0 leading-none w-full text-center border-b  !h-8 block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
+																						<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
+																					</select>
+																					<input type="hidden" class="laborofferid_" v-model="rlo.jo_rfq_labor_offer_id" >
+																				</template>
+																			</div>
 
-													<table class="table-bordered w-full !text-xs mb-2">
-														<tr class="bg-gray-100">
-															<td class="p-1" width="">Notes</td>
-														</tr>
-														<tr v-for="hn in HeadNotes">
-															<td class="p-1 align-top">{{ hn.notes }}</td>
-														</tr>
-													</table>
-													<table class="table-bordesred w-full text-xs">
-															<tr>
-																<td colspan="4">1. Quotation must be submitted on or before {{ rvi.view_due_date }}</td>
-															</tr>
-															<tr>
-																<td colspan="4">2. Please Fill - Up :</td>
-															</tr>
+																			<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 1)">
+																				<div class="border-b p-1 w-full !h-8 !align-top text-center laborunitprice_"> {{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
+																				<div class="border-b p-1 w-full !h-8 !align-top text-center laborcurrency_">{{ rlo.labor_currency }}</div>
+																			</template>
+																		</template>
+																	</td>
+																	<td>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+														<table class="table-bordered w-full !text-xs mb-2" v-if = "RFQMaterialDetails.length != 0">
+															<thead>
+																<tr class="bg-gray-100">
+																	<td class="p-1 text-center" width="5%">No</td>
+																	<td class="p-1 text-center" width="5%">Qty</td>
+																	<td class="p-1" width="33%">Item Description</td>
+																	<td class="p-1" width="5%">UOM</td>
+																	<td class="p-1" width="31%">Brand/Offer</td>
+																	<td class="p-1 text-center" width="10%">Unit Price</td>
+																	<td class="p-1 text-center" width="10%">Total Price</td>
+																</tr>
+																<tr hidden><span hidden>{{ item_no=1 }}</span></tr>
+															</thead>
+															<tbody v-for="rmd in RFQMaterialDetails" class="p-0">
+																<tr v-if="rmd.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
+																	<td class="p-1 align-top text-center">{{ item_no }}</td>
+																	<td class="p-1 align-top text-center">{{ parseFloat(rmd.quantity).toFixed(2) }}</td>
+																	<td class="p-1 align-top">{{ rmd.item_description }}</td>
+																	<td class="p-1 align-top text-center">{{ rmd.uom }}</td>
+																	<td hidden><span hidden>{{ item_no++ }}</span></td>
+																	<td class="align-top">
+																		<template v-for="rmo in RFQMaterialOffers">
+																			
+																			<template v-if="(rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id && rvi.canvassed == 0)">
+																				<textarea class="border-b p-1 w-full h-16 !align-top materialoffer_" v-model="rmo.offer" @change="CanvassCompleteBtn"></textarea>
+																				<input type="hidden" class="materialofferid_" v-model="rmo.jo_rfq_material_offer_id" >
+																			</template>
+																			<template v-if="(rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id && rvi.canvassed == 1)">
+																				<textarea class="border-b p-1 w-full h-16 !align-top" v-model="rmo.offer" readonly></textarea>
+																			</template>
+																		</template>
+																	</td>
+																	<td class="align-top p-0">
+																		<template v-for="rmo in RFQMaterialOffers">
+																			<div class="border-b" v-if="rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id">
+																				<template v-if="(rvi.canvassed == 1)">
+																					<input type="number" class=" h-8 p-1 w-full !align-top text-center text-xs border-b materialunitprice_" placeholder="00.00" v-model="rmo.unit_price">
+																					<select class=" h-8 p-1 m-0 leading-none w-full text-center text-xs whitespace-nowrap materialcurrency_" v-model="rmo.material_currency">
+																						<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
+																					</select>
+																					<input type="hidden" class="materialofferid_" v-model="rmo.jo_rfq_material_offer_id" >
+																				</template>
+																				<template v-if="(rvi.canvassed == 0)">
+																					<div class="border-b p-1 w-full h-8 !align-top text-center"> {{ parseFloat(rmo.unit_price).toFixed(2) }}</div>
+																					<div class="border-b p-1 w-full h-8 !align-top text-center"> {{ rmo.material_currency }}</div>
+																				</template>
+																			</div>
+																		</template>
+																	</td>
+																	<td>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+
+														<table class="table-bordered w-full !text-xs mb-2">
+															<tbody>
+																<tr class="bg-gray-100">
+																	<td class="p-1" width="">Notes</td>
+																</tr>
+																<tr v-for="hn in HeadNotes">
+																	<td class="p-1 align-top">{{ hn.notes }}</td>
+																</tr>
+															</tbody>
+														</table>
+														<table class="table-bordesred w-full text-xs">
+															<tbody>
+																<tr>
+																	<td colspan="4">1. Quotation must be submitted on or before {{ rvi.view_due_date }}</td>
+																</tr>
+																<tr>
+																	<td colspan="4">2. Please Fill - Up :</td>
+																</tr>
+															</tbody>
 															<tbody v-if="(rvi.canvassed==0)">
 																<tr class="po_buttons">
 																	<td width="10%"></td>
@@ -820,7 +842,7 @@
 																	</td>
 																	<td width="10%"></td>
 																</tr>
-																<span hidden>{{ orderno=1 }}</span>
+																<tr hidden><span hidden>{{ orderno=1 }}</span></tr>
 																<tr v-for="(vt, order_no) in rfq_vendor_terms">
 																	<td width="10%"></td>
 																	<td width="40%" colspan="2">
@@ -849,9 +871,10 @@
 																</tr>
 															</tbody>
 														</table>
-													<br>
-													<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
-													<table class="w-full text-xs">
+														<br>
+														<!-- <div class="border w-full text-center p-4 bg-blue-100"> Signatories here</div> -->
+														<table class="w-full text-xs">
+															<tbody>
 																<tr>
 																	<td class="text-center" width="30%">Prepared by</td>
 																	<td width="5%"></td>
@@ -867,13 +890,13 @@
 																	<td class="text-center border-b"></td>
 																</tr>
 																<tr>
-																<td class="text-center p-1" v-if="rvi.prepared_by_id == 0">{{  RFQHead.prepared_by_name }}</td>
-																<td class="text-center p-1" v-else>{{  rvi.prepared_by_name }}</td>
-																<td></td>
-																<td class="text-center p-1">{{  rvi.noted_by_name }}</td>
-																<td></td>
-																<td class="text-center p-1">{{  rvi.approved_by_name }}</td>
-															</tr>
+																	<td class="text-center p-1" v-if="rvi.prepared_by_id == 0">{{  RFQHead.prepared_by_name }}</td>
+																	<td class="text-center p-1" v-else>{{  rvi.prepared_by_name }}</td>
+																	<td></td>
+																	<td class="text-center p-1">{{  rvi.noted_by_name }}</td>
+																	<td></td>
+																	<td class="text-center p-1">{{  rvi.approved_by_name }}</td>
+																</tr>
 																<tr>
 																	<td class="text-center"><br><br></td>
 																	<td></td>
@@ -891,79 +914,80 @@
 																	<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
 																	<td class="text-center"></td>
 																</tr>
-															</table>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row my-2 po_buttons" v-if="vendor == rvi.jo_rfq_vendor_id"> 
+											<div class="col-lg-12 col-md-12">
+												<div class="flex justify-center space-x-2" v-if="vendor == rvi.jo_rfq_vendor_id && rvi.canvassed == 0">
+													<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.jo_rfq_vendor_id)">Save as Draft</button>
+													<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.jo_rfq_vendor_id)" v-if="count_vendor_labor_offers != 0 || count_vendor_material_offers != 0">Canvass Complete</button>
+													<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.jo_rfq_vendor_id)" v-else disabled>Canvass Complete</button>
+												</div>
+												<div class="flex justify-center space-x-2" v-if="vendor == rvi.jo_rfq_vendor_id && rvi.canvassed == 1">
+													<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="row my-2 po_buttons" v-if="vendor == rvi.jo_rfq_vendor_id"> 
-										<div class="col-lg-12 col-md-12">
-											<div class="flex justify-center space-x-2" v-if="vendor == rvi.jo_rfq_vendor_id && rvi.canvassed == 0">
-												<button type="submit" class="btn btn-warning text-white mr-2 w-" id = "draftbtn" @click="openDraftAlert(rvi.jo_rfq_vendor_id)">Save as Draft</button>
-												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.jo_rfq_vendor_id)" v-if="count_vendor_labor_offers != 0 || count_vendor_material_offers != 0">Canvass Complete</button>
-												<button type="submit" class="btn btn-primary" id = "canvasscompletebtn" @click="CanvassComplete(rvi.jo_rfq_vendor_id)" v-else disabled>Canvass Complete</button>
-											</div>
-											<div class="flex justify-center space-x-2" v-if="vendor == rvi.jo_rfq_vendor_id && rvi.canvassed == 1">
-												<button type="submit" class="btn btn-primary mr-2 w-44"  @click="printDiv()">Print</button>
-											</div>
-										</div>
+								</div>
+							</div>
+							<br>
+								<!-- <div class="col-lg-4 col-md-3">
+									<div class="flex justify-start space-x-1">
+										<button type="submit" class="btn btn-primary">Canvass Complete</button>
+										<button type="submit" class="btn btn-warning text-white mr-2 w-" @click="openWarningAlert()">Save as Draft</button>
+									</div>
+								</div> -->
+							<div class="row my-2 po_buttons"> 
+								<div class="col-lg-12 col-md-12" >
+									<ol class="flex items-center w-full">
+										<li class="w-full" v-for="(vc, index) in RFQVendors">
+											<li class="flex w-full items-center text-white after:w-full after:h-1 after:border-b after:border-green-500 after:border-4 after:inline-block-800" v-if="(vc.canvassed == 1 && vc.status != 'Draft')">
+												<span class="flex items-center font-bold justify-center w-10 h-10 bg-green-500 rounded-full lg:h-10 lg:w-10 shrink-0">
+													V{{ index+1 }}
+												</span>
+											</li>
+											<li class="flex w-full items-center text-gray-600 after:w-full after:h-1 after:border-b after:border-yellow-300 after:border-4 after:inline-block-700"v-if="(vc.canvassed == 0 && vc.status == 'Draft')">
+												<span class="flex items-center font-bold justify-center w-10 h-10 bg-yellow-300 rounded-full lg:h-10 lg:w-10 shrink-0">
+													V{{ index+1 }}
+												</span>
+											</li>
+											<li class="flex w-full items-center text-gray-600 after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:inline-block-700"v-if="(vc.canvassed != 1 && vc.status != 'Draft')">
+												<span class="flex items-center font-bold justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-10 lg:w-10 shrink-0">
+													V{{ index+1 }}
+												</span>
+											</li>
+										</li>
+										<li class="!w-30">
+											<!-- <a href="" class="btn !bg-gray-200 !w-36">Pasdrint TE</a> -->
+											<template v-if="props.aoq_id != 0">
+												<button type="submit" class="btn !bg-green-500 text-white !w-36"  v-if="(count_aoq_vendor == count_canvassed_aoq_v && count_canvassed_aoq_v != 0)" @click="openAOQ()">Proceed AOQ</button>
+												<button type="submit" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else @click="openAOQ()">Proceed AOQ</button>
+											</template>
+											<template v-if="props.aoq_id == 0">
+												<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
+												<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
+												<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
+											</template>
+											
+										</li>
+									</ol>
+								</div>
+							</div>
+							<!-- <hr class="border-dashed">	
+							<div class="row my-2"> 
+								<div class="col-lg-12 col-md-12">
+									<div class="flex justify-between space-x-2">
+										<button type="submit" class="btn btn-primary mr-2 w-">Canvass Complete</button>
 									</div>
 								</div>
-							</div>
-						</div>
-						<br>
-							<!-- <div class="col-lg-4 col-md-3">
-								<div class="flex justify-start space-x-1">
-									<button type="submit" class="btn btn-primary">Canvass Complete</button>
-									<button type="submit" class="btn btn-warning text-white mr-2 w-" @click="openWarningAlert()">Save as Draft</button>
-								</div>
 							</div> -->
-							<div class="row my-2 po_buttons"> 
-							<div class="col-lg-12 col-md-12" >
-								<ol class="flex items-center w-full">
-									<li class="w-full" v-for="(vc, index) in RFQVendors">
-										<li class="flex w-full items-center text-white after:w-full after:h-1 after:border-b after:border-green-500 after:border-4 after:inline-block-800" v-if="(vc.canvassed == 1 && vc.status != 'Draft')">
-											<span class="flex items-center font-bold justify-center w-10 h-10 bg-green-500 rounded-full lg:h-10 lg:w-10 shrink-0">
-												V{{ index+1 }}
-											</span>
-										</li>
-										<li class="flex w-full items-center text-gray-600 after:w-full after:h-1 after:border-b after:border-yellow-300 after:border-4 after:inline-block-700"v-if="(vc.canvassed == 0 && vc.status == 'Draft')">
-											<span class="flex items-center font-bold justify-center w-10 h-10 bg-yellow-300 rounded-full lg:h-10 lg:w-10 shrink-0">
-												V{{ index+1 }}
-											</span>
-										</li>
-										<li class="flex w-full items-center text-gray-600 after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:inline-block-700"v-if="(vc.canvassed != 1 && vc.status != 'Draft')">
-											<span class="flex items-center font-bold justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-10 lg:w-10 shrink-0">
-												V{{ index+1 }}
-											</span>
-										</li>
-									</li>
-									<li class="!w-30">
-										<!-- <a href="" class="btn !bg-gray-200 !w-36">Pasdrint TE</a> -->
-										<template v-if="props.aoq_id != 0">
-											<button type="submit" class="btn !bg-green-500 text-white !w-36"  v-if="(count_aoq_vendor == count_canvassed_aoq_v && count_canvassed_aoq_v != 0)" @click="openAOQ()">Proceed AOQ</button>
-											<button type="submit" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else @click="openAOQ()">Proceed AOQ</button>
-										 </template>
-										 <template v-if="props.aoq_id == 0">
-											<a href="#" @click="openChooseVendor"  class="btn !bg-green-500 text-white !w-36" v-if="(count_ccr != 0)">Create AOQs</a>
-											<a href="#" class="btn !bg-green-500 text-white !w-36"  style="pointer-events: none;" v-else>Create AOQs</a>
-											<!-- <a href="/pur_aoq/print_te" class="btn !bg-green-500 text-white  !w-36" v-else>Create AOQs</a> -->
-										 </template>
-										
-									</li>
-								</ol>
-							</div>
 						</div>
-						<!-- <hr class="border-dashed">	
-						<div class="row my-2"> 
-							<div class="col-lg-12 col-md-12">
-								<div class="flex justify-between space-x-2">
-									<button type="submit" class="btn btn-primary mr-2 w-">Canvass Complete</button>
-								</div>
-							</div>
-						</div> -->
 					</div>
-				</div>
 				</div>
 			</div>
 		</div>
@@ -1044,25 +1068,29 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<table class="w-full table-bordered !text-xs mt-3">
-										<tr class="bg-gray-100">
-											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
-											</td>
-											<td class="p-1 uppercase text-center" width="2%">#</td>
-											<td class="p-1 uppercase" width="">Scope Of Works</td>
-											<td class="p-1 uppercase text-center" width="10%">Qty</td>
-											<td class="p-1 uppercase text-center" width="10%">UOM</td>
-										</tr>
-										<tr v-for="(ld, laborno) in LaborDetails">
-											<input type="hidden" v-model="ld.jor_labor_details_id">
-											<td class="p-1 text-center">
-												<input type="checkbox" class='checkboxeslabor' v-model="ld.labor_checkbox" :checked="checkalllabor" :true-value="1" :false-value="0" @change="CountCheckbox">
-											</td>
-											<td class="p-1 text-center align-top">{{ laborno + 1 }}</td>
-											<td class="p-1 align-top">{{ ld.scope_of_work }}</td>
-											<td class="p-1 align-top text-center">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
-											<td class="p-1 align-top text-center">{{ ld.uom }}</td>
-										</tr>
+										<thead>
+											<tr class="bg-gray-100">
+												<td class="p-1 uppercase text-center" width="2%">
+													<input type="checkbox" id="checkalllabor" @click="CheckAllLabor" :checked="allSelectedLabor" v-model="all_labor_checkbox" :true-value="1" :false-value="0">
+												</td>
+												<td class="p-1 uppercase text-center" width="2%">#</td>
+												<td class="p-1 uppercase" width="">Scope Of Works</td>
+												<td class="p-1 uppercase text-center" width="10%">Qty</td>
+												<td class="p-1 uppercase text-center" width="10%">UOM</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="(ld, laborno) in LaborDetails">
+												<input type="hidden" v-model="ld.jor_labor_details_id">
+												<td class="p-1 text-center">
+													<input type="checkbox" class='checkboxeslabor' v-model="ld.labor_checkbox" :checked="checkalllabor" :true-value="1" :false-value="0" @change="CountCheckbox">
+												</td>
+												<td class="p-1 text-center align-top">{{ laborno + 1 }}</td>
+												<td class="p-1 align-top">{{ ld.scope_of_work }}</td>
+												<td class="p-1 align-top text-center">{{ parseFloat(ld.quantity).toFixed(2) }}</td>
+												<td class="p-1 align-top text-center">{{ ld.uom }}</td>
+											</tr>
+										</tbody>
 									</table>
 								</div>
 							</div>
@@ -1070,29 +1098,33 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<table class="w-full table-bordered !text-xs mb-3">
-										<tr class="bg-gray-100">
-											<td class="p-1 uppercase text-center" width="2%">
-												<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">
-											</td>
-											<td class="p-1 uppercase text-center" width="7%">Qty</td>
-											<td class="p-1 uppercase text-center" width="7%">UOM</td>
-											<td class="p-1 uppercase" width="20%">PN No.</td>
-											<td class="p-1 uppercase" width="">Item Description</td>
-											<td class="p-1 uppercase" width="10%">WH Stocks</td>
-											<td class="p-1 uppercase" width="15%">Date Needed</td>
-										</tr>
-										<tr v-for="md in MaterialDetails">
-											<input type="hidden" v-model="md.jor_material_details_id">
-											<td class="p-1 text-center">
-												<input type="checkbox" class='checkboxesmaterial' v-model="md.material_checkbox" :checked="checkallmaterial" :true-value="1" :false-value="0" @change="CountCheckbox">
-											</td>
-											<td class="p-1 text-center">{{ parseFloat(md.quantity).toFixed(2) }}</td>
-											<td class="p-1 text-center">{{ md.uom }}</td>
-											<td class="p-1">{{ md.pn_no }}</td>
-											<td class="p-1">{{ md.item_description }}</td>
-											<td class="p-1">{{ md.wh_stocks }}</td>
-											<td class="p-1">{{ md.date_needed }}</td>
-										</tr>
+										<thead>
+											<tr class="bg-gray-100">
+												<td class="p-1 uppercase text-center" width="2%">
+													<input type="checkbox" id="checkallmaterial" @click="CheckAllMaterial" :checked="allSelectedMaterial" v-model="all_material_checkbox" :true-value="1" :false-value="0">
+												</td>
+												<td class="p-1 uppercase text-center" width="7%">Qty</td>
+												<td class="p-1 uppercase text-center" width="7%">UOM</td>
+												<td class="p-1 uppercase" width="20%">PN No.</td>
+												<td class="p-1 uppercase" width="">Item Description</td>
+												<td class="p-1 uppercase" width="10%">WH Stocks</td>
+												<td class="p-1 uppercase" width="15%">Date Needed</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="md in MaterialDetails">
+												<input type="hidden" v-model="md.jor_material_details_id">
+												<td class="p-1 text-center">
+													<input type="checkbox" class='checkboxesmaterial' v-model="md.material_checkbox" :checked="checkallmaterial" :true-value="1" :false-value="0" @change="CountCheckbox">
+												</td>
+												<td class="p-1 text-center">{{ parseFloat(md.quantity).toFixed(2) }}</td>
+												<td class="p-1 text-center">{{ md.uom }}</td>
+												<td class="p-1">{{ md.pn_no }}</td>
+												<td class="p-1">{{ md.item_description }}</td>
+												<td class="p-1">{{ md.wh_stocks }}</td>
+												<td class="p-1">{{ md.date_needed }}</td>
+											</tr>
+										</tbody>
 									</table>
 								</div>
 							</div>
@@ -1393,15 +1425,21 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="w-full table-bordered text-sm" >
-									<tr class="bg-gray-100">
-										<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
-										<td class="p-1">List of Vendors</td>
-									</tr>
-									<tr class="bg-yellow-50" v-for="(v, i) in vendors" >
-										<td class="p-1"><input type="checkbox" class='vendor_checkboxes' v-model="v.vendor_checkbox" :checked="checkallven" :true-value="1" :false-value="0" @change="CountVendorCheckbox"></td>
-										<td class="p-1">{{ v.vendor_name }} ({{v.vendor_identifier}})</td>
-										<input type="hidden" class="form-control" v-model="v.jo_rfq_vendor_id">
-									</tr>
+									<tbody>
+										<tr class="bg-gray-100">
+											<td class="p-1" width="2%"><input type="checkbox" id="checkallven" @click="CheckAllVendor" :checked="allSelectedVendor" v-model="all_vendor_checkbox" :true-value="1" :false-value="0"></td>
+											<td class="p-1">List of Vendors</td>
+										</tr>
+										<tr class="bg-yellow-50" v-for="(v, i) in vendors" >
+											<td class="p-1">
+												<input type="checkbox" class='vendor_checkboxes' v-model="v.vendor_checkbox" :checked="checkallven" :true-value="1" :false-value="0" @change="CountVendorCheckbox">
+											</td>
+											<td class="p-1">{{ v.vendor_name }} ({{v.vendor_identifier}})</td>
+											<td><input type="" class="form-control" v-model="v.jo_rfq_vendor_id"></td>
+											<td hidden ><input type="hidden" class="form-control" v-model=
+												"v.jo_rfq_vendor_id"></td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
@@ -1532,155 +1570,6 @@
 				</div>
 			</div>
 		</Transition>
-		<!-- <Transition
-            enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-        >
-			<div class="modal pt-4 px-3" :class="{ show:showModal }">
-				<div @click="closeModal" class="w-full h-full fixed"></div>
-				<div class="modal__content w-8/12 mb-5">
-					<div class="row mb-3">
-						<div class="col-lg-12 flex justify-between">
-							<span class="font-bold ">Add Vendor</span>
-							<a href="#" class="text-gray-600" @click="closeModal">
-								<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"></XMarkIcon>
-							</a>
-						</div>
-					</div>
-					<hr class="mt-0">
-					<div class="modal_s_items">
-						<div class="row">
-							<div class="col-lg-12 col-md-3">
-								<div class="form-group">
-									<label class="text-gray-500 m-0" for="">Vendor</label>
-									<select type="text" class="form-control" placeholder="Vendor" value="">
-										<option value="">Select Vendor</option>
-										<option value="">Tough Performance AutoWorkz</option>
-										<option value="">2GO Express, Inc.</option>
-										<option value="">4 Sisters Sack's Trading</option>
-										<option value="">A-1 Gas Corporation</option>
-									</select>
-								</div>
-								<table class="table-bordered w-full !text-xs mb-2">
-									<tr class="bg-gray-100">
-										<td class="p-1" width="50%">Scope of Work</td>
-										<td class="p-1" width="35%">Offer</td>
-										<td class="p-1">Price</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top">
-											Supply of manpower/labor, tools, equipment and technical expertise for the following:
-											<br>1. 1. Standard governor overhauling/dismantling, cleaning and replacement of parts as seen necessary (i.e. gaskets, bearings, o-rings, etc.)
-											<br>2. Inspection and checking of all parts for wear, cracks, corrosion and other damages.
-											<br>3. Repair and replacement of parts as seen upon inspection.
-											<br>4. Setting of internal parts and mounting of the governor.
-											<br>5. Calibration and bench testing for:
-											<br>5.1. Speed Setting and Indicator
-											<br>5.2. Speed Droop Setting and Indicator
-											<br>5.3. Load Limit Setting and Indicator
-											<br>6. Functional test of shut-down solenoid valve
-											<br>7. Testing and Commissioning
-											<br>8. Submission of inspection, service, commissioning and bench testing reports.
-											<br>9. Other works necessary for job completion.
-										</td>
-										<td class="align-top">
-											<textarea name="" id="" class="resize w-full  h-screen !max-h-[300px] !min-h-[100] p-1"></textarea>
-										</td>
-										<td class="align-top">
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-										</td>
-									</tr>
-								</table>
-								<table class="table-bordered w-full !text-xs">
-									<tr class="bg-gray-100">
-										<td class="p-1 text-center" width="5%">No</td>
-										<td class="p-1 text-center" width="10%">Qty</td>
-										<td class="p-1" width="35%">Item Description</td>
-										<td class="p-1" width="35%">Brand/Offer</td>
-										<td class="p-1 text-center" width="15%">Unit Price</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center">1</td>
-										<td class="p-1 align-top text-center">5</td>
-										<td class="p-1 align-top">Monitor</td>
-										<td class="align-top">
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-										</td>
-										<td class="align-top">
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="p-1 align-top text-center">1</td>
-										<td class="p-1 align-top text-center">5</td>
-										<td class="p-1 align-top">Mouse</td>
-										<td class="align-top">
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-											<textarea type="text" class="border-b p-1 w-full h-14 !align-top"></textarea>
-										</td>
-										<td class="align-top">
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-											<div class="!h-14 border-b">
-												<input type="text" class="border-b p-1 w-full !align-top text-center" placeholder="00.00">
-												<select name="" id="" class=" p-1 w-full !align-top text-center">
-													<option value="">PHP</option>
-												</select>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-						<div class="row mt-4"> 
-							<div class="col-lg-12 col-md-12">
-								<div class="flex justify-center space-x-2">
-									<a href="/job_quote/print" class="btn btn-primary mr-2 w-44">Save</a>
-								</div>
-							</div>
-						</div>
-					</div> 
-				</div>
-			</div>
-		</Transition> -->
+		
 	</navigation>
 </template>
