@@ -584,6 +584,23 @@
 		vendor_details.value=''
 		document.getElementById("AddItemsBtn").disabled = true;
 	}
+
+	const isNumber = (evt)=> {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode == 46) {
+			//Check if the text already contains the . character
+			if (evt.target.value.indexOf('.') === -1) {
+				return true;
+			} else {
+				evt.preventDefault();
+			}
+		} else {
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+				evt.preventDefault();
+		}
+		return true;
+    }
 </script>
 <template>
 	<navigation>
@@ -740,7 +757,7 @@
 																<!-- <div class="!h-14 border-b"> -->
 																	<template v-for="rlo in RFQLaborOffers">
 																		<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
-																		<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
+																		<input type="number" class="border-b p-1 w-full !align-top text-center laborunitprice_" placeholder="00.00" @keypress="isNumber($event)" v-model="rlo.unit_price">
 																		<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
 																			<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 																		</select>
@@ -791,7 +808,7 @@
 																<template v-for="rmo in RFQMaterialOffers">
 																	<div class="!h-10 border-b flex" v-if="rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id">
 																		<template v-if="(rvi.canvassed == 0)">
-																			<input type="number" class="p-1 w-full !align-top text-center text-xs materialunitprice_" placeholder="00.00" v-model="rmo.unit_price">
+																			<input type="number" class="p-1 w-full !align-top text-center text-xs materialunitprice_" placeholder="00.00" @keypress="isNumber($event)" v-model="rmo.unit_price">
 																			<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap materialcurrency_" v-model="rmo.material_currency">
 																				<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 																			</select>

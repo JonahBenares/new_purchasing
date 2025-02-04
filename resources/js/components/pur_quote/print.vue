@@ -508,7 +508,7 @@
 															<td class="p-1 align-top text-center">{{ item_no+1 }}</td>
 															<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 															<td class="p-1 align-top itemdesc_">{{ rd.item_description }}</td>
-															<td class="p-1 align-top item_desc">{{ rd.uom }}</td>
+															<td class="p-1 align-top text-center">{{ rd.uom }}</td>
 															<span hidden>{{ item_no++ }}</span> 
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">

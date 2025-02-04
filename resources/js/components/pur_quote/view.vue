@@ -623,6 +623,23 @@
             router.push(`/pur_aoq/print_te/${props.aoq_id}`)
         }
 	}
+
+	const isNumber = (evt)=> {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode == 46) {
+			//Check if the text already contains the . character
+			if (evt.target.value.indexOf('.') === -1) {
+				return true;
+			} else {
+				evt.preventDefault();
+			}
+		} else {
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+				evt.preventDefault();
+		}
+		return true;
+    }
 </script>
 <template>
 	<navigation>
@@ -758,7 +775,7 @@
 													<td class="align-top">
 														<div  v-for="ro in RFQOffers">
 															<div class="!h-14 border-b" v-if="ro.rfq_details_id == rd.rfq_details_id">
-																<input type="number" class="border-b p-1 w-full !align-top text-center unitprice_" placeholder="00.00" v-model="ro.unit_price" v-if="(rvi.canvassed == 0)">
+																<input type="number" class="border-b p-1 w-full !align-top text-center unitprice_" placeholder="00.00" v-model="ro.unit_price" @keypress="isNumber($event)" v-if="(rvi.canvassed == 0)">
 																<div class="border-b p-1 w-full h-7 !align-top text-center"  v-else> {{ parseFloat(ro.unit_price).toFixed(2) }}</div>
 																<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="ro.offer_currency" v-if="(rvi.canvassed == 0)">
 																	<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
