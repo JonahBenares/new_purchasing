@@ -304,7 +304,6 @@ class RFQController extends Controller
                             'rfq_details_id'=>$o->rfq_details_id,
                             'offer'=>$o->offer,
                             'unit_price'=>$o->unit_price,
-                            'total_price'=>$d->pr_details->quantity * $o->unit_price,
                             'offer_currency'=>$o->currency ?? 'PHP',
                         ];
                     }

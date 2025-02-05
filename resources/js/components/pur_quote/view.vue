@@ -782,23 +782,14 @@
 													<td class="align-top">
 														<div  v-for="ro in RFQOffers">
 															<div class="!h-14 border-b" v-if="ro.rfq_details_id == rd.rfq_details_id">
-																<input type="text" class="border-b p-1 w-full !align-top text-center unitprice_" placeholder="00.00" v-model="ro.unit_price" @keypress="isNumber($event)" v-if="(rvi.canvassed == 0)">
-																<div class="border-b p-1 w-full h-7 !align-top text-center"  v-else> {{ parseFloat(ro.unit_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</div>
+																<input type="number" class="border-b p-1 w-full !align-top text-center unitprice_" placeholder="00.00" v-model="ro.unit_price" v-if="(rvi.canvassed == 0)">
+																<div class="border-b p-1 w-full h-7 !align-top text-center"  v-else> {{ parseFloat(ro.unit_price).toFixed(2) }}</div>
 																<select class="p-1 m-0 leading-none w-full text-center  block text-xs whitespace-nowrap currency_" v-model="ro.offer_currency" v-if="(rvi.canvassed == 0)">
 																	<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 																</select>
 																<div class="border-b p-1 w-full h-7 !align-top text-center" v-else>{{ ro.offer_currency }}</div>
 																<input type="hidden" v-if="ro.rfq_details_id == rd.rfq_details_id" v-model="ro.rfq_offer_id" >
 																<input type="hidden" class="border-b p-1 w-full !align-top text-center offerid_" v-model="ro.offer_currency" v-else readonly>
-															</div>
-														</div>
-													</td>
-													<td class="align-top">
-														<div  v-for="ro in RFQOffers">
-															<div class="!h-14 border-b" v-if="ro.rfq_details_id == rd.rfq_details_id">
-																<!-- <input type="number" class="p-1 w-full !align-top text-center unitprice_" placeholder="00.00" value="rd.quantity * ro.unit_price" v-model="ro.unit_price" v-if="(rvi.canvassed == 0)" readonly> -->
-																<div class="p-1 w-full h-7 !align-top text-center"  v-if="(rvi.canvassed == 0)">{{ rd.quantity * ro.unit_price }}</div>
-																<div class="p-1 w-full h-7 !align-top text-center"  v-else>{{ parseFloat(ro.total_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</div>
 															</div>
 														</div>
 													</td>

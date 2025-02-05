@@ -714,7 +714,6 @@
 															<thead>
 																<tr class="bg-gray-100">
 																	<td class="p-1 text-center" width="5%">#</td>
-																	<td class="p-1 text-center" width="5%">Qty</td>
 																	<td class="p-1" width="37%">Scope of Work</td>
 																	<td class="p-1" width="5%">UOM</td>
 																	<td class="p-1" width="31%">Offer</td>
@@ -722,14 +721,13 @@
 																	<td class="p-1 text-center" width="10%">Total Price</td>
 																</tr>
 																<tr>
-																	<td class="p-1 align-top" colspan="7">{{ RFQHead.general_description }}</td>
+																	<td class="p-1 align-top" colspan="6">{{ RFQHead.general_description }}</td>
 																</tr>
 																<tr hidden><td hidden><span hidden>{{ labor_no=1 }}</span></td></tr>
 															</thead>
 															<tbody v-for="rld in RFQLaborDetails" class="p-0">
 																<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
 																	<td class="p-1 align-top text-center">{{ labor_no }}</td>
-																	<td class="p-1 align-top text-center">{{ parseFloat(rld.quantity).toFixed(2) }}</td>
 																	<td class="p-1 align-top">{{ rld.scope_of_work }} </td>
 																	<td class="p-1 align-top text-center">{{ rld.uom }}</td>
 																	<td class="align-top">
@@ -744,7 +742,7 @@
 																		<template v-for="rlo in RFQLaborOffers">
 																			<div class="">
 																				<template v-if="(rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id && rvi.canvassed == 0)">
-																					<input type="text" class="border-b p-1 w-full !align-top !h-8 text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price" @keypress="isNumber($event)">
+																					<input type="number" class="border-b p-1 w-full !align-top !h-8 text-center laborunitprice_" placeholder="00.00" v-model="rlo.unit_price">
 																					<select class="p-1 m-0 leading-none w-full text-center border-b  !h-8 block text-xs whitespace-nowrap laborcurrency_" v-model="rlo.labor_currency">
 																						<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 																					</select>
@@ -759,18 +757,12 @@
 																		</template>
 																	</td>
 																	<td>
-																		<div  v-for="rlo in RFQLaborOffers">
-																			<template v-if="rld.jo_rfq_labor_details_id == rlo.jo_rfq_labor_details_id">
-																				<template v-if="(rvi.canvassed == 0)">
-																					<div class="p-1 w-full h-7 !align-top text-center">{{ rld.quantity * rlo.unit_price }}</div>
-																					<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
-																				</template>
-																				<template v-if="(rvi.canvassed == 1)">
-																					<div class="p-1 w-full h-7 !align-top text-center">{{ parseFloat(rlo.total_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</div>
-																					<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
-																				</template>
-																			</template>
-																		</div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
 																	</td>
 																</tr>
 															</tbody>
@@ -810,14 +802,14 @@
 																	<td class="align-top p-0">
 																		<template v-for="rmo in RFQMaterialOffers">
 																			<div class="border-b" v-if="rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id">
-																				<template v-if="(rvi.canvassed == 0)">
-																					<input type="text" class=" h-8 p-1 w-full !align-top text-center text-xs border-b materialunitprice_" placeholder="00.00" v-model="rmo.unit_price" @keypress="isNumber($event)">
+																				<template v-if="(rvi.canvassed == 1)">
+																					<input type="number" class=" h-8 p-1 w-full !align-top text-center text-xs border-b materialunitprice_" placeholder="00.00" v-model="rmo.unit_price">
 																					<select class=" h-8 p-1 m-0 leading-none w-full text-center text-xs whitespace-nowrap materialcurrency_" v-model="rmo.material_currency">
 																						<option v-for="cur in currency" v-bind:key="cur" v-bind:value="cur">{{ cur }}</option>
 																					</select>
 																					<input type="hidden" class="materialofferid_" v-model="rmo.jo_rfq_material_offer_id" >
 																				</template>
-																				<template v-if="(rvi.canvassed == 1)">
+																				<template v-if="(rvi.canvassed == 0)">
 																					<div class="border-b p-1 w-full h-8 !align-top text-center"> {{ parseFloat(rmo.unit_price).toFixed(2) }}</div>
 																					<div class="border-b p-1 w-full h-8 !align-top text-center"> {{ rmo.material_currency }}</div>
 																				</template>
@@ -825,18 +817,12 @@
 																		</template>
 																	</td>
 																	<td>
-																		<div  v-for="rmo in RFQMaterialOffers">
-																			<template v-if="rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id">
-																				<template v-if="(rvi.canvassed == 0)">
-																					<div class="p-1 w-full h-7 !align-top text-center">{{ rmd.quantity * rmo.unit_price }}</div>
-																					<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
-																				</template>
-																				<template v-if="(rvi.canvassed == 1)">
-																					<div class="p-1 w-full h-7 !align-top text-center">{{ parseFloat(rmo.total_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</div>
-																					<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
-																				</template>
-																			</template>
-																		</div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
+																		<div class="border-b p-1 w-full !h-8 !align-top text-center"></div>
 																	</td>
 																</tr>
 															</tbody>
