@@ -24,6 +24,7 @@
     let po_details=ref([]);
     let signatories=ref([]);
     let payment_list=ref([]);
+    let payment_list2=ref([]);
     let rfd_head=ref([]);
     let rfd_payments=ref([]);
     let vendor=ref([]);
@@ -81,6 +82,7 @@
         po_head.value = response.data.po_head;
         po_details.value = response.data.po_details;
         vendor.value = response.data.vendor;
+        company.value = response.data.company_name;
         var total=0;
 		po_details.value.forEach(function (val, index, theArray) {
 			var p = val.total_cost;
@@ -96,7 +98,7 @@
             if(rfd_head.value.status=='Draft'){
                 rfd_id.value = response.data.rfd_head.id;
                 rfd_no.value = (response.data.rfd_head.apv_no!=undefined) ? response.data.rfd_head.apv_no : response.data.rfd_no;
-                company.value = response.data.rfd_head.company;
+                // company.value = response.data.rfd_head.company;
                 pay_to.value = response.data.rfd_head.pay_to;
                 rfd_date.value = response.data.rfd_head.rfd_date;
                 check_name.value = response.data.rfd_head.check_name;
@@ -110,9 +112,11 @@
                 endorsed_by.value = response.data.rfd_head.endorsed_by;
                 approved_by.value = response.data.rfd_head.approved_by;
                 received_by.value = response.data.rfd_head.received_by;
+                payment_list2.value = response.data.rfd_payments_draft;
             }
             show_ewt.value = response.data.rfd_head.show_ewt ?? 0;
             payment_list.value = response.data.rfd_payments;
+            
         }
         prepared_by.value = response.data.prepared_by;
         total_per_item.value = total;
@@ -122,8 +126,17 @@
         payment_list.value.forEach(function (val, index, theArray) {
             payment_total += Number(val.payment_amount) || 0;
         });
+
+        if (rfd_head.value.status=='Draft') {
+            var payment_total2 = 0;
+            payment_list2.value.forEach(function (val, index, theArray) {
+                payment_total2 += Number(val.payment_amount) || 0;
+            });
+        }else{
+            var payment_total2 = 0
+        }
+
         if(payment_list.value.length!=0){
-           
             subtotal_disp.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + vat_amount.value) - (po_head.value.discount + payment_total + parseFloat(payment_amount.value))
             subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + vat_amount.value) - (po_head.value.discount + payment_total + parseFloat(payment_amount.value))
         }else{
@@ -132,14 +145,25 @@
         }
         // subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee) - po_head.value.discount
         if(show_ewt.value!=0){
-            if(vendor.value.vat==1){
-                less.value = (subtotal.value/1.12)*percent 
+            if(po_head.value.vat_percent!=0){
+            // if(vendor.value.vat==1){
+                if(rfd_head.value.status!='Draft'){
+                    less.value = (payment_total/1.12)*percent 
+                }else{
+                    less.value = (payment_total2/1.12)*percent 
+                }
+                // less.value = (subtotal.value/1.12)*percent 
                 grand_total.value = subtotal.value + payment_total
                 // grand_total.value = subtotal.value-less.value
                 // subtotal.value = grand_total.value - (less.value + payment_total + parseFloat(payment_amount.value))
                 subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
             }else{
-                less.value = subtotal.value*percent 
+                if(rfd_head.value.status!='Draft'){
+                    less.value = payment_total*percent 
+                }else{
+                    less.value = payment_total2*percent 
+                }
+                // less.value = subtotal.value*percent 
                 grand_total.value = subtotal.value + payment_total
                 // grand_total.value = subtotal.value-less.value
                 // subtotal.value = grand_total.value - (less.value + payment_total + parseFloat(payment_amount.value))
@@ -199,6 +223,7 @@
             vendor.value = response.data.vendor;
             total_per_item.value = response.data.grand_total;
             prepared_by.value = response.data.prepared_by;
+            company.value=response.data.company_name
             // payment_amount.value =response.data.total_payments;
             // payment_list.value =response.data.rfd_payments;
             rfd_no.value = response.data.rfd_no;
@@ -206,6 +231,15 @@
                 rfd_head.value = response.data.rfd_head;
                 show_ewt.value = response.data.rfd_head.show_ewt ?? 0;
                 payment_list.value = response.data.rfd_payments;
+                var payment_total2 = 0;
+                payment_list.value.forEach(function (val, index, theArray) {
+                    if (val.id!=0 && val.po_rfd.status!='Saved') {
+                        payment_list2.value = response.data.rfd_payments_draft;
+                        payment_list2.value.forEach(function (val, index, theArray) {
+                            payment_total2 += Number(val.payment_amount) || 0;
+                        });
+                    }
+                });
             }
             var percent=vendor.value.ewt/100
             var payment_total = 0;
@@ -225,13 +259,28 @@
             }
             // subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee) - po_head.value.discount
             if(show_ewt.value!=0){
-                if(vendor.value.vat==1){
-                    less.value = (subtotal.value/1.12)*percent 
+                if(po_head.value.vat_percent!=0){
+                // if(vendor.value.vat==1){
+                    payment_list.value.forEach(function (val, index, theArray) {
+                        if (val.id!=0 && val.po_rfd.status!='Saved') {
+                            less.value = (parseFloat(payment_total2)/1.12)*percent 
+                        }else{
+                            less.value = (payment_total/1.12)*percent 
+                        }
+                    });
+                    // less.value = (subtotal.value/1.12)*percent 
                     grand_total.value = subtotal.value + payment_total
                     // grand_total.value = subtotal.value-less.value
                     subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
                 }else{
-                    less.value = subtotal.value*percent 
+                    payment_list.value.forEach(function (val, index, theArray) {
+                        if (val.id!=0 && val.po_rfd.status!='Saved') {
+                            less.value = parseFloat(payment_total2)*percent 
+                        }else{
+                            less.value = payment_total*percent 
+                        }
+                    });
+                    // less.value = subtotal.value*percent 
                     // grand_total.value = subtotal.value-less.value
                     grand_total.value = subtotal.value + payment_total
                     subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
@@ -264,43 +313,6 @@
         successAlertCD.value = !hideAlert.value
 	}
     
-    const showEwt = () => {
-        var check=document.getElementById('ewtshow').checked;
-        var payment_total = 0;
-        payment_list.value.forEach(function (val, index, theArray) {
-			payment_total += Number(val.payment_amount) || 0;
-		});
-        var percent=vendor.value.ewt/100
-        if(payment_list.value.length!=0){
-            subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + vat_amount.value) - (po_head.value.discount + payment_total + parseFloat(payment_amount.value))
-        }else{
-            subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + vat_amount.value) - (po_head.value.discount + parseFloat(payment_amount.value))
-        }
-        if(check){
-            if(vendor.value.vat==1){
-                less.value = (subtotal.value/1.12)*percent 
-                // grand_total.value = subtotal.value-less.value
-                subtotal_disp.value = subtotal.value
-                subtotal.value = subtotal.value-less.value
-                // subtotal.value = grand_total.value - (parseFloat(payment_total) + parseFloat(payment_amount.value))
-                // less.value = (subtotal.value/1.12)*percent 
-            }else{
-                less.value = subtotal.value*percent 
-                // grand_total.value = subtotal.value-less.value
-                subtotal_disp.value = subtotal.value
-                subtotal.value = subtotal.value-less.value
-                // subtotal.value = grand_total.value - (parseFloat(payment_total) + parseFloat(payment_amount.value))
-                // less.value = (subtotal.value/1.12)*percent 
-            }
-        }else{
-            // grand_total.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + po_head.value.vat_amount) - po_head.value.discount
-            subtotal.value = subtotal.value
-            less.value=0;
-            // subtotal.value = grand_total.value - (parseFloat(payment_total) + parseFloat(payment_amount.value))
-            // less.value = (subtotal.value/1.12)*percent
-        }
-    }
-    
     // const checkPaymentAmount = () => {
     //     var payment_total = 0;
     //     var percent=vendor.value.ewt/100
@@ -324,18 +336,28 @@
 				payment_amount:payment_amount.value,
 			}
 			payment_list.value.push(payment)
+			payment_list2.value.push(payment)
 
             var payment_total = 0;
+            var payment_total2 = 0;
             var percent=vendor.value.ewt/100
-			payment_description.value='';
-			payment_amount.value=0;
             payment_list.value.forEach(function (val, index, theArray) {
                 payment_total +=  Number(val.payment_amount) || 0;
             });
+
+            payment_list2.value.forEach(function (val, index, theArray) {
+                payment_total2 +=  Number(val.payment_amount) || 0;
+            });
             
             subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
+            // subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
             if(show_ewt.value!=0){
-                less.value = (subtotal_disp.value/1.12)*percent 
+                if(po_head.value.vat_percent!=0){
+                    less.value = (parseFloat(payment_total)/1.12)*percent 
+                }else{
+                    less.value = parseFloat(payment_total2)*percent 
+                }
+                // less.value = (subtotal_disp.value/1.12)*percent 
             }else{
                 less.value=0
             }
@@ -350,6 +372,8 @@
 			document.getElementById('check_description').style.backgroundColor = '#fef3c7';
             document.getElementById('check_amount').placeholder="Payment Amount"
 			document.getElementById('check_amount').style.backgroundColor = '#fef3c7';
+            payment_description.value='';
+			payment_amount.value=0;
 		}else{
 			document.getElementById('check_description').placeholder="Please fill in payment description."
 			document.getElementById('check_description').style.backgroundColor = '#FAA0A0';
@@ -359,19 +383,55 @@
 	}
 	const removePayment = (index,payment_amount) => {
         var check=document.getElementById('ewtshow').checked;
-		payment_list.value.splice(index,1)
+        payment_list.value.splice(index,1)
+        // let payment_total = payment_list.value.reduce((total, val) => 
+        //     total.payment_amount
+        // );
+        var payment_total = 0;
+        payment_list.value.forEach(function (val, index, theArray) {
+            payment_total +=  Number(val.payment_amount) || 0;
+        });
+        
+        payment_list2.value.splice(index,1)
+        if (payment_list2.value.length > 0) {
+            var payment_total2 = payment_list2.value.reduce((total, vals) => 
+                total.payment_amount
+            );
+        }else{
+            var payment_total2 = NaN
+        }
+
+        // var payment_total2 = 0;
+        // payment_list2.value.forEach(function (vals, index, theArray) {
+        //     payment_total2 +=  Number(vals.payment_amount) || 0;
+        // });
         var percent=vendor.value.ewt/100
         if(check){
-            if(vendor.value.vat==1){
-                var total=parseFloat(subtotal_disp.value) + parseFloat(payment_amount);
-                less.value = (total/1.12)*percent 
+            if(po_head.value.vat_percent!=0){
+            // if(vendor.value.vat==1){
+                // var total= parseFloat(payment_total2);
+                // var total=parseFloat(subtotal_disp.value) + parseFloat(payment_amount);
+                less.value = (!isNaN(parseFloat(payment_total2))) ? (parseFloat(payment_total2)/1.12)*percent  : (parseFloat(payment_total)/1.12)*percent  
+                // less.value = (total/1.12)*percent 
                 // grand_total.value = subtotal.value-less.value
-                subtotal_disp.value = parseFloat(subtotal_disp.value) + parseFloat(payment_amount)
+                subtotal_disp.value = parseFloat(subtotal_disp.value)+parseFloat(payment_amount)
+                // subtotal_disp.value = parseFloat(subtotal_disp.value) + parseFloat(payment_amount)
                 subtotal.value = subtotal_disp.value - less.value
+                if(isNaN(parseFloat(payment_total2))){
+                    payment_list2.value=[]
+                }
             }else{
-                less.value =  (parseFloat(subtotal_disp.value) + parseFloat(payment_amount)) * percent 
+                less.value =  (!isNaN(parseFloat(payment_total2))) ? parseFloat(payment_total2) * percent : parseFloat(payment_total) * percent
+                // less.value =  (parseFloat(subtotal_disp.value) + parseFloat(payment_amount)) * percent 
                 subtotal_disp.value = subtotal_disp.value + parseFloat(payment_amount)
-                subtotal.value =  parseFloat(subtotal_disp.value) + parseFloat(payment_amount) - less.value
+                subtotal.value =  parseFloat(subtotal_disp.value) - less.value
+                if(isNaN(parseFloat(payment_total2))){
+                    payment_list2.value=[]
+                }
+                // subtotal.value =  parseFloat(subtotal_disp.value) + parseFloat(payment_amount) - less.value
+
+                // subtotal_disp.value = subtotal_disp.value + parseFloat(payment_amount)
+                // subtotal.value =  parseFloat(subtotal_disp.value) + parseFloat(payment_amount) - less.value
             }
         }else{
             subtotal_disp.value =  parseFloat(subtotal.value) + parseFloat(payment_amount)
@@ -381,6 +441,49 @@
         // less.value = (subtotal_disp.value/1.12)*percent 
         // subtotal.value = (parseFloat(subtotal_disp.value) + parseFloat(payment_amount)) - less.value
 	}
+
+    const showEwt = () => {
+        var check=document.getElementById('ewtshow').checked;
+        var payment_total = 0;
+        var payment = 0;
+        payment_list.value.forEach(function (val, index, theArray) {
+			payment_total += Number(val.payment_amount) || 0;
+            payment=Number(val.payment_amount) || 0
+		});
+        var percent=vendor.value.ewt/100
+        if(payment_list.value.length!=0){
+            subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + vat_amount.value) - (po_head.value.discount + payment_total + parseFloat(payment_amount.value))
+        }else{
+            subtotal.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + vat_amount.value) - (po_head.value.discount + parseFloat(payment_amount.value))
+        }
+        if(check){
+            if(po_head.value.vat_percent!=0){
+            // if(vendor.value.vat==1){
+                less.value = (parseFloat(payment)/1.12)*percent 
+                // less.value = (subtotal.value/1.12)*percent 
+                // grand_total.value = subtotal.value-less.value
+                subtotal_disp.value = subtotal.value
+                subtotal.value = subtotal.value-less.value
+                // subtotal.value = grand_total.value - (parseFloat(payment_total) + parseFloat(payment_amount.value))
+                // less.value = (subtotal.value/1.12)*percent 
+            }else{
+                less.value = parseFloat(payment)*percent 
+                // less.value = subtotal.value*percent 
+                // grand_total.value = subtotal.value-less.value
+                subtotal_disp.value = subtotal.value
+                subtotal.value = subtotal.value-less.value
+                // subtotal.value = grand_total.value - (parseFloat(payment_total) + parseFloat(payment_amount.value))
+                // less.value = (subtotal.value/1.12)*percent 
+            }
+        }else{
+            // grand_total.value = (total_per_item.value + po_head.value.shipping_cost + po_head.value.handling_fee + po_head.value.vat_amount) - po_head.value.discount
+            subtotal.value = subtotal.value
+            less.value=0;
+            // subtotal.value = grand_total.value - (parseFloat(payment_total) + parseFloat(payment_amount.value))
+            // less.value = (subtotal.value/1.12)*percent
+        }
+    }
+    
 
     const onSave = (status) => {
 		const formData= new FormData()
@@ -408,6 +511,7 @@
 		formData.append('balance', subtotal.value)
 		formData.append('status', status)
 		formData.append('show_ewt', show_ewt.value)
+		formData.append('ewt', vendor.value.ewt)
 		formData.append('ewt_amount', less.value)
 		formData.append('checked_by', checked_by.value)
 		formData.append('noted_by', noted_by.value)
@@ -529,25 +633,57 @@
 				dangerAlert_payment.value = !hideAlert.value
 				success.value='Successfully deleted payment!'
 				successAlertCD.value = !successAlertCD.value
+                
                 var check=document.getElementById('ewtshow').checked;
                 var percent=vendor.value.ewt/100
+                // var payment_total = 0;
+                // payment_list.value.forEach(function (val, index, theArray) {
+                //     payment_total +=  Number(val.payment_amount) || 0;
+                // });
+                if (payment_list.value.length > 0) {
+                    var payment_total = payment_list.value.reduce((total, vals) => 
+                        total.payment_amount
+                    );
+                }else{
+                    var payment_total = NaN
+                }
+
+                if (payment_list2.value.length > 0) {
+                    var payment_total2 = payment_list2.value.reduce((total, vals) => 
+                        total.payment_amount
+                    );
+                }else{
+                    var payment_total2 = NaN
+                }
                 if(check){
-                    if(vendor.value.vat==1){
-                        var total=parseFloat(subtotal_disp.value) + parseFloat(payment_amount);
-                        less.value = (total/1.12)*percent 
+                    if(po_head.value.vat_percent!=0){
+                    // if(vendor.value.vat==1){
+                        // var total=parseFloat(payment_total);
+                        // var total=parseFloat(subtotal_disp.value) + parseFloat(payment_amount);
+                        less.value = (!isNaN(parseFloat(payment_total2))) ? (parseFloat(payment_total2)/1.12)*percent  : (!isNaN(parseFloat(payment_total))) ? (parseFloat(payment_total)/1.12)*percent : 0 
+                        // less.value = (total/1.12)*percent 
                         // grand_total.value = subtotal.value-less.value
                         subtotal_disp.value = parseFloat(subtotal_disp.value) + parseFloat(payment_amount)
                         subtotal.value = subtotal_disp.value - less.value
+                        if(isNaN(parseFloat(payment_total2))){
+                            payment_list2.value=[]
+                        }
                     }else{
-                        less.value =  (parseFloat(subtotal_disp.value) + parseFloat(payment_amount)) * percent 
+                        // less.value =  (parseFloat(payment_total)-parseFloat(payment_amount)) * percent 
+                        // less.value =  (parseFloat(subtotal_disp.value) + parseFloat(payment_amount)) * percent 
+                        less.value =  (!isNaN(parseFloat(payment_total2))) ? parseFloat(payment_total2) * percent : (!isNaN(parseFloat(payment_total))) ? parseFloat(payment_total) * percent  : 0
                         subtotal_disp.value = subtotal_disp.value + parseFloat(payment_amount)
-                        subtotal.value =  parseFloat(subtotal_disp.value) + parseFloat(payment_amount) - less.value
+                        subtotal.value =  parseFloat(subtotal_disp.value) - less.value
+                        if(isNaN(parseFloat(payment_total2))){
+                            payment_list2.value=[]
+                        }
+                        // subtotal.value =  parseFloat(subtotal_disp.value) + parseFloat(payment_amount) - less.value
                     }
                 }else{
                     subtotal_disp.value =  parseFloat(subtotal.value) + parseFloat(payment_amount)
                     subtotal.value =  parseFloat(subtotal.value) + parseFloat(payment_amount)
                 }
-				poRFDDisplay()
+                poRFDDisplay()
 				payment_list.value=[]
 				setTimeout(() => {
 					closeAlert()
@@ -815,7 +951,8 @@
                                                                 <span class="pb-.5">Show EWT</span>
                                                                 <input type="checkbox" id="ewtshow" alt="show" v-model="show_ewt" @click="showEwt()" true-value="1" false-value="0">
                                                             </span>
-                                                            <span v-if="show_ewt!=0">Less: {{vendor.ewt}}% EWT</span>
+                                                            <span v-if="show_ewt!=0">Less:  <input type="number" min="0" class="w-10 bg-yellow-50 border-r text-center" v-model="vendor.ewt" id="vat_percent" @keyup="showEwt()" @change="showEwt()"> EWT</span>
+                                                            <!-- <span v-if="show_ewt!=0">Less: {{vendor.ewt}}% EWT</span> -->
                                                         </div>
                                                     </td>
                                                     <td class="p-1 border-y-none" v-if="show_ewt!=0">

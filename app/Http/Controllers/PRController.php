@@ -55,7 +55,7 @@ class PRController extends Controller
                         'prdetails'=>$details,
                         'dept_checker'=>$prImport->dept_checker,
                         'req_checker'=>$prImport->req_checker,
-                        'site_checker'=>$prImport->site_checker,
+                        // 'site_checker'=>$prImport->site_checker,
                     ],200);
                 } catch (Throwable $e) {
                     DB::rollBack();
@@ -111,7 +111,7 @@ class PRController extends Controller
     }
 
     public function save_upload(Request $request, $id){
-        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
+        // if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
         // $prhead=$request->input("prhead");
         $prdetails=$request->input("prdetails");
         $item_list=$request->input("item_list");
@@ -143,7 +143,7 @@ class PRController extends Controller
                             // 'purpose.required'=> 'The purpose field is required.',
                         ]
                     );
-                    $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+                    // $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
                     $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
                     $data_head['department_name']=$department_name;
                     $data_head['dept_code']=$department_code;
@@ -245,9 +245,9 @@ class PRController extends Controller
                             PrReportDetails::create($prreport);
                         }
                     }
-                }else{
-                    echo 'error';
-                }
+                // }else{
+                //     echo 'error';
+                // }
                 // }
             // }
         // }
@@ -255,7 +255,7 @@ class PRController extends Controller
 
     public function save_upload_draft(Request $request, $id){
         // $prhead=$request->input("prhead");
-        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
+        // if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
         $prdetails=$request->input("prdetails");
         $item_list=$request->input("item_list");
         // if(count(json_decode($prhead))>0){
@@ -292,7 +292,7 @@ class PRController extends Controller
                     $data_head=[
                         'location'=>($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '',
                         'pr_no'=>($request->props_id==0) ? $request->pr_no : $pr_no,
-                        'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
+                        // 'site_pr'=>($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '',
                         'date_issued'=>($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '',
                         'date_prepared'=>($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '',
                         'department_id'=>($request->department_id!='undefined' && $request->department_id!='null' && $request->department_id!='') ? $request->department_id : '',
@@ -374,9 +374,9 @@ class PRController extends Controller
                             PrReportDetails::create($prreport);
                         }
                     }
-                }else{
-                    echo 'error';
-                }
+                // }else{
+                //     echo 'error';
+                // }
         //         }
         //     }
         // }
@@ -520,7 +520,7 @@ class PRController extends Controller
     }
     
     public function save_manual(Request $request){
-        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$request->prhead_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
+        // if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$request->prhead_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
             $item_list=$request->input("item_list");
             $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
             $year_short = ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("y", strtotime($request->date_prepared)) : date('y');
@@ -551,7 +551,7 @@ class PRController extends Controller
                 ]
             );
             // $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
-            $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+            // $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
             $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
             // $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
             $data_head['requestor_id']=($request->requestor!='undefined' && $request->requestor!='null' && $request->requestor!='') ? $request->requestor : '0';
@@ -694,13 +694,13 @@ class PRController extends Controller
                 }
             // }
             return $insertprhead->id;
-        }else{
-            echo 'error';
-        }
+        // }else{
+        //     echo 'error';
+        // }
     }
 
     public function save_manual_draft(Request $request){
-        if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$request->prhead_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
+        // if(!PRHead::where('site_pr',$request->site_pr)->where('id','!=',$request->prhead_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->exists()){
             $item_list=$request->input("item_list");
             // $department_name=Departments::where('id',$request->department)->value('department_name');
             $year= ($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? date("Y", strtotime($request->date_prepared)) : date('Y');
@@ -720,7 +720,7 @@ class PRController extends Controller
                 ]
             );
             $data_head['location']=($request->location!='undefined' && $request->location!='null' && $request->location!='') ? $request->location : '';
-            $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
+            // $data_head['site_pr']=($request->site_pr!='undefined' && $request->site_pr!='null' && $request->site_pr!='') ? $request->site_pr : '';
             $data_head['date_issued']=($request->date_issued!='undefined' && $request->date_issued!='null' && $request->date_issued!='') ? $request->date_issued : '';
             $data_head['date_prepared']=($request->date_prepared!='undefined' && $request->date_prepared!='null' && $request->date_prepared!='') ? $request->date_prepared : '';
             $data_head['department_name']=$department_name;
@@ -856,9 +856,9 @@ class PRController extends Controller
                 }
             }
             return $insertprhead->id;
-        }else{
-            echo 'error';
-        }
+        // }else{
+        //     echo 'error';
+        // }
     }
 
     public function get_allpr(){

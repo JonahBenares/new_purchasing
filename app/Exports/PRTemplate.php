@@ -264,15 +264,24 @@ class PRTemplate implements ShouldAutoSize, WithHeadings, WithEvents, WithMultip
                 $event->sheet->setCellValue('F7', 'Department:');
                 $event->sheet->getStyle('F7')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('G7:H7');
-                $event->sheet->setCellValue('F8', 'Site PR:');
+                $event->sheet->setCellValue('F8', 'Requestor:');
                 $event->sheet->getStyle('F8')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('G8:H8');
-                $event->sheet->setCellValue('F9', 'Requestor:');
+                $event->sheet->setCellValue('F9', 'Urgency:');
                 $event->sheet->getStyle('F9')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('G9:H9');
-                $event->sheet->setCellValue('F10', 'Urgency:');
+                $event->sheet->setCellValue('F10', '');
                 $event->sheet->getStyle('F10')->getAlignment()->setHorizontal('right');
                 $event->sheet->mergeCells('G10:H10');
+                // $event->sheet->setCellValue('F8', 'Site PR:');
+                // $event->sheet->getStyle('F8')->getAlignment()->setHorizontal('right');
+                // $event->sheet->mergeCells('G8:H8');
+                // $event->sheet->setCellValue('F9', 'Requestor:');
+                // $event->sheet->getStyle('F9')->getAlignment()->setHorizontal('right');
+                // $event->sheet->mergeCells('G9:H9');
+                // $event->sheet->setCellValue('F10', 'Urgency:');
+                // $event->sheet->getStyle('F10')->getAlignment()->setHorizontal('right');
+                // $event->sheet->mergeCells('G10:H10');
 
                 $event->sheet->setCellValue('C2', 'CENTRAL NEGROS POWER RELIABILITY, INC.');
                 $event->sheet->setCellValue('C3', '(Main Office) 88 Corner Rizal-Mabini Sts. Bacolod City');

@@ -227,7 +227,8 @@
                                                 </td>
                                             </tr>
                                             <tr class="">
-                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: {{vendor.ewt}}% EWT</td>
+                                                <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: {{rfd_head.ewt}}% EWT</td>
+                                                <!-- <td class="border-l-none border-y-none p-1 text-right" colspan="2">Less: {{vendor.ewt}}% EWT</td> -->
                                                 <td class="p-1 border-y-none">
                                                     <div class="flex justify-between w-full">
                                                         <span>₱</span>

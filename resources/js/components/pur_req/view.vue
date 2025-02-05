@@ -257,9 +257,13 @@
 									<span class="text-sm text-gray-700 font-bold pr-1">Department: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.department_name}}</span>
 								</div>
-								<div class="col-lg-3 col-sm-3 col-md-3">
+								<!-- <div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.site_pr}}</span>
+								</div> -->
+								<div class="col-lg-3 col-sm-3 col-md-3">
+									<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+									<span class="text-sm text-gray-700">{{get_prhead.process_code}}</span>
 								</div>
 								<div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Date Prepared: </span>
@@ -271,10 +275,10 @@
 									<span class="text-sm text-gray-700 font-bold pr-1">Requestor: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.requestor}}</span>
 								</div>
-								<div class="col-lg-3 col-sm-3 col-md-3">
+								<!-- <div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.process_code}}</span>
-								</div>
+								</div> -->
 								<div class="col-lg-3 col-sm-3 col-md-3">
 									<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
 									<span class="text-sm text-gray-700">{{get_prhead.urgency}}</span>

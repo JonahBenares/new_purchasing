@@ -10,6 +10,7 @@
             'Philippine peso' => 'PHP',
             'U.S Dollar' => 'USD',
         ],
-        'company' => 'CNPR'
+        'company' => 'CNPR',
+        'company_name' => 'Central Negros Power Reliability, Inc.',
     ];
 ?>
