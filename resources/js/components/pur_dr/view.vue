@@ -141,26 +141,26 @@
 										<td class="p-1 uppercase text-center" width="2%">#</td>
 										<td class="p-1 uppercase" width="25%">Supplier</td>
 										<td class="p-1 uppercase" width="25%">Description</td>
-										<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
-										<td class="p-1 uppercase text-center" width="5%">Received</td>
-										<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
 										<td class="p-1 uppercase text-center" width="5%">UOM</td>
+										<!-- <td class="p-1 uppercase text-center" width="7%">To Deliver</td> -->
+										<td class="p-1 uppercase text-center" width="8%">Delivered</td>
+										<td class="p-1 uppercase text-center" width="5%">Received</td>
 										<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 									</tr>
 									<tr v-for="(pdi,index) in po_dr_items">
 										<td class="p-1 text-center">{{ index+1 }}</td>
 										<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 										<td class="p-1 ">{{offer[index]}}</td>
+										<td class="p-1 text-center">{{ uom[index] }}</td>
 										<td class="p-1 text-center">{{ pdi.delivered_qty }}</td>
 										<!-- <td class="p-1 text-center">{{ pdi.to_deliver }}</td> -->
 										<td class="p-1 text-center" v-if="pdi.received_qty!=0">{{ pdi.received_qty }}</td>
 										<td class="p-1 text-center" v-else></td>
-										<td class="p-1 text-center" v-if="total_sumdelivered[index]==null">0</td>
+										<!-- <td class="p-1 text-center" v-if="total_sumdelivered[index]==null">0</td>
 										<td class="p-1 text-center" v-else-if="pdi.received_qty==0">{{ total_sumdelivered1[index] }}</td>
-										<td class="p-1 text-center" v-else>{{ pdi.delivered_qty_disp }} </td>
+										<td class="p-1 text-center" v-else>{{ pdi.delivered_qty_disp }} </td> -->
 										<!-- <td class="p-1 text-center" v-else>{{ total_sumdelivered[index] }} </td> -->
 										<!-- <td class="p-1 text-center">{{ total_sumdelivered[index] }}</td> -->
-										<td class="p-1 text-center">{{ uom[index] }}</td>
 										<td class="p-1 text-center"></td>
 										<!-- <td class="p-1 text-center">{{ pdi.to_deliver }}</td> -->
 										<!-- <td class="p-1 text-center">{{ pdi.delivered_qty }}</td> -->

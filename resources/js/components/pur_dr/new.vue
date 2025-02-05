@@ -37,6 +37,7 @@
 	const remaining_delivery = ref([])
 	const isDriverReadonly = ref(false);
 	const isLoading = ref(true);
+	const isVisible = ref(false);
 	const props = defineProps({
 		id:{
 			type:String,
@@ -83,6 +84,7 @@
 		po_dropdown.value = response.data.po_dropdown;
 	}
 	const drLoad = async () => {
+		// isVisible.value = true;
 		let response = await axios.get("/api/generate_dr/"+props.id);
 		dr_no.value = response.data.dr_no;
 		count_po_head_id.value = response.data.count_po_head_id;
@@ -92,19 +94,27 @@
 			isDriverReadonly.value = true;
 		}
 		po_dr_mult.value = response.data.po_dr_mult;
-		po_dr_items.value = response.data.po_dr_items;
+		if(po_dr.value.identifier!=0 && po_dr.value.print_identifier!=0 && po_dr.value.received==0){
+			po_dr_items.value = response.data.po_dr_items_rec;
+		}else{
+			po_dr_items.value = response.data.po_dr_items;
+		}
 		vendor.value = response.data.vendor;
 		enduse.value = response.data.enduse;
 		purpose.value = response.data.purpose;
 		requestor.value = response.data.requestor;
 		prepared_by.value = response.data.prepared_by;
 		total_sumdelivered.value = response.data.total_sumdelivered;
+		if(po_dr_items.value.length==0){
+			isVisible.value = true;
+		}
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			getOffer(val.po_details_id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
 		});
 	}
 	const generateDR = async () => {
+		// isVisible.value = true;
 		let response = await axios.get("/api/generate_dr/"+po_head_id.value);
 		dr_no.value = response.data.dr_no;
 		// driver.value=(po_dr.value.received==0) ? po_dr.value.driver : '';
@@ -118,13 +128,21 @@
 			isDriverReadonly.value = false;
 		}
 		po_dr_mult.value = response.data.po_dr_mult;
-		po_dr_items.value = response.data.po_dr_items;
+		// po_dr_items.value = response.data.po_dr_items;
+		if(po_dr.value.identifier!=0 && po_dr.value.print_identifier!=0 && po_dr.value.received==0){
+			po_dr_items.value = response.data.po_dr_items_rec;
+		}else{
+			po_dr_items.value = response.data.po_dr_items;
+		}
 		vendor.value = response.data.vendor;
 		enduse.value = response.data.enduse;
 		purpose.value = response.data.purpose;
 		requestor.value = response.data.requestor;
 		prepared_by.value = response.data.prepared_by;
 		total_sumdelivered.value = response.data.total_sumdelivered;
+		if(po_dr_items.value.length==0){
+			isVisible.value = true;
+		}
 		po_dr_items.value.forEach(function (val, index, theArray) {
 			getOffer(val.po_details_id,val.rfq_offer_id,index)
 			checkRemainingQty(val.po_details_id,val.quantity,index)
@@ -179,9 +197,8 @@
 	}
 
 	watch(isLoading, (newValue) => {
-	
+		
 	});
-
 	const onSave = () => {
 		const formData= new FormData()
 		formData.append('identifier', po_dr.value.identifier)
@@ -301,7 +318,7 @@
 							<hr class="border-dashed">
 							<!-- <div v-show="po_det"> -->
 							
-							<div v-if="po_dr && po_dr.length!=0 && !allZero() && to_deliver.length !=0">
+							<div v-if="po_dr && po_dr.length!=0 && !allZero() && to_deliver.length !=0 && po_dr_items.length!=0">
 								<div class="row">
 									<div class="col-lg-8">
 										<input type="hidden" v-model="dr_no">
@@ -348,16 +365,17 @@
 												<td class="p-1 uppercase text-center" width="2%">#</td>
 												<td class="p-1 uppercase" width="25%">Supplier</td>
 												<td class="p-1 uppercase" width="25%">Description</td>
+												<td class="p-1 uppercase text-center" width="5%">UOM</td>
 												<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
 												<td class="p-1 uppercase text-center" width="5%">Received</td>
 												<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
-												<td class="p-1 uppercase text-center" width="5%">UOM</td>
 												<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 											</tr>
 											<tr v-for="(pdi,index) in po_dr_items">
 												<td class="p-1 text-center">{{index+1}}</td>
 												<td class="p-1 ">{{vendor.vendor_name}} ({{ vendor.identifier }})</td>
 												<td class="p-1 ">{{ offer[index] }}</td>
+												<td class="p-1 text-center">{{ uom[index] }}</td>
 
 												<td class="p-0" v-if="po_dr.print_identifier==0 && po_dr.received==0"><input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalance(pdi.po_dr_id,pdi.po_details_id,to_deliver[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_checker'+index" v-model="to_deliver[index]"></td>
 
@@ -374,7 +392,6 @@
 													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceRec(pdi.po_dr_id,pdi.po_details_id,received_qty[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_checker'+index" v-model="received_qty[index]">
 												</td>
 												<td class="p-1 text-center">{{ total_sumdelivered1[index] }}</td>
-												<td class="p-1 text-center">{{ uom[index] }}</td>
 												<td class="p-1 text-center"></td>
 											</tr>
 										</table>
@@ -455,8 +472,7 @@
 									</div>
 								</div>
 							</div>
-							
-							<div v-else-if="!isLoading && to_deliver.length == 0 && allZero()">
+							<div v-else-if="!isLoading && to_deliver.length==0 && allZero() && po_dr_items.length==0 && isVisible">
 								<center><span><b>Fully Delivered!</b></span></center>
 							</div>
 						</div>

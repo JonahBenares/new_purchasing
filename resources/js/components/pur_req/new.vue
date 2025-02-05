@@ -321,7 +321,19 @@
 		pr_options.value='';
 		try {
 			axios.post("/api/import_pr",formData).then(function (response) {
-				if(response.data!='error' && response.data.site_checker==false && response.data.dept_checker==true && response.data.req_checker==true){
+				// if(response.data!='error' && response.data.site_checker==false && response.data.dept_checker==true && response.data.req_checker==true){
+				// else if(response.data!='error' && response.data.site_checker==true){
+				// 	const fileInput = document.getElementById('upload_pr');
+				// 	if (fileInput) {
+				// 		fileInput.value = ''; // Reset the file input
+				// 	}
+				// 	prFile.value=''
+				// 	loading.value=false;
+				// 	error.value ='Site PR No. duplicate entry!';
+				// 	dangerAlerterrors.value=!dangerAlerterrors.value
+				// }
+
+				if(response.data!='error' && response.data.dept_checker==true && response.data.req_checker==true){
 					pr_head_id.value=response.data.pr_head_id
 					getImportdata(pr_head_id.value)
 					// prhead.value=response.data.prhead
@@ -337,15 +349,6 @@
 					prFile.value=''
 					const btn_pr = document.getElementById("btn_pr");
 					btn_pr.disabled = true;
-				}else if(response.data!='error' && response.data.site_checker==true){
-					const fileInput = document.getElementById('upload_pr');
-					if (fileInput) {
-						fileInput.value = ''; // Reset the file input
-					}
-					prFile.value=''
-					loading.value=false;
-					error.value ='Site PR No. duplicate entry!';
-					dangerAlerterrors.value=!dangerAlerterrors.value
 				}else if(response.data!='error' && (response.data.dept_checker==null || response.data.dept_checker==false)){
 					const fileInput = document.getElementById('upload_pr').value=''
 					if (fileInput) {
@@ -432,7 +435,7 @@
 		// formData.append('prhead', JSON.stringify(prhead.value))
 		formData.append('location', prhead.value.location)
 		formData.append('pr_no', prhead.value.pr_no)
-		formData.append('site_pr', prhead.value.site_pr)
+		// formData.append('site_pr', prhead.value.site_pr)
 		formData.append('date_prepared', prhead.value.date_prepared)
 		formData.append('date_issued', prhead.value.date_issued)
 		formData.append('department_id', prhead.value.department_id)
@@ -461,21 +464,21 @@
 		formData.append('props_id', props.id)
 		if(prdetails.value.length!=0 || item_list.value.length!=0){
 			axios.post(`/api/save_upload/${pr_head_id.value}`,formData).then(function (response) {
-				if(response.data!='error'){
-					if(prhead.value.petty_cash==0){
-						success.value='You have successfully saved new pr.'
-						successAlert.value=!successAlert.value
-					}else{
-						success.value='You have successfully saved new pr.'
-						successAlert.value=!successAlert.value
-						router.push('/pur_req/view/'+prhead.value.id)
-					}
-					item_list.value=[]
-					getImportdata(pr_head_id.value)
+				// if(response.data!='error'){
+				if(prhead.value.petty_cash==0){
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
 				}else{
-					error.value ='Site PR No. duplicate entry!';
-					dangerAlerterrors.value=!dangerAlerterrors.value
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
+					router.push('/pur_req/view/'+prhead.value.id)
 				}
+				item_list.value=[]
+				getImportdata(pr_head_id.value)
+				// }else{
+				// 	error.value ='Site PR No. duplicate entry!';
+				// 	dangerAlerterrors.value=!dangerAlerterrors.value
+				// }
 				
 			}, function (err) {
 				// error.value = err.response.data.message;
@@ -515,7 +518,7 @@
 		// formData.append('prhead', JSON.stringify(prhead.value))
 		formData.append('location', prhead.value.location)
 		formData.append('pr_no', prhead.value.pr_no)
-		formData.append('site_pr', prhead.value.site_pr)
+		// formData.append('site_pr', prhead.value.site_pr)
 		formData.append('date_prepared', prhead.value.date_prepared)
 		formData.append('date_issued', prhead.value.date_issued)
 		formData.append('department_id', prhead.value.department_id)
@@ -548,15 +551,15 @@
 		}
 		formData.append('props_id', props.id)
 		axios.post(`/api/save_upload_draft/${pr_head_id.value}`,formData).then(function (response) {
-			if(response.data!='error'){
-				success.value='You have successfully draft new pr.'
-				warningAlert.value=!warningAlert.value
-				item_list.value=[]
-				getImportdata(pr_head_id.value)
-			}else{
-				error.value ='Site PR No. duplicate entry!';
-				dangerAlerterrors.value=!dangerAlerterrors.value
-			}
+			// if(response.data!='error'){
+			success.value='You have successfully draft new pr.'
+			warningAlert.value=!warningAlert.value
+			item_list.value=[]
+			getImportdata(pr_head_id.value)
+			// }else{
+			// 	error.value ='Site PR No. duplicate entry!';
+			// 	dangerAlerterrors.value=!dangerAlerterrors.value
+			// }
 			// setTimeout(() => {
 			// 	closeAlert()
 			// }, 2000);
@@ -623,7 +626,7 @@
 		const formData= new FormData()
 		formData.append('location', form.value.purchase_request)
 		formData.append('pr_no', form.value.pr_no)
-		formData.append('site_pr', form.value.site_pr)
+		// formData.append('site_pr', form.value.site_pr)
 		formData.append('date_issued', form.value.date_issued)
 		formData.append('date_prepared', form.value.date_prepared)
 		formData.append('department_id', form.value.department)
@@ -645,20 +648,20 @@
 			axios.post(`/api/save_manual`,formData).then(function (response) {
 				// success.value='You have successfully saved new pr.'
 				// successAlert.value=!successAlert.value
-				if(response.data!='error'){
-					prheadid.value=response.data;
-					if(form.value.petty_cash==0){
-						success.value='You have successfully saved new pr.'
-						successAlert.value=!successAlert.value
-					}else{
-						success.value='You have successfully saved new pr.'
-						successAlert.value=!successAlert.value
-						router.push('/pur_req/view/'+prheadid.value)
-					}
+				// if(response.data!='error'){
+				prheadid.value=response.data;
+				if(form.value.petty_cash==0){
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
 				}else{
-					error.value ='Site PR No. duplicate entry!';
-					dangerAlerterrors.value=!dangerAlerterrors.value
+					success.value='You have successfully saved new pr.'
+					successAlert.value=!successAlert.value
+					router.push('/pur_req/view/'+prheadid.value)
 				}
+				// }else{
+				// 	error.value ='Site PR No. duplicate entry!';
+				// 	dangerAlerterrors.value=!dangerAlerterrors.value
+				// }
 			}, function (err) {
 				// error.value = err.response.data.message;
 				error.value=''
@@ -697,7 +700,7 @@
 		const formData= new FormData()
 		formData.append('location', form.value.purchase_request)
 		formData.append('pr_no', form.value.pr_no)
-		formData.append('site_pr', form.value.site_pr)
+		// formData.append('site_pr', form.value.site_pr)
 		formData.append('date_issued', form.value.date_issued)
 		formData.append('date_prepared', form.value.date_prepared)
 		formData.append('department_id', form.value.department)
@@ -717,19 +720,19 @@
 		formData.append('item_list', JSON.stringify(item_list.value))
 		axios.post(`/api/save_manual_draft`,formData).then(function (response) {
 			// console.log(response.data)
-			if(response.data!='error'){
-				success.value='You have successfully draft new pr.'
-				warningAlert.value=!warningAlert.value
-				prheadid.value=response.data;
-				const btn_draft = document.getElementById("btn_draft");
-				btn_draft.disabled = true;
-				setTimeout(() => {
-					btn_draft.disabled = false;
-				}, 500);
-			}else{
-				error.value ='Site PR No. duplicate entry!';
-				dangerAlerterrors.value=!dangerAlerterrors.value
-			}
+			// if(response.data!='error'){
+			success.value='You have successfully draft new pr.'
+			warningAlert.value=!warningAlert.value
+			prheadid.value=response.data;
+			const btn_draft = document.getElementById("btn_draft");
+			btn_draft.disabled = true;
+			setTimeout(() => {
+				btn_draft.disabled = false;
+			}, 500);
+			// }else{
+			// 	error.value ='Site PR No. duplicate entry!';
+			// 	dangerAlerterrors.value=!dangerAlerterrors.value
+			// }
 		}, function (err) {
 			error_pr.value=[]
 			// error_pr.value = err.response.data.message;
@@ -831,19 +834,20 @@
 								</div>
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Site PR No</label>
-										<input type="text" class="form-control" placeholder="Site PR No" v-model="prhead.site_pr">
-									</div>
-								</div>
-								
-							</div>
-							<div class="row">
-								<div class="col-lg-4 col-md-4">
-									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="prhead.date_prepared">
 									</div>
 								</div>
+								<!-- <div class="col-lg-4 col-md-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Site PR No</label>
+										<input type="text" class="form-control" placeholder="Site PR No" v-model="prhead.site_pr">
+									</div>
+								</div> -->
+								
+							</div>
+							<div class="row">
+								
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Issued</label>
@@ -866,9 +870,7 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-6 col-md-6">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Department</label>
 										<select class="form-control" v-model="prhead.department_id" @change="generatePrNo()">
@@ -878,6 +880,9 @@
 										<!-- <input type="text" class="form-control" placeholder="Department" value="IT Department"> -->
 									</div>
 								</div>
+							</div>
+							<div class="row">
+								
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
@@ -888,15 +893,16 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<div class="row">
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">End-Use</label>
 										<input type="text" class="form-control" placeholder="End-Use" v-model="prhead.enduse">
 									</div>
 								</div>
-								<div class="col-lg-6 col-md-6">
+							</div>
+							<div class="row">
+								
+								<div class="col-lg-12 col-md-12">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purpose</label>
 										<input type="text" class="form-control" placeholder="Purpose" v-model="prhead.purpose">
@@ -1129,18 +1135,18 @@
 								</div>
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
-										<label class="text-gray-500 m-0" for="">Site PR No</label>
-										<input type="text" class="form-control" placeholder="Site PR No" v-model="form.site_pr">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-4 col-md-4">
-									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Prepared</label>
 										<input type="text" class="form-control" onfocus="(this.type='date')" placeholder="Date Prepared" v-model="form.date_prepared">
 									</div>
 								</div>
+								<!-- <div class="col-lg-4 col-md-4">
+									<div class="form-group">
+										<label class="text-gray-500 m-0" for="">Site PR No</label>
+										<input type="text" class="form-control" placeholder="Site PR No" v-model="form.site_pr">
+									</div>
+								</div> -->
+							</div>
+							<div class="row">
 								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Date Issued</label>
@@ -1163,9 +1169,7 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-6 col-md-6">
+								<div class="col-lg-4 col-md-4">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Department</label>
 										<select class="form-control" v-model="form.department" @change="generatePrNo()">
@@ -1174,6 +1178,8 @@
 										</select>
 									</div>
 								</div>
+							</div>
+							<div class="row">
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Requestor</label>
@@ -1184,15 +1190,15 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<div class="row">
 								<div class="col-lg-6 col-md-6">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">End-Use</label>
 										<input type="text" class="form-control" placeholder="End-Use" v-model="form.enduse">
 									</div>
 								</div>
-								<div class="col-lg-6 col-md-6">
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12">
 									<div class="form-group">
 										<label class="text-gray-500 m-0" for="">Purpose</label>
 										<input type="text" class="form-control" placeholder="Purpose" v-model="form.purpose">

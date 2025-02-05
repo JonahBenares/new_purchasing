@@ -29,6 +29,7 @@ class PORfd extends Model
         'status',
         'identifier',
         'show_ewt',
+        'ewt',
         'ewt_amount',
         'checked_by',
         'checked_by_name',

@@ -384,8 +384,11 @@ import moment from 'moment';
 		balance_overall.value = response.data.balance_overall;
 		var po_qty=balance_overall.value.po_qty + balance_overall.value.dpo_qty + balance_overall.value.rpo_qty
 		var all_qty=balance_overall.value.pr_qty - po_qty
-		var total_qty = all_qty + po_qty;
-	
+		if(response.data.count==1){
+			var total_qty = all_qty + po_qty;
+		}else{
+			var total_qty = all_qty;
+		}
 		if(qty>total_qty){
 			document.getElementById('balance_checker'+count).style.backgroundColor = '#FAA0A0';
 			const btn_save = document.getElementById("save");
