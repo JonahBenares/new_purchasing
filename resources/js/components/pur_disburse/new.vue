@@ -345,8 +345,6 @@
             payment_list.value.forEach(function (val, index, theArray) {
                 payment_total +=  Number(val.payment_amount) || 0;
             });
-<<<<<<< HEAD
-<<<<<<< HEAD
 
             payment_list2.value.forEach(function (val, index, theArray) {
                 payment_total2 +=  Number(val.payment_amount) || 0;
@@ -361,26 +359,6 @@
                     less.value = parseFloat(payment_total2)*percent 
                 }
                 // less.value = (subtotal_disp.value/1.12)*percent 
-=======
-           
-            subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
-           
-            if(show_ewt.value!=0){
-=======
-           
-            subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
-           
-            if(show_ewt.value!=0){
->>>>>>> ac31740306827bc8d488bcfd8af96aab4131ea93
-                if(vendor.value.vat==1){
-                    less.value = (subtotal_disp.value/1.12)*percent 
-                } else {
-                    less.value = (subtotal_disp.value)*percent 
-                }
-<<<<<<< HEAD
->>>>>>> ac31740306827bc8d488bcfd8af96aab4131ea93
-=======
->>>>>>> ac31740306827bc8d488bcfd8af96aab4131ea93
             }else{
                 less.value=0
             }
