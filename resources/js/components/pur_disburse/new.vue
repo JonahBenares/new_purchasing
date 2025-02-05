@@ -358,6 +358,7 @@
                 }else{
                     less.value = parseFloat(payment_total2)*percent 
                 }
+                
                 // less.value = (subtotal_disp.value/1.12)*percent 
             }else{
                 less.value=0
