@@ -361,11 +361,13 @@ class JORFQController extends Controller
                 $rfq_labor_offers = JORFQLaborOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->get();
                     $RFQLaborOffers=array();
                     foreach($rfq_labor_offers AS $rlo){
+                        $quantity = JORLaborDetails::where('id',$rlo->jor_labor_details_id)->value('quantity');
                         $RFQLaborOffers[] = [
                             'jo_rfq_labor_offer_id'=>$rlo->id,
                             'jo_rfq_labor_details_id'=>$rlo->jo_rfq_labor_details_id,
                             'offer'=>$rlo->offer,
                             'unit_price'=>$rlo->unit_price,
+                            'total_price'=>$quantity * $rlo->unit_price,
                             'labor_currency'=>$rlo->currency ?? 'PHP',
                         ];
                     }
@@ -387,11 +389,13 @@ class JORFQController extends Controller
                 $rfq_material_offers = JORFQMaterialOffers::where('jo_rfq_head_id',$jo_rfq_head_id)->get();
                     $RFQMaterialOffers=array();
                     foreach($rfq_material_offers AS $rmo){
+                        $quantity = JORMaterialDetails::where('id',$rmo->jor_material_details_id)->value('quantity');
                         $RFQMaterialOffers[] = [
                             'jo_rfq_material_offer_id'=>$rmo->id,
                             'jo_rfq_material_details_id'=>$rmo->jo_rfq_material_details_id,
                             'offer'=>$rmo->offer,
                             'unit_price'=>$rmo->unit_price,
+                            'total_price'=>$quantity * $rmo->unit_price,
                             'material_currency'=>$rmo->currency ?? 'PHP',
                         ];
                     }
