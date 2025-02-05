@@ -730,7 +730,8 @@
 															<p class="text-xs text-gray-600 text-center m-0">Project Title/Description</p>
 														</td>
 													</tr>
-													<tr class="bg-gray-100">
+													<template v-if="joi_labor_details.length != 0">
+														<tr class="bg-gray-100">
 														<td class="uppercase p-1" colspan="3">Scope of Work</td>
 														<td class="uppercase p-1 text-center" width="7%">Qty</td>
 														<td class="uppercase p-1 text-center" width="7%">Unit</td>
@@ -760,7 +761,9 @@
 														<td class="border-y-none p-1 text-right">{{jld.unit_price}} {{ jld.currency }}</td>
 														<td class="border-y-none p-1 text-right"><input type="text" class="text-center tprice" :id="'tprice'+index" v-model="totalprice" readonly></td>
 													</tr>
-													<tr class="bg-gray-100">
+													</template>
+													<template v-if="joi_material_details.length != 0">
+														<tr class="bg-gray-100">
 														<td class="p-1 text-center" width="3%">#</td>
 														<td class="p-1" colspan="2">Materials:</td>
                                                         <td class="uppercase p-1 text-center" width="7%">Qty</td>
@@ -790,6 +793,7 @@
 														<td class="border-y-none p-1 text-right">{{ jml.unit_price }} {{ jml.currency }}</td>
 														<td class="border-y-none p-1 text-right"><input type="text" class="text-center tmprice" :id="'tmprice'+indexes" v-model="totalmprice" readonly></td>
 													</tr>
+													</template>
 													<tr class="">
 														<td class=""></td>
 														<td class=""></td>
@@ -799,26 +803,29 @@
 														<td class=""></td>
 														<td class=""></td>
 													</tr>
-													<tr class="">
+													<tr class="" >
 														<td class="border-r-none align-top p-2" colspan="4" width="65%" rowspan="6">
 															<!-- <p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">JOR Number:</span>{{ jor_head.jor_no }}</p>
 															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Requestor:</span>{{ jor_head.requestor }}</p>
 															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">End-use:</span>{{ jor_head.enduse }}</p>
 															<p class="m-0 !text-xs leading-none"><span class="mr-2 uppercase">Purpose:</span>Replace damage monitor, mouse and keyboard</p> -->
 														</td>
-														<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
-														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="grand_labor_total" readonly></td>
+															<template v-if="joi_labor_details.length > 0">
+																<td class="border-l-none border-y-none p-0 text-right p-0.5 pr-1" colspan="2" >Total Labor</td>
+																<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-0.5 text-right pr-1" v-model="grand_labor_total" readonly></td>
+															</template>
+															
 													</tr>
-													<tr class="">
+													<tr class="" v-if="joi_material_details.length > 0">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Total Materials</td>
 														<td class="p-0"><input type="text" class="w-full bg-yellow-50 p-1 text-right" v-model="grand_material_total" readonly></td>
 													</tr>
 													
-													<tr class="">
+													<tr class="" v-if="joi_labor_details.length > 0">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Labor</td>
 														<td class="p-0"><input type="text" @keypress="isNumber($event)" @keyup="additionalCost(vat)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount_labor"></td>
 													</tr>
-													<tr class="">
+													<tr class="" v-if="joi_material_details.length > 0">
 														<td class="border-l-none border-y-none p-1 text-right" colspan="2">Discount Material</td>
 														<td class="p-0"><input type="text" @keypress="isNumber($event)" @keyup="additionalCost(vat)" class="w-full bg-yellow-50 p-1 text-right" v-model="discount_material"></td>
 													</tr>
@@ -994,21 +1001,21 @@
 												<td class="text-center p-1">{{prepared_by}}</td>
 												<td></td>
 												<td class="text-center p-1">
-													<select class="text-center bg-yellow-50" v-model="checked_by" id="checked_by" @click="resetError('button1')">
+													<select class="text-center bg-yellow-50 p-1 w-full" v-model="checked_by" id="checked_by" @click="resetError('button1')">
 															<option value='0'>--Select Reviewed/Checked by--</option>
 															<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 														</select>
 												</td>
 												<td></td>
 												<td class="text-center p-1">
-													<select class="text-center bg-yellow-50" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
+													<select class="text-center bg-yellow-50 p-1 w-full" v-model="recommended_by" id="recommended_by" @click="resetError('button2')">
 														<option value='0'>--Select Recommended by--</option>
 														<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 													</select>
 												</td>
 												<td></td>
 												<td class="text-center p-1">
-													<select class="text-center bg-yellow-50" v-model="approved_by" id="approved_by" @click="resetError('button3')">
+													<select class="text-center bg-yellow-50 p-1 w-full" v-model="approved_by" id="approved_by" @click="resetError('button3')">
 														<option value='0'>--Select Approved by--</option>
 														<option :value="sig.id" v-for="sig in signatories" :key="sig.id">{{ sig.name }}</option>
 													</select>

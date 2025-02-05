@@ -41,6 +41,7 @@ use App\Models\JOIRfdPayment;
 use App\Models\JOIRfdSeries;
 use App\Models\VendorDetails;
 use App\Models\JOAOQHead;
+use App\Models\JOAOQDetails;
 use App\Models\JORFQTerms;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -77,14 +78,71 @@ class JOIController extends Controller
         ],200);
     }
     public function jo_supplier_dropdown(){
-        $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_head.vendor_name')->distinct()->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->join('jo_rfq_vendor', 'vendor_details.id', '=', 'jo_rfq_vendor.vendor_details_id')->join('jo_rfq_labor_offer', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_rfq_labor_offer.jo_rfq_head_id', '=', 'jo_aoq_head.jo_rfq_head_id')->where('vendor_details.status','=','Active')->where('awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        // $suppliers = VendorDetails::select('vendor_details.id','identifier','vendor_head.vendor_name')->distinct()->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->join('jo_rfq_vendor', 'vendor_details.id', '=', 'jo_rfq_vendor.vendor_details_id')->join('jo_rfq_labor_offer', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_rfq_labor_offer.jo_rfq_head_id', '=', 'jo_aoq_head.jo_rfq_head_id')->where('vendor_details.status','=','Active')->where('awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        $suppliers = VendorDetails::select(
+            'vendor_details.id',
+            'identifier',
+            'vendor_head.vendor_name'
+        )
+        ->distinct()
+        ->where('vendor_details.status', '=', 'Active')
+        ->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')
+        ->join('jo_rfq_vendor', 'vendor_details.id', '=', 'jo_rfq_vendor.vendor_details_id')
+    
+        ->leftJoin('jo_rfq_labor_offer', function ($join) {
+            $join->on('jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')
+                 ->where('jo_rfq_labor_offer.awarded', '=', '1');
+        })
+        ->leftJoin('jo_rfq_material_offer', function ($join) {
+            $join->on('jo_rfq_vendor.id', '=', 'jo_rfq_material_offer.jo_rfq_vendor_id')
+                 ->where('jo_rfq_material_offer.awarded', '=', '1');
+        })
+    
+        ->leftJoin('jo_aoq_head as jo_aoq_head_labor', 'jo_rfq_labor_offer.jo_rfq_head_id', '=', 'jo_aoq_head_labor.jo_rfq_head_id')
+        ->leftJoin('jo_aoq_head as jo_aoq_head_material', 'jo_rfq_material_offer.jo_rfq_head_id', '=', 'jo_aoq_head_material.jo_rfq_head_id')
+    
+        ->where(function ($query) {
+            $query->whereNotNull('jo_rfq_labor_offer.id')
+                  ->orWhereNotNull('jo_rfq_material_offer.id');
+        })
+    
+        ->where(function ($query) {
+            $query->where('jo_aoq_head_material.aoq_status', '=', 'Awarded')
+                  ->orWhere('jo_aoq_head_labor.aoq_status', '=', 'Awarded');
+        })
+        ->get();
         return response()->json([
             'suppliers'=>$suppliers,
         ],200);
     }
 
     public function get_jorno($vendor_details_id){
-        $jorno_dropdown=JORFQLaborOffers::select('jo_rfq_labor_offer.jo_rfq_vendor_id','jo_aoq_head.id','jo_aoq_head.aoq_date','jo_rfq_vendor.jor_no')->distinct()->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_rfq_labor_offer.jo_rfq_head_id', '=', 'jo_aoq_head.jo_rfq_head_id')->where('jo_rfq_vendor.vendor_details_id',$vendor_details_id)->where('jo_rfq_labor_offer.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        // $jorno_dropdown=JORFQLaborOffers::select('jo_rfq_labor_offer.jo_rfq_vendor_id','jo_aoq_head.id','jo_aoq_head.aoq_date','jo_rfq_vendor.jor_no')->distinct()->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_rfq_labor_offer.jo_rfq_head_id', '=', 'jo_aoq_head.jo_rfq_head_id')->where('jo_rfq_vendor.vendor_details_id',$vendor_details_id)->where('jo_rfq_labor_offer.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        $jorno_dropdown = JOAOQDetails::select(
+            'jo_aoq_head.id',
+            'jo_aoq_head.aoq_date',
+            'jo_aoq_head.jor_no',
+            'jo_rfq_labor_offer.jo_rfq_vendor_id',
+            'jo_rfq_material_offer.jo_rfq_vendor_id'
+        )
+        ->distinct()
+        ->join('jo_aoq_head', 'jo_aoq_head.id', '=', 'jo_aoq_details.jo_aoq_head_id')
+        ->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_aoq_details.jo_rfq_vendor_id')
+        ->leftJoin('jo_rfq_labor_offer', function ($join) {
+            $join->on('jo_rfq_labor_offer.jo_rfq_vendor_id', '=', 'jo_aoq_details.jo_rfq_vendor_id')
+                 ->on('jo_aoq_head.jo_rfq_head_id', '=', 'jo_rfq_labor_offer.jo_rfq_head_id')
+                 ->where('jo_rfq_labor_offer.awarded', '=', '1');
+        })
+        ->leftJoin('jo_rfq_material_offer', function ($join) {
+            $join->on('jo_rfq_material_offer.jo_rfq_vendor_id', '=', 'jo_aoq_details.jo_rfq_vendor_id')
+                 ->on('jo_aoq_head.jo_rfq_head_id', '=', 'jo_rfq_material_offer.jo_rfq_head_id')
+                 ->where('jo_rfq_material_offer.awarded', '=', '1');
+        })
+        ->where('jo_aoq_head.aoq_status', '=', 'Awarded')
+        ->where('jo_rfq_vendor.vendor_details_id', $vendor_details_id)
+        ->get();
+        
+        
         return response()->json([
             'jorno_dropdown'=>$jorno_dropdown,
         ],200);
@@ -121,6 +179,7 @@ class JOIController extends Controller
         $jor_head= JORHead::where('jor_no',$jor_no_exp)->first();
         $vendor= VendorDetails::select('vendor_details.id','identifier','vendor_name','fax','phone','contact_person','address')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$vendor_details_id)->where('status','=','Active')->first();
         $joi_labor_details = JORFQLaborOffers::with('jor_labor_details')->select('jo_rfq_labor_offer.id','jo_rfq_labor_offer.jo_rfq_vendor_id', 'jo_rfq_labor_offer.jor_labor_details_id','jo_rfq_labor_offer.offer','jo_rfq_labor_offer.uom','jo_rfq_labor_offer.unit_price','jo_rfq_labor_offer.currency')->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_labor_offer.jo_rfq_vendor_id')->join('jo_aoq_details', 'jo_rfq_labor_offer.jo_rfq_vendor_id', '=', 'jo_aoq_details.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_aoq_details.jo_aoq_head_id', '=', 'jo_aoq_head.id')->where('jo_rfq_vendor.vendor_details_id',$vendor_details_id)->where('jo_rfq_labor_offer.jo_rfq_head_id',$joi_head->jo_rfq_head_id)->where('jo_rfq_labor_offer.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        $total_labor = [];
         foreach($joi_labor_details AS $jld){
             // $balance = PrReportDetails::where('jo_labor_details_id',$jld->jo_labor_details_id)->where('status','!=','Cancelled')->first();
             // $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
@@ -133,6 +192,7 @@ class JOIController extends Controller
         }
         
         $joi_material_details = JORFQMaterialOffers::with('jor_material_details')->select('jo_rfq_material_offer.id','jo_rfq_material_offer.jo_rfq_vendor_id'   , 'jo_rfq_material_offer.jor_material_details_id','jo_rfq_material_offer.offer','jo_rfq_material_offer.uom','jo_rfq_material_offer.unit_price','jo_rfq_material_offer.currency')->join('jo_rfq_vendor', 'jo_rfq_vendor.id', '=', 'jo_rfq_material_offer.jo_rfq_vendor_id')->join('jo_aoq_details', 'jo_rfq_material_offer.jo_rfq_vendor_id', '=', 'jo_aoq_details.jo_rfq_vendor_id')->join('jo_aoq_head', 'jo_aoq_details.jo_aoq_head_id', '=', 'jo_aoq_head.id')->where('jo_rfq_vendor.vendor_details_id',$vendor_details_id)->where('jo_rfq_material_offer.jo_rfq_head_id',$joi_head->jo_rfq_head_id)->where('jo_rfq_material_offer.awarded','=','1')->where('aoq_status','=','Awarded')->get();
+        $total_material = [];
         foreach($joi_material_details AS $jmd){
             // $balance = PrReportDetails::where('jo_labor_details_id',$jmd->jo_labor_details_id)->where('status','!=','Cancelled')->first();
             // $total_po=($balance->po_qty + $balance->dpo_qty + $balance->rpo_qty);
@@ -142,6 +202,7 @@ class JOIController extends Controller
             $total_material[]=$jmd->unit_price * $deducted;
             // $total[]=$jmd->unit_price * $balance->pr_qty;
             // $jo_rfq_terms=RFQVendorTerms::where('jo_rfq_vendor_id',$jmd->jo_rfq_vendor_id)->get();
+            $jo_rfq_terms=JORFQTerms::where('jo_rfq_vendor_id',$jmd->jo_rfq_vendor_id)->get();
         }
         $total_labor_sum=array_sum($total_labor);
         $total_material_sum=array_sum($total_material);

@@ -161,6 +161,24 @@ class RFQController extends Controller
                 $rfq_v['created_at']=date('Y-m-d H:i:s');
                 $rfq_vendor_id=RFQVendor::insertGetId($rfq_v);
 
+                $predefined_terms = [
+                    "Price Validity",
+                    "Payment Terms",
+                    "Delivery Time",
+                    "Item's Warranty",
+                    "In-land Freight"
+                ];
+
+                // Insert predefined terms first
+                foreach ($predefined_terms as $term) {
+                    $new_rfq_terms = [
+                        'rfq_vendor_id' => $rfq_vendor_id,
+                        'terms' => $term
+                    ];
+                    RFQVendorTerms::create($new_rfq_terms);
+                }
+
+                // Fetch and insert vendor-specific terms
                 $vendorterms = VendorTerms::where('vendor_details_id',$rv->vendor_details_id)->get();
                     foreach($vendorterms as $vt){
                             $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;
@@ -276,6 +294,7 @@ class RFQController extends Controller
                         'quantity'=>$d->pr_details->quantity,
                         'remaining_qty'=>$d->remaining_qty,
                         'item_description'=>$d->pr_details->item_description,
+                        'uom'=>$d->pr_details->uom,
                     ];
 
                 $rfq_offers = RFQOffers::where('rfq_head_id',$rfq_head_id)->where('rfq_details_id',$d->id)->get();
@@ -323,6 +342,24 @@ class RFQController extends Controller
             $rfq_add_vendor['created_at']=date('Y-m-d H:i:s');
             $rfq_vendor_id=RFQVendor::insertGetId($rfq_add_vendor);
 
+            $predefined_terms = [
+                "Price Validity",
+                "Payment Terms",
+                "Delivery Time",
+                "Item's Warranty",
+                "In-land Freight"
+            ];
+
+            // Insert predefined terms first
+            foreach ($predefined_terms as $term) {
+                $new_rfq_terms = [
+                    'rfq_vendor_id' => $rfq_vendor_id,
+                    'terms' => $term
+                ];
+                RFQVendorTerms::create($new_rfq_terms);
+            }
+
+            // Fetch and insert vendor-specific terms
             $vendorterms = VendorTerms::where('vendor_details_id',$request->input('vendor_details_id'))->get();
             foreach($vendorterms as $vt){
                     $new_rfq_terms['rfq_vendor_id']=$rfq_vendor_id;

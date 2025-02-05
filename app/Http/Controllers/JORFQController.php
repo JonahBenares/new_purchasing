@@ -186,6 +186,24 @@ class JORFQController extends Controller
                 $rfq_v['created_at']=date('Y-m-d H:i:s');
                 $jo_rfq_vendor_id=JORFQVendor::insertGetId($rfq_v);
 
+                $predefined_terms = [
+                    "Price Validity",
+                    "Payment Terms",
+                    "Work Duration",
+                    "Item's Warranty",
+                    "In-land Freight"
+                ];
+
+                // Insert predefined terms first
+                foreach ($predefined_terms as $term) {
+                    $new_rfq_terms = [
+                        'jo_rfq_vendor_id' => $jo_rfq_vendor_id,
+                        'terms' => $term
+                    ];
+                    JORFQTerms::create($new_rfq_terms);
+                }
+
+                // Fetch and insert vendor-specific terms
                 $vendorterms = VendorTerms::where('vendor_details_id',$rv->vendor_details_id)->get();
                     foreach($vendorterms as $vt){
                             $new_rfq_terms['jo_rfq_vendor_id']=$jo_rfq_vendor_id;
@@ -336,6 +354,7 @@ class JORFQController extends Controller
                         'quantity'=>$jrld->jor_labor_details->quantity,
                         // 'remaining_qty'=>$jrld->remaining_qty,
                         'scope_of_work'=>$jrld->jor_labor_details->scope_of_work,
+                        'uom'=>$jrld->jor_labor_details->uom,
                     ];
                 }
 
@@ -361,6 +380,7 @@ class JORFQController extends Controller
                         'quantity'=>$jrld->jor_material_details->quantity,
                         // 'remaining_qty'=>$jrld->remaining_qty,
                         'item_description'=>$jrld->jor_material_details->item_description,
+                        'uom'=>$jrld->jor_material_details->uom,
                     ];
                 }
 
@@ -446,6 +466,24 @@ class JORFQController extends Controller
             $rfq_add_vendor['created_at']=date('Y-m-d H:i:s');
             $jo_rfq_vendor_id=JORFQVendor::insertGetId($rfq_add_vendor);
 
+            $predefined_terms = [
+                "Price Validity",
+                "Payment Terms",
+                "Work Duration",
+                "Item's Warranty",
+                "In-land Freight"
+            ];
+
+            // Insert predefined terms first
+            foreach ($predefined_terms as $term) {
+                $new_rfq_terms = [
+                    'jo_rfq_vendor_id' => $jo_rfq_vendor_id,
+                    'terms' => $term
+                ];
+                JORFQTerms::create($new_rfq_terms);
+            }
+
+            // Fetch and insert vendor-specific terms
             $vendorterms = VendorTerms::where('vendor_details_id',$request->input('vendor_details_id'))->get();
             foreach($vendorterms as $vt){
                     $new_rfq_terms['jo_rfq_vendor_id']=$jo_rfq_vendor_id;

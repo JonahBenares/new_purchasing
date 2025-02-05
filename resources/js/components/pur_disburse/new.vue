@@ -329,6 +329,7 @@
     // }
     
     const addRowPayment= () => {
+       // alert(vendor.value.ewt)
 		if(payment_description.value!='' && payment_amount.value!=0){
 			const payment = {
                 id:0,
@@ -344,6 +345,7 @@
             payment_list.value.forEach(function (val, index, theArray) {
                 payment_total +=  Number(val.payment_amount) || 0;
             });
+<<<<<<< HEAD
 
             payment_list2.value.forEach(function (val, index, theArray) {
                 payment_total2 +=  Number(val.payment_amount) || 0;
@@ -358,15 +360,21 @@
                     less.value = parseFloat(payment_total2)*percent 
                 }
                 // less.value = (subtotal_disp.value/1.12)*percent 
+=======
+           
+            subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
+           
+            if(show_ewt.value!=0){
+                if(vendor.value.vat==1){
+                    less.value = (subtotal_disp.value/1.12)*percent 
+                } else {
+                    less.value = (subtotal_disp.value)*percent 
+                }
+>>>>>>> ac31740306827bc8d488bcfd8af96aab4131ea93
             }else{
                 less.value=0
             }
-            // subtotal.value = parseFloat(grand_total.value) - parseFloat(payment_total) - less.value
-            // if(show_ewt.value!=0){
-            //     less.value = (subtotal_disp.value/1.12)*percent 
-            // }else{
-            //     less.value=0
-            // }
+          
             subtotal.value = parseFloat(grand_total.value) - parseFloat(payment_total) - less.value
 			document.getElementById('check_description').placeholder="Payment Description"
 			document.getElementById('check_description').style.backgroundColor = '#fef3c7';

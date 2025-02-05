@@ -281,8 +281,10 @@
 								<span class="text-sm text-gray-700">{{ PRHead.pr_no }}</span>
 							</div>
 							<div class="col-lg-6">
-								<span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
-								<span class="text-sm text-gray-700">{{ PRHead.site_pr }}</span>
+								<!-- <span class="text-sm text-gray-700 font-bold pr-1">Site PR Number: </span>
+								<span class="text-sm text-gray-700">{{ PRHead.site_pr }}</span> -->
+								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
+								<span class="text-sm text-gray-700">{{ PRHead.process_code }}</span>
 							</div>
 						</div>
 
@@ -292,13 +294,13 @@
 								<span class="text-sm text-gray-700">{{ PRHead.department_name }}</span>
 							</div>
 							<div class="col-lg-4">
-								<span class="text-sm text-gray-700 font-bold pr-1">Process Code: </span>
-								<span class="text-sm text-gray-700">{{ PRHead.process_code }}</span>
-							</div>
-							<div class="col-lg-2">
 								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
 								<span class="text-sm text-gray-700">{{ PRHead.urgency }}</span>
 							</div>
+							<!-- <div class="col-lg-2">
+								<span class="text-sm text-gray-700 font-bold pr-1">Urgency: </span>
+								<span class="text-sm text-gray-700">{{ PRHead.urgency }}</span>
+							</div> -->
 						</div>
 						<div class="row">
 							<div class="col-lg-12">

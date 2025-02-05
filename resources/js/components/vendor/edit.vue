@@ -319,6 +319,7 @@
 		formData.append('email', branch_dets.value.email ?? '')
 		formData.append('notes', branch_dets.value.notes ?? '')
 		formData.append('ewt', branch_dets.value.ewt ?? 0)
+		formData.append('vat', branch_dets.value.vat)
 		formData.append('status', branch_dets.value.status)
 		formData.append('terms', JSON.stringify(update_term_list.value))
 			axios.post(`/api/update_branch/`+id, formData).then(function () {
@@ -459,7 +460,7 @@
 												<table class="w-full text-xs">
 													<tr>
 														<td width="20%">
-															<span class="pr-1"><span class="text-gray-800">TIN :</span> {{ b.tin}}</span>
+															<span class="pr-1"><span class="text-gray-800">Identifier :</span> {{ b.identifier}}</span>
 														</td>
 														<td width="20%">
 															<span class="pr-1"><span class="text-gray-800">Email :</span> {{ b.email}}</span>
@@ -504,9 +505,9 @@
 												<div class="px-3 py-2">
 													<table class="w-full text-xs">
 														<tr>
-															<td class="!text-gray-800" width="13%">Identifier </td>
+															<td class="!text-gray-800" width="13%">TIN </td>
 															<td></td>
-															<td>  {{ b.identifier}}</td>
+															<td>  {{ b.tin}}</td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">Type</td>
@@ -516,7 +517,7 @@
 														<tr>
 															<td class="!text-gray-800">EWT</td>
 															<td></td>
-															<td>  {{ b.ewt}}</td>
+															<td> {{ parseFloat(b.ewt).toFixed(2) }} </td>
 														</tr>
 														<tr>
 															<td class="!text-gray-800">VAT</td>
@@ -1059,15 +1060,23 @@
 							</div>
 							<div class="col-lg-4 col-md-2">
 								<div class="flex !justify-center mt-4 space-x-4">
-									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+									<!-- <div class="form-group text-center flex justify-center space-x-2 pt-2">
 										<label class="text-gray-500 m-0" >VAT</label>
-										<input type="radio" name="vat" class="form-control !w-5 !h-5" placeholder="Vat" checked v-if="branch_dets.vat=='1'">
-										<input type="radio" name="vat" class="form-control !bg-gray-200 !w-5 !h-5" placeholder="Vat" v-else disabled>
+										<input type="radio" name="vat" v-model="branch_dets.vat" class="form-control !w-5 !h-5" placeholder="Vat" checked v-if="branch_dets.vat=='1'">
+										<input type="radio" name="vat" class="form-control !bg-gray-200 !w-5 !h-5" placeholder="Vat" v-else>
 									</div>
 									<div class="form-group text-center flex justify-center space-x-2 pt-2">
 										<label class="text-gray-500 m-0" >Non-VAT</label>
-										<input type="radio" name="vat" class="form-control !w-5 !h-5" placeholder="Non-vat" checked v-if="branch_dets.vat=='0'">
-										<input type="radio" name="vat" class="form-control !bg-gray-200 !w-5 !h-5" placeholder="Non-vat" v-else disabled>
+										<input type="radio" name="vat" v-model="branch_dets.vat" class="form-control !w-5 !h-5" placeholder="Non-vat" checked v-if="branch_dets.vat=='0'">
+										<input type="radio" name="vat" class="form-control !bg-gray-200 !w-5 !h-5" placeholder="Non-vat" v-else>
+									</div> -->
+									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+										<label class="text-gray-500 m-0" >Vat</label>
+										<input v-model="branch_dets.vat" value="1" type="radio" class="form-control !w-5 !h-5">
+									</div>
+									<div class="form-group text-center flex justify-center space-x-2 pt-2">
+										<label class="text-gray-500 m-0" >Non-Vat</label>
+										<input v-model="branch_dets.vat" value="0" type="radio" class="form-control !w-5 !h-5">
 									</div>
 								</div>
 							</div>

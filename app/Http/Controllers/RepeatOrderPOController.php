@@ -184,16 +184,22 @@ class RepeatOrderPOController extends Controller
     public function get_po_items($item_desc,$vendor_details_id){
         // $poitems=PODetails::with('po_head')->where('item_description', 'LIKE', '%' . $item_desc . '%')->where('unit_price','!=',0)->get();
         $query = PODetails::with('po_head')->where('item_description', 'LIKE', '%' . $item_desc . '%')->where('unit_price','!=',0);
-        $query->whereHas('po_head', function ($query) use($vendor_details_id) {
-            $query->where('vendor_details_id', '=', $vendor_details_id);
-            $query->where('status', '=', 'Saved');
-        });
+        // $query->whereHas('po_head', function ($query) use($vendor_details_id) {
+        //     $query->where('vendor_details_id', '=', $vendor_details_id);
+        //     $query->where('status', '=', 'Saved');
+        // });
+        $query->whereHas('po_head', function ($q) use ($vendor_details_id) {
+            $q->where('vendor_details_id', '=', $vendor_details_id)
+              ->where('status', '=', 'Saved');
+        })->join('po_head', 'po_head.id', '=', 'po_details.po_head_id')
+          ->orderBy('po_head.po_date', 'DESC');
         $poitems = $query->get();
 
         $po_items=array();
         foreach($poitems AS $pi){
                 $po_items[] = [
                     'po_details_id'=>$pi->id,
+                    'po_date'=>$pi->po_head->po_date,
                     'po_no'=>$pi->po_head->po_no,
                     'item_description'=>$pi->item_description,
                     'unit_price'=>$pi->unit_price,
@@ -586,9 +592,19 @@ class RepeatOrderPOController extends Controller
         $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
         $vendor_details_id= POHead::where('id',$po_head_id)->value('vendor_details_id');
         $po_vendor= VendorDetails::select('vendor_details.id','identifier','vendor_name','fax','phone','contact_person','address')->join('vendor_head', 'vendor_head.id', '=', 'vendor_details.vendor_head_id')->where('vendor_details.id',$po_head->vendor_details_id)->where('status','=','Active')->first();
-        $podetails = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
-            $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
-        })->get();
+        // $podetails = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
+        //     $q->where('status','Saved')->Orwhere('status','Cancelled')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        // })->get();
+        $podetails = PoDetails::where('po_head_id', $po_head_id)
+        ->where('quantity', '!=', '0')
+        ->where(function ($q) {
+            $q->where('status', 'Saved')
+            ->orWhere('status', 'Cancelled')
+            ->orWhere('status', 'Draft')
+            ->orWhere('status', 'Revised');
+        })
+        ->with('pr_details') // Eager load pr_details
+        ->get();
         $currency=Config::get('constants.currency');
         $total=[];
         // $po_details = [];
@@ -610,7 +626,7 @@ class RepeatOrderPOController extends Controller
                 'item_no' =>$pd->item_no,
                 'po_head_id' =>$pd->po_head_id,
                 'pr_details_id' =>$pd->pr_details_id,
-                'item_description' =>$pr_item,
+                'item_description' =>$pd->pr_details->item_description,
                 'offer_desc' =>$pd->item_description,
                 'quantity' =>$pd->quantity,
                 'available_qty' =>$available_qty,
@@ -628,22 +644,34 @@ class RepeatOrderPOController extends Controller
             $total[]=$pd->unit_price * $pd->quantity;
         }
         $total_sum=array_sum($total);
-        $podetailsview = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
-            $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        // $podetailsview = PoDetails::where('po_head_id',$po_head_id)->where('quantity','!=','0')->where(function ($q) {
+        //     $q->where('status','Saved')->Orwhere('status','Draft')->Orwhere('status','Revised');
+        // })->get();
+
+        $podetailsview = PoDetails::where('po_head_id', $po_head_id)
+        ->where('quantity', '!=', '0')
+        ->where(function ($q) {
+            $q->where('status', 'Saved')
+            ->orWhere('status', 'Cancelled')
+            ->orWhere('status', 'Draft')
+            ->orWhere('status', 'Revised');
         })->get();
         $po_details_view = [];
         foreach($podetailsview AS $pd){
             // $total[]=$pd->unit_price * $pd->quantity;
             $pr_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('pr_qty');
             $delivered_qty=PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
-            $pr_item=PRDetails::where('id',$pd->pr_details_id)->value('item_description');
-            $available_qty = $pr_qty - $delivered_qty;
+            $po_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('po_qty');
+            $dpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('dpo_qty');
+            $rpo_qty= PrReportDetails::where('pr_details_id',$pd->pr_details_id)->value('rpo_qty');
+            $po_draft_qty= PoDetails::where('pr_details_id',$pd->pr_details_id)->where('status','Draft')->value('quantity');
+            $available_qty = $pr_qty - ($po_qty + $dpo_qty + $rpo_qty + $po_draft_qty);
             $po_details_view[] = [
                 'id' =>$pd->id,
                 'item_no' =>$pd->item_no,
                 'po_head_id' =>$pd->po_head_id,
                 'pr_details_id' =>$pd->pr_details_id,
-                'item_description' =>$pr_item,
+                'item_description' =>$pd->pr_details->item_description,
                 'offer_desc' =>$pd->item_description,
                 'quantity' =>$pd->quantity,
                 'available_qty' =>$available_qty,

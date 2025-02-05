@@ -278,7 +278,7 @@
 		formData.append('handling_fee', handling_fee.value)
 		formData.append('discount', discount.value)
 		formData.append('vat', vat.value)
-		formData.append('vat_percent', (vat.value!=0) ? vat_percent.value : 0)
+		formData.append('vat_percent', (vat.value!=2) ? vat_percent.value : 0)
 		formData.append('vat_amount', vat_amount.value)
 		formData.append('vat_in_ex', vat_in_ex.value)
 		formData.append('grand_total', total_replace)
@@ -1021,14 +1021,14 @@
 								</div>
 							</div>
 						</div>
-						<br>
+						<!-- <br>
 						<div class="row mt-4"> 
 							<div class="col-lg-12 col-md-12">
 								<div class="flex justify-center space-x-2">
 									<button class="bg-green-500 btn-sm !rounded-full w-full text-white"  @click="closeAlert()">Close</button>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div> 
 				</div>
 			</div>

@@ -101,515 +101,519 @@
                 <div class="pt-0 hidden mb-1"  :class="{ show:tableWeekly }">
                     <div class="">
                         <table class="table-bordered text-xs" width="150%">
-                            <tr class="text-xs bg-gray-100 font-bold">
-                                <td class="p-1" width="10%">Point Person</td>	
-                                <td class="p-1" width="10%">Purpose</td>
-                                <td class="p-1" width="10%">End Use</td>
-                                <td class="p-1" width="5%">JOR No.</td>
-                                <td class="p-1" width="5%">Requestor</td>
-                                <td class="p-1 text-center" width="4%">Qty</td>
-                                <td class="p-1 text-center" width="3%">UOM</td>
-                                <td class="p-1" width="12%">Description</td>
-                                <td class="p-1" width="3%">Status</td>
-                                <td class="p-1" width="4%">Actual Cost</td>
-                                <td class="p-1" width="3%">Variance</td>
-                                <td class="p-1">Supplier</td>
-                                <td class="p-1" width="10%">Term</td>
-                                <td class="p-1" width="7%">Remarks</td>	  
-                                <td class="p-1" align="center" width="1%">
-                                    <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></Bars3Icon>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-primary text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-warning text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-success text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top break-all ">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like reada</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
-                            <tr>
-                                <td class="p-0 align-top">
-                                    <select name="" class="w-full p-1 bg-yellow-100" id="">
-                                        <option value="">Select Employee</option>
-                                    </select>
-                                </td>	
-                                <td class="p-1 align-top">Purpose</td>
-                                <td class="p-1 align-top">End Use</td>
-                                <td class="p-1 align-top">JOR No.</td>
-                                <td class="p-1 align-top">Requestor</td>
-                                <td class="p-0 align-top">
-                                    <input type="text" class="text-center p-1 w-full bg-yellow-100">
-                                </td>
-                                <td class="p-1 text-center align-top">UOM</td>
-                                <td class="p-1 align-top">Description</td>
-                                <td class="p-1 text-center">
-                                    <div>
-                                        <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
-                                    </div>
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Actual Cost
-                                </td>
-                                <td class="p-1 text-center align-top">
-                                    Variance
-                                </td>
-                                <td class="p-1 align-top">
-                                    Supplier
-                                </td>
-                                <td class="p-1 align-top">Payment Term</td>
-                                <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
-                                <td align="center">
-                                    <button class="btn btn-xs btn-danger p-1">
-                                        <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-                                    </button>
-                                </td>	  
-                            </tr>
+                            <thead>
+                                <tr class="text-xs bg-gray-100 font-bold">
+                                    <td class="p-1" width="10%">Point Person</td>	
+                                    <td class="p-1" width="10%">Purpose</td>
+                                    <td class="p-1" width="10%">End Use</td>
+                                    <td class="p-1" width="5%">JOR No.</td>
+                                    <td class="p-1" width="5%">Requestor</td>
+                                    <td class="p-1 text-center" width="4%">Qty</td>
+                                    <td class="p-1 text-center" width="3%">UOM</td>
+                                    <td class="p-1" width="12%">Description</td>
+                                    <td class="p-1" width="3%">Status</td>
+                                    <td class="p-1" width="4%">Actual Cost</td>
+                                    <td class="p-1" width="3%">Variance</td>
+                                    <td class="p-1">Supplier</td>
+                                    <td class="p-1" width="10%">Term</td>
+                                    <td class="p-1" width="7%">Remarks</td>	  
+                                    <td class="p-1" align="center" width="1%">
+                                        <Bars3Icon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-4 h-4 "></Bars3Icon>
+                                    </td>	  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-warning text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-success text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top break-all ">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like reada</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                                <tr>
+                                    <td class="p-0 align-top">
+                                        <select name="" class="w-full p-1 bg-yellow-100" id="">
+                                            <option value="">Select Employee</option>
+                                        </select>
+                                    </td>	
+                                    <td class="p-1 align-top">Purpose</td>
+                                    <td class="p-1 align-top">End Use</td>
+                                    <td class="p-1 align-top">JOR No.</td>
+                                    <td class="p-1 align-top">Requestor</td>
+                                    <td class="p-0 align-top">
+                                        <input type="text" class="text-center p-1 w-full bg-yellow-100">
+                                    </td>
+                                    <td class="p-1 text-center align-top">UOM</td>
+                                    <td class="p-1 align-top">Description</td>
+                                    <td class="p-1 text-center">
+                                        <div>
+                                            <span class="badge bg-danger text-white py-1 rounded text-xs">Status 1</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Actual Cost
+                                    </td>
+                                    <td class="p-1 text-center align-top">
+                                        Variance
+                                    </td>
+                                    <td class="p-1 align-top">
+                                        Supplier
+                                    </td>
+                                    <td class="p-1 align-top">Payment Term</td>
+                                    <td class="p-0 align-top"><textarea name="" id="" rows="1" class="bg-yellow-100 w-full p-1"></textarea></td>	  
+                                    <td align="center">
+                                        <button class="btn btn-xs btn-danger p-1">
+                                            <XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+                                        </button>
+                                    </td>	  
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -751,26 +755,30 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <table class="w-full table-bordered !text-xs mt-3">
-                                            <tr class="bg-gray-100">
-                                                <td class="p-1 uppercase text-center" width="2%">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="p-1 uppercase text-center" width="2%">#</td>
-                                                <td class="p-1 uppercase" width="">Scope Of Works</td>
-                                                <td class="p-1 uppercase text-center" width="10%">Qty</td>
-                                                <td class="p-1 uppercase text-center" width="10%">UOM</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-1 text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="p-1 text-center align-top">1</td>
-                                                <td class="p-1 align-top">
-                                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur
-                                                </td>
-                                                <td class="p-1 align-top text-center">23</td>
-                                                <td class="p-1 align-top text-center">lot</td>
-                                            </tr>
+                                            <thead>
+                                                <tr class="bg-gray-100">
+                                                    <td class="p-1 uppercase text-center" width="2%">
+                                                        <input type="checkbox">
+                                                    </td>
+                                                    <td class="p-1 uppercase text-center" width="2%">#</td>
+                                                    <td class="p-1 uppercase" width="">Scope Of Works</td>
+                                                    <td class="p-1 uppercase text-center" width="10%">Qty</td>
+                                                    <td class="p-1 uppercase text-center" width="10%">UOM</td>
+                                                </tr>
+                                            </thead>   
+                                            <tbody>
+                                                <tr>
+                                                    <td class="p-1 text-center">
+                                                        <input type="checkbox">
+                                                    </td>
+                                                    <td class="p-1 text-center align-top">1</td>
+                                                    <td class="p-1 align-top">
+                                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur
+                                                    </td>
+                                                    <td class="p-1 align-top text-center">23</td>
+                                                    <td class="p-1 align-top text-center">lot</td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -778,50 +786,54 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <table class="w-full table-bordered !text-xs mb-3">
-                                            <tr class="bg-gray-100">
-                                                <td class="p-1 uppercase text-center" width="2%">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="p-1 uppercase text-center" width="7%">Qty</td>
-                                                <td class="p-1 uppercase text-center" width="7%">UOM</td>
-                                                <td class="p-1 uppercase" width="20%">PN No.</td>
-                                                <td class="p-1 uppercase" width="">Item Description</td>
-                                                <td class="p-1 uppercase" width="10%">WH Stocks</td>
-                                                <td class="p-1 uppercase" width="15%">Date Needed</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-1 text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="p-1 text-center">5</td>
-                                                <td class="p-1 text-center">pc/s</td>
-                                                <td class="p-1">PN-0991-001</td>
-                                                <td class="p-1">Monitor</td>
-                                                <td class="p-1"></td>
-                                                <td class="p-1">08/25/24</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-1 text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="p-1 text-center">5</td>
-                                                <td class="p-1 text-center">pc/s</td>
-                                                <td class="p-1">PN-0991-222</td>
-                                                <td class="p-1">Mouse</td>
-                                                <td class="p-1"></td>
-                                                <td class="p-1">08/25/24</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-1 text-center">
-                                                    <input type="checkbox">
-                                                </td>
-                                                <td class="p-1 text-center">5</td>
-                                                <td class="p-1 text-center">pc/s</td>
-                                                <td class="p-1">PN-0991-333</td>
-                                                <td class="p-1">Keyboard</td>
-                                                <td class="p-1"></td>
-                                                <td class="p-1">08/25/24</td>
-                                            </tr>
+                                            <thead>
+                                                <tr class="bg-gray-100">
+                                                    <td class="p-1 uppercase text-center" width="2%">
+                                                        <input type="checkbox">
+                                                    </td>
+                                                    <td class="p-1 uppercase text-center" width="7%">Qty</td>
+                                                    <td class="p-1 uppercase text-center" width="7%">UOM</td>
+                                                    <td class="p-1 uppercase" width="20%">PN No.</td>
+                                                    <td class="p-1 uppercase" width="">Item Description</td>
+                                                    <td class="p-1 uppercase" width="10%">WH Stocks</td>
+                                                    <td class="p-1 uppercase" width="15%">Date Needed</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="p-1 text-center">
+                                                        <input type="checkbox">
+                                                    </td>
+                                                    <td class="p-1 text-center">5</td>
+                                                    <td class="p-1 text-center">pc/s</td>
+                                                    <td class="p-1">PN-0991-001</td>
+                                                    <td class="p-1">Monitor</td>
+                                                    <td class="p-1"></td>
+                                                    <td class="p-1">08/25/24</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-1 text-center">
+                                                        <input type="checkbox">
+                                                    </td>
+                                                    <td class="p-1 text-center">5</td>
+                                                    <td class="p-1 text-center">pc/s</td>
+                                                    <td class="p-1">PN-0991-222</td>
+                                                    <td class="p-1">Mouse</td>
+                                                    <td class="p-1"></td>
+                                                    <td class="p-1">08/25/24</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-1 text-center">
+                                                        <input type="checkbox">
+                                                    </td>
+                                                    <td class="p-1 text-center">5</td>
+                                                    <td class="p-1 text-center">pc/s</td>
+                                                    <td class="p-1">PN-0991-333</td>
+                                                    <td class="p-1">Keyboard</td>
+                                                    <td class="p-1"></td>
+                                                    <td class="p-1">08/25/24</td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

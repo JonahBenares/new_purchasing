@@ -472,42 +472,49 @@
 													<hr class="print:block border-dashed mt-2">
 												</div>
 												<table class="table-bsordered w-full text-xs mb-2">
-													<tr>
-														<td class="" width="10%">Date: </td>
-														<td class="">{{ RFQHead.rfq_date }}</td>
-														<td class="" width="8%">RFQ No.:</td>
-														<td class="" >{{ RFQHead.rfq_no }}</td>
-														<td class="">Urg:</td>		    			
-														<td class="">{{ RFQHead.urgency }}</td>
-													</tr>
-													<tr>
-														<td class="">PR No:</td>
-														<td class="" width="50%">{{ RFQHead.pr_no }}</td>
-														<td class="print:hidden" width="10%">RFQ Name:</td>
-														<td class="print:hidden" colspan="3">{{ RFQHead.rfq_name }}</td>
-													</tr>
-													<tr>
-														<td class="">Supplier: </td>
-														<td class="">{{ rvi.vendor_name }}</td>
-														<td class="">Tel. No.:</td>
-														<td class="" colspan="3">{{ rvi.phone_no }}</td>
-													</tr>
+													<tbody>
+														<tr>
+															<td class="" width="10%">Date: </td>
+															<td class="">{{ RFQHead.rfq_date }}</td>
+															<td class="" width="8%">RFQ No.:</td>
+															<td class="" >{{ RFQHead.rfq_no }}</td>
+															<td class="">Urg:</td>		    			
+															<td class="">{{ RFQHead.urgency }}</td>
+														</tr>
+														<tr>
+															<td class="">PR No:</td>
+															<td class="" width="50%">{{ RFQHead.pr_no }}</td>
+															<td class="print:hidden" width="10%">RFQ Name:</td>
+															<td class="print:hidden" colspan="3">{{ RFQHead.rfq_name }}</td>
+														</tr>
+														<tr>
+															<td class="">Supplier: </td>
+															<td class="">{{ rvi.vendor_name }}</td>
+															<td class="">Tel. No.:</td>
+															<td class="" colspan="3">{{ rvi.phone_no }}</td>
+														</tr>
+													</tbody>
 												</table>
 												<table class="table-bordered w-full text-xs">
-													<tr class="bg-gray-100">
-														<td class="p-1 text-center" width="5%">No</td>
-														<td class="p-1 text-center" width="10%">Qty</td>
-														<td class="p-1" width="35%">Item Description</td>
-														<td class="p-1" width="35%">Brand/Offer</td>
-														<td class="p-1 text-center" width="15%">Unit Price</td>
-													</tr>
-													<span hidden>{{ item_no=0 }}</span>
+													<thead>
+														<tr class="bg-gray-100">
+															<td class="p-1 text-center" width="5%">No</td>
+															<td class="p-1 text-center" width="5%">Qty</td>
+															<td class="p-1" width="32%">Item Description</td>
+															<td class="p-1" width="5%">UOM</td>
+															<td class="p-1" width="31%">Brand/Offer</td>
+															<td class="p-1 text-center" width="12%">Unit Price</td>
+															<td class="p-1 text-center" width="12%">Total Price</td>
+														</tr>
+														<tr hidden><td hidden><span hidden>{{ item_no=0 }}</span></td></tr>
+													</thead>
 													<tbody v-for="rd in RFQDetails" class="p-0">
 														<tr class="section-break" v-if="rd.rfq_vendor_id == rvi.rfq_vendor_id">
 															<td class="p-1 align-top text-center">{{ item_no+1 }}</td>
 															<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 															<td class="p-1 align-top itemdesc_">{{ rd.item_description }}</td>
-															<span hidden>{{ item_no++ }}</span> 
+															<td class="p-1 align-top item_desc">{{ rd.uom }}</td>
+															<td hidden><span hidden>{{ item_no++ }}</span> </td>
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">
 																	<div class="border-b p-1 w-full h-14 !align-top" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ ro.offer }}</div>
@@ -518,6 +525,17 @@
 																<div class="border-b p-1 w-full h-14 !align-top"></div>
 																<div class=" p-1 w-full h-14 !align-top"></div>
 															</td>
+															<td class="align-top p-0" v-if="rvi.canvassed == 1">
+																<div v-for="ro in RFQOffers">
+																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2) : '' }}</div>
+																</div>
+															</td>
+															<td class="align-top" v-else>
+																<div class="border-b p-1 w-full h-14 !align-top"></div>
+																<div class="border-b p-1 w-full h-14 !align-top"></div>
+																<div class=" p-1 w-full h-14 !align-top"></div>
+															</td>
+															
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">
 																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2) : '' }}</div>
@@ -539,110 +557,114 @@
 													</div>
 												</div>
 												<table class="table-bordesred w-full text-xs">
-													<tr>
-														<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50 print:bg-white" type="date" id="duedate" v-model="rvi.due_date"></td>
-														<td colspan="4" id="duedate" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
-													</tr>
-													<tr>
-														<td colspan="4">2. Please Fill - Up :</td>
-													</tr>
-													<template v-if="(rvi.canvassed==0)">
-														<tr class="po_buttons">
-															<td width="10%"></td>
-															<td width="40%" colspan="2">
-																<div class="flex justify-between space-x-1">
-																	<input type="text" class="p-1 w-full bg-yellow-50" id="newterms" v-model="term">
-																	<button type="button" class="btn btn-primary p-1" @click="AddRFQTerms(rvi.vendor_details_id, rvi.rfq_vendor_id)">
-																	<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon></button>
-																</div>
-															</td>
-															<td width="10%"></td>
+													<tbody>
+														<tr>
+															<td colspan="4" v-if="(rvi.canvassed == 0)">1. Quotation must be submitted on or before <input class="bg-yellow-50 print:bg-white" type="date" id="duedate" v-model="rvi.due_date"></td>
+															<td colspan="4" id="duedate" v-else>1. Quotation must be submitted on or before {{ rvi.due_date }} </td>
 														</tr>
-														<span hidden>{{ orderno=1 }}</span>
-														<tr class="section-break" >
-															<td width="10%"></td>
-															<td width="40%" colspan="2">
-																<div class="" v-for="(vt, order_no) in rfq_vendor_terms">
-																	<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
-																		<div class="flex justify-between space-x-1">
-																			<span class="pt-1">{{ letters[orderno-1] }}. </span>
-																			<input type="text" class="p-1 w-full print:bg-white bg-yellow-50  rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
-																			<button class="btn btn-danger p-1 po_buttons" @click="RemoveRFQVendorTerms(order_no,vt.id)">
-																				<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
-																			</button>
-																			<span hidden>{{ orderno++ }}</span>
-																		</div>
-																		<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
-																		<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
+														<tr>
+															<td colspan="4">2. Please Fill - Up :</td>
+														</tr>
+														<template v-if="(rvi.canvassed==0)">
+															<tr class="po_buttons">
+																<td width="10%"></td>
+																<td width="40%" colspan="2">
+																	<div class="flex justify-between space-x-1">
+																		<input type="text" class="p-1 w-full bg-yellow-50" id="newterms" v-model="term">
+																		<button type="button" class="btn btn-primary p-1" @click="AddRFQTerms(rvi.vendor_details_id, rvi.rfq_vendor_id)">
+																		<PlusIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></PlusIcon></button>
 																	</div>
-																</div>
-															</td>
-															<td width="10%"></td>
-														</tr>
-													</template>
-													<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
-													<template v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
-														<tr class="section-break">
-															<td width="10%"></td>
-															<td width="1%">{{ letters[index] }}.</td>
-															<td width="40%">{{ vt.terms }}</td>
-															<td width="10%"></td>
-														</tr>
-													</template>
+																</td>
+																<td width="10%"></td>
+															</tr>
+															<span hidden>{{ orderno=1 }}</span>
+															<tr class="section-break" >
+																<td width="10%"></td>
+																<td width="40%" colspan="2">
+																	<div class="" v-for="(vt, order_no) in rfq_vendor_terms">
+																		<div v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id">
+																			<div class="flex justify-between space-x-1">
+																				<span class="pt-1">{{ letters[orderno-1] }}. </span>
+																				<input type="text" class="p-1 w-full print:bg-white bg-yellow-50  rfqterms" :id="'rfqterms_'+ order_no" v-model="vt.terms" @blur="UpdateRFQTerms(order_no,vt.id)">
+																				<button class="btn btn-danger p-1 po_buttons" @click="RemoveRFQVendorTerms(order_no,vt.id)">
+																					<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+																				</button>
+																				<span hidden>{{ orderno++ }}</span>
+																			</div>
+																			<input type="hidden" class="p-1 w-full bg-yellow-50" v-model="vt.rfq_vendor_id">
+																			<input type="hidden" class="p-1 w-full bg-yellow-50 vendortermsid" v-model="vt.id">
+																		</div>
+																	</div>
+																</td>
+																<td width="10%"></td>
+															</tr>
+														</template>
+														<!-- <tr v-if="vt.rfq_vendor_id == rvi.rfq_vendor_id"> -->
+														<template v-for="(vt, index) in rvi.rfq_vendorterms" v-else>
+															<tr class="section-break">
+																<td width="10%"></td>
+																<td width="1%">{{ letters[index] }}.</td>
+																<td width="40%">{{ vt.terms }}</td>
+																<td width="10%"></td>
+															</tr>
+														</template>
+													</tbody>
 												</table>
 												<br>
 												<br>
 												<table class="w-full text-xs">
-													<tr>
-														<td class="text-center" width="30%">Prepared by</td>
-														<td width="5%"></td>
-														<td class="text-center" width="30%">Noted by</td>
-														<td width="5%"></td>
-														<td class="text-center" width="30%">Approved by</td>
-													</tr>
-													<tr>
-														<td class="text-center border-b"><br></td>
-														<td></td>
-														<td class="text-center border-b"></td>
-														<td></td>
-														<td class="text-center border-b"></td>
-													</tr>
-													<tr>
-														<td class="text-center p-1" v-if="rvi.prepared_by_id == 0">{{  RFQHead.prepared_by_name }}</td>
-														<td class="text-center p-1" v-else>{{  rvi.prepared_by_name }}</td>
-														<td></td>
-														<td class="text-center p-1">
-															<select v-model="noted_by" v-if="rvi.noted_by_id == 0" style="-webkit-appearance: none;" class="w-full text-center">
-																<option :value="s.id" v-for="s in signatories" :key="s.id" :selected="s.id==2">{{ s.name }}</option>
-															</select>
-															<span class="text-center p-1" v-else>{{  rvi.noted_by_name }}</span>
-														</td>
-														<td></td>
-														<td class="text-center p-1">
-																<select v-model="approved_by" v-if="rvi.approved_by_id == 0"  style="-webkit-appearance: none;" class="w-full text-center">
-																	<option :value="s.id" v-for="s in signatories" :key="s.id" >{{ s.name }}</option>
+													<tbody>
+														<tr>
+															<td class="text-center" width="30%">Prepared by</td>
+															<td width="5%"></td>
+															<td class="text-center" width="30%">Noted by</td>
+															<td width="5%"></td>
+															<td class="text-center" width="30%">Approved by</td>
+														</tr>
+														<tr>
+															<td class="text-center border-b"><br></td>
+															<td></td>
+															<td class="text-center border-b"></td>
+															<td></td>
+															<td class="text-center border-b"></td>
+														</tr>
+														<tr>
+															<td class="text-center p-1" v-if="rvi.prepared_by_id == 0">{{  RFQHead.prepared_by_name }}</td>
+															<td class="text-center p-1" v-else>{{  rvi.prepared_by_name }}</td>
+															<td></td>
+															<td class="text-center p-1">
+																<select v-model="noted_by" v-if="rvi.noted_by_id == 0" style="-webkit-appearance: none;" class="w-full text-center">
+																	<option :value="s.id" v-for="s in signatories" :key="s.id" :selected="s.id==2">{{ s.name }}</option>
 																</select>
-															
-															<span class="text-center p-1" v-else>{{  rvi.approved_by_name }}</span>
-														</td>
-													</tr>
-													<tr>
-														<td class="text-center"><br><br></td>
-														<td></td>
-														<td class="text-center"></td>
-														<td></td>
-														<td class="text-center"></td>
-													</tr>
-													<tr>
-														<td class="text-right" colspan="2">Conforme: </td>
-														<td class="text-center border-b" colspan="2"></td>
-														<td class="text-center"></td>
-													</tr>
-													<tr>
-														<td class="text-right" colspan="2"></td>
-														<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
-														<td class="text-center"></td>
-													</tr>
+																<span class="text-center p-1" v-else>{{  rvi.noted_by_name }}</span>
+															</td>
+															<td></td>
+															<td class="text-center p-1">
+																	<select v-model="approved_by" v-if="rvi.approved_by_id == 0"  style="-webkit-appearance: none;" class="w-full text-center">
+																		<option :value="s.id" v-for="s in signatories" :key="s.id" >{{ s.name }}</option>
+																	</select>
+																
+																<span class="text-center p-1" v-else>{{  rvi.approved_by_name }}</span>
+															</td>
+														</tr>
+														<tr>
+															<td class="text-center"><br><br></td>
+															<td></td>
+															<td class="text-center"></td>
+															<td></td>
+															<td class="text-center"></td>
+														</tr>
+														<tr>
+															<td class="text-right" colspan="2">Conforme: </td>
+															<td class="text-center border-b" colspan="2"></td>
+															<td class="text-center"></td>
+														</tr>
+														<tr>
+															<td class="text-right" colspan="2"></td>
+															<td class="text-center p-1" colspan="2">Signature over Printed Name</td>
+															<td class="text-center"></td>
+														</tr>
+													</tbody>
 												</table>
 											</div>
 										</div>
@@ -826,31 +848,36 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<table class="w-full table-bordered !text-xs mb-3">
-										<tr class="bg-gray-100">
-											<td class="p-1 uppercase text-center" width="5%">
-												<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
-											</td>
-											<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
-											<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
-											<td class="p-1 uppercase text-center" width="7%">UOM</td>
-											<td class="p-1 uppercase" width="20%">PN No.</td>
-											<td class="p-1 uppercase" width="">Item Description</td>
-											<td class="p-1 uppercase" width="10%">WH Stocks</td>
-											<td class="p-1 uppercase" width="15%">Date Needed</td>
-										</tr>
-										<tr v-for="pri in pritem_list">
-											<td class="p-1 text-center">
-												<input type="checkbox" class='checkboxes' v-model="pri.checkbox" :checked="checkall" :true-value="1" :false-value="0" @change="CountCheckbox">
-											</td>
-											<td class="p-1 text-center">{{ parseFloat(pri.quantity).toFixed(2) }}</td>
-											<td class="p-1 text-center">{{ parseFloat(pri.remaining_qty).toFixed(2) }}</td>
-											<td class="p-1 text-center">{{ pri.uom }}</td>
-											<td class="p-1">{{ pri.pn_no }}</td>
-											<td class="p-1">{{ pri.item_description }}</td>
-											<td class="p-1">{{ pri.wh_stocks }}</td>
-											<td class="p-1">{{ pri.date_needed }}</td>
-											<input type="hidden" v-model="pri.pr_details_id" >
-										</tr>
+										<thead>
+											<tr class="bg-gray-100">
+												<td class="p-1 uppercase text-center" width="5%">
+													<input type="checkbox" id="checkall" @click="CheckAll" :checked="allSelected" v-model="all_checkbox" :true-value="1" :false-value="0">
+												</td>
+												<td class="p-1 uppercase text-center" width="7%">PR Qty</td>
+												<td class="p-1 uppercase text-center" width="7%">Remaining Qty</td>
+												<td class="p-1 uppercase text-center" width="7%">UOM</td>
+												<td class="p-1 uppercase" width="20%">PN No.</td>
+												<td class="p-1 uppercase" width="">Item Description</td>
+												<td class="p-1 uppercase" width="10%">WH Stocks</td>
+												<td class="p-1 uppercase" width="15%">Date Needed</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="pri in pritem_list">
+												<td class="p-1 text-center">
+													<input type="checkbox" class='checkboxes' v-model="pri.checkbox" :checked="checkall" :true-value="1" :false-value="0" @change="CountCheckbox">
+												</td>
+												<td class="p-1 text-center">{{ parseFloat(pri.quantity).toFixed(2) }}</td>
+												<td class="p-1 text-center">{{ parseFloat(pri.remaining_qty).toFixed(2) }}</td>
+												<td class="p-1 text-center">{{ pri.uom }}</td>
+												<td class="p-1">{{ pri.pn_no }}</td>
+												<td class="p-1">{{ pri.item_description }}</td>
+												<td class="p-1">{{ pri.wh_stocks }}</td>
+												<td class="p-1">{{ pri.date_needed }}</td>
+												<td hidden><input type="hidden" v-model="pri.pr_details_id" ></td>
+												
+											</tr>
+										</tbody>
 									</table>
 								</div>
 							</div>
