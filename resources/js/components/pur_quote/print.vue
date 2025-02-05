@@ -513,7 +513,7 @@
 															<td class="p-1 align-top text-center">{{ item_no+1 }}</td>
 															<td class="p-1 align-top text-center">{{ parseFloat(rd.quantity).toFixed(2) }}</td>
 															<td class="p-1 align-top itemdesc_">{{ rd.item_description }}</td>
-															<td class="p-1 align-top item_desc">{{ rd.uom }}</td>
+															<td class="p-1 align-top text-center">{{ rd.uom }}</td>
 															<td hidden><span hidden>{{ item_no++ }}</span> </td>
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">
@@ -527,7 +527,7 @@
 															</td>
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">
-																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2) : '' }}</div>
+																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}</div>
 																</div>
 															</td>
 															<td class="align-top" v-else>
@@ -538,7 +538,7 @@
 															
 															<td class="align-top p-0" v-if="rvi.canvassed == 1">
 																<div v-for="ro in RFQOffers">
-																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.unit_price != 0) ? parseFloat(ro.unit_price).toFixed(2) : '' }}</div>
+																	<div class="border-b p-1 w-full h-14 !align-top text-center" v-if="ro.rfq_details_id == rd.rfq_details_id">{{ (ro.total_price != 0) ? parseFloat(ro.total_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}</div>
 																</div>
 															</td>
 															<td class="align-top" v-else>
