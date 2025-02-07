@@ -98,7 +98,7 @@
             if(rfd_head.value.status=='Draft'){
                 rfd_id.value = response.data.rfd_head.id;
                 rfd_no.value = (response.data.rfd_head.apv_no!=undefined) ? response.data.rfd_head.apv_no : response.data.rfd_no;
-                // company.value = response.data.rfd_head.company;
+                company.value = response.data.rfd_head.company;
                 pay_to.value = response.data.rfd_head.pay_to;
                 rfd_date.value = response.data.rfd_head.rfd_date;
                 check_name.value = response.data.rfd_head.check_name;
@@ -346,15 +346,15 @@
                 payment_total +=  Number(val.payment_amount) || 0;
             });
 
-            payment_list2.value.forEach(function (val, index, theArray) {
-                payment_total2 +=  Number(val.payment_amount) || 0;
+            payment_list2.value.forEach(function (vals, index, theArray) {
+                payment_total2 +=  Number(vals.payment_amount) || 0;
             });
             
             subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
             // subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
             if(show_ewt.value!=0){
                 if(po_head.value.vat_percent!=0){
-                    less.value = (parseFloat(payment_total)/1.12)*percent 
+                    less.value = (parseFloat(payment_total2)/1.12)*percent 
                 }else{
                     less.value = parseFloat(payment_total2)*percent 
                 }

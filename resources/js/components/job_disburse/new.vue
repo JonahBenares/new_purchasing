@@ -199,6 +199,7 @@
             total_per_item.value = parseFloat(response.data.total_sum_labor) + parseFloat(response.data.total_sum_material);
             prepared_by.value = response.data.prepared_by;
             rfd_no.value = response.data.rfd_no;
+            company.value=response.data.company_name
             if(response.data.rfd_head!=null){
                 rfd_head.value = response.data.rfd_head;
                 payment_list.value = response.data.rfd_payments;
