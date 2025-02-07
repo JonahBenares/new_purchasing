@@ -102,12 +102,13 @@
             <div class="col-lg-12">
                 <div class="flex justify-between mb-3 px-2">
                     <span class="">
-                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Request <small>List</small></h3>
+                        <h3 class="card-title !text-lg m-0 uppercase font-bold text-gray-600">JO Request <small>Cancelled List</small></h3>
                     </span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb !mb-0 !text-xs px-2 py-1 !bg-transparent">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">JO Request</li>
+                            <li class="breadcrumb-item"><a href="/job_req">JO Request</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Cancelled List</li>
                         </ol>
                     </nav>
                 </div>
@@ -116,6 +117,7 @@
 		<div class="row">
             <div class="col-lg-12 stretch-card">
                 <div class="card">
+                    <div class="bg-red-500 py-1 w-full"></div>
                     <div class="card-body">
                         <!-- <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
                             <a href="/job_req/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
@@ -134,10 +136,10 @@
                                     <a href="/job_req/completed" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[100px] text-center scale-0 transition-all duration-150 bg-green-500 text-white group-hover:scale-100 ">Show List</a>
                                 </div>
                                 <div class="relative group inline-block">
-                                    <a href="/job_req/cancelled" class="w-20 !text-gray-400 !no-underline rounded-xl text-sm py-1 px-3 border ">
-                                        Cancelled
+                                    <a href="/job_req" class="w-20 !text-gray-400 !no-underline rounded-xl text-sm py-1 px-3 border ">
+                                        Main List
                                     </a>
-                                    <a href="/job_req/cancelled" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[95px] text-center scale-0 transition-all duration-150 bg-red-500 text-white group-hover:scale-100 ">Show List</a>
+                                    <a href="/job_req" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[93px] text-center scale-0 transition-all duration-150 bg-blue-500 text-white group-hover:scale-100 ">Show List</a>
                                 </div>
                             </div>
                         </div>
