@@ -1669,6 +1669,7 @@ class JOIController extends Controller
     public function generate_rfd_joi($joi_head_id){
         $year=date('Y');
         $company=Config::get('constants.company');
+        $company_name=Config::get('constants.company_name');
         $rfd_series_rows = JOIRfdSeries::where('year',$year)->count();
         if($rfd_series_rows==0){
             $max_rfd_series='1';
@@ -1715,6 +1716,7 @@ class JOIController extends Controller
             'total_sum_labor'=>$total_sum_labor,
             'total_sum_material'=>$total_sum_material,
             'total_payments'=>$total_payments,
+            'company_name'=>$company_name,
             'prepared_by'=>Auth::user()?->name
         ],200);
     }
