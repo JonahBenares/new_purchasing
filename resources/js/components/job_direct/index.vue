@@ -196,6 +196,11 @@
 			document.getElementById('check_terms').style.backgroundColor = '#FAA0A0';
 		}
 	}
+
+	const removeVendorTerms = (index) => {
+		vendor_terms.value.splice(index,1)
+	}
+
 	const removeTerms = (index) => {
 		terms_list.value.splice(index,1)
 	}
@@ -911,6 +916,11 @@
 													</td>
 													<td v-if="props.id!=0 || joi_head_id!=0">
 														<button type="button" @click="deleteJOTerms(vt.id,'no')" class="btn btn-danger p-1">
+															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
+														</button>
+													</td>
+													<td v-if="props.id==0 && joi_head_id==0">
+														<button type="button" @click="removeVendorTerms(index)" class="btn btn-danger p-1">
 															<XMarkIcon fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="menu-icon w-3 h-3 "></XMarkIcon>
 														</button>
 													</td>

@@ -472,6 +472,7 @@
 												<thead>
 													<tr class="bg-gray-100">
 														<td class="p-1 text-center" width="3%">#</td>
+														<td class="p-1 text-center" width="3%">Qty</td>
 														<td class="p-1" width="40%">Scope of Work</td>
 														<td class="p-1 text-center" width="5%">UOM</td>
 														<td class="p-1" width="31%">Offer</td>
@@ -486,6 +487,7 @@
 												<tbody v-for="rld in RFQLaborDetails" class="p-0">
 													<tr v-if="rld.jo_rfq_vendor_id == rvi.jo_rfq_vendor_id">
 														<td class="p-1 align-top text-center">{{ labor_no }}</td>
+														<td class="p-1 align-top text-center">{{ parseFloat(rld.quantity).toFixed(2) }}</td>
 														<td class="p-1 align-top">{{ rld.scope_of_work }}</td>
 														<td class="p-1 align-top text-center">{{ rld.uom }}</td>
 														<td hidden><span hidden>{{ labor_no++ }}</span></td>
@@ -494,6 +496,11 @@
 																<div class="border-b p-1 w-full h-10 !align-top"></div>
 																<div class="border-b p-1 w-full h-10 !align-top"></div>
 																<div class="p-1 w-full h-10 !align-top"></div>
+															</td>
+															<td class="align-top">
+																<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+																<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+																<div class="p-1 w-full h-10 !align-top text-center"></div>
 															</td>
 															<td class="align-top">
 																<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
@@ -512,12 +519,10 @@
 																	<div class="border-b p-1 w-full h-10 !align-top text-center" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ parseFloat(rlo.unit_price).toFixed(2) }}</div>
 																</template>
 															</td>
-														</template>
-														<template v-if="(rvi.canvassed == 0)">
 															<td class="align-top">
-																<div class=" text-center border-b p-1 w-full h-10 !align-top">asd</div>
-																<div class=" text-center border-b p-1 w-full h-10 !align-top">asd</div>
-																<div class=" text-center p-1 w-full h-10 !align-top">asd</div>
+																<template v-for="rlo in RFQLaborOffers">
+																	<div class=" text-center border-b p-1 w-full h-10 !align-top" v-if="rlo.jo_rfq_labor_details_id == rld.jo_rfq_labor_details_id">{{ (rlo.total_price != 0) ? parseFloat(rlo.total_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}</div>
+																</template>
 															</td>
 														</template>
 													</tr>
@@ -554,6 +559,11 @@
 																<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
 																<div class="p-1 w-full h-10 !align-top text-center"></div>
 															</td>
+															<td class="align-top">
+																<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+																<div class="border-b p-1 w-full h-10 !align-top text-center"></div>
+																<div class="p-1 w-full h-10 !align-top text-center"></div>
+															</td>
 														</template>
 														<template v-if="(rvi.canvassed == 1)">
 															<td class="align-top">
@@ -570,12 +580,12 @@
 																<!-- <div class="border-b p-1 w-full h-10 !align-top text-center"></div>
 																<div class="p-1 w-full h-10 !align-top text-center"></div> -->
 															</td>
+															<td class="align-top">
+																<template v-for="rmo in RFQMaterialOffers">
+																	<div class=" text-center border-b p-1 w-full h-10 !align-top" v-if="rmo.jo_rfq_material_details_id == rmd.jo_rfq_material_details_id">{{ (rmo.total_price != 0) ? parseFloat(rmo.total_price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '' }}</div>
+																</template>
+															</td>
 														</template>
-														<td class="align-top">
-															<div class="border-b p-1 w-full h-10 !align-top text-center">asd</div>
-															<div class="border-b p-1 w-full h-10 !align-top text-center">asd</div>
-															<div class="p-1 w-full h-10 !align-top text-center">asd</div>
-														</td>
 													</tr>
 												</tbody>
 											</table>
