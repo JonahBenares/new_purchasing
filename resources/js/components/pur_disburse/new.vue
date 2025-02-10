@@ -26,6 +26,7 @@
     let payment_list=ref([]);
     let payment_list2=ref([]);
     let rfd_head=ref([]);
+    let rfd_head_loop=ref([]);
     let rfd_payments=ref([]);
     let vendor=ref([]);
     let po_id=ref(0);
@@ -95,6 +96,7 @@
         rfd_no.value = response.data.rfd_no;
         if(response.data.rfd_head!=null){
             rfd_head.value = response.data.rfd_head;
+            rfd_head_loop.value = response.data.rfd_head_loop;
             if(rfd_head.value.status=='Draft'){
                 rfd_id.value = response.data.rfd_head.id;
                 rfd_no.value = (response.data.rfd_head.apv_no!=undefined) ? response.data.rfd_head.apv_no : response.data.rfd_no;
@@ -148,15 +150,19 @@
             if(po_head.value.vat_percent!=0){
             // if(vendor.value.vat==1){
                 if(rfd_head.value.status!='Draft'){
-                    less.value = (payment_total/1.12)*percent 
+                    less.value = (parseFloat(payment_amount.value)/1.12)*percent 
+                    var less_sum = (payment_total/1.12)*percent 
                 }else{
-                    less.value = (payment_total2/1.12)*percent 
+                    less.value = (parseFloat(payment_amount.value)/1.12)*percent 
+                    var less_sum = (payment_total2/1.12)*percent 
+                    // less.value = (payment_total2/1.12)*percent 
                 }
                 // less.value = (subtotal.value/1.12)*percent 
                 grand_total.value = subtotal.value + payment_total
                 // grand_total.value = subtotal.value-less.value
                 // subtotal.value = grand_total.value - (less.value + payment_total + parseFloat(payment_amount.value))
-                subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
+                subtotal.value = subtotal.value - (less_sum + parseFloat(payment_amount.value))
+                // subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
             }else{
                 if(rfd_head.value.status!='Draft'){
                     less.value = payment_total*percent 
@@ -229,6 +235,7 @@
             rfd_no.value = response.data.rfd_no;
             if(response.data.rfd_head!=null){
                 rfd_head.value = response.data.rfd_head;
+                rfd_head_loop.value = response.data.rfd_head_loop;
                 show_ewt.value = response.data.rfd_head.show_ewt ?? 0;
                 payment_list.value = response.data.rfd_payments;
                 var payment_total2 = 0;
@@ -240,6 +247,11 @@
                         });
                     }
                 });
+            }else{
+                rfd_head.value = []
+                rfd_head_loop.value = []
+                show_ewt.value = 0;
+                payment_list.value = [];
             }
             var percent=vendor.value.ewt/100
             var payment_total = 0;
@@ -261,29 +273,37 @@
             if(show_ewt.value!=0){
                 if(po_head.value.vat_percent!=0){
                 // if(vendor.value.vat==1){
+                    var less_sum = 0;
                     payment_list.value.forEach(function (val, index, theArray) {
                         if (val.id!=0 && val.po_rfd.status!='Saved') {
-                            less.value = (parseFloat(payment_total2)/1.12)*percent 
+                            less.value = 0 
+                            less_sum = (parseFloat(payment_total2)/1.12)*percent 
                         }else{
-                            less.value = (payment_total/1.12)*percent 
+                            less.value = 0 
+                            less_sum = (payment_total/1.12)*percent 
                         }
                     });
                     // less.value = (subtotal.value/1.12)*percent 
                     grand_total.value = subtotal.value + payment_total
                     // grand_total.value = subtotal.value-less.value
-                    subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
+                    subtotal.value = subtotal.value - (less_sum + parseFloat(payment_amount.value))
+                    // subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
                 }else{
+                    var less_sum = 0;
                     payment_list.value.forEach(function (val, index, theArray) {
                         if (val.id!=0 && val.po_rfd.status!='Saved') {
-                            less.value = parseFloat(payment_total2)*percent 
+                            less.value = 0 
+                            less_sum = parseFloat(payment_total2)*percent 
                         }else{
-                            less.value = payment_total*percent 
+                            less.value = 0
+                            less_sum = parseFloat(payment_total)*percent 
                         }
                     });
                     // less.value = subtotal.value*percent 
                     // grand_total.value = subtotal.value-less.value
                     grand_total.value = subtotal.value + payment_total
-                    subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
+                    subtotal.value = subtotal.value - (less_sum + parseFloat(payment_amount.value))
+                    // subtotal.value = subtotal.value - (less.value + parseFloat(payment_amount.value))
                 }
             }else{
                 grand_total.value = subtotal.value + payment_total
@@ -337,7 +357,6 @@
 			}
 			payment_list.value.push(payment)
 			payment_list2.value.push(payment)
-
             var payment_total = 0;
             var payment_total2 = 0;
             var percent=vendor.value.ewt/100
@@ -353,7 +372,7 @@
             // subtotal_disp.value = parseFloat(grand_total.value) - parseFloat(payment_total)
             if(show_ewt.value!=0){
                 if(po_head.value.vat_percent!=0){
-                    less.value = (parseFloat(payment_total)/1.12)*percent 
+                    less.value = (parseFloat(payment_total2)/1.12)*percent 
                 }else{
                     less.value = parseFloat(payment_total2)*percent 
                 }
@@ -393,8 +412,10 @@
             payment_total +=  Number(val.payment_amount) || 0;
         });
         
+        var index2 = index - payment_list2.value.length
+        // alert(index2)
         payment_list2.value.splice(index,1)
-        if (payment_list2.value.length > 0) {
+        if (payment_list.value.length > 0) {
             var payment_total2 = payment_list2.value.reduce((total, vals) => 
                 total.payment_amount
             );
@@ -412,7 +433,8 @@
             // if(vendor.value.vat==1){
                 // var total= parseFloat(payment_total2);
                 // var total=parseFloat(subtotal_disp.value) + parseFloat(payment_amount);
-                less.value = (!isNaN(parseFloat(payment_total2))) ? (parseFloat(payment_total2)/1.12)*percent  : (parseFloat(payment_total)/1.12)*percent  
+                less.value = (!isNaN(parseFloat(payment_total2))) ? (parseFloat(payment_total2)/1.12)*percent  : 0 
+                // less.value = (!isNaN(parseFloat(payment_total2))) ? (parseFloat(payment_total2)/1.12)*percent  : (parseFloat(payment_total)/1.12)*percent  
                 // less.value = (total/1.12)*percent 
                 // grand_total.value = subtotal.value-less.value
                 subtotal_disp.value = parseFloat(subtotal_disp.value)+parseFloat(payment_amount)
@@ -845,7 +867,7 @@
                                                     <td class=""></td>
                                                 </tr>
                                                 <tr class="">
-                                                    <span hidden>{{ rowspan=9+payment_list.length }}</span>
+                                                    <span hidden>{{ rowspan=9+payment_list.length+rfd_head_loop.length }}</span>
                                                     <td class="border-r-none align-top p-2" colspan="4" width="65%" :rowspan="rowspan">
                                                         <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">Requestor:</span>{{pr_head.requestor}}</p>
                                                         <p class="m-0 mb-1 !text-xs"><span class="mr-2 uppercase">End-use:</span>{{pr_head.enduse}}</p>
@@ -942,6 +964,24 @@
                                                         <div class="flex justify-between w-full">
                                                             <span>₱</span>
                                                             <span>{{ formatter.format(subtotal_disp)}}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="" v-for="rhl in rfd_head_loop">
+                                                    <td class="border-l-none border-y-none p-1 text-right" colspan="2">
+                                                        <div class="flex justify-end space-x-3">
+                                                            <span class="flex space-x-1">
+                                                                <!-- <span class="pb-.5">Show EWT</span> -->
+                                                                <input type="checkbox" v-model="rhl.show_ewt" :true-value="1" :false-value="0" style="pointer-events: none;">
+                                                            </span>
+                                                            <span v-if="rhl.show_ewt!=0">Less:  {{ rhl.ewt }}% EWT</span>
+                                                            <!-- <span v-if="show_ewt!=0">Less: {{vendor.ewt}}% EWT</span> -->
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-1 border-y-none" v-if="rhl.show_ewt!=0">
+                                                        <div class="flex justify-between w-full">
+                                                            <span>₱</span>
+                                                            <span>{{ formatter.format(rhl.ewt_amount)}}</span>
                                                         </div>
                                                     </td>
                                                 </tr>
