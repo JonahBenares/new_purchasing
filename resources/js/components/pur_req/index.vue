@@ -24,20 +24,6 @@
 		let response = await axios.get("/api/get_allpr");
 		get_allpr.value = response.data.prall;
 	}
-    // const data = [
-    //     ['EIC24-1005-CNPR', '<div class="text-center">2024-01-01</div>', '<div class="text-center">2024-01-10</div>', 'Electrical/EIC', '<div class="text-center">1</div>', 'Rey D. Argawanon',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">Pending</span></div>' , ''],
-    //     ['FLM24-2019-CNPR', '<div class="text-center">2024-02-03</div>', '<div class="text-center">2024-02-20</div>', 'Fuel and Lube Management', '<div class="text-center">1</div>', 'Fleur de Liz Ambong / Rey D. Argawanon',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-orange-500 text-white !rounded-xl px-2 p-1">Pending</span></div>' , ''],
-    //     ['HAS24-2034-CNPR', '<div class="text-center">2024-03-04</div>', '<div class="text-center">2024-03-15</div>', 'Safety', '<div class="text-center">1</div>', 'Joselito Panes/Ricky Madeja',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-    //     ['Admin24-2033-CNPR', '<div class="text-center">2024-05-03</div>', '<div class="text-center">2024-05-23</div>', 'Admin', '<div class="text-center">1</div>', 'Iris J. Sixto',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-    //     ['SPE/Operation24-2032-CNPR', '<div class="text-center">2024-06-03</div>', '<div class="text-center">2024-07-03</div>', 'Admin', '<div class="text-center">1</div>', 'Iris J. Sixto',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1">Draft</span></div>' , ''],
-    //     ['MAI22-2256-CNPR', '<div class="text-center">2024-07-05</div>', '<div class="text-center">2024-08-11</div>', 'Maintenance', '<div class="text-center">1</div>', 'Ruel B. Beato',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-    //     ['ITB22-2102-CNPR', '<div class="text-center">2024-08-06</div>', '<div class="text-center">2024-09-12</div>', 'IT Department - BCD', '<div class="text-center">1</div>', 'Jason Flor',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-green-500 text-white !rounded-xl px-2 p-1">Completed</span></div>' , ''],
-    //     ['FLM22-2043-CNPR', '<div class="text-center">2024-09-07</div>', '<div class="text-center">2024-10-13</div>', 'Fuel and Lube Management', '<div class="text-center">1</div>', 'Fleur de Liz Ambong / Rey D. Argawanon',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1">Draft</span></div>' , ''],
-    //     ['LAB22-2797-CNPR', '<div class="text-center">2024-10-08</div>', '<div class="text-center">2024-11-15</div>', 'Laboratory and Chemical', '<div class="text-center">1</div>', 'Beverly Ampog',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-yellow-500 text-white !rounded-xl px-2 p-1">Draft</span></div>' , ''],
-    //     ['MAI22-2257-CNPR', '<div class="text-center">2024-11-09</div>', '<div class="text-center">2024-12-16</div>', 'Maintenance', '<div class="text-center">1</div>', 'Godfrey S. E. Samano',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-red-500 text-white !rounded-xl px-2 p-1">Cancelled</span></div>' , ''],
-    //     ['HRB22-2067-CNPR', '<div class="text-center">2024-12-10</div>', '<div class="text-center">2024-12-29</div>', 'HR', '<div class="text-center">1</div>', 'Joemar De Los Santos',  '01-10-24' , '<div class="flex justify-center"><span class="badge bg-red-500 text-white !rounded-xl px-2 p-1">Cancelled</span></div>' , ''],
-    // ];
-
     const options = {
 		// dom: 'Bftip',
 		dom: "<'row'<'col-sm-8 col-lg-8 mb-2 pr-0 flex justify-end'B ><'col-sm-4 col-lg-4 mb-2 pl-1'f>>"+"<'row'<'col-sm-12 mb-2'tr>>"+"<'row'<'col-sm-6 mb-2'i><'col-sm-6 mb-2'p>>",
@@ -129,10 +115,24 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
-                            <a href="/pur_req/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
+                        <div class="flex justify-between space-x-2 mt-3 mb-0 absolute z-50 ">
+                            <a href="/pur_req/new/0" class="btn btn-primary !py-[10px] mt-2 mt-xl-0 text-white">
                                 <span>Add New PR</span>
                             </a>
+                            <div class="space-x-1 pt-1 mt-1">
+                                <div class="relative group inline-block">
+                                    <a href="/pur_req/completed" class="w-20 !text-gray-400 !no-underline rounded-xl text-sm py-1 px-3 border ">
+                                        Completed
+                                    </a>
+                                    <a href="/pur_req/completed" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[100px] text-center scale-0 transition-all duration-150 bg-green-500 text-white group-hover:scale-100 ">Show List</a>
+                                </div>
+                                <div class="relative group inline-block">
+                                    <a href="/pur_req/cancelled" class="w-20 !text-gray-400 !no-underline rounded-xl text-sm py-1 px-3 border ">
+                                        Cancelled
+                                    </a>
+                                    <a href="/pur_req/cancelled" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[95px] text-center scale-0 transition-all duration-150 bg-red-500 text-white group-hover:scale-100 ">Show List</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="pt-3">
                             <!-- <table class="table table-bordered table-hover !border "> -->

@@ -36,6 +36,8 @@ import projectNew from '../components/project/new.vue'
 import projectEdit from '../components/project/edit.vue'
 
 import pur_reqIndex from '../components/pur_req/index.vue'
+import pur_reqCompleted from '../components/pur_req/completed.vue'
+import pur_reqCancelled from '../components/pur_req/cancelled.vue'
 import pur_reqNew from '../components/pur_req/new.vue'
 import pur_reqView from '../components/pur_req/view.vue'
 
@@ -51,6 +53,8 @@ import pur_aoqPrintTe from '../components/pur_aoq/print_te.vue'
 import pur_aoqAwarded from '../components/pur_aoq/awarded.vue'
 
 import pur_poIndex from '../components/pur_po/index.vue'
+import pur_poCompleted from '../components/pur_po/completed.vue'
+import pur_poCancelled from '../components/pur_po/cancelled.vue'
 import pur_poNew from '../components/pur_po/new.vue'
 import pur_poEdit from '../components/pur_po/edit.vue'
 import pur_poView from '../components/pur_po/view.vue'
@@ -73,6 +77,8 @@ import pur_disburseNew from '../components/pur_disburse/new.vue'
 import pur_disburseView from '../components/pur_disburse/view.vue'
 
 import job_reqIndex from '../components/job_req/index.vue'
+import job_reqCompleted from '../components/job_req/completed.vue'
+import job_reqCancelled from '../components/job_req/cancelled.vue'
 import job_reqNew from '../components/job_req/new.vue'
 import job_reqView from '../components/job_req/view.vue'
 
@@ -307,6 +313,20 @@ const routes = [
         }
     },
     {
+        path:'/pur_req/completed',
+        component: pur_reqCompleted,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_req/cancelled',
+        component: pur_reqCancelled,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
         path:'/pur_req/new/:id',
         component: pur_reqNew,
         props:true,
@@ -396,6 +416,20 @@ const routes = [
     {
         path:'/pur_po',
         component: pur_poIndex,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_po/completed',
+        component: pur_poCompleted,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/pur_po/cancelled',
+        component: pur_poCancelled,
         meta:{
             requiresAuth:true
         }
@@ -538,6 +572,20 @@ const routes = [
     {
         path:'/job_req',
         component: job_reqIndex,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/job_req/completed',
+        component: job_reqCompleted,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path:'/job_req/cancelled',
+        component: job_reqCancelled,
         meta:{
             requiresAuth:true
         }

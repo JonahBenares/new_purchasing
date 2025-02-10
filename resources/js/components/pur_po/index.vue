@@ -142,10 +142,29 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
+                        <!-- <div class="flex justify-between  mt-2 mb-0 absolute z-50 ">
                             <a href="/pur_po/new/0" class="btn btn-primary mt-2 mt-xl-0 text-white">
                                 <span>Add New PO</span>
                             </a>
+                        </div> -->
+                        <div class="flex justify-between space-x-2 mt-3 mb-0 absolute z-50 ">
+                            <a href="/pur_po/new/0" class="btn btn-primary !py-[10px] mt-2 mt-xl-0 text-white">
+                                <span>Add New PO</span>
+                            </a>
+                            <div class="space-x-1 pt-1 mt-1">
+                                <div class="relative group inline-block">
+                                    <a href="/pur_po/completed" class="w-20 !text-gray-400 !no-underline rounded-xl text-sm py-1 px-3 border ">
+                                        Completed
+                                    </a>
+                                    <a href="/pur_po/completed" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[100px] text-center scale-0 transition-all duration-150 bg-green-500 text-white group-hover:scale-100 ">Show List</a>
+                                </div>
+                                <div class="relative group inline-block">
+                                    <a href="/pur_po/cancelled" class="w-20 !text-gray-400 !no-underline rounded-xl text-sm py-1 px-3 border ">
+                                        Cancelled
+                                    </a>
+                                    <a href="/pur_po/cancelled" class="absolute !no-underline rounded-xl text-sm py-1 px-3 -top-1 left-1/2 transform -translate-x-1/2 w-[95px] text-center scale-0 transition-all duration-150 bg-red-500 text-white group-hover:scale-100 ">Show List</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="pt-3">
                             <DataTable :data="get_allpo" :options="options" class="display table table-bordered table-hover !border nowrap">
