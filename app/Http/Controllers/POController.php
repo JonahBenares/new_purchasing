@@ -1481,6 +1481,9 @@ class POController extends Controller
         $pr_head= PRHead::where('pr_no',$po_head->pr_no)->first();
         $po_details = PODetails::where('po_head_id',$po_head_id)->where('status','Saved')->where('quantity','!=','0')->get();
         $rfd_head = PORfd::where('po_head_id',$po_head_id)->where(function ($query) {$query->where('status', 'Saved')->orWhere('status', 'Draft');})->first();
+        $rfd_head_loop = PORfd::where('po_head_id',$po_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft');
+        })->orderBy('id','ASC')->get();
         // $rfd_head = PORfd::where('po_head_id',$po_head_id)->where('status','Saved')->first();
         $rfd_payments = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
             $porfd->where('status','Saved')->Orwhere('status','Draft');
@@ -1504,6 +1507,7 @@ class POController extends Controller
             'po_details'=>$po_details,
             'vendor'=>$vendor,
             'rfd_head'=>$rfd_head,
+            'rfd_head_loop'=>$rfd_head_loop,
             'rfd_no'=>$rfd_no,
             'rfd_payments'=>$rfd_payments,
             'rfd_payments_draft'=>$rfd_payments_draft,
@@ -1539,6 +1543,9 @@ class POController extends Controller
         $rfd_head = PORfd::where('po_head_id',$po_head_id)->where(function ($q) {
             $q->where('status','Saved')->Orwhere('status','Draft');
         })->orderByDesc('id')->first();
+        $rfd_head_loop = PORfd::where('po_head_id',$po_head_id)->where(function ($q) {
+            $q->where('status','Saved')->Orwhere('status','Draft');
+        })->orderBy('id','ASC')->get();
         $rfd_payments = PoRfdPayments::with('po_rfd')->whereHas('po_rfd', function ($porfd) {
             $porfd->where('status','Saved')->Orwhere('status','Draft');
         })->where('po_head_id',$po_head_id)->get();
@@ -1562,6 +1569,7 @@ class POController extends Controller
             'pr_head'=>$pr_head,
             'po_details'=>$po_details,
             'rfd_head'=>$rfd_head,
+            'rfd_head_loop'=>$rfd_head_loop,
             'rfd_no'=>$rfd_no,
             'rfd_payments'=>$rfd_payments,
             'rfd_payments_draft'=>$rfd_payments_draft,

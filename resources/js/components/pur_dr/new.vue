@@ -368,7 +368,7 @@
 												<td class="p-1 uppercase text-center" width="5%">UOM</td>
 												<td class="p-1 uppercase text-center" width="7%">To Deliver</td>
 												<td class="p-1 uppercase text-center" width="5%">Received</td>
-												<td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td>
+												<!-- <td class="p-1 uppercase text-center" width="8%">DLVRD Qty</td> -->
 												<td class="p-1 uppercase text-center" width="5%">Remarks</td>
 											</tr>
 											<tr v-for="(pdi,index) in po_dr_items">
@@ -391,7 +391,7 @@
 												<td class="p-1 text-center" v-else>
 													<input type="text" min="0" @keypress="isNumber($event)" @keyup="checkBalanceRec(pdi.po_dr_id,pdi.po_details_id,received_qty[index],index)" class="w-full p-1 bg-orange-50 text-center" :id="'balance_rec_checker'+index" v-model="received_qty[index]">
 												</td>
-												<td class="p-1 text-center">{{ total_sumdelivered1[index] }}</td>
+												<!-- <td class="p-1 text-center">{{ total_sumdelivered1[index] }}</td> -->
 												<td class="p-1 text-center"></td>
 											</tr>
 										</table>
